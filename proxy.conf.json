@@ -1,0 +1,9 @@
+{
+    "/api": {
+      "target": "https://services.laposte.sn:8090/jotnaci-service/api",
+      "secure": false,
+      "changeOrigin": true,
+      "logLevel": "debug"
+    }
+  }
+  

@@ -1,0 +1,31 @@
+<div class="container">
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Rechercher Expéditeur</h5>
+                </div>
+                <div class="card-body">
+                    <form [formGroup]="searchForm" (ngSubmit)="searchClient()">
+                        <div class="row mb-3">
+                            <div class="col-12 md:col-6">
+                                <p-inputGroup>
+                                    <input type="text" pInputText id="keyword" formControlName="keyword"
+                                        placeholder="Entrez le téléphone ou le CNI du client"
+                                        aria-label="Rechercher un client par numéro ou CNI"
+                                        aria-describedby="keyword-error" />
+                                    <button type="submit" pButton label="Rechercher"></button>
+                                </p-inputGroup>
+                            </div>
+                        </div>
+                    </form>
+                    <div *ngIf="loading" class="text-center mt-4">
+                        <div class="spinner-border spinner-border-sm" role="status"></div>
+                        <span class="sr-only">Chargement...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <p-toast></p-toast>
+</div>

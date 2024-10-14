@@ -1,0 +1,120 @@
+<div class="card">
+    <h5>Créer Envoi Produit</h5>
+    <div class="grid p-fluid mt-3">
+        <div class="field col-12 md:col-4">
+            <label for="Nom">Nom expéditeur</label>
+            <input pInputText id="Nom" type="text" [(ngModel)]="nomExpediteur" />
+        </div>
+        <div class="field col-12 md:col-4">
+            <label for="Prenom">Prénom expéditeur</label>
+            <input pInputText id="Prenom" type="text" [(ngModel)]="prenomExpediteur" />
+        </div>
+        <div class="field col-12 md:col-4">
+            <label for="CNI">CNI expéditeur</label>
+            <input pInputText id="CNI" type="text" [(ngModel)]="cniExpediteur" />
+        </div>
+        <div class="field col-12 md:col-4">
+            <label for="Nomd">Nom destinataire</label>
+            <input pInputText id="Nomd" type="text" [(ngModel)]="NomDestinataire" />
+        </div>
+        <div class="field col-12 md:col-4">
+            <label for="Prénomd">Prénom destinataire</label>
+            <input pInputText id="Prénomd" type="text" [(ngModel)]="PrenomDestinataire" />
+        </div>
+        <div class="field col-12 md:col-4">
+            <label for="Emaild">Email destinataire</label>
+            <input pInputText id="Emaild" type="text" [(ngModel)]="EmailDestinataire" />
+        </div>
+        <div class="field col-12 md:col-4">
+            <label for="Adréssed">Adresse destinataire</label>
+            <input pInputText id="Adréssed" type="text" [(ngModel)]="AdresseDestinataire" />
+        </div>
+        <div class="field col-12 md:col-4">
+            <label for="Téléphoned">Téléphone destinataire</label>
+            <input pInputText id="Téléphone" type="text" [(ngModel)]="TelephoneDestinataire" />
+        </div>
+        <div class="field col-12 md:col-4">
+            <label for="zip">Bureau destination</label>
+            <p-autoComplete [(ngModel)]="selectedBureauAdvanced" [suggestions]="filteredBureaux"
+                (completeMethod)="filterBureau($event)" field="name" [dropdown]="true"></p-autoComplete>
+        </div>
+
+        <div class="col-12 lg:col-3 field mb-4">
+            <p-autoComplete [(ngModel)]="selectedProduitsAdvanced" [suggestions]="filteredProduits"
+                placeholder="Choisir le produit" (completeMethod)="filterProduits($event)"
+                (onChange)="onProduitChange($event)" field="name" [dropdown]="true">
+            </p-autoComplete>
+        </div>
+        <div class="col-12 lg:col-3 field mb-4">
+            <p-inputNumber [(ngModel)]="selectedQuantite" mode="decimal" [showButtons]="true" [min]="0" [max]="100"
+                placeholder="Quantité" (onBlur)="onQuantiteChange($event)">
+            </p-inputNumber>
+        </div>
+        <div class="col-12 flex flex-column lg:flex-row justify-content-center align-items-center lg:justify-content-start my-1">
+            <button pButton pRipple label="Continue to Shipping" icon="pi pi-fw pi-check"
+                class="p-element p-ripple p-button-primary w-full lg:w-auto flex-order-1 lg:flex-order-2 p-button p-component mt-2"
+                (click)="ajouterProduitTest()">
+                <span class="p-button-icon p-button-icon-left pi pi-fw pi-check" aria-hidden="true"></span>
+                <span class="p-button-label">Ajouter</span>
+            </button>
+        </div>
+    </div>
+
+    <h2><i class="pi pi-money-bill" style="font-size: 1.5rem;"> Paiement au départ</i></h2>
+    <div class="col-12 md:col-4">
+        <div class="field-checkbox">
+            <p-checkbox name="group1" value="au-guichet" id="au-guichet"></p-checkbox>
+            <label for="au-guichet">Au guichet</label>
+        </div>
+        <div class="field-checkbox">
+            <p-checkbox name="group1" value="paiement-livraison" id="paiement-livraison"></p-checkbox>
+            <label for="paiement-livraison">Paiement à la livraison</label>
+        </div>
+    </div>
+
+    <div class="card" style="width: 40%; margin-top: -210px; float: right;">
+        <h5>Détail commande:</h5>
+        <p-table [value]="detailsCommande">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>Produit</th>
+                    <th>Quantité</th>
+                    <th>Prix</th>
+                    <th>Total</th>
+                </tr>
+            </ng-template>
+
+            <ng-template pTemplate="body" let-detail let-i="rowIndex">
+                <tr>
+                    <td>{{ detail.produit }}</td>
+                    <td>
+                        <div style="display: flex; align-items: center;">
+                            <span style="margin-right: 5px;">{{ detail.quantite }}</span>
+                            <button pButton type="button" label="+" style="font-size: 0.8rem; padding: 0.2rem 0.5rem;"
+                                (click)="incrementQuantity(i)"></button>
+                            <button pButton type="button" label="-"
+                                style="font-size: 0.8rem; padding: 0.2rem 0.5rem; margin-left: 5px;"
+                                (click)="decrementQuantity(i)"></button>
+                        </div>
+                    </td>
+                    <td>{{ detail.prix }}</td>
+                    <td>{{ detail.quantite * detail.prix }}</td>
+                </tr>
+            </ng-template>
+        </p-table>
+
+        <div class="total">
+            <p>Total: <span style="background-color: lightgray; padding: 5px; font-size: 20px;">{{ getTotal() }}</span>
+                CFA</p>
+            <p>Frais Supp: <span style="background-color: lightgray; padding: 5px; font-size: 20px;">{{ fraisSupp
+                    }}</span></p>
+            <p>Total avec frais: <span style="background-color: lightgray; padding: 5px; font-size: 20px;">{{
+                    getTotalAvecFrais() }}</span></p>
+        </div>
+    </div>
+    <div style="display: flex; flex-wrap: wrap; gap: 2rem; justify-content:center;">
+        <div style="margin-left: center;">
+            <button pButton pRipple label="Valider" (click)="validateForm()"></button>
+        </div>
+    </div>
+</div>

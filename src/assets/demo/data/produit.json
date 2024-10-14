@@ -1,0 +1,876 @@
+{
+    "data": [
+        {
+            "code": "87",
+            "name": "Aliment Bétail 20kg"
+        },
+        {
+            "code": "216",
+            "name": "Antenne parabole"
+        },
+        {
+            "code": "111",
+            "name": "Appareil de climatisation industriel"
+        },
+        {
+            "code": "1",
+            "name": "Ardoise"
+        },
+        {
+            "code": "2",
+            "name": "Armoire demontee"
+        },
+        {
+            "code": "108",
+            "name": "Armoire démontée 5/6 portes"
+        },
+        {
+            "code": "159",
+            "name": "Aspirateur P.M"
+        },
+        {
+            "code": "5",
+            "name": "Baignoire"
+        },
+        {
+            "code": "157",
+            "name": "Banc plient artisanal G.M"
+        },
+        {
+            "code": "156",
+            "name": "Banc plient artisanal P.M"
+        },
+        {
+            "code": "78",
+            "name": "Barbecue artisanal"
+        },
+        {
+            "code": "79",
+            "name": "Barbecue importe"
+        },
+        {
+            "code": "73",
+            "name": "Baril / Fût de 100L plein"
+        },
+        {
+            "code": "72",
+            "name": "Baril / Fût de 100L vide"
+        },
+        {
+            "code": "191",
+            "name": "Baril / Fut de 50L plein"
+        },
+        {
+            "code": "192",
+            "name": "Baril / Fut de 50L vide"
+        },
+        {
+            "code": "62",
+            "name": "Batterie GM"
+        },
+        {
+            "code": "61",
+            "name": "Batterie PM"
+        },
+        {
+            "code": "76",
+            "name": "Belier"
+        },
+        {
+            "code": "206",
+            "name": "Berceau bébé GM"
+        },
+        {
+            "code": "162",
+            "name": "BIDON 5L HUILE"
+        },
+        {
+            "code": "120",
+            "name": "Bol GM"
+        },
+        {
+            "code": "119",
+            "name": "Bol PM"
+        },
+        {
+            "code": "80",
+            "name": "Bombonne de gaz vide"
+        },
+        {
+            "code": "88",
+            "name": "Bouteille eau 10L"
+        },
+        {
+            "code": "114",
+            "name": "Cadre de porte en bois"
+        },
+        {
+            "code": "140",
+            "name": "Cadre fenêtre en bois"
+        },
+        {
+            "code": "141",
+            "name": "Cadre fenêtre en fer"
+        },
+        {
+            "code": "109",
+            "name": "Caisson / retour / tiroirs de bureau"
+        },
+        {
+            "code": "153",
+            "name": "CAMERA"
+        },
+        {
+            "code": "135",
+            "name": "Canapé 1 place"
+        },
+        {
+            "code": "136",
+            "name": "Canapé 2 places"
+        },
+        {
+            "code": "116",
+            "name": "Canapé 3 places"
+        },
+        {
+            "code": "51",
+            "name": "Carton cannettes/ briques de jus"
+        },
+        {
+            "code": "69",
+            "name": "Carton de fruits"
+        },
+        {
+            "code": "163",
+            "name": "CARTON LAIT"
+        },
+        {
+            "code": "164",
+            "name": "CARTON SAVON"
+        },
+        {
+            "code": "16",
+            "name": "Chaise anglaise"
+        },
+        {
+            "code": "46",
+            "name": "Chaise de bureau"
+        },
+        {
+            "code": "113",
+            "name": "Chaise en Bambou"
+        },
+        {
+            "code": "122",
+            "name": "chaise en bois"
+        },
+        {
+            "code": "47",
+            "name": "Chaise en plastique"
+        },
+        {
+            "code": "48",
+            "name": "Chaise en plastique pieds en alu"
+        },
+        {
+            "code": "101",
+            "name": "CHAISE HANDICAPE"
+        },
+        {
+            "code": "45",
+            "name": "Chaise visiteurs"
+        },
+        {
+            "code": "6",
+            "name": "Chambre à coucher"
+        },
+        {
+            "code": "123",
+            "name": "Chauffe eau 40L, 50L, 60L"
+        },
+        {
+            "code": "124",
+            "name": "Chauffe eau 80L, 90L,100L"
+        },
+        {
+            "code": "110",
+            "name": "Coiffeuse"
+        },
+        {
+            "code": "10",
+            "name": "Congelateur/ Frigo GM"
+        },
+        {
+            "code": "9",
+            "name": "Congelateur/ Frigo PM"
+        },
+        {
+            "code": "151",
+            "name": "COUVRE LIT"
+        },
+        {
+            "code": "65",
+            "name": "Decortiqueuse"
+        },
+        {
+            "code": "20",
+            "name": "Double lit"
+        },
+        {
+            "code": "98",
+            "name": "ENSEIGNE LUMINEUSE  moyen"
+        },
+        {
+            "code": "106",
+            "name": "Fauteuil (1 place)"
+        },
+        {
+            "code": "143",
+            "name": "Fauteuil 1 place"
+        },
+        {
+            "code": "171",
+            "name": "Fauteuil électrique G.M"
+        },
+        {
+            "code": "170",
+            "name": "Fauteuil électrique P.M"
+        },
+        {
+            "code": "193",
+            "name": "FENETRE ALUMINIUM"
+        },
+        {
+            "code": "105",
+            "name": "fenêtre en bois avec cadre"
+        },
+        {
+            "code": "147",
+            "name": "Fenêtre en fer"
+        },
+        {
+            "code": "174",
+            "name": "fontaine"
+        },
+        {
+            "code": "52",
+            "name": "Four/ cuisiniere/ gaziniere 4 feux"
+        },
+        {
+            "code": "53",
+            "name": "Four/ cuisiniere/ gaziniere 5 feux/ americain"
+        },
+        {
+            "code": "71",
+            "name": "Fourneau Jambar GM"
+        },
+        {
+            "code": "70",
+            "name": "Fourneau Jambar PM"
+        },
+        {
+            "code": "8",
+            "name": "Frigo bar"
+        },
+        {
+            "code": "197",
+            "name": "gazin sinthetique"
+        },
+        {
+            "code": "167",
+            "name": "Glacière P.M"
+        },
+        {
+            "code": "176",
+            "name": "GRACIERE GM"
+        },
+        {
+            "code": "148",
+            "name": "GRIS EN FER"
+        },
+        {
+            "code": "194",
+            "name": "GRIS FENETRE EN FER"
+        },
+        {
+            "code": "161",
+            "name": "GROSSE DE SUCRE"
+        },
+        {
+            "code": "149",
+            "name": "GROUPE ELECTROGENE P.M"
+        },
+        {
+            "code": "187",
+            "name": "HOME CINEMA"
+        },
+        {
+            "code": "12",
+            "name": "Imprimante GM"
+        },
+        {
+            "code": "154",
+            "name": "Imprimante moyenne"
+        },
+        {
+            "code": "11",
+            "name": "Imprimante PM"
+        },
+        {
+            "code": "118",
+            "name": "Indé (couscoussier)"
+        },
+        {
+            "code": "15",
+            "name": "Lavabo"
+        },
+        {
+            "code": "91",
+            "name": "Lave Main GM"
+        },
+        {
+            "code": "205",
+            "name": "Lipiko pliable"
+        },
+        {
+            "code": "18",
+            "name": "Lit 1 place"
+        },
+        {
+            "code": "19",
+            "name": "Lit 2 places"
+        },
+        {
+            "code": "172",
+            "name": "Lit 2 places en fer demontée"
+        },
+        {
+            "code": "214",
+            "name": "Longueur Pression 100m"
+        },
+        {
+            "code": "215",
+            "name": "Longueur Pression 50"
+        },
+        {
+            "code": "17",
+            "name": "M2 carreaux"
+        },
+        {
+            "code": "92",
+            "name": "Machine à coudre"
+        },
+        {
+            "code": "24",
+            "name": "Machine à coudre avec table"
+        },
+        {
+            "code": "23",
+            "name": "Machine à coudre sans table"
+        },
+        {
+            "code": "200",
+            "name": "Machine à laver GM"
+        },
+        {
+            "code": "75",
+            "name": "Machine à laver PM"
+        },
+        {
+            "code": "218",
+            "name": "Machine à moudre"
+        },
+        {
+            "code": "117",
+            "name": "Marmite Gm"
+        },
+        {
+            "code": "121",
+            "name": "Marmite PM"
+        },
+        {
+            "code": "26",
+            "name": "Matelas en mousse GM"
+        },
+        {
+            "code": "25",
+            "name": "Matelas en mousse PM"
+        },
+        {
+            "code": "30",
+            "name": "Matelas orthopédique deroulé GM"
+        },
+        {
+            "code": "29",
+            "name": "Matelas orthopédique deroulé PM"
+        },
+        {
+            "code": "188",
+            "name": "MATELAS ORTHOPEDIQUE ENFANT"
+        },
+        {
+            "code": "28",
+            "name": "Matelas orthopédique enroulé GM"
+        },
+        {
+            "code": "27",
+            "name": "Matelas orthopédique enroulé PM"
+        },
+        {
+            "code": "173",
+            "name": "Meuble de coin en fer demontée"
+        },
+        {
+            "code": "203",
+            "name": "Meuble TV MURAL"
+        },
+        {
+            "code": "81",
+            "name": "Micro-ondes"
+        },
+        {
+            "code": "133",
+            "name": "Moquette GM"
+        },
+        {
+            "code": "132",
+            "name": "Moquette Moyen"
+        },
+        {
+            "code": "131",
+            "name": "Moquette PM"
+        },
+        {
+            "code": "31",
+            "name": "Moteur de vehicule"
+        },
+        {
+            "code": "56",
+            "name": "Moto deux roues"
+        },
+        {
+            "code": "146",
+            "name": "Moto electrique enfant"
+        },
+        {
+            "code": "195",
+            "name": "moto tri cycle demontée"
+        },
+        {
+            "code": "182",
+            "name": "NATTE GM"
+        },
+        {
+            "code": "180",
+            "name": "NATTE PM"
+        },
+        {
+            "code": "181",
+            "name": "NATTE PM"
+        },
+        {
+            "code": "152",
+            "name": "ONDULEUR  P.M"
+        },
+        {
+            "code": "32",
+            "name": "Ordinateur de bureau"
+        },
+        {
+            "code": "33",
+            "name": "Ordinateur portable"
+        },
+        {
+            "code": "115",
+            "name": "Panneau publicitaire 1m/60"
+        },
+        {
+            "code": "60",
+            "name": "Panneau solaire"
+        },
+        {
+            "code": "138",
+            "name": "Panneau Solaire"
+        },
+        {
+            "code": "177",
+            "name": "paque deau"
+        },
+        {
+            "code": "168",
+            "name": "parabole"
+        },
+        {
+            "code": "14",
+            "name": "Photocopieuse GM"
+        },
+        {
+            "code": "155",
+            "name": "Photocopieuse Moyenne"
+        },
+        {
+            "code": "13",
+            "name": "Photocopieuse PM"
+        },
+        {
+            "code": "150",
+            "name": "Placard"
+        },
+        {
+            "code": "158",
+            "name": "Plaque en fer 2mx90cm"
+        },
+        {
+            "code": "128",
+            "name": "Pneu Moyen"
+        },
+        {
+            "code": "127",
+            "name": "Pneu PM"
+        },
+        {
+            "code": "184",
+            "name": "Porte avec cadre en bois G.M"
+        },
+        {
+            "code": "34",
+            "name": "Porte avec cadre en bois massif"
+        },
+        {
+            "code": "35",
+            "name": "Porte avec cadre en contre-plaque"
+        },
+        {
+            "code": "36",
+            "name": "Porte avec cadre en fer"
+        },
+        {
+            "code": "183",
+            "name": "Porte avec cadre en fer G.M"
+        },
+        {
+            "code": "37",
+            "name": "Porte en aluminium"
+        },
+        {
+            "code": "126",
+            "name": "Porte en bois sans cadre"
+        },
+        {
+            "code": "144",
+            "name": "Porte en fer"
+        },
+        {
+            "code": "217",
+            "name": "Porte menteau verticale"
+        },
+        {
+            "code": "64",
+            "name": "Portes de placard"
+        },
+        {
+            "code": "95",
+            "name": "poubelle G.M"
+        },
+        {
+            "code": "94",
+            "name": "poubelle P.M"
+        },
+        {
+            "code": "178",
+            "name": "RANGE CHAUSSURE"
+        },
+        {
+            "code": "142",
+            "name": "Réfrigérateur Side by Side"
+        },
+        {
+            "code": "134",
+            "name": "Régulateur"
+        },
+        {
+            "code": "213",
+            "name": "Rouleau Goute à Goute"
+        },
+        {
+            "code": "211",
+            "name": "Rouleaux Anjou 50"
+        },
+        {
+            "code": "212",
+            "name": "Rouleaux Anjou 63"
+        },
+        {
+            "code": "160",
+            "name": "Rouleaux câble Senelec 100M"
+        },
+        {
+            "code": "166",
+            "name": "Sac aliment 20kg"
+        },
+        {
+            "code": "137",
+            "name": "Sac bouteilles en plastique vides"
+        },
+        {
+            "code": "77",
+            "name": "Sac carreaux casses (bien conditionne)"
+        },
+        {
+            "code": "63",
+            "name": "Sac cereale"
+        },
+        {
+            "code": "103",
+            "name": "SAC CHARBON G.M"
+        },
+        {
+            "code": "102",
+            "name": "SAC CHARBON P.M"
+        },
+        {
+            "code": "104",
+            "name": "Sac d'oignons 25kg"
+        },
+        {
+            "code": "100",
+            "name": "Sac de charbon GM"
+        },
+        {
+            "code": "99",
+            "name": "Sac de charbon PM"
+        },
+        {
+            "code": "129",
+            "name": "Sac de foin"
+        },
+        {
+            "code": "82",
+            "name": "Sac de lait en poudre 25kg"
+        },
+        {
+            "code": "190",
+            "name": "SAC DE MIL 100KG"
+        },
+        {
+            "code": "189",
+            "name": "SAC DE MIL 50KG"
+        },
+        {
+            "code": "21",
+            "name": "Sac de riz 25 kg"
+        },
+        {
+            "code": "22",
+            "name": "Sac de riz 50 kg"
+        },
+        {
+            "code": "66",
+            "name": "Sac de sucre de 50kg"
+        },
+        {
+            "code": "208",
+            "name": "SAC DIABARIN"
+        },
+        {
+            "code": "89",
+            "name": "Sac oignon 40 kg"
+        },
+        {
+            "code": "186",
+            "name": "sac oseille GM"
+        },
+        {
+            "code": "185",
+            "name": "sac oseille PM"
+        },
+        {
+            "code": "59",
+            "name": "Sac pain de singe (bouye)"
+        },
+        {
+            "code": "130",
+            "name": "Sac Produit maraîchers 60KG (concombre, carotte, patate etc ...)"
+        },
+        {
+            "code": "139",
+            "name": "Sac sucre 25kg"
+        },
+        {
+            "code": "207",
+            "name": "SAC TAMARIN"
+        },
+        {
+            "code": "41",
+            "name": "Salle à manger en bois (table et chaises)"
+        },
+        {
+            "code": "3",
+            "name": "Salon 5 places"
+        },
+        {
+            "code": "125",
+            "name": "salon 6 places"
+        },
+        {
+            "code": "201",
+            "name": "salon 8 Places"
+        },
+        {
+            "code": "202",
+            "name": "salon 9 Places"
+        },
+        {
+            "code": "179",
+            "name": "salon marocain 12 places"
+        },
+        {
+            "code": "4",
+            "name": "Salon7 places"
+        },
+        {
+            "code": "54",
+            "name": "Scooter"
+        },
+        {
+            "code": "55",
+            "name": "Scooter en caisse ( non encore monte)"
+        },
+        {
+            "code": "84",
+            "name": "Seau de peinture GM"
+        },
+        {
+            "code": "83",
+            "name": "Seau de peinture PM"
+        },
+        {
+            "code": "58",
+            "name": "Seau pâte d'arachide, karite, miel, etc, 20kg"
+        },
+        {
+            "code": "57",
+            "name": "Seau pâte d'arachide, karite, miel, etc, 5kg"
+        },
+        {
+            "code": "204",
+            "name": "sèche linge pliable"
+        },
+        {
+            "code": "68",
+            "name": "Smartphone"
+        },
+        {
+            "code": "74",
+            "name": "Sommier"
+        },
+        {
+            "code": "196",
+            "name": "sonorisation"
+        },
+        {
+            "code": "38",
+            "name": "Split"
+        },
+        {
+            "code": "175",
+            "name": "SPLIT ARMOIRE"
+        },
+        {
+            "code": "93",
+            "name": "Table  Machine à coudre"
+        },
+        {
+            "code": "43",
+            "name": "Table basse en bois"
+        },
+        {
+            "code": "42",
+            "name": "Table de bureau"
+        },
+        {
+            "code": "7",
+            "name": "Table de chevet"
+        },
+        {
+            "code": "40",
+            "name": "Table en bois"
+        },
+        {
+            "code": "44",
+            "name": "Table en plastique"
+        },
+        {
+            "code": "39",
+            "name": "Table en verre"
+        },
+        {
+            "code": "210",
+            "name": "Table TV GM"
+        },
+        {
+            "code": "209",
+            "name": "Table TV PM"
+        },
+        {
+            "code": "199",
+            "name": "TABLEAU D'ART"
+        },
+        {
+            "code": "198",
+            "name": "TABLEAU DE CLASSE"
+        },
+        {
+            "code": "96",
+            "name": "Tapis G.M"
+        },
+        {
+            "code": "97",
+            "name": "Tapis P.M"
+        },
+        {
+            "code": "67",
+            "name": "Telephone portable ordinaire"
+        },
+        {
+            "code": "50",
+            "name": "Televiseur grand ecran"
+        },
+        {
+            "code": "49",
+            "name": "Televiseur petit ecran"
+        },
+        {
+            "code": "169",
+            "name": "tole en zing"
+        },
+        {
+            "code": "107",
+            "name": "Tringle (de rideau)"
+        },
+        {
+            "code": "165",
+            "name": "VALISE EN FER VIDE"
+        },
+        {
+            "code": "85",
+            "name": "Velo adulte"
+        },
+        {
+            "code": "86",
+            "name": "Velo enfant"
+        },
+        {
+            "code": "112",
+            "name": "Vélo Fixe"
+        },
+        {
+            "code": "90",
+            "name": "Ventilateur"
+        },
+        {
+            "code": "145",
+            "name": "Voiture electrique"
+        }
+    ]
+}

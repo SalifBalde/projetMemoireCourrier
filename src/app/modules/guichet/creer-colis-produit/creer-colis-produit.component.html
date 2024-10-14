@@ -1,0 +1,219 @@
+<div class="col-12">
+    <div>
+        <form [formGroup]="form" (ngSubmit)="saveColis()">
+        <div class="p-fluid  grid">
+            <div class="col-12 lg:col-6 md:px-1">
+                <div class="card">
+                    <div class="grid formgrid">
+                        <div class="col-12 field mb-2">
+                            <span class="text-900 text-2xl block font-medium mb-5">Informations Expéditeur</span>
+                        </div>
+                        <div class="col-12 lg:col-12 field mb-4">
+                            <span class="p-float-label">
+                                <input id="float-input" type="text" value="{{nom}}" pInputText>
+                                <label for="float-input">Nom complet</label>
+                            </span>
+                        </div>
+                        <div class="col-12 lg:col-6 field mb-4">
+                            <span class="p-float-label">
+                                <input id="float-input" type="text" value="{{cni}}" pInputText>
+                                <label for="float-input">Cni</label>
+                            </span>
+                        </div>
+                        <div class="col-12 lg:col-6 field mb-4">
+                            <span class="p-float-label">
+                                <input id="float-input" type="text" value="{{telephone}}" pInputText>
+                                <label for="float-input">Téléphone</label>
+                            </span>
+                        </div>
+                        <div class="col-12 field mb-1">
+                            <span class="text-900 text-2xl block font-medium mb-5">Informations Destinataire</span>
+                        </div>
+                        <div class="col-12 lg:col-6 field mb-4">
+                            <span class="p-float-label">
+                                <input id="float-input" type="text"  formControlName="prenomDestinataire" pInputText>
+                                <label for="float-input">Prénom</label>
+                            </span>
+                        </div>
+                        <div class="col-12 lg:col-6 field mb-4">
+                            <span class="p-float-label">
+                                <input id="float-input"  formControlName="nomDestinataire" type="text" pInputText>
+                                <label for="float-input">Nom</label>
+                            </span>
+                        </div>
+                        <div class="col-12 lg:col-6 field mb-4">
+                            <span class="p-float-label">
+                                <input id="float-input"  formControlName="telephoneDestinataire" type="text" pInputText>
+                                <label for="float-input">Téléphone</label>
+                            </span>
+                        </div>
+
+                        <div class="col-12 lg:col-6 field mb-4">
+                            <span class="p-float-label">
+                                <input id="address"  formControlName="adresseDestinataire" pInputText />
+                                <label for="float-input">Adresse</label>
+                            </span>
+                        </div>
+
+                        <div class="col-12 lg:col-6 field mb-4">
+                            <p-dropdown [options]="structure$" optionLabel="libelle" optionValue="id" [filter]="true"
+                                filterBy="libelle" formControlName="bureauDestinataireId" (onChange)="getDistance()"
+                                [showClear]="true" placeholder="choisissez un bureau">
+                                <ng-template pTemplate="selectedItem" let-selectedOption>
+                                    <div class="flex align-items-center gap-2">
+                                        <div>{{ selectedOption.libelle }}</div>
+                                    </div>
+                                </ng-template>
+                                <ng-template let-structure pTemplate="item">
+                                    <div class="flex align-items-center gap-2">
+                                        <div>{{ structure.libelle }}</div>
+                                    </div>
+                                </ng-template>
+                            </p-dropdown>
+                        </div>
+                        <div class="col-12 lg:col-6 field mb-2">
+                            <span class="text-900 font-bold"*ngIf="distance">{{distance}} Km</span></div>
+
+                        <div class="col-12 lg:col-6 field mb-2">
+                            <p-dropdown [options]="produit$" optionLabel="libelle" optionValue="id" [filter]="true"
+                            filterBy="libelle" formControlName="produitId" (onChange)="getTarifProduit()"
+                            [showClear]="true" placeholder="choisissez un produit">
+                            <ng-template pTemplate="selectedItem" let-selectedOption>
+                                <div class="flex align-items-center gap-2">
+                                    <div>{{ selectedOption.libelle }}</div>
+                                </div>
+                            </ng-template>
+                            <ng-template let-produit pTemplate="item">
+                                <div class="flex align-items-center gap-2">
+                                    <div>{{ produit.libelle }}</div>
+                                </div>
+                            </ng-template>
+                        </p-dropdown>
+                        <br><div class="col-12 lg:col-6 field mb-2">
+                            <span class="text-900 font-bold"*ngIf="distance">{{montant|currency}}</span></div>
+                        </div>
+                        <div class="col-12 lg:col-4 field mb-2">
+                            <p-inputNumber formControlName="quantite" mode="decimal" [showButtons]="true" [min]="1" [max]="100" >
+                            </p-inputNumber>
+                        </div>
+                        <div class="col-12 lg:col-2 field mb-2">
+                            <button pButton pRipple type="button" icon="pi pi-plus" class="p-button-info" (click)="ajouterProduit()"></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 md:col-6">
+                <div class="card">
+                    <div class="pb-3 surface-border">
+                        <span class="text-900 font-medium text-xl">Panier : Nbr: {{numberOfItems}}/{{totalMontant | customCurrency}}</span>
+                    </div>
+                    <p-table [value]="colis.details">
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th>Produit</th>
+                                <th>Qté</th>
+                                <th>Prix</th>
+                                <th>Total</th>
+                                <th></th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-detail let-i="rowIndex">
+                            <tr>
+                                <td>{{ detail.produitLibelle}}</td>
+                                <td>
+                                    <div style="display: flex; align-items: center;">
+
+                                        <button pButton type="button" label="-"
+                                            style="font-size: 0.8rem; padding: 0.2rem 0.5rem;"
+                                            (click)="decrementQuantity(i)"></button>
+                                            <p-badge size="large" value="{{ detail.quantite }}" severity="success"></p-badge>
+
+                                        <button pButton type="button" severity="danger" label="+"
+                                            style="font-size: 0.8rem; padding: 0.2rem 0.5rem; margin-left: 5px;"
+                                            (click)="incrementQuantity(i)"></button>
+                                    </div>
+                                </td>
+                                <td>{{ detail.prix }}</td>
+                                <td>{{ detail.quantite * detail.prix }}</td>
+                                <td>
+                                    <button pButton pRipple type="button" (click)="removeDetail(i)" icon="pi pi-times" class="p-button-rounded p-button-danger p-button-text"></button>
+                                </td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                    </div>
+                    <div class="card">
+                    <h5>Paiement</h5>
+                    <div class="grid formgrid">
+                        <div class="col-12 md:col-6">
+                            <div class="field-radiobutton">
+                                <p-radioButton name="payer" formControlName="payer" value="true"></p-radioButton>
+                                <label for="city1">Au guichet</label>
+                            </div>
+                        </div>
+                        <div class="col-12 md:col-6">
+                            <div class="field-radiobutton">
+                                <p-radioButton name="payer" formControlName="payer" value="false"></p-radioButton>
+                                <label for="city2">A la livraison</label>
+                            </div>
+                        </div>
+                        <div class="col-12 lg:col-8 field mb-4">
+                            <p-dropdown [options]="mode$" optionLabel="libelle" formControlName="modePaiementId"
+                                optionValue="id" placeholder="Moyens de paiement" [showClear]="true"></p-dropdown>
+                        </div>
+                    </div>
+
+                    <h5>Services</h5>
+                    <div class="grid formgrid mb-3">
+                        <div class="col-12 md:col-6">
+                            <div class="field-checkbox">
+                                <p-checkbox name="enlevementDomicile" formControlName="enlevementDomicile" binary="true"
+                                    (onChange)="getFraisEnlevement($event)" id="enlevementDomicile"></p-checkbox>
+                                <label for="ny">Enlévement à domicile</label>
+                            </div>
+                        </div>
+                        <div class="col-12 md:col-6">
+                            <div class="field-checkbox">
+                                <p-checkbox name="livraisonDomicile" formControlName="livraisonDomicile" binary="true"
+                                    (onChange)="getFraisLivraison($event)" id="livraisonDomicile"></p-checkbox>
+                                <label for="sf">Livraison à domicile</label>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="pb-3 surface-border">
+                        <span class="text-900 font-medium text-xl">Résumé :</span>
+                    </div>
+                    <div class="py-2 mt-3">
+                        <div class="flex justify-content-between align-items-center mb-3">
+                            <span class="text-900 font-medium">Subtotal</span><span class="text-900">{{totalMontant |
+                                currency}}</span>
+                        </div>
+                        <div class="flex justify-content-between align-items-center mb-3">
+                            <span class="text-900 font-medium">Enlévement à domicile</span><span
+                                class="text-primary font-bold">{{fraisEnlevement | currency}}</span>
+                        </div>
+                        <div class="flex justify-content-between align-items-center mb-3">
+                            <span class="text-900 font-medium">Livraison à domicile</span><span
+                                class="text-primary font-bold">{{fraisLivraison | currency}}</span>
+                        </div>
+                        <div class="flex justify-content-between align-items-center mb-3">
+                            <span class="text-900 font-bold">Total</span><span
+                                class="text-900 font-medium text-xl">{{totalMontant + fraisLivraison + fraisEnlevement |
+                                currency}}</span>
+                        </div>
+                    </div>
+
+                    <div class="col-12 flex flex-column lg:flex-row justify-content-end align-items-center">
+                        <button pbutton="" pripple="" class="p-element p-button-primary lg:w-auto flex-order-1  p-button p-component"  [disabled]="form.invalid">
+                            <span class="p-button-icon p-button-icon-left pi pi-fw pi-check"></span><span class="p-button-label">Sauvegarder</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+         </form>
+    </div>
+</div>

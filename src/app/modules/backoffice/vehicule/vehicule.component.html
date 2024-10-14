@@ -1,0 +1,127 @@
+<div class="grid">
+    <div class="col-12">
+        <div class="card px-6 py-6">
+            <p-toast></p-toast>
+            <p-toolbar styleClass="mb-4">
+                <ng-template pTemplate="left">
+                    <div class="my-2">
+                        <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2"
+                            (click)="openNew()"></button>
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="right">
+                    <button pButton pRipple label="Export" icon="pi pi-upload" class="p-button-help"
+                        (click)="dt.exportCSV()"></button>
+                </ng-template>
+            </p-toolbar>
+
+            <p-table #dt [value]="vehicules" [columns]="cols" responsiveLayout="scroll" [rows]="10"
+                [globalFilterFields]="['libelle','description','status']" [paginator]="true"
+                [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true"
+                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" selectionMode="multiple"
+                [rowHover]="true" dataKey="id">
+                <ng-template pTemplate="caption">
+                    <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+                        <h5 class="m-0">Gestion des Véhicules</h5>
+                        <span class="block mt-2 md:mt-0 p-input-icon-left">
+                            <i class="pi pi-search"></i>
+                            <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Search..."
+                                class="w-full sm:w-auto" />
+                        </span>
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th pSortableColumn="libelle">Libelle <p-sortIcon field="libelle"></p-sortIcon></th>
+                        <th pSortableColumn="description">Description <p-sortIcon field="description"></p-sortIcon></th>
+                        <th pSortableColumn="status">Status <p-sortIcon field="status"></p-sortIcon></th>
+                        <th></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-vehicule>
+                    <tr>
+
+                        <td style=" min-width:10rem;"><span class="p-column-title">Code</span>
+                            {{vehicule.libelle || vehicule.id}}
+                        </td>
+                        <td style=" min-width:15rem;">
+                            {{vehicule.description}}
+                        </td>
+
+                        <td style="width:5%; min-width: 10rem;">
+                            <p-tag icon="pi pi-check" *ngIf="vehicule.active" severity="success" value="Success"
+                                class="p-element">
+                                <span class="p-tag p-component p-tag-success">
+                                    <span class="p-tag-icon pi pi-check ng-star-inserted"></span>
+                                    <span class="p-tag-value">Oui</span>
+                                </span>
+                            </p-tag>
+                            <p-tag icon="pi pi-times" *ngIf="!vehicule.active" severity="danger" value="Success"
+                                class="p-element">
+                                <span class="p-tag p-component p-tag-danger">
+                                    <span class="p-tag-icon pi pi-times ng-star-inserted"></span>
+                                    <span class="p-tag-value">Non</span>
+                                </span>
+                            </p-tag>
+                        </td>
+                        <td>
+                            <div class="flex">
+                                <button pbutton pripple icon="pi pi-pencil"
+                                    class=" p-button p-component p-button-text p-button-icon-only p-button-info mr-2"
+                                    (click)="editVehicule(vehicule)"><span class="p-button-icon pi pi-pencil"
+                                        aria-hidden="true"></span></button>
+                                <button pbutton pripple icon="pi pi-trash"
+                                    class=" p-button p-component p-button-text p-button-icon-only p-button-danger"
+                                    (click)="deleteVehicule(vehicule)"><span class="p-button-icon pi pi-trash"
+                                        aria-hidden="true"></span></button>
+                            </div>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+
+        <p-dialog [(visible)]="vehiculeDialog" [style]="{width: '450px'}" header="Vehicule Details" [modal]="true"
+            class="p-fluid">
+            <ng-template pTemplate="content">
+                <form [formGroup]="form" (ngSubmit)="saveVehicule()">
+                    <div class="field">
+                        <label for="name">Libelle</label>
+                        <input type="text" pInputText id="name" formControlName="libelle" autofocus />
+                    </div>
+                    <div class="field">
+                        <label for="description">Description</label>
+                        <textarea id="description" pInputTextarea formControlName="description" rows="3"
+                            cols="20"></textarea>
+                    </div>
+
+                    <div class="field">
+                        <label for="status">Activer</label><br>
+                        <p-inputSwitch id="status" formControlName="active"></p-inputSwitch>
+                    </div>
+                </form>
+            </ng-template>
+
+            <ng-template pTemplate="footer">
+                <button pButton pRipple label="Annuler" icon="pi pi-times" class="p-button-text p-button-danger"
+                    (click)="hideDialog()"></button>
+                <button pButton pRipple label="Sauvegarder" icon="pi pi-check" class="p-button-text p-button-success"
+                    (click)="saveVehicule()" [disabled]="form.invalid"></button>
+            </ng-template>
+        </p-dialog>
+
+        <p-dialog [(visible)]="deleteVehiculeDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
+            <div class="flex align-items-center justify-content-center">
+                <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+                <span *ngIf="vehicule">Etes-vous sûr que vous voulez supprimer <b>{{vehicule.libelle}}</b>?</span>
+            </div>
+            <ng-template pTemplate="footer">
+                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="Non"
+                    (click)="deleteVehiculeDialog = false"></button>
+                <button pButton pRipple icon="pi pi-check" class="p-button-text p-button-danger" label="Oui"
+                    (click)="confirmDelete()"></button>
+            </ng-template>
+        </p-dialog>
+
+    </div>
+</div>

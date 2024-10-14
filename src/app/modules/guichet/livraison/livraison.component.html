@@ -1,0 +1,126 @@
+<div class="grid">
+    <div class="col-12">
+        <div class="card px-4 py-4">
+            <p-toast></p-toast>
+            <p-toolbar styleClass="mb-4">
+                <div class="p-toolbar-group-left flex flex-wrap">
+                    <button pButton type="button" label="New" icon="pi pi-plus" class="mr-2"></button>
+                    <button pButton type="button" icon="pi pi-check" class="p-button-success mr-2"></button>
+                    <button pButton type="button" icon="pi pi-trash" class="p-button-warning mr-2"
+                        (click)="supprimerSelection()"></button>
+
+                    <button pButton type="button" icon="pi pi-print" class="p-button-danger"></button>
+                </div>
+            </p-toolbar>
+            <p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle"
+                message="Êtes-vous sûr de vouloir supprimer ces colis ?" [style]="{ width: '350px' }" acceptLabel="Oui"
+                rejectLabel="Non" acceptButtonStyleClass="p-button-text" rejectButtonStyleClass="p-button-text">
+            </p-confirmDialog>
+            <p-table [value]="colis$" styleClass="p-datatable-gridlines" [(selection)]="selectedColis" dataKey="id"
+                (onRowSelect)="onRowSelect($event)" (onRowUnselect)="onRowUnselect($event)" [paginator]="true"
+                [rows]="5">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th></th>
+                        <th>Code</th>
+                        <th>Nom du client</th>
+                        <th>Nom Complet destinataire</th>
+                        <th>Téléphone destinataire</th>
+                        <th>Bureau de dépôt</th>
+                        <th>Montant</th>
+                        <th>Date d'envoi</th>
+                        <th>Payer</th>
+                        <th>Status</th>
+
+                        <th></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-colis>
+                    <tr [pSelectableRow]="colis">
+                        <td>
+                            <p-tableCheckbox [value]="colis"></p-tableCheckbox>
+                        </td>
+                        <td>{{ colis.code }}</td>
+                        <td>{{ colis.nomClient }}</td>
+                        <td>{{ colis.prenomDestinataire }} {{ colis.nomDestinataire }}</td>
+                        <td>{{ colis.telephoneDestinataire }}</td>
+                        <td>{{ colis.bureauDepotLibelle }}</td>
+                        <td>{{ colis.montant | currency }}</td>
+                        <td>{{ colis.createdAt }}</td>
+                        <td style="width:5%; min-width: 10rem;">
+                            <p-tag icon="pi pi-check" *ngIf="colis.payer" severity="success" value="Oui"
+                                class="p-element">
+                            </p-tag>
+                            <p-tag icon="pi pi-times" *ngIf="!colis.payer" severity="danger" value="Non"
+                                class="p-element">
+                            </p-tag>
+                        </td>
+
+
+                        <td>
+                            <span class="p-badge p-component p-badge-{{ colis.statusCouleur }}">{{ colis.statusLibelle
+                                }}</span>
+                        </td>
+                        <td>
+                            <button pButton pRipple label="Livrer" (click)="voirColis(colis)"></button>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+    </div>
+</div>
+<p-dialog [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" [style]="{ width: '30vw' }" [draggable]="false"
+    [resizable]="false" [(visible)]="displayDialog" [modal]="true" class="p-fluid">
+    <ng-template pTemplate="header">
+        <div class="flex justify-content-between align-items-center w-full">
+            <span><strong>Colis :</strong> {{ selectedColis?.code || '' }}</span>
+            <p-tag *ngIf="selectedColis?.payer" icon="pi pi-check" severity="success" value="Payer : Oui" class="p-element"></p-tag>
+            <p-tag *ngIf="!selectedColis?.payer" icon="pi pi-times" severity="danger" value="Payer : Non" class="p-element"></p-tag>
+        </div>
+        
+    </ng-template>
+
+    <ng-container *ngIf="selectedColis">
+        <div class="grid formgrid">
+            <div class="col-12 lg:col-12 field mb-4">
+                <div class="flex align-items-center">
+                    <label for="montant" class="font-semibold w-14rem">Montant :</label>
+                    <input pInputText id="montant" class="flex-auto" [value]="selectedColis?.montant | currency"
+                        readonly />
+                </div>
+            </div>
+            <div class="col-12 lg:col-12 field mb-4">
+                <div class="flex align-items-center">
+                    <label for="montantVerse" class="font-semibold w-14rem">Frais Enlevement :</label>
+                    <input pInputText id="montantVerse" class="flex-auto" [value]="selectedColis?.fraisEnlevement" />
+                </div>
+            </div>
+            <div class="col-12 lg:col-12 field mb-4">
+                <div class="flex align-items-center">
+                    <label for="verserPar" class="font-semibold w-14rem">Frais Livraison :</label>
+                    <input pInputText id="verserPar" class="flex-auto" [value]="selectedColis?.fraisLivraison" />
+                </div>
+            </div>
+
+            <!-- Condition pour afficher le Montant Total -->
+            <div *ngIf="!selectedColis?.payer" class="col-12 lg:col-12 field mb-4">
+                <div class="flex align-items-center">
+                    <label for="montantTotal" class="font-semibold w-14rem">Montant Total :</label>
+                    <input pInputText id="montantTotal" class="flex-auto" [value]="montantTotal" />
+                </div>
+            </div>
+
+            <div class="col-12 lg:col-12 field mb-4">
+                <div class="flex align-items-center">
+                    <label for="verserPar" class="font-semibold w-14rem">CNI Destinataire :</label>
+                    <input pInputText id="verserPar" class="flex-auto" [value]="selectedColis?.cniDestinataire" />
+                </div>
+            </div>
+        </div>
+    </ng-container>
+
+    <div class="flex col-5 col-offset-4 justify-content-center">
+        <button pButton pRipple label="Livrer" class="p-button-success" (click)="Livrer()"></button>
+    </div>
+</p-dialog>
