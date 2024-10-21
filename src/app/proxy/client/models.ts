@@ -4,9 +4,7 @@ export interface ClientDto {
   nom?: string;
   adresse?: string;
   cni?: string;
-  ninea?: string;
-  nomStructure?: string;
   email?: string;
   telephone?: string;
-  profession?: string;
+
 }
