@@ -48,8 +48,8 @@ export class SearchClientComponent implements OnInit {
             adresse: [this.client.adresse || '', Validators.required],
             cni: [this.client.cni || '', Validators.required],
             telephone: [this.client.telephone || '', Validators.required],
+            //Validators.pattern(/^\d{7}$/)
             email: [this.client.email],
-            ninea: [this.client.ninea],
         });
     }
 
@@ -60,7 +60,7 @@ export class SearchClientComponent implements OnInit {
             this.loading = true;
             this.searchPerformed = true;
             this.client = {};
-            this.clientService.searchClient(keyword).subscribe(
+            this.clientService.getClientByTelephoneOrCni(keyword).subscribe(
                 (client) => {
                     this.client = { ...client };
                     this.loading = false;

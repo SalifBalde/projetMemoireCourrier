@@ -14,8 +14,10 @@ import { ToastModule } from 'primeng/toast';
 import { SliderModule } from 'primeng/slider';
 import { RatingModule } from 'primeng/rating';
 import { RapportRoutingModule } from './rapport-routing.module';
+import {ArriereModule} from "../../arriere/arriere.module";
 
 @NgModule({
+    declarations: [RapportComponent,],
 	imports: [
 		CommonModule,
 		FormsModule,
@@ -30,8 +32,9 @@ import { RapportRoutingModule } from './rapport-routing.module';
 		DropdownModule,
 		ProgressBarModule,
 		ToastModule,
-        RapportRoutingModule
+        RapportRoutingModule,
+
 	],
-	declarations: [RapportComponent]
+
 })
 export class RapportModule { }

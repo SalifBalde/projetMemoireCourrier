@@ -23,6 +23,7 @@ import { DrpLayoutComponent } from './layout/drp-layout/drp.layout.component';
 import { CtLayoutComponent } from './layout/ct-layout/ct.layout.component';
 import { CtLayoutModule } from './layout/ct-layout/ct.layout.module';
 import { DrpLayoutModule } from './layout/drp-layout/drp.layout.module';
+import {RapportModule} from "./modules/drp/rapport/rapport.module";
 
 function initializeKeycloak(keycloak: KeycloakService) {
     return () =>
@@ -53,7 +54,8 @@ function initializeKeycloak(keycloak: KeycloakService) {
         ReceveurLayoutModule,
         ArriereLayoutModule,
         CtLayoutModule,
-        DrpLayoutModule
+        DrpLayoutModule,
+        RapportModule
 
     ],
     providers: [

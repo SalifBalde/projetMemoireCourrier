@@ -56,9 +56,6 @@ export class CreerClientComponent implements OnInit {
       adresse: clientData.adresse,
       telephone: clientData.telephone,
       email: clientData.email,
-      ninea: clientData.ninea,
-      nomStructure: clientData.nomStructure,
-      profession: clientData.profession,
     });
   }
 

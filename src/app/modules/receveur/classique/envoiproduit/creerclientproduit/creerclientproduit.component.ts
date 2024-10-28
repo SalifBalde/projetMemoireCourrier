@@ -41,10 +41,7 @@ export class CreerClientProduitComponent implements OnInit {
             prenom: ['', Validators.required],
             adresse: ['', Validators.required],
             telephone: ['', Validators.required],
-            email: ['', Validators.required],
-            ninea: ['', Validators.required],
-            nomStructure: ['', Validators.required],
-            profession: ['', Validators.required],
+            email: ['', Validators.required]
         });
     }
 
@@ -57,9 +54,7 @@ export class CreerClientProduitComponent implements OnInit {
             adresse: clientData.adresse,
             telephone: clientData.telephone,
             email: clientData.email,
-            ninea: clientData.ninea,
-            nomStructure: clientData.nomStructure,
-            profession: clientData.profession,
+
         });
     }
 

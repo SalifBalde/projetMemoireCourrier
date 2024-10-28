@@ -27,24 +27,45 @@ export class GuichetMenuComponent implements OnInit {
             },
 
             {
-                label: 'Gestion des envois',
+                label: 'Gestion des Courrier',
                 icon: 'pi pi-fw pi-briefcase',
                 items: [
                     {
-                        label: 'Envois/Poids',
+                        label: 'Ordinaire',
                         icon: 'pi pi-fw pi-box',
                         routerLink: ['/guichet/search-client/1'],
                     },
                     {
-                        label: 'Envois/Produit',
+                        label: 'Recomandé',
                         icon: 'pi pi-fw pi-cart-plus',
                         routerLink: ['/guichet/search-client/2'],
                     },
                     {
-                        label: 'Colis à livrer',
+                        label: 'Valeur déclaré',
                         icon: 'pi pi-fw pi-truck',
                         routerLink: ['/guichet/livraison'],
                     },
+                ],
+            },
+            {
+                label: 'Gestion des Colis',
+                icon: 'pi pi-fw pi-briefcase',
+                items: [
+                    {
+                        label: 'Ordinaire',
+                        icon: 'pi pi-fw pi-box',
+                        routerLink: ['/guichet/search-client/1'],
+                    },
+                    {
+                        label: 'Valeur déclaré',
+                        icon: 'pi pi-fw pi-cart-plus',
+                        routerLink: ['/guichet/search-client/2'],
+                    },
+                    // {
+                    //     label: 'Colis à livrer',
+                    //     icon: 'pi pi-fw pi-truck',
+                    //     routerLink: ['/guichet/livraison'],
+                    // },
                 ],
             },
 

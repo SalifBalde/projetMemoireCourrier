@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
@@ -21,13 +21,27 @@ export class ClientService {
 
 
     searchClient(keyword: string): Observable<ClientDto> {
-        return this.httpClient.get<ClientDto>(`${this.api_host}/getByCniOrTelephone/${keyword}`)
+        return this.httpClient.get<ClientDto>(`${environment.api_host}client/recherche?${keyword}`)
     }
+
+    getClientByTelephoneOrCni(telephone?: string, cni?: string): Observable<ClientDto> {
+        let params = new HttpParams();
+        // Ajouter les paramètres à la requête si présents
+        if (telephone) {
+            params = params.set('telephone', telephone);
+        }
+        if (cni) {
+            params = params.set('cni', cni);
+        }
+
+        return this.httpClient.get<ClientDto>(`${environment.api_host}client/recherche`,{ params });
+    }
+
 
 
     save(item: ClientDto)
     {
-      return this.httpClient.post(this.api_host,item,this.httpOptions);
+      return this.httpClient.post(environment.api_host,item,this.httpOptions);
     }
 
 
@@ -67,7 +81,5 @@ export class ClientStorageService {
     getClientDetails(): ClientDto {
         return this.clientDetails;
     }
-
-
 
 }

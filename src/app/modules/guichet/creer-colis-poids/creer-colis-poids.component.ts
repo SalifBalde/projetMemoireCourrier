@@ -4,9 +4,10 @@ import { FormGroup,FormBuilder, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
 
+
 //import * as jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
-import { ClientDto } from 'src/app/proxy/client';
+import {ClientDto, ClientService} from 'src/app/proxy/client';
 import {ColisService, CreateUpdateColisDto } from 'src/app/proxy/colis';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { PoidsLookupDto, TarifPoidsService } from 'src/app/proxy/tarif-poids';
@@ -14,13 +15,16 @@ import { StructureDto, StructureService } from 'src/app/proxy/structures';
 import { ModePaiementDto, ModePaiementService } from 'src/app/proxy/mode-paiements';
 import { DistanceBureauService } from 'src/app/proxy/distance-bureaux';
 import { SessionService } from 'src/app/proxy/auth/Session.service';
-
+import {Regime, RegimeService} from "../../../proxy/regime";
 @Component({
     selector: 'app-creer-colis-poids',
     templateUrl: './creer-colis-poids.component.html',
     providers: [MessageService],
   })
   export class CreerColisPoidsComponent implements OnInit {
+    // mode$: any[];
+    clientDialog: boolean = false;
+     keyword = "";
     form: FormGroup;
     isModalOpen = false;
     nom  = "";
@@ -39,6 +43,8 @@ import { SessionService } from 'src/app/proxy/auth/Session.service';
     id ="";
     idBureau ="";
     idcaisse = "";
+    regime:any;
+    modes: { id: string; libelle: string }[] = [];
 
     constructor(
         private colisService: ColisService,
@@ -50,10 +56,12 @@ import { SessionService } from 'src/app/proxy/auth/Session.service';
         private fb: FormBuilder,
         private router: Router,
         private route : ActivatedRoute,
+        private clientService:ClientService,
         private messageService: MessageService
     ) {}
 
     ngOnInit(): void {
+        this.clientService;
         this.route.params.subscribe((params: Params) => {
              this.id = params['id'];
             this.telephone = params['telephone'];
@@ -85,7 +93,9 @@ import { SessionService } from 'src/app/proxy/auth/Session.service';
 
     buildForm() {
         this.form = this.fb.group({
-            modePaiementId: [this.colis.modePaiementId || '', Validators.required],
+            regime: [null],
+            pays:[null],
+           // regimeId: [this.colis.modePaiementId || '', Validators.required],
             payer: [this.colis.payer || "true", Validators.required],
             bureauDestinataireId: [this.colis.bureauDestinataireId || '', Validators.required],
             contenu: [this.colis.contenu || '', Validators.required],
@@ -150,8 +160,17 @@ import { SessionService } from 'src/app/proxy/auth/Session.service';
           // Handle invalid parameters appropriately
         }
       }
+//récupération des énumes
+    setDropdownOptions() {
+        this.modes = [
+            { id: Regime.NATIONAL, libelle: 'National' },
+            { id: Regime.INTERNATIONAL, libelle: 'International' }
+        ];
+    }
 
-
+    onSubmit() {
+        console.log(this.form.value);
+    }
 
     getFraisLivraison(event: any) {
         if (event.checked) {
@@ -202,7 +221,13 @@ import { SessionService } from 'src/app/proxy/auth/Session.service';
             );
 
     }
+    hideDialog(){
+        this.clientDialog = false;
+        this.keyword = "";
+    }
+    saveClient(){
 
+    }
 
     getBureaux() {
         this.colisService.findAll().subscribe(
