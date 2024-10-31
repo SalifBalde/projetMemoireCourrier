@@ -3,13 +3,14 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
-import { ClientDto } from './models';
+import {ServicesDto} from "./models";
+
 
 @Injectable({
     providedIn: 'root',
 })
-export class ClientService {
-    private api_host = `${environment.api_host}client`;
+export class ServicesService {
+    private api_host = `${environment.api_host}service`;
     myToken = sessionStorage.getItem("token");
     private httpOptions = {
       headers: new HttpHeaders({
@@ -20,36 +21,25 @@ export class ClientService {
     constructor(private readonly httpClient : HttpClient) { }
 
 
-    searchClient(keyword: string): Observable<ClientDto> {
-        return this.httpClient.get<ClientDto>(`${environment.api_host}client/recherche?${keyword}`)
-    }
-
-    getClientByTelephoneOrCni(telephone?: string, cni?: string): Observable<ClientDto> {
-        let params = new HttpParams();
-        // Ajouter les paramètres à la requête si présents
-        if (telephone) {
-            params = params.set('telephone', telephone);
-        }
-        if (cni) {
-            params = params.set('cni', cni);
-        }
-
-        return this.httpClient.get<ClientDto>(`${environment.api_host}client/recherche`,{ params });
+    getAllService(): Observable<ServicesDto[]> {
+        return this.httpClient.get<ServicesDto[]>(environment.api_host+'serviceCourrier')
     }
 
 
 
-    save(item: ClientDto)
+
+
+    save(item: ServicesDto)
     {
 
         return this.httpClient.post(this.api_host,item,this.httpOptions);
     }
 
 
-    update(id:string, item:ClientDto)
+    update(id:string, item:ServicesDto)
     {
       let new_api_host = this.routerParam(this.api_host,id);
-      return this.httpClient.put<ClientDto>(new_api_host,item,this.httpOptions);
+      return this.httpClient.put<ServicesDto>(new_api_host,item,this.httpOptions);
     }
 
     getBureaux() {
@@ -69,18 +59,8 @@ export class ClientService {
 routerParam(host:string, param: string){
     return host + "/" + param;
   }
-}
 
-export class ClientStorageService {
-    private clientDetails: ClientDto;
 
-    constructor() { }
-    setClientDetails(clientDetails: ClientDto): void {
-        this.clientDetails = clientDetails;
-    }
 
-    getClientDetails(): ClientDto {
-        return this.clientDetails;
-    }
 
 }

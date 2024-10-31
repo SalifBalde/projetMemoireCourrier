@@ -1,9 +1,12 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { ClientDto, ClientService, ClientStorageService } from 'src/app/proxy/client';
+import {MatStepper} from "@angular/material/stepper";
+import {AutoCompleteCompleteEvent} from "primeng/autocomplete";
+import {ServicesDto, ServicesService} from "../../../proxy/services";
 
 @Component({
     selector: 'app-search-client',
@@ -20,14 +23,31 @@ export class SearchClientComponent implements OnInit {
     searchPerformed: boolean = false;
     isModalOpen = false;
     clientDialog: boolean = false;
+    clientNotExistDialog: boolean = false;
     id: string = "";
+
+    @ViewChild('stepper') stepper!: MatStepper;
+    listRegime: any[]=[];
+    regimchoisi: any;
+    poids: any;
+    newClient:ClientDto={};
+    structure: any[];
+    payschoisi: any;
+    cathoisi: any;
+    serviceschoisi: any[];
+    selectedServices: any;
+     listService: ServicesDto[]=[];
+    serviceDialog: boolean =false;
+    service: ServicesDto;
+
 
     constructor(
         private clientService: ClientService,
         private fb: FormBuilder,
         private router: Router,
         private route: ActivatedRoute,
-        private messageService: MessageService
+        private messageService: MessageService,
+        private servicesService : ServicesService
     ) { }
 
     ngOnInit(): void {
@@ -39,6 +59,7 @@ export class SearchClientComponent implements OnInit {
         this.route.params.subscribe((params: Params) => {
             this.id = params['id'];
         });
+        this.getAllService()
     }
 
     buildForm() {
@@ -66,7 +87,7 @@ export class SearchClientComponent implements OnInit {
                     this.loading = false;
                     this.buildForm();
                     this.clientDialog = true;
-                    this.label = "Client Details: " + this.client.telephone
+                    this.label = " Bonjour: " + this.client.prenom
 
                     /*    if (!client) {
                           this.buildForm();
@@ -80,6 +101,7 @@ export class SearchClientComponent implements OnInit {
                     this.loading = false;
                     this.buildForm();
                     this.clientDialog = true;
+                   this.clientNotExistDialog=true
                     this.label = "Nouveau Client";
                     /*   if (error.status >= 500 && error.status < 600) {
                         this.messageService.add({ severity: 'error', summary: 'Erreur Serveur', detail: 'Erreur Serveur' });
@@ -94,9 +116,59 @@ export class SearchClientComponent implements OnInit {
         }
     }
 
+    searchClientDestinat(): void {
+        const keyword = this.searchForm.get('keyword').value;
+
+        if (keyword) {
+            this.loading = true;
+            this.searchPerformed = true;
+            this.client = {};
+            this.clientService.getClientByTelephoneOrCni(keyword).subscribe(
+                (client) => {
+                    this.client = { ...client };
+                    this.loading = false;
+                    this.buildForm();
+                    this.clientDialog = true;
+                    this.label = " Bonjour: " + this.client.prenom
+
+                    /*    if (!client) {
+                          this.buildForm();
+                        //this.router.navigateByUrl('/receveur/Creerclientclient');
+                      } else {
+                        this.clientDialog = true;
+                      //  this.router.navigate(['/receveur/Creerclientclient'], { state: { clientData: result } });
+                      }  */
+                },
+                (error: HttpErrorResponse) => {
+                    this.loading = false;
+                    this.buildForm();
+                    this.clientDialog = true;
+                    this.clientNotExistDialog=true
+                    this.label = "Nouveau Client";
+                    /*   if (error.status >= 500 && error.status < 600) {
+                        this.messageService.add({ severity: 'error', summary: 'Erreur Serveur', detail: 'Erreur Serveur' });
+                      } else {
+                        this.messageService.add({ severity: 'error', summary: 'Erreur', detail: 'Erreur Serveur' });
+                      } */
+                }
+            );
+        } else {
+            this.client = null;
+            this.searchPerformed = false;
+        }
+    }
+
+
     hideDialog() {
         this.clientDialog = false;
+        this.clientNotExistDialog=false;
         this.keyword = "";
+    }
+    getAllService(){
+        this.servicesService.getAllService().subscribe((data)=>{
+            this.listService= data;
+            console.log(this.listService)
+        })
     }
 
     saveClient() {
@@ -135,7 +207,8 @@ export class SearchClientComponent implements OnInit {
                     }
                 );
         } else {
-            this.clientService.save(this.form.value).subscribe(
+            this.newClient = this.form.value
+            this.clientService.save(this.newClient).subscribe(
                 (result) => {
                     this.client = result;
                     this.loading = false;
@@ -146,7 +219,6 @@ export class SearchClientComponent implements OnInit {
                         detail: 'Client Created',
                         life: 3000,
                     });
-
                     if (this.id == "1")
                         this.router.navigateByUrl('/guichet/creerColisPoids/' + this.client.id + '/' + this.client.nom + ' ' + this.client.prenom + '/' + this.client.telephone);
                     else
@@ -166,5 +238,25 @@ export class SearchClientComponent implements OnInit {
             );
         }
     }
+
+    filterRegime($event: AutoCompleteCompleteEvent) {
+
+    }
+    openServiceDialog(){
+        this.serviceDialog=true
+
+    }
+
+
+    nextStep() {
+        this.stepper.next();
+        console.log(this.regimchoisi,this.cathoisi, this.payschoisi,this.poids , this.client, this.selectedServices)
+
+    }
+    previousStep() {
+        this.stepper.previous();
+
+    }
+
 
 }
