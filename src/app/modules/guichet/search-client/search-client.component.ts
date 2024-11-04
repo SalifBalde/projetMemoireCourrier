@@ -48,8 +48,8 @@ export class SearchClientComponent implements OnInit {
             adresse: [this.client.adresse || '', Validators.required],
             cni: [this.client.cni || '', Validators.required],
             telephone: [this.client.telephone || '', Validators.required],
-            //Validators.pattern(/^\d{7}$/)
             email: [this.client.email],
+
         });
     }
 
@@ -57,13 +57,14 @@ export class SearchClientComponent implements OnInit {
         const keyword = this.searchForm.get('keyword').value;
 
         if (keyword) {
-            this.loading = true;
-            this.searchPerformed = true;
-            this.client = {};
+            this.loading=true;
+            this.searchPerformed= true;
+            this.client= {};
             this.clientService.getClientByTelephoneOrCni(keyword).subscribe(
                 (client) => {
                     this.client = { ...client };
-                    this.loading = false;
+                    this.loading=false;
+                    console.log(this.client)
                     this.buildForm();
                     this.clientDialog = true;
                     this.label = "Client Details: " + this.client.telephone

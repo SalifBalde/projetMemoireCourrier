@@ -8,7 +8,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 })
 export class UserService {
   apiName = 'user';
-  private api_host: string= environment.api_params + this.apiName;
+  private api_host: string= environment.api_host + this.apiName;
   myToken = sessionStorage.getItem("token");
   private httpOptions = {
     headers: new HttpHeaders({

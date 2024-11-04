@@ -15,7 +15,9 @@ import { StructureDto, StructureService } from 'src/app/proxy/structures';
 import { ModePaiementDto, ModePaiementService } from 'src/app/proxy/mode-paiements';
 import { DistanceBureauService } from 'src/app/proxy/distance-bureaux';
 import { SessionService } from 'src/app/proxy/auth/Session.service';
-import {Regime, RegimeService} from "../../../proxy/regime";
+import {Regime} from "../../../proxy/regime";
+import {HttpErrorResponse} from "@angular/common/http";
+
 @Component({
     selector: 'app-creer-colis-poids',
     templateUrl: './creer-colis-poids.component.html',
@@ -23,8 +25,11 @@ import {Regime, RegimeService} from "../../../proxy/regime";
   })
   export class CreerColisPoidsComponent implements OnInit {
     // mode$: any[];
-    clientDialog: boolean = false;
+    clientNotExiste: boolean = false;
+    client: ClientDto = {};
      keyword = "";
+    loading: boolean = false;
+    label: string = '';
     form: FormGroup;
     isModalOpen = false;
     nom  = "";
@@ -42,6 +47,8 @@ import {Regime, RegimeService} from "../../../proxy/regime";
     mode$: ModePaiementDto[];
     id ="";
     idBureau ="";
+    searchPerformed: boolean = false
+    clientDialog: boolean = false;
     idcaisse = "";
     regime:any;
     modes: { id: string; libelle: string }[] = [];
@@ -161,6 +168,8 @@ import {Regime, RegimeService} from "../../../proxy/regime";
         }
       }
 //récupération des énumes
+    searchForm: FormGroup;
+
     setDropdownOptions() {
         this.modes = [
             { id: Regime.NATIONAL, libelle: 'National' },
@@ -222,13 +231,50 @@ import {Regime, RegimeService} from "../../../proxy/regime";
 
     }
     hideDialog(){
-        this.clientDialog = false;
+        this.clientNotExiste = false;
         this.keyword = "";
     }
-    saveClient(){
 
+    searchDestinataire(): void {
+        const keyword = this.searchForm.get('keyword').value;
+
+        if (keyword) {
+            this.loading = true;
+            this.searchPerformed = true;
+            this.client = {};
+            this.clientService.getClientByTelephoneOrCni(keyword).subscribe(
+                (client) => {
+                    this.client = { ...client };
+                    this.loading = false;
+                    this.buildForm();
+                    this.clientNotExiste = true;
+                    this.label = "Client Details: " + this.client.telephone
+
+                    /*    if (!client) {
+                          this.buildForm();
+                        //this.router.navigateByUrl('/receveur/Creerclientclient');
+                      } else {
+                        this.clientDialog = true;
+                      //  this.router.navigate(['/receveur/Creerclientclient'], { state: { clientData: result } });
+                      }  */
+                },
+                (error: HttpErrorResponse) => {
+                    this.loading = false;
+                    this.buildForm();
+                    this.clientNotExiste = true;
+                    this.label = "Nouveau Client";
+                    /*   if (error.status >= 500 && error.status < 600) {
+                        this.messageService.add({ severity: 'error', summary: 'Erreur Serveur', detail: 'Erreur Serveur' });
+                      } else {
+                        this.messageService.add({ severity: 'error', summary: 'Erreur', detail: 'Erreur Serveur' });
+                      } */
+                }
+            );
+        } else {
+            this.client = null;
+            this.searchPerformed = false;
+        }
     }
-
     getBureaux() {
         this.colisService.findAll().subscribe(
             (result) => {
@@ -245,4 +291,72 @@ import {Regime, RegimeService} from "../../../proxy/regime";
         );
     }
 
+
+    saveClient() {
+        if (this.form.invalid) {
+            return;
+        }
+
+        if (this.client.id) {
+            this.form.value.id = this.client.id;
+            this.clientService
+                .update(this.client.id, this.form.value)
+                .subscribe(
+                    () => {
+                        this.clientDialog = false;
+                        this.messageService.add({
+                            severity: 'success',
+                            summary: 'Successful',
+                            detail: 'Client Updated',
+                            life: 3000,
+                        });
+                        if (this.id == "1")
+                            this.router.navigateByUrl('/guichet/creerColisPoids/' + this.client.id + '/' + this.client.nom + ' ' + this.client.prenom + '/' + this.client.telephone);
+                        else
+                            this.router.navigateByUrl('/guichet/creerColisProduit/' + this.client.id + '/' + this.client.nom + ' ' + this.client.prenom + '/' + this.client.telephone);
+
+                        this.client = {};
+                    },
+                    (error) => {
+                        this.messageService.add({
+                            severity: 'danger',
+                            summary: 'Error',
+                            detail: 'Erreur Modification',
+                            life: 3000,
+                        });
+                        this.clientDialog = true;
+                    }
+                );
+        } else {
+            this.clientService.save(this.form.value).subscribe(
+                (result) => {
+                    this.client = result;
+                    this.loading = false;
+                    this.clientDialog = false;
+                    this.messageService.add({
+                        severity: 'success',
+                        summary: 'Successful',
+                        detail: 'Client Created',
+                        life: 3000,
+                    });
+
+                    if (this.id == "1")
+                        this.router.navigateByUrl('/guichet/creerColisPoids/' + this.client.id + '/' + this.client.nom + ' ' + this.client.prenom + '/' + this.client.telephone);
+                    else
+                        this.router.navigateByUrl('/guichet/creerColisProduit/' + this.client.id + '/' + this.client.nom + ' ' + this.client.prenom + '/' + this.client.telephone);
+
+                    this.client = {};
+                },
+                (error) => {
+                    this.messageService.add({
+                        severity: 'danger',
+                        summary: 'Error',
+                        detail: 'Erreur enregistrement',
+                        life: 3000,
+                    });
+                    this.clientDialog = true;
+                }
+            );
+        }
+    }
 }

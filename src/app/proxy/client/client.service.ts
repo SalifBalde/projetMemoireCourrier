@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+
 import { environment } from 'src/environments/environment';
 import { ClientDto } from './models';
 
@@ -9,7 +10,7 @@ import { ClientDto } from './models';
     providedIn: 'root',
 })
 export class ClientService {
-    private api_host = `${environment.api_params}client`;
+    private api_host = `${environment.api_host}client`;
     myToken = sessionStorage.getItem("token");
     private httpOptions = {
       headers: new HttpHeaders({
@@ -34,14 +35,14 @@ export class ClientService {
             params = params.set('cni', cni);
         }
 
-        return this.httpClient.get<ClientDto>(`${environment.api_host}client/recherche`,{ params });
+        return this.httpClient.get<ClientDto>(`${environment.api_host}client`,{params});
     }
 
 
 
-    save(item: ClientDto)
+    save(client: ClientDto)
     {
-      return this.httpClient.post(environment.api_host,item,this.httpOptions);
+      return this.httpClient.post(`${environment.api_host}client`, client, this.httpOptions);
     }
 
 
@@ -68,10 +69,22 @@ export class ClientService {
 routerParam(host:string, param: string){
     return host + "/" + param;
   }
+    //fonctionnalitée pour chercher les info du destinataire
+
+    searchDestinataire(cni: string, telephone: string): Observable<any> {
+
+        return this.httpClient.get(`${environment.api_host}client`);
+    }
+
+    // Fonction pour créer un nouveau destinataire s'il n'existe pas
+    createDestinataire(client: any): Observable<any> {
+        return this.httpClient.post(environment.api_host, client);
+    }
 }
 
 export class ClientStorageService {
     private clientDetails: ClientDto;
+    private httpClient: HttpClient;
 
     constructor() { }
     setClientDetails(clientDetails: ClientDto): void {
@@ -81,5 +94,7 @@ export class ClientStorageService {
     getClientDetails(): ClientDto {
         return this.clientDetails;
     }
+
+
 
 }

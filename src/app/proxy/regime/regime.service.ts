@@ -8,7 +8,7 @@ import {Regimedto} from "./models";
 })
 export class RegimeService {
     apiName = 'regime';
-    private api_host: string = environment.api_params + this.apiName;
+    private api_host: string = environment.api_host + this.apiName;
     private httpOptions = {
         headers: new HttpHeaders({
             'Content-Type': 'application/json',
