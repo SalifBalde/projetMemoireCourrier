@@ -2,12 +2,12 @@ import { Injectable } from '@angular/core';
 import {environment} from "../../../environments/environment";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Paysdto} from "../pays";
-import {CategorieDto} from "./models";
+import {TypeCourrierDto} from "./models";
 
 @Injectable({
   providedIn: 'root'
 })
-export class CategorieService {
+export class Type_CategorieService {
   private api_host = `${environment.api_host}categorieCourrier`;
   myToken = sessionStorage.getItem("token");
   private httpOptions = {
@@ -20,7 +20,7 @@ export class CategorieService {
   constructor(private readonly httpClient : HttpClient) { }
 
   findAll() {
-    return this.httpClient.get<CategorieDto[]>(environment.api_host+'categorieCourrier', this.httpOptions);
+    return this.httpClient.get<[TypeCourrierDto]>(this.api_host, this.httpOptions);
   }
 
 }

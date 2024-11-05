@@ -15,44 +15,51 @@
                                 <p-autoComplete
                                     [(ngModel)]="regimchoisi"
                                     [dropdown]="true"
-                                    [suggestions]="listRegime"
+                                    [suggestions]="filteredRegime"
+                                    appendTo="body"
                                     (completeMethod)="filterRegime($event)"
-                                    optionLabel="name"
+                                    optionLabel="libelle"
                                 placeholder="Regime"/>
                             </div>
                             <div  class="flex-auto">
                                 <p-autoComplete
                                     [(ngModel)]="payschoisi"
                                     [dropdown]="true"
-                                    [suggestions]="listRegime"
-                                    (completeMethod)="filterRegime($event)"
-                                    optionLabel="name"
+                                    appendTo="body"
+                                    [suggestions]="filteredPays"
+                                    (completeMethod)="filterPays($event)"
+                                    optionLabel="libelle"
                                 placeholder="Pays"/>
                             </div>
                             <div  class="flex-auto">
                                 <p-autoComplete
                                     [(ngModel)]="cathoisi"
                                     [dropdown]="true"
-                                    [suggestions]="listRegime"
-                                    (completeMethod)="filterRegime($event)"
-                                    optionLabel="name"
+                                    appendTo="body"
+                                    [suggestions]="filteredCategorie"
+                                    (completeMethod)="filterCategorie($event)"
+                                    optionLabel="libelle"
                                 placeholder="Catégorie"/>
                             </div>
                             <div  class="flex-auto">
                                 <p-inputNumber
                                     inputId="integeronly"
-                                    [(ngModel)]="poids" placeholder="Poids"/>
+                                    [(ngModel)]="poids" placeholder="Poids"  (onInput)="onPoidsChange()"/>
                             </div>
 
-                            <div class="flex-auto">
+<!--                            <div class="flex-auto">-->
                                  <span >
-                                <button pButton pRipple type="button" label="Ajouter service"   (click)="openServiceDialog()"
-                                        class="p-button-rounded p-button-primary mr-2 mb-2"></button>
+                                      <header><b>Service</b></header>
+<!--                                <button pButton pRipple type="button" label="Ajouter service"   (click)="openServiceDialog()"-->
+<!--                                        class="p-button-rounded p-button-primary mr-2 mb-2"></button>-->
+
+                                     <p-listbox [options]="listService"  [metaKeySelection]="false"  [checkbox]="true" [filter]="true" [multiple]="true" optionLabel="libelle" [(ngModel)]="selectedServices">
+                                     </p-listbox>
                             </span>
 
 
 
-                            </div>
+<!--                            </div>-->
 
 
                         </div>
@@ -76,8 +83,11 @@
                                                        aria-describedby="keyword-error" />
                                                 <button type="submit" pButton label="Rechercher"></button>
                                             </p-inputGroup>
+
                                         </div>
+
                                     </div>
+                                    <b>{{ client.prenom }}-{{ client.nom }} - {{ client.cni }}</b>
                                 </form>
                                 <div *ngIf="loading" class="text-center mt-4">
                                     <div class="spinner-border spinner-border-sm" role="status"></div>
@@ -107,6 +117,8 @@
                                             </p-inputGroup>
                                         </div>
                                     </div>
+                                    <b>{{ client.prenom }}-{{ client.nom }} - {{ client.cni }}</b>
+
                                 </form>
                                 <div *ngIf="loading" class="text-center mt-4">
                                     <div class="spinner-border spinner-border-sm" role="status"></div>
@@ -118,15 +130,18 @@
                         </div>
                         <br>
                         <br>
-                        <div class=" lg:col-5 md:px-1  grid grid-nogutter flex flex-wrap justify-content-end">
-                            <div class="card bg-black-alpha-30" style="height:150px">
+
+                        <div class="lg:col-5 md:px-1 grid grid-nogutter flex flex-wrap justify-content-end"
+                             style="position:relative; top: 300px; width: -05px; display: flex; justify-content: right; padding-bottom: 100px;">
+                            <div class="card bg-black-alpha-30" style="height: 150px;">
                                 <div class="card" [style]="{ width: '300px' }">
                                     <div>
-                                        <b> Totale:00.0 F CFA</b>
+                                        <b>Totale: {{ tarif }} F CFA</b>
                                     </div>
                                 </div>
                             </div>
                         </div>
+
 
                     </div>
 
@@ -137,6 +152,7 @@
 <!--                        <button mat-raised-button  color="primary" (click)="detailChoisi()">Suivant </button>-->
 <!--                    </div>-->
                     <div class="flex-auto grid grid-nogutter justify-content-end">
+
                         <span >
                                 <button pButton pRipple type="button" label="Suivant"   (click)="nextStep()"
                                         class="p-button-rounded p-button-primary mr-2 mb-2"></button>

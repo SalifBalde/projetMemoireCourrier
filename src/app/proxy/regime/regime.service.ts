@@ -19,6 +19,6 @@ export class RegimeService {
     }
 
     findAll() {
-        return this.httpClient.get<[Regimedto]>(this.api_host, this.httpOptions);
+        return this.httpClient.get<[Regimedto]>(environment.api_host+'regime', this.httpOptions);
     }
 }
