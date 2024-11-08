@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { GuichetRoutingModule } from './guichet-routing.module';
-import { SharedComponentModule } from 'src/app/layout/shared/shared-component.module';
 import {MatButtonModule} from "@angular/material/button";
+import { MessageService } from 'primeng/api';
  /* ou un autre thème */
 
 
@@ -9,10 +9,11 @@ import {MatButtonModule} from "@angular/material/button";
 @NgModule({
   declarations: [],
   imports: [
-    SharedComponentModule,
     GuichetRoutingModule,
-      MatButtonModule,
+    MatButtonModule,
 
-  ]
+  ],
+  providers: [MessageService]
+
 })
 export class GuichetModule { }

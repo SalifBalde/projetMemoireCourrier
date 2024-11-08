@@ -21,6 +21,8 @@ import { SplitButtonModule } from 'primeng/splitbutton';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { CalendarModule } from 'primeng/calendar';
+import { StepperModule } from 'primeng/stepper';
+
 
 // shared module c'est ici qu'on va mettre toutes les composants communs à toutes les parties de l'application
 
@@ -49,6 +51,7 @@ import { CalendarModule } from 'primeng/calendar';
         InputGroupModule,
         CalendarModule,
         FormsModule,
+        StepperModule,
         CommonModule
     ],
     imports: [],

@@ -1,6 +1,8 @@
 export  interface PaysUpdatedto{
     id?:string;
     libelle?:string;
+    zoneId?:string;
+
 }
 
 
@@ -8,4 +10,5 @@ export  interface PaysUpdatedto{
 export  interface Paysdto{
     id?: string;
     libelle?: string;
+    zoneId?: string;
 }

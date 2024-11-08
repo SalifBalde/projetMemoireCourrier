@@ -14,9 +14,7 @@ const routes: Routes = [
     { path: 'produits', loadChildren: () => import('./produit/produit.module').then(m => m.ProduitModule) },
     { path: 'poids', loadChildren: () => import('./poids/poids.module').then(m => m.PoidsModule) },
     { path: 'distances', loadChildren: () => import('./distance/distance.module').then(m => m.DistanceModule) },
-    { path: 'tarifproduits', loadChildren: () => import('./tarif-produit/tarif-produit.module').then(m => m.TarifProduitModule) },
     { path: 'tarifpoids', loadChildren: () => import('./tarif-poids/tarif-poids.module').then(m => m.TarifPoidsModule) },
-    { path: 'vehicule', loadChildren: () => import('./vehicule/vehicule.module').then(m => m.VehiculeModule) },
     { path: 'typeVehicule', loadChildren: () => import('./type-vehicule/type-vehicule.module').then(m => m.TypeVehiculeModule) },
     { path: 'distancebureau', loadChildren: () => import('./distance-bureau/distance-bureau.module').then(m => m.DistanceBureauModule) },
 ];
