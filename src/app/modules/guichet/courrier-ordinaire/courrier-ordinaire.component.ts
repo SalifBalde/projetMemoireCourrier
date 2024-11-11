@@ -2,10 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { ClientDto, ClientService } from 'src/app/proxy/client';
 import { Params, Router, ActivatedRoute } from '@angular/router';
 import { ModePaiementDto, ModePaiementService } from 'src/app/proxy/mode-paiements';
-import { ColisCreateUpdateProduitDto, ColisDetailsDto, ColisService } from 'src/app/proxy/colis';
 import { MessageService } from 'primeng/api';
 import { StructureDto, StructureService } from 'src/app/proxy/structures';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { SessionService } from 'src/app/proxy/auth/Session.service';
 import { Paysdto, PaysService } from 'src/app/proxy/pays';
 import { Regimedto, RegimeService } from 'src/app/proxy/regime';
@@ -13,7 +12,8 @@ import { CategorieDto, CategorieService } from 'src/app/proxy/categorie';
 import { TarifCourrierService } from 'src/app/proxy/tarif-courrier';
 import { TarifServiceService } from 'src/app/proxy/TarifService';
 import { HttpErrorResponse } from '@angular/common/http';
-import { CourrierCreateUpdateDto } from 'src/app/proxy/courrier';
+import { CourrierCreateUpdateDto, CourrierService } from 'src/app/proxy/courrier';
+import { StockDto, StockService } from 'src/app/proxy/stock';
 
 @Component({
     selector: 'app-courrier-ordinaire',
@@ -28,17 +28,15 @@ export class CourrierOrdinaireComponent implements OnInit {
     formDestinataire: FormGroup;
     montant = 0;
     pays$: Paysdto[];
-    nom = "";
-    telephone = "";
-    cni = "";
-    prenom = "";
-    id = "";
+
     clients: ClientDto[] = [{
         id: "1", nom: "mamadou diokou", telephone: "773778825"
     }];
-    courrier : CourrierCreateUpdateDto ={};
+    courrier : CourrierCreateUpdateDto = new CourrierCreateUpdateDto();
     modesPaiement: any;
     totalMontant: number = 0;
+    taxe: number = 0;
+    valeurTimbre: number = 0;
     fraisRecommande: number = 0;
     fraisAr: number=0;
     fraisExpress: number = 0;
@@ -46,12 +44,16 @@ export class CourrierOrdinaireComponent implements OnInit {
     regime$: Regimedto[];
     categorie$: CategorieDto[];
     structure$: StructureDto[];
+    stocksTimbre$: StockDto[];
     mode$: ModePaiementDto[];
     clientDialog: boolean;
     loading: boolean;
     client: ClientDto = {};
     destinataire: ClientDto = {};
     destinataireDialog: boolean;
+    selectedQuantite: number;
+    numberOfItems: any;
+    selectedTimbre: any;
 
 
     constructor(
@@ -62,9 +64,10 @@ export class CourrierOrdinaireComponent implements OnInit {
         private paysService :PaysService,
         private categorieService: CategorieService,
         private  sessionService: SessionService,
-        private colisService : ColisService,
+        private courrierService : CourrierService,
         private tarifService: TarifServiceService,
         private taxeCourrierService:TarifCourrierService,
+        private stocksService: StockService,
         private fb: FormBuilder,
         private modePaiementService:ModePaiementService,
         private messageService : MessageService
@@ -73,12 +76,13 @@ export class CourrierOrdinaireComponent implements OnInit {
     ngOnInit(): void {
 
         this.route.params.subscribe((params: Params) => {
-            this.id = params['id'];
-            this.telephone = params['telephone'];
-            this.nom = params['nom'];
-            this.prenom = params['prenom'];
-            this.cni = params['cni'];
+            //this.id = params['id'];
+          //  this.telephone = params['telephone'];
+           // this.nom = params['nom'];
+           // this.prenom = params['prenom'];
+           // this.cni = params['cni'];
         });
+
         this.categorieService.findAll().subscribe((result) => {
             this.categorie$ = result;
         });
@@ -95,6 +99,29 @@ export class CourrierOrdinaireComponent implements OnInit {
             }
         );
 
+        this.categorieService.findAll().subscribe(
+            (result) => {
+                this.categorie$ = result;
+            }
+        );
+
+        this.modePaiementService.findAll().subscribe(
+            (result) => {
+                this.mode$ = result;
+            }
+        );
+
+        this.stocksService.getStocksByCaisseIdAndTypeProduit(this.sessionService.getAgentAttributes().structureId,"2").subscribe(
+            (result) => {
+              //  this.stocksTimbre$ = result;
+                this.stocksTimbre$ = result.map(stock => ({
+                    ...stock,
+                    combinedLibelle: `${stock.produitLibelle} ${stock.produitThemeLibelle}  ${`(${stock.quantite})`}`
+                  }));
+            }
+        );
+
+
         this.buildForm();
         this.buildFormClient();
         this.buildFormDestinataire();
@@ -108,7 +135,17 @@ export class CourrierOrdinaireComponent implements OnInit {
     this.form.get('ar')?.valueChanges.subscribe(() => this.calculateTariff());
     this.form.get('express')?.valueChanges.subscribe(() => this.calculateTariff());
    // this.formClient.get('telephone')?.valueChanges.subscribe(() => this.searchClient());
+   this.form.get('poids')?.valueChanges.subscribe((value) => this.poidsChange(value));
+   this.form.get('paysDestinationId')?.valueChanges.subscribe((value) => this.paysChange(value));
 
+
+    }
+
+    validateMontant(form: AbstractControl): ValidationErrors | null {
+        const totalMontant = form.get('totalMontant')?.value || 0;
+        const valeurTimbre = form.get('valeurTimbre')?.value || 0;
+
+        return totalMontant === valeurTimbre ? null : { montantMismatch: true };
     }
 
     choisirDestinataire(client:ClientDto){
@@ -118,15 +155,30 @@ export class CourrierOrdinaireComponent implements OnInit {
         this.form = this.fb.group({
              modePaiementId: [ '', Validators.required],
              regimeId: [ '', Validators.required],
-             paysId: [ '', Validators.required],
              poids: [ '', Validators.required],
-             codeBarre: [ ''],
-             valeurDeclare: [ ''],
-             typeId: [ '1', Validators.required],
+             expediteurId: [ '', Validators.required],
+             destinataireId: [ '', Validators.required],
+             paysDestinationId: [ '', Validators.required],
+             codeBarre: [{ value: '', disabled: true }],
+             valeurDeclare: [{ value: '', disabled: true }] ,
+             contenu: [ ''],
+             timbreId: [ ''],
+             typeId: [ '1'],
+             quantite: [ '1'],
+             categorieId: [ ''],
              recommande: [{ value: false, disabled: true }],
-      ar: [{ value: false, disabled: true }],
-      express: [{ value: false, disabled: true }],
-        });
+             ar: [{ value: false, disabled: true }],
+             express: [{ value: false, disabled: true }],
+             statutCourrierId: ['1'],
+             paysOrigineId: ['1'],
+             caisseId: [this.sessionService.getAgentAttributes().caisseId],
+             structureDepotId: [this.sessionService.getAgentAttributes().structureId],
+             totalMontant: [0],
+             valeurTimbre: [0],
+        },
+
+        { validators: this.validateMontant }
+    );
     }
 
     buildFormClient() {
@@ -164,14 +216,15 @@ export class CourrierOrdinaireComponent implements OnInit {
      searchClient(): void {
         const keyword = this.formClient.get('telephone').value;
 
-
-
         if (keyword?.length > 3) {
             this.loading = true;
             this.client = {};
             this.clientService.searchClient(keyword).subscribe(
                 (client) => {
                     this.client = { ...client };
+                    this.form.patchValue({
+                        expediteurId: this.client?.id || ''
+                      });
                     this.loading = false;
                     this.buildFormClient();
                     this.clientDialog = true;
@@ -203,14 +256,15 @@ export class CourrierOrdinaireComponent implements OnInit {
     searchDestinataire(): void {
         const keyword = this.formDestinataire.get('telephone').value;
 
-
-
         if (keyword?.length > 3) {
             this.loading = true;
             this.destinataire = {};
             this.clientService.searchClient(keyword).subscribe(
                 (client) => {
                     this.destinataire = { ...client };
+                    this.form.patchValue({
+                        destinataireId: this.destinataire?.id || ''
+                      });
                     this.loading = false;
                     this.buildFormDestinataire();
                     this.destinataireDialog = true;
@@ -233,6 +287,9 @@ export class CourrierOrdinaireComponent implements OnInit {
         const isRecommande = this.form.get('recommande')?.value;
         const isAr = this.form.get('ar')?.value;
         const isExpress = this.form.get('express')?.value;
+        this.fraisAr = 0;
+        this.fraisExpress = 0;
+        this.fraisRecommande=0;
 
         if (regimeId) {
           const selectedRegime = this.regime$.find((regime) => regime.id === regimeId);
@@ -262,8 +319,9 @@ export class CourrierOrdinaireComponent implements OnInit {
               }
             }
 
-            this.montant = totalTax;
-            this.form.get('montant')?.setValue(this.montant);
+            this.totalMontant = totalTax+this.montant;
+            this.form.get('totalMontant')?.setValue(this.totalMontant);
+          //  this.form.updateValueAndValidity();
           }
         }
       }
@@ -272,57 +330,101 @@ export class CourrierOrdinaireComponent implements OnInit {
         const regimeId = this.form.get('regimeId')?.value;
 
         if (regimeId === 1) {
-          this.form.get('paysId')?.disable(); // Désactiver pour tout autre régime
-          this.form.get('paysId')?.setValue(1);
+          this.form.get('paysDestinationId')?.disable(); // Désactiver pour tout autre régime
+          this.form.get('paysDestinationId')?.setValue(1);
 
         } else {
 
-            this.form.get('paysId')?.enable(); // Activer si regimeId = 1
-            this.form.get('paysId')?.reset(); // Réinitialiser la valeur de paysId si désactivé
+            this.form.get('paysDestinationId')?.enable(); // Activer si regimeId = 1
+            this.form.get('paysDestinationId')?.reset(); // Réinitialiser la valeur de paysDestinationId si désactivé
 
         }
+        this.form.updateValueAndValidity();
       }
 
-      getTaxes() {
-
-      }
 
       updateServiceState(typeId: string) {
-        if (typeId === '1') {
-          this.form.get('recommande')?.disable();
-          this.form.get('ar')?.disable();
-          this.form.get('express')?.disable();
-          this.form.get('recommande')?.setValue(false);
-          this.form.get('ar')?.setValue(false);
-          this.form.get('express')?.setValue(false);
-        } else if (typeId === '2') {
-          this.form.get('recommande')?.disable();
-          this.form.get('recommande')?.setValue(true);
-          this.form.get('ar')?.enable();
-          this.form.get('ar')?.setValue(false);
-          this.form.get('express')?.enable();
-          this.form.get('express')?.setValue(false);
-        } else if (typeId === '3') {
-          this.form.get('recommande')?.disable();
-          this.form.get('ar')?.disable();
-          this.form.get('express')?.disable();
-          this.form.get('recommande')?.setValue(true);
-          this.form.get('ar')?.setValue(true);
-          this.form.get('express')?.setValue(true);
+        const formControls = this.form.controls;
+
+        // Désactivation par défaut des champs
+        formControls['recommande'].disable();
+        formControls['ar'].disable();
+        formControls['express'].disable();
+        formControls['valeurDeclare'].disable();
+        formControls['codeBarre'].disable();
+
+        // Suppression des validations par défaut
+        formControls['valeurDeclare'].setValidators(null);
+        formControls['codeBarre'].setValidators(null);
+
+        switch (typeId) {
+          case '1':
+            formControls['recommande'].setValue(false);
+            formControls['ar'].setValue(false);
+            formControls['express'].setValue(false);
+            break;
+
+          case '2':
+            formControls['recommande'].setValue(true);
+            formControls['ar'].enable();
+            formControls['ar'].setValue(false);
+            formControls['express'].enable();
+            formControls['express'].setValue(false);
+            formControls['codeBarre'].enable();
+            formControls['codeBarre'].setValidators(Validators.required);
+            break;
+
+          case '3':
+            formControls['recommande'].setValue(true);
+            formControls['ar'].setValue(true);
+            formControls['express'].setValue(true);
+            formControls['valeurDeclare'].enable();
+            formControls['valeurDeclare'].setValidators(Validators.required);
+            formControls['codeBarre'].enable();
+            formControls['codeBarre'].setValidators(Validators.required);
+            break;
+
+          default:
+            break;
         }
+
+        // Mise à jour de la validation pour appliquer les changements
+        formControls['valeurDeclare'].updateValueAndValidity();
+        formControls['codeBarre'].updateValueAndValidity();
       }
 
-      onInputChange(value: number) {
-        const paysId = this.form.get('paysId')?.value;
-        if (value > 0 && paysId > 0) {
-        this.form.get('poids')?.valueChanges.subscribe(value => {
-            this.taxeCourrierService.getTarif(paysId,value).subscribe((result) => {
-                this.montant = result;
-            });
+
+      paysChange(value: number) {
+        const poids = this.form.get('poids')?.value;
+
+        if (value > 0 && poids > 0) {
+          this.taxeCourrierService.getTarif(value, poids).subscribe((result) => {
+            this.montant = result;
+            this.totalMontant = +this.montant; // Met à jour le montant total
+            this.form.get('totalMontant')?.setValue(this.totalMontant);
           });
-        }else{
-            this.montant = 0;
+        } else {
+          this.montant = 0;
+          this.totalMontant = +this.montant; ;
+          this.form.get('totalMontant')?.setValue(this.totalMontant);
         }
+        this.form.updateValueAndValidity();
+      }
+
+      poidsChange(value: number) {
+        const paysDestinationId = this.form.get('paysDestinationId')?.value;
+
+        if (value > 0 && paysDestinationId > 0) {
+          this.taxeCourrierService.getTarif(paysDestinationId, value).subscribe((result) => {
+            this.montant = result;
+            this.totalMontant = +this.montant; // Met à jour le montant total
+          });
+        } else {
+          this.montant = 0;
+          this.totalMontant =+this.montant;
+        }
+        this.form.get('totalMontant')?.setValue(this.totalMontant);
+        this.form.updateValueAndValidity();
       }
 
 
@@ -330,14 +432,15 @@ export class CourrierOrdinaireComponent implements OnInit {
         if (this.form.invalid) {
             return;
         }
-        this.form.value.caisseId = "1";
-        this.form.value.clientId = this.id;
-
-
-    this.colisService.saveProduit(this.form.value).subscribe(
+        this.form.value.userId = this.sessionService.getAgentAttributes().id;
+        this.form.value.montant = this.totalMontant;
+        this.form.value.details = this.courrier.details;
+        this.loading = true;
+    this.courrierService.save(this.form.value).subscribe(
                 (result) => {
                   this.courrier = result;
-                this.router.navigateByUrl('/guichet/courier-details/'+this.courrier.id);
+                  this.loading = false;
+                this.router.navigateByUrl('/guichet/courrier-details/'+this.courrier.id);
 
                 },
                 (error) => {
@@ -347,6 +450,7 @@ export class CourrierOrdinaireComponent implements OnInit {
                         detail: 'Erreur enregistrement',
                         life: 3000,
                     });
+                    this.loading = false;
                 }
             );
 
@@ -362,7 +466,7 @@ export class CourrierOrdinaireComponent implements OnInit {
             return;
         }
 
-        if (this.client) {
+        if (this.client.id) {
             this.formClient.value.id = this.client.id;
             this.clientService
                 .update(this.client.id, this.formClient.value)
@@ -475,6 +579,73 @@ export class CourrierOrdinaireComponent implements OnInit {
                 }
             );
         }
+    }
+
+    //Panier Timbre
+    updateMetrics() {
+       this.numberOfItems = this.courrier.details.length;
+       this.valeurTimbre = this.courrier.details.reduce((sum, detail) => sum + ((detail.quantite || 0) * (detail.prix || 0)), 0);
+       this.form.get('valeurTimbre')?.setValue(this.valeurTimbre);
+       this.form.updateValueAndValidity();
+    }
+
+    getTarifProduit(){
+
+    }
+
+    onQuantiteChange(event: any): void {
+        this.checkAndAddProduct();
+    }
+
+    checkAndAddProduct(): void {
+        if (this.selectedTimbre && this.selectedQuantite > 0) {
+            this.ajouterProduit();
+        }
+    }
+
+    ajouterProduit(): void {
+        const quantite =this.form.value.quantite;
+        const timbreId = this.form.value.timbreId ;
+        this.selectedTimbre = this.stocksTimbre$.find(p => p.id === timbreId);
+
+        if (quantite > this.selectedTimbre.quantite) {
+            console.error('Quantité saisie supérieure au stock disponible.');
+            return;
+          }
+        if (quantite > 0) {
+            this.courrier.details.push({
+                produitId: this.selectedTimbre.id,
+                produitLibelle: this.selectedTimbre.combinedLibelle,
+                quantite: quantite,
+                prix: this.selectedTimbre.produitPrix,
+            });
+            this.updateMetrics();
+            this.resetSelection();
+        }
+    }
+    removeDetail(index: number) {
+        this.courrier.details.splice(index, 1);
+        this.updateMetrics();
+      }
+
+    incrementQuantity(index: number): void {
+        if (this.courrier.details[index].quantite < 100) {
+            this.courrier.details[index].quantite++;
+            this.updateMetrics();
+        }
+    }
+
+    decrementQuantity(index: number): void {
+        if (this.courrier.details[index].quantite > 1) {
+            this.courrier.details[index].quantite--;
+            this.updateMetrics();
+        }
+    }
+
+    resetSelection(): void {
+        this.form.get('timbreId')?.reset();
+        this.form.get('quantite')?.reset();
+        this.selectedTimbre = null;
     }
 
 }

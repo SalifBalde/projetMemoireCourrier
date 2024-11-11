@@ -33,18 +33,9 @@ export class GuichetMenuComponent implements OnInit {
                     {
                         label: 'Ordinaire',
                         icon: 'pi pi-fw pi-box',
-                        routerLink: ['/guichet/search-client/1'],
+                        routerLink: ['/guichet/courrier-ordinaire'],
                     },
-                    {
-                        label: 'Recomandé',
-                        icon: 'pi pi-fw pi-cart-plus',
-                        routerLink: ['/guichet/search-client/2'],
-                    },
-                    {
-                        label: 'Valeur déclaré',
-                        icon: 'pi pi-fw pi-truck',
-                        routerLink: ['/guichet/livraison'],
-                    },
+
                 ],
             },
             {

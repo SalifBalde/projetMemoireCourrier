@@ -22,9 +22,8 @@ const routes: Routes = [
   { path: 'rapport', loadChildren: () => import('./rapport-agent/rapport-agent.module').then(m => m.RapportAgentModule) },
   { path: 'rapport-criteres', loadChildren: () => import('./rapport-criteres/rapport-criteres.module').then(m => m.RapportCriteresModule) },
   { path: 'livraison', loadChildren: () => import('./livraison/livraison.module').then(m => m.LivraisonModule) },
-  { path: 'courrier-ordinaire/:id/:nom/:telephone', loadChildren: () => import('./courrier-ordinaire/courrier-ordinaire.module').then(m => m.CourrierOrdinaireModule) },
-  { path: 'courrier-recommande/:id/:nom/:telephone', loadChildren: () => import('./courrier-recommande/courrier-recommande.module').then(m => m.CourrierRecommandeModule) },
-  { path: 'courrier-valeur-declare/:id/:nom/:telephone', loadChildren: () => import('./courrier-valeur-declare/courrier-valeur-declare.module').then(m => m.CourrierValeurDeclareModule) }
+  { path: 'courrier-ordinaire', loadChildren: () => import('./courrier-ordinaire/courrier-ordinaire.module').then(m => m.CourrierOrdinaireModule) },
+  { path: 'courrier-details/:id', loadChildren: () => import('./courrier-details/courrier-details.module').then(m => m.CourrierDetailsModule) }
 ];
 
 @NgModule({

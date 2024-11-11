@@ -1,8 +1,7 @@
-export interface CourrierCreateUpdateDto {
+export class CourrierCreateUpdateDto {
     id?: number;
     structureDepotId?: number;
     structureDestinationId?: number;
-
     montant?: number;
     poids?: number;
     quantite?: number;
@@ -11,7 +10,6 @@ export interface CourrierCreateUpdateDto {
     userId?: number;
     codeBarre?: string;
     contenu?: string;
-
     typeCourrierId?: number;
     paysOrigineId?: number;
     paysDestinationId?: number;
@@ -19,12 +17,16 @@ export interface CourrierCreateUpdateDto {
     destinataireId?: number;
     typeCategorieId?: number;
     expediteurId?: number;
+    details?: CourrierDetailsDto[]=[] ;
+
   }
 
   export interface CourrierDto {
     id?: number;
     structureDepotId?: number;
+    structureDepotLibelle?: string;
     structureDestinationId?: number;
+    structureDestinationLibelle?: string;
     montant?: number;
     poids?: number;
     quantite?: number;
@@ -35,13 +37,29 @@ export interface CourrierCreateUpdateDto {
     contenu?: string;
     typeCourrierId: number;
     paysOrigineId?: number;
+    paysOrigineLibelle?: string;
     paysDestinationId?: number;
+    paysDestinationLibelle?: string;
     statutCourrierId?: number;
     destinataireId?: number;
+    destinataireNom?: string;
+    destinatairePrenom?: string;
     typeCategorieId?: number;
     expediteurId?: number;
+    expediteurNom?: string;
+    expediteurPrenom?: string;
+    details?: CourrierDetailsDto[] ;
   }
 
 
+  export class CourrierDetailsDto {
+     id?: string;
+     produitId?: string;
+     produitLibelle?: string;
+     combinedLibelle?: string;
+     quantite?: number;
+     prix?: number;
+     montant?: number;
+   }
 
 

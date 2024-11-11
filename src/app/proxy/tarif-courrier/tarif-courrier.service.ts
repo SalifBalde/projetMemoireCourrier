@@ -52,7 +52,7 @@ getOne(id:string)
   return this.httpClient.get<TarifCourrierDto>(new_api_host,this.httpOptions);
 }
 
-getTarif(zoneId:string, poidsId :string)
+getTarif(zoneId:number, poidsId :number)
 {
   let new_api_host = this.routerParam(this.api_host+'/getTaxe',zoneId, poidsId);
   return this.httpClient.get<number>(new_api_host,this.httpOptions);
