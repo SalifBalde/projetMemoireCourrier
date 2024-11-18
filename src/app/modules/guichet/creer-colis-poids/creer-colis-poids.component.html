@@ -114,7 +114,22 @@
 
 
 
+                            <div class="col-12 lg:col-6 field mb-4">
+                                <label for="pays">Sélectionner un pays :</label>
+                                <select [(ngModel)]="selectedCountry" id="pays">
+                                    <option value="">Choisir un pays</option>
+                                    <option *ngFor="let pays of pays" [value]="pays.id">{{ pays.libelle}}</option>
+                                </select>
+                            </div>
 
+
+                            <div class="col-12 lg:col-6 field mb-4">
+                                <label for="regime">Sélectionner un regime :</label>
+                                <select [(ngModel)]="selectedRegime" id="regime">
+                                    <option value="">Choisir un regime</option>
+                                    <option *ngFor="let regime of regime" [value]="regime.id">{{ regime.libelle}}</option>
+                                </select>
+                            </div>
 
 
 

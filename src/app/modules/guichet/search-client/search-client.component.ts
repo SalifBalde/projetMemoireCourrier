@@ -19,7 +19,8 @@ export class SearchClientComponent implements OnInit {
     form: FormGroup;
     searchPerformed: boolean = false;
     isModalOpen = false;
-    clientDialog: boolean = false;
+    clientDialog: boolean = false
+    clientDestiDialog: boolean = false
     id: string = "";
 
     constructor(
@@ -48,7 +49,7 @@ export class SearchClientComponent implements OnInit {
             adresse: [this.client.adresse || '', Validators.required],
             cni: [this.client.cni || '', Validators.required],
             telephone: [this.client.telephone || '', Validators.required],
-            email: [this.client.email],
+            email: [this.client.email || '', Validators.required ],
 
         });
     }
@@ -67,26 +68,29 @@ export class SearchClientComponent implements OnInit {
                     console.log(this.client)
                     this.buildForm();
                     this.clientDialog = true;
-                    this.label = "Client Details: " + this.client.telephone
+                    this.clientDestiDialog = true;
 
-                    /*    if (!client) {
-                          this.buildForm();
-                        //this.router.navigateByUrl('/receveur/Creerclientclient');
-                      } else {
-                        this.clientDialog = true;
-                      //  this.router.navigate(['/receveur/Creerclientclient'], { state: { clientData: result } });
-                      }  */
+                    this.label = "Client Details: " + this.client.nom
+
+                      //   if (!client) {
+                      //     this.buildForm();
+                      //   this.router.navigateByUrl('/receveur/Creerclientclient');
+                      // } else {
+                      //   this.clientDialog = true;
+                      //   this.router.navigate(['/receveur/Creerclientclient'], { state: { clientData: client } });
+                      // }
                 },
                 (error: HttpErrorResponse) => {
                     this.loading = false;
                     this.buildForm();
                     this.clientDialog = true;
+                    this.clientDestiDialog = true;
                     this.label = "Nouveau Client";
-                    /*   if (error.status >= 500 && error.status < 600) {
+                       if (error.status >= 500 && error.status < 600) {
                         this.messageService.add({ severity: 'error', summary: 'Erreur Serveur', detail: 'Erreur Serveur' });
                       } else {
                         this.messageService.add({ severity: 'error', summary: 'Erreur', detail: 'Erreur Serveur' });
-                      } */
+                      }
                 }
             );
         } else {
@@ -97,6 +101,7 @@ export class SearchClientComponent implements OnInit {
 
     hideDialog() {
         this.clientDialog = false;
+        this.clientDestiDialog = false;
         this.keyword = "";
     }
 
@@ -118,10 +123,10 @@ export class SearchClientComponent implements OnInit {
                             detail: 'Client Updated',
                             life: 3000,
                         });
-                        if (this.id == "1")
-                            this.router.navigateByUrl('/guichet/creerColisPoids/' + this.client.id + '/' + this.client.nom + ' ' + this.client.prenom + '/' + this.client.telephone);
-                        else
-                            this.router.navigateByUrl('/guichet/creerColisProduit/' + this.client.id + '/' + this.client.nom + ' ' + this.client.prenom + '/' + this.client.telephone);
+                        // if (this.id == "1")
+                        //     this.router.navigateByUrl('/guichet/creerColisPoids/' + this.client.id + '/' + this.client.nom + ' ' + this.client.prenom + '/' + this.client.telephone);
+                        // else
+                        //     this.router.navigateByUrl('/guichet/creerColisProduit/' + this.client.id + '/' + this.client.nom + ' ' + this.client.prenom + '/' + this.client.telephone);
 
                         this.client = {};
                     },
@@ -148,10 +153,10 @@ export class SearchClientComponent implements OnInit {
                         life: 3000,
                     });
 
-                    if (this.id == "1")
-                        this.router.navigateByUrl('/guichet/creerColisPoids/' + this.client.id + '/' + this.client.nom + ' ' + this.client.prenom + '/' + this.client.telephone);
-                    else
-                        this.router.navigateByUrl('/guichet/creerColisProduit/' + this.client.id + '/' + this.client.nom + ' ' + this.client.prenom + '/' + this.client.telephone);
+                    // if (this.id == "1")
+                    //     this.router.navigateByUrl('/guichet/creerColisPoids/' + this.client.id + '/' + this.client.nom + ' ' + this.client.prenom + '/' + this.client.telephone);
+                    // else
+                    //     this.router.navigateByUrl('/guichet/creerColisProduit/' + this.client.id + '/' + this.client.nom + ' ' + this.client.prenom + '/' + this.client.telephone);
 
                     this.client = {};
                 },

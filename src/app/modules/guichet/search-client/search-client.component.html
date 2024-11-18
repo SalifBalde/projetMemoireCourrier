@@ -25,6 +25,31 @@
                     </div>
                 </div>
             </div>
+            <br>
+            <div class="card">
+                <div class="card-header">
+                    <h5>Rechercher Destinate</h5>
+                </div>
+                <div class="card-body">
+                    <form [formGroup]="searchForm" (ngSubmit)="searchClient()">
+                        <div class="row mb-3">
+                            <div class="col-12">
+                                <p-inputGroup>
+                                    <input type="text" pInputText id="keyword" formControlName="keyword"
+                                           placeholder="Entrez le téléphone ou le cni du client"
+                                           aria-label="Rechercher par téléphone ou cni"
+                                           aria-describedby="keyword-error" />
+                                    <button type="submit" pButton label="Rechercher"></button>
+                                </p-inputGroup>
+                            </div>
+                        </div>
+                    </form>
+                    <div *ngIf="loading" class="text-center mt-4">
+                        <div class="spinner-border spinner-border-sm" role="status"></div>
+                        <span class="sr-only">Chargement...</span>
+                    </div>
+                </div>
+            </div>
         </div>
         <p-dialog [(visible)]="clientDialog" [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
                   [style]="{ width: '50vw' }"
@@ -81,5 +106,7 @@
                 </div>
             </form>
         </p-dialog>
+
         <p-toast></p-toast>
     </div>
+</div>

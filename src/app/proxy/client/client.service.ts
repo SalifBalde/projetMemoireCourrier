@@ -35,7 +35,7 @@ export class ClientService {
             params = params.set('cni', cni);
         }
 
-        return this.httpClient.get<ClientDto>(`${environment.api_host}client`,{params});
+        return this.httpClient.get<ClientDto>(`${environment.api_host}client/recherche`, { params });
     }
 
 

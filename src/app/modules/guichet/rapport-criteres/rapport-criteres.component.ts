@@ -1,12 +1,13 @@
 import {Component, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {KeycloakProfile} from "keycloak-js";
-import {ColisDto, ColisService, ColisResultDto, ColisSearchDto} from "../../../proxy/colis";
 import {Table} from "primeng/table";
 import {PdfService} from "../../../proxy/pdf/pdf.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {MessageService} from "primeng/api";
 import {KeycloakService} from "keycloak-angular";
+import {CourrierDto} from "../../../proxy/courrier";
+import {ColisDto, ColisSearchDto, ColisService} from "../../../proxy/colis";
 
 @Component({
   selector: 'app-rapport-criteres',
@@ -17,7 +18,7 @@ export class RapportCriteresComponent {
     form: FormGroup;
     isModalOpen = false;
     montant = 0;
-    colis$ : ColisResultDto[]=[];
+    colis$ : ColisDto[]=[];
     colisSearch : ColisSearchDto= {};
     formDialog : boolean = false;
     cols: any[] = [];
@@ -36,6 +37,9 @@ export class RapportCriteresComponent {
 
     loadingColis: boolean = false;
     loadingReset: boolean = false;
+    colisByCriteres: string;
+    date: Date;
+    fullname: string;
 
     resetForm(){
         this.loadingReset = true;

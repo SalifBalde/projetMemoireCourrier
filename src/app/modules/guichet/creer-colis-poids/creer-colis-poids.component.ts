@@ -15,8 +15,9 @@ import { StructureDto, StructureService } from 'src/app/proxy/structures';
 import { ModePaiementDto, ModePaiementService } from 'src/app/proxy/mode-paiements';
 import { DistanceBureauService } from 'src/app/proxy/distance-bureaux';
 import { SessionService } from 'src/app/proxy/auth/Session.service';
-import {Regime} from "../../../proxy/regime";
+import {Regime, Regimedto, RegimeService} from "../../../proxy/regime";
 import {HttpErrorResponse} from "@angular/common/http";
+import {Paysdto, PaysService} from "../../../proxy/pays";
 
 @Component({
     selector: 'app-creer-colis-poids',
@@ -50,8 +51,12 @@ import {HttpErrorResponse} from "@angular/common/http";
     searchPerformed: boolean = false
     clientDialog: boolean = false;
     idcaisse = "";
-    regime:any;
     modes: { id: string; libelle: string }[] = [];
+    pays: Paysdto[] = [];  // Liste des pays à afficher
+    selectedCountry: Paysdto | undefined;  // Pays sélectionné
+
+    regime: Regimedto[] = [];
+    selectedRegime: Regimedto | undefined;
 
     constructor(
         private colisService: ColisService,
@@ -64,7 +69,9 @@ import {HttpErrorResponse} from "@angular/common/http";
         private router: Router,
         private route : ActivatedRoute,
         private clientService:ClientService,
-        private messageService: MessageService
+        private messageService: MessageService,
+        private paysService:PaysService,
+        private regimeService:RegimeService
     ) {}
 
     ngOnInit(): void {
@@ -75,6 +82,7 @@ import {HttpErrorResponse} from "@angular/common/http";
             this.nom = params['nom'];
             this.idBureau = this.sessionService.getAgentAttributes().structureId;
             this.idcaisse = this.sessionService.getAgentAttributes().caisseId;
+
           });
 
           this.tarifPoidsService.getPoidsLookup().subscribe(
@@ -96,6 +104,15 @@ import {HttpErrorResponse} from "@angular/common/http";
         );
 
         this.buildForm();
+        this.paysService.findAll().subscribe(
+            data => this.pays = data,
+            error => console.error('Erreur lors de la récupération des régimes', error)
+        );
+
+        this.regimeService.findAll().subscribe(
+            data => this.regime = data,
+            error => console.error('Erreur lors de la récupération des régimes', error)
+        );
     }
 
     buildForm() {
