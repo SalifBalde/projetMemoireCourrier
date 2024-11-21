@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
+import { generate } from 'rxjs';
 import { ColisService } from 'src/app/proxy/colis';
 import { CourrierDto, CourrierService } from 'src/app/proxy/courrier';
+import { FactureService } from 'src/app/proxy/pdf/facture.service';
 import { PdfService } from 'src/app/proxy/pdf/pdf.service';
 
 @Component({
@@ -14,6 +16,7 @@ export class CourrierDetailsComponent implements OnInit {
 
   constructor(
     private courrierService: CourrierService,
+    private factureService: FactureService,
     private pdfService:PdfService,
     private fb: FormBuilder,
     private router: Router,
@@ -30,8 +33,10 @@ ngOnInit(): void {
 
       });
 
+}
 
-
+async imprimerFacture(){
+    this.factureService.generateReceipt(this.courrier);
 }
 
 

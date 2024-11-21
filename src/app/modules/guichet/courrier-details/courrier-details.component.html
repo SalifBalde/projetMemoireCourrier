@@ -5,7 +5,7 @@
             <div class="p-toolbar-group-left flex flex-wrap">
                 <button pButton type="button" icon="pi pi-check" class="p-button-success mr-2" ></button>
                 <button pButton type="button" icon="pi pi-trash" class="p-button-warning mr-2"></button>
-                <button pButton type="button" icon="pi pi-print" class="p-button-danger" ></button>
+                <button pButton type="button" icon="pi pi-print" (click)="imprimerFacture()" class="p-button-danger" ></button>
             </div>
         </p-toolbar>
     </div>
@@ -19,12 +19,12 @@
             <p><strong>Code Barre:</strong> {{ courrier?.codeBarre }}</p>
             <p><strong>Structure Dépôt:</strong> {{ courrier?.structureDepotLibelle }}</p>
             <p><strong>Structure Destination:</strong> {{ courrier?.structureDestinationLibelle }}</p>
-            <p><strong>Type Courrier:</strong> {{ courrier?.typeCourrierId }}</p>
-            <p><strong>Poids:</strong> {{ courrier?.poids }} kg</p>
+            <p><strong>Type Courrier:</strong> {{ courrier?.typeCourrierLibelle }}</p>
+            <p><strong>Poids:</strong> {{ courrier?.poids }} g</p>
           </div>
           <div class="col-6">
-            <p><strong>Expéditeur:</strong> {{ courrier?.expediteurNom }} {{ courrier?.expediteurPrenom }}</p>
-            <p><strong>Destinataire:</strong> {{ courrier?.destinataireNom }} {{ courrier?.destinatairePrenom }}</p>
+            <p><strong>Expéditeur:</strong> {{ courrier?.expediteurNom }} {{ courrier?.expediteurPrenom }} / {{ courrier?.expediteurTelephone }}</p>
+            <p><strong>Destinataire:</strong> {{ courrier?.destinataireNom }} {{ courrier?.destinatairePrenom }} / {{ courrier?.destinataireTelephone }}</p>
             <p><strong>Pays Origine:</strong> {{ courrier?.paysOrigineLibelle }}</p>
             <p><strong>Pays Destination:</strong> {{ courrier?.paysDestinationLibelle }}</p>
           </div>
@@ -52,7 +52,7 @@
               <td>{{ detail.produitLibelle }}</td>
               <td>{{ detail.quantite }}</td>
               <td>{{ detail.prix | currency }}</td>
-              <td>{{ detail.montant | currency }}</td>
+              <td>{{ detail.quantite *  detail.prix | currency }}</td>
             </tr>
           </ng-template>
         </p-table>
@@ -64,13 +64,13 @@
         <div class="card">
           <h3>Résumé des Taxes</h3>
           <div class="grid">
-            <div class="col-6">
+            <div class="col-7">
               <p><strong>Taxe Douane:</strong> {{ courrier?.taxeDouane | currency }}</p>
             </div>
-            <div class="col-6">
+            <div class="col-7">
               <p><strong>Taxe Présentation:</strong> {{ courrier?.taxePresentation | currency }}</p>
             </div>
-            <div class="col-6">
+            <div class="col-7">
               <p><strong>Montant Total:</strong> {{ (courrier?.montant || 0) + (courrier?.taxeDouane || 0) + (courrier?.taxePresentation || 0) | currency }}</p>
             </div>
           </div>

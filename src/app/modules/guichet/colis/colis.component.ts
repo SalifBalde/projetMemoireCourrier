@@ -16,12 +16,12 @@ import { CourrierCreateUpdateDto, CourrierService } from 'src/app/proxy/courrier
 import { StockDto, StockService } from 'src/app/proxy/stock';
 
 @Component({
-    selector: 'app-courrier-ordinaire',
-    templateUrl: './courrier-ordinaire.component.html',
-    styleUrl: './courrier-ordinaire.component.scss',
+    selector: 'app-colis',
+    templateUrl: './colis.component.html',
+    styleUrl: './colis.component.scss',
     providers: [MessageService],
 })
-export class CourrierOrdinaireComponent implements OnInit {
+export class ColisComponent implements OnInit {
 
     form: FormGroup;
     formClient: FormGroup;
@@ -29,9 +29,7 @@ export class CourrierOrdinaireComponent implements OnInit {
     montant = 0;
     pays$: Paysdto[];
 
-    clients: ClientDto[] = [{
-        id: "1", nom: "mamadou diokou", telephone: "773778825"
-    }];
+    clients: ClientDto[] = [];
     courrier : CourrierCreateUpdateDto = new CourrierCreateUpdateDto();
     modesPaiement: any;
     totalMontant: number = 0;

@@ -60,20 +60,27 @@ async redirectBasedOnRole(): Promise<void> {
     );
 
 
-    /* if (isLoggedIn) {
+    if (isLoggedIn) {
         const userRoles = this.keycloakService.getUserRoles();
         if (userRoles.includes('ROLE_GUICHET')) {
             this.router.navigate(['/guichet']);
-        } else if (userRoles.includes('ROLE_DRP')) {
+        } else if (userRoles.includes('ROLE_ARRIERE')) {
+            this.router.navigate(['/arriere']);
+        }
+        else if (userRoles.includes('ROLE_DRP')) {
             this.router.navigate(['/drp']);
-        } else if (userRoles.includes('ROLE_RECEVEUR')) {
+        }
+        else if (userRoles.includes('ROLE_DCL')) {
+            this.router.navigate(['/dcl']);
+        }
+         else if (userRoles.includes('ROLE_RECEVEUR')) {
             this.router.navigate(['/receveur']);
         } else {
             this.router.navigate(['/']);
         }
     } else {
         await this.keycloakService.login();
-    } */
+    }
 }
 }
 

@@ -36,6 +36,7 @@ export class CourrierCreateUpdateDto {
     codeBarre?: string;
     contenu?: string;
     typeCourrierId: number;
+    typeCourrierLibelle: string;
     paysOrigineId?: number;
     paysOrigineLibelle?: string;
     paysDestinationId?: number;
@@ -44,10 +45,12 @@ export class CourrierCreateUpdateDto {
     destinataireId?: number;
     destinataireNom?: string;
     destinatairePrenom?: string;
+    destinataireTelephone?: string;
     typeCategorieId?: number;
     expediteurId?: number;
     expediteurNom?: string;
     expediteurPrenom?: string;
+    expediteurTelephone?: string;
     details?: CourrierDetailsDto[] ;
   }
 

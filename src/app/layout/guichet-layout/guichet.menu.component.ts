@@ -31,7 +31,7 @@ export class GuichetMenuComponent implements OnInit {
                 icon: 'pi pi-fw pi-briefcase',
                 items: [
                     {
-                        label: 'Ordinaire',
+                        label: 'Nouveau Courrier',
                         icon: 'pi pi-fw pi-box',
                         routerLink: ['/guichet/courrier-ordinaire'],
                     },
@@ -43,15 +43,11 @@ export class GuichetMenuComponent implements OnInit {
                 icon: 'pi pi-fw pi-briefcase',
                 items: [
                     {
-                        label: 'Ordinaire',
+                        label: 'Nouveau Colis',
                         icon: 'pi pi-fw pi-box',
-                        routerLink: ['/guichet/search-client/1'],
+                        routerLink: ['/guichet/colis'],
                     },
-                    {
-                        label: 'Valeur déclaré',
-                        icon: 'pi pi-fw pi-cart-plus',
-                        routerLink: ['/guichet/search-client/2'],
-                    },
+
                     // {
                     //     label: 'Colis à livrer',
                     //     icon: 'pi pi-fw pi-truck',
