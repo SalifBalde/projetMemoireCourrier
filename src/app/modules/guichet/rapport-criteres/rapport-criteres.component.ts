@@ -50,7 +50,7 @@ export class RapportCriteresComponent {
     }
 
     generatePdf(): void{
-        this.pdfService.generateAgentSalesReport(this.colis$);
+       // this.pdfService.generateAgentSalesReport(this.colis$);
     }
 
     async ngOnInit(): Promise<void> {

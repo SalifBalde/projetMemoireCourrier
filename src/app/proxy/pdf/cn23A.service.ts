@@ -1,15 +1,12 @@
-import { Injectable } from '@angular/core';
+import {Component, Injectable, OnInit} from '@angular/core';
 import jsPDF from 'jspdf';
-import 'jspdf-autotable';
 import JsBarcode from 'jsbarcode';
+import 'jspdf-autotable';
 
 @Injectable({
     providedIn: 'root',
 })
-export class PdfService {
-
-    generateAgentSalesReport(colis:any){}
-
+export class Cn23AService {
     _base64ToArrayBuffer(base64) {
         var binary_string = base64.replace(/\\n/g, '');
         binary_string = window.atob(base64);
@@ -142,19 +139,17 @@ export class PdfService {
         doc.text('For commercial items only ', pageHeight / 1, 108, {
             align: 'left',
         });
-        doc.text('HS tarif numner(7) ', pageHeight / 1, 113, { align: 'left' });
-        doc.text('Contry of Origin of goods(8)', pageHeight / 3, 113, {
+        doc.text('HS tarif numner(7)      Contry of Origin of goods(8)', pageHeight / 1, 113, { align: 'left' });
+        doc.text('', pageHeight / 3, 113, {
             align: 'right',
         });
         doc.text('PATALON ', pageHeight / 7, 118, { align: 'left' });
         doc.text('1', pageHeight / 2, 118, { align: 'left' });
         doc.text('3.500', pageHeight / 1.5, 118, { align: 'left' });
-        doc.text('620343', pageHeight / 1, 118, { align: 'left' });
+        doc.text('620343                          SN(Sénégal)', pageHeight / 1, 118, { align: 'left' });
+        // doc.text('Total groos weight', pageHeight / 2, 148, { align: 'center' });
         doc.text('1', pageHeight / 2, 118, { align: 'left' });
 
-        doc.text('To A', pageHeight / 22, 83, {
-            align: 'right',
-        });
 
         doc.setLineWidth(0.5);
         doc.line(10, 46, 10, 205);
@@ -187,7 +182,7 @@ export class PdfService {
         doc.line(pageWidth - 180, 150, pageWidth - 180, 105);
         doc.line(pageWidth - 140, 150, pageWidth - 140, 105);
         doc.line(pageWidth - 100, 200, pageWidth - 100, 105);
-        doc.line(pageWidth - 50, 140, pageWidth - 50, 105); //
+        doc.line(pageWidth - 59, 140, pageWidth - 59, 110); //
         doc.line(197, 110, pageWidth - 10, 110);
         doc.line(pageWidth - 110, 46, pageWidth - 110, 105); //ligne fermante Milieu
         doc.line(10, 164, pageWidth - 10, 164);

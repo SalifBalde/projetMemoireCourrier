@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms'; // add this
+import {FormGroup, FormBuilder, Validators, FormControl} from '@angular/forms'; // add this
 import { ProduitDto, ProduitService } from 'src/app/proxy/produits';
 import { MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
+import {ThemeDto, ThemeService} from "../../../proxy/themes";
+import Theme from "quill/core/theme";
+import {TypeProduitDto, TypeProduitService} from "../../../proxy/type-produits";
 
 @Component({
     selector: 'app-produit',
@@ -11,8 +14,18 @@ import { Table } from 'primeng/table';
     providers: [MessageService],
 })
 export class ProduitComponent implements OnInit {
+    disableSelect = new FormControl(false);
     form: FormGroup;
+    themes: ThemeDto[] = [];
+    // cities: City[] | undefined;
 
+    selectedtheme: Theme | undefined;
+    typesProduits: any[] = [];
+    typeProduits: TypeProduitDto[] = [];
+
+    selectedtypeProduit: Theme | undefined;
+    selectedThemeId: number | null = null;
+    selectedTypeProduitId: number | null = null;
     isModalOpen = false;
 
     produitDialog: boolean = false;
@@ -29,26 +42,49 @@ export class ProduitComponent implements OnInit {
 
     constructor(
         private produitService: ProduitService,
+        private themeService:ThemeService,
+        private typeProduitService:TypeProduitService,
         private fb: FormBuilder,
         private messageService: MessageService
     ) {}
 
     ngOnInit(): void {
         this.getAll();
-
+        this.loadThemes();
+        this.themes=[];
+        this.typesProduits=[];
+        this.loadTypeProduits();
         this.cols = [
-            { field: 'libelle', header: 'Libelle' },
+            { field: 'codeBarre', header: 'codeBarre' },
+            { field: 'libelle', header: 'libelle' },
+            { field: 'prix', header: 'prix' },
             { field: 'description', header: 'description' },
-            { field: 'status', header: 'status' },
         ];
 
     }
+    loadThemes() {
 
+        this.themeService.findAll().subscribe((data) => {
+            this.themes= data;
+            console.log(this.themes)
+        });
+    }
+
+    loadTypeProduits() {
+        this.typeProduitService.findAll().subscribe((data) => {
+            this.typesProduits = data;
+        });
+    }
 
     buildForm() {
         this.form = this.fb.group({
             libelle: [this.produit.libelle || '', Validators.required],
-            description: [this.produit.libelle || '', Validators.required],
+            description: [this.produit.description || '', Validators.required],
+            prix: [this.produit.prix || '', Validators.required],
+            codeBarre: [this.produit.codeBarre || '', Validators.required],
+            themeId: [this.produit.libelle || '', Validators.required],
+            typeProduitId: [this.produit.libelle || '', Validators.required],
+
             active: [this.produit.active],
         });
     }
@@ -97,7 +133,6 @@ export class ProduitComponent implements OnInit {
         }
 
         if (this.produit.id) {
-            // @ts-ignore
             this.form.value.id = this.produit.id;
             this.produitService
                 .update(this.produit.id, this.form.value)
@@ -124,7 +159,6 @@ export class ProduitComponent implements OnInit {
                     }
                 );
         } else {
-            // @ts-ignore
             this.produitService.save(this.form.value).subscribe(
                 () => {
                     this.produitDialog = false;

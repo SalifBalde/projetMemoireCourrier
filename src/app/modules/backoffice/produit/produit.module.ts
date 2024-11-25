@@ -18,7 +18,6 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { SharedModule } from 'src/app/layout/shared/shared.module';
 import { SharedComponentModule } from 'src/app/layout/shared/shared-component.module';
-
 @NgModule({
   declarations: [
     ProduitComponent
@@ -26,7 +25,8 @@ import { SharedComponentModule } from 'src/app/layout/shared/shared-component.mo
   imports: [
 
     ProduitRoutingModule,
-    SharedComponentModule
+    SharedComponentModule,
+
   ]
 })
 export class ProduitModule { }
