@@ -48,7 +48,7 @@ export class ThemeComponent implements OnInit {
     buildForm() {
         this.form = this.fb.group({
             libelle: [this.theme.libelle || '', Validators.required],
-            description: [this.theme.libelle || '', Validators.required],
+            description: [this.theme.description || '', Validators.required],
 
         });
     }

@@ -28,7 +28,9 @@
                         <th pSortableColumn="codeBarre">CodeBarre <p-sortIcon field="codeBarre"></p-sortIcon></th>
                         <th pSortableColumn="libelle">Libelle <p-sortIcon field="libelle"></p-sortIcon></th>
                         <th pSortableColumn="prix">Prix <p-sortIcon field="prix"></p-sortIcon></th>
-                        <th pSortableColumn="description">Description <p-sortIcon field="description"></p-sortIcon></th>
+<!--                        <th pSortableColumn="description">Description <p-sortIcon field="description"></p-sortIcon></th>-->
+                        <th pSortableColumn="themeLibelle">Theme <p-sortIcon field="themeLibelle"></p-sortIcon></th>
+                        <th pSortableColumn="typeProduitLibelle">TypeProduit <p-sortIcon field="typeProduitLibelle"></p-sortIcon></th>
 
                         <th></th>
                     </tr>
@@ -45,8 +47,15 @@
                         <td style=" min-width:15rem;">
                             {{produit.prix}}
                         </td>
+<!--                        <td style=" min-width:15rem;">-->
+<!--                            {{produit.description}}-->
+<!--                        </td>-->
                         <td style=" min-width:15rem;">
-                            {{produit.description}}
+                            {{produit.themeLibelle}}
+                        </td>
+                        <td style=" min-width:15rem;">
+                            {{produit.typeProduitLibelle}}
+                        </td>
                         <td style="width:5%; min-width: 10rem;">
                             <p-tag icon="pi pi-check" *ngIf="produit.active" severity="success" value="non" class="p-element">
 
@@ -71,7 +80,7 @@
                 <form [formGroup]="form" (ngSubmit)="saveProduit()">
                     <div class="field">
                         <label for="codeBarre">CodeBarre</label>
-                        <input type="text" pInputText id="codeBarre" formControlName="codeBarre"   autofocus />
+                        <input type="text" pInputText id="codeBarre" formControlName="codeBarre" autofocus />
                     </div>
                 <div class="field">
                     <label for="name">Libelle</label>
@@ -79,16 +88,15 @@
                 </div>
                     <div class="field">
                         <label for="prix">Prix</label>
-                        <input type="number" pInputText id="prix" formControlName="prix"   autofocus />
+                        <input type="number" pInputText id="prix" formControlName="prix"  autofocus />
                     </div>
                 <div class="field">
                     <label for="description">Description</label>
-                    <textarea id="description" pInputTextarea  formControlName="description"  rows="3" cols="20"></textarea>
+                    <textarea id="description" pInputTextarea  formControlName="description" rows="3" cols="20"></textarea>
                 </div>
                     <div class="field">
-                        <p-dropdown
-                            [options]="themes"
-                            formControlName="themeId"
+                        <p-dropdown [options]="themes"
+                            formControlName="themeLibelle"
                             optionLabel="libelle"
                             optionValue="id"
                             placeholder="Selectionne un Themes" />
@@ -97,14 +105,12 @@
                     <div class="field ">
                         <p-dropdown
                             [options]="typesProduits"
-                            formControlName="typeProduitId"
-                            optionValue="id"
+                            formControlName="typeProduitLibelle"
                             optionLabel="libelle"
+                            optionValue="id"
                             placeholder="Selectionne Type Produit" />
                     </div>
-                    <p>
-                        <mat-checkbox [formControl]="disableSelect">Disable select</mat-checkbox>
-                    </p>
+
 
 
         <div class="field">

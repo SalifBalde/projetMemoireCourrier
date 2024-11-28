@@ -49,9 +49,9 @@ export class PartenaireComponent implements OnInit {
         this.form = this.fb.group({
             nom: [this.partenaire.nom || '', Validators.required],
             telephone: [this.partenaire.telephone || '', Validators.required],
-            adresse: [this.partenaire.nom || '', Validators.required],
-            // active: [this.partenaire.active],
+            adresse: [this.partenaire.adresse || '', Validators.required],
 
+            // active: [this.partenaire.active],
         });
     }
 

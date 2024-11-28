@@ -14,30 +14,20 @@ import {TypeProduitDto, TypeProduitService} from "../../../proxy/type-produits";
     providers: [MessageService],
 })
 export class ProduitComponent implements OnInit {
+    // selectedtypeProduit: Theme | undefined;
+    //selectedThemeId: number | null = null;
+    //selectedTypeProduitId: number | null = null;
+    //selectedtheme: Theme | undefined;
     disableSelect = new FormControl(false);
     form: FormGroup;
     themes: ThemeDto[] = [];
-    // cities: City[] | undefined;
-
-    selectedtheme: Theme | undefined;
     typesProduits: any[] = [];
-    typeProduits: TypeProduitDto[] = [];
-
-    selectedtypeProduit: Theme | undefined;
-    selectedThemeId: number | null = null;
-    selectedTypeProduitId: number | null = null;
     isModalOpen = false;
-
     produitDialog: boolean = false;
-
     deleteProduitDialog: boolean = false;
-
     produits: ProduitDto[] = [];
-
     produit: ProduitDto = {};
-
     cols: any[] = [];
-
     rowsPerPageOptions = [5, 10, 20];
 
     constructor(
@@ -58,21 +48,25 @@ export class ProduitComponent implements OnInit {
             { field: 'codeBarre', header: 'codeBarre' },
             { field: 'libelle', header: 'libelle' },
             { field: 'prix', header: 'prix' },
-            { field: 'description', header: 'description' },
+            //{ field: 'description', header: 'description' },
+             { field: 'themeLibelle', header: 'themeLibelle' },
+             { field: 'typeProduitLibelle', header: 'typeProduitLibelle' },
         ];
-
+        this.buildForm();
     }
     loadThemes() {
 
         this.themeService.findAll().subscribe((data) => {
             this.themes= data;
-            console.log(this.themes)
+            //console.log(this.themes)
         });
     }
 
     loadTypeProduits() {
         this.typeProduitService.findAll().subscribe((data) => {
             this.typesProduits = data;
+            //console.log(this.typesProduits)
+            //console.log(this.typesProduits)
         });
     }
 
@@ -82,9 +76,8 @@ export class ProduitComponent implements OnInit {
             description: [this.produit.description || '', Validators.required],
             prix: [this.produit.prix || '', Validators.required],
             codeBarre: [this.produit.codeBarre || '', Validators.required],
-            themeId: [this.produit.libelle || '', Validators.required],
-            typeProduitId: [this.produit.libelle || '', Validators.required],
-
+            themeLibelle: [this.produit.libelle || '', Validators.required],
+            typeProduitLibelle: [this.produit.libelle || '', Validators.required],
             active: [this.produit.active],
         });
     }
@@ -99,6 +92,7 @@ export class ProduitComponent implements OnInit {
     editProduit(produit: ProduitDto) {
         this.produitService.getOneById(produit.id).subscribe((produit) => {
             this.produit = { ...produit };
+
             this.buildForm();
             this.produitDialog = true;
         });

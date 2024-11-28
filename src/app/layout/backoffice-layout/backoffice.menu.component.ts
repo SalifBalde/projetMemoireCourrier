@@ -51,9 +51,7 @@ export class BackofficeMenuComponent implements OnInit {
                             },
 
                             {
-                                label: 'Type Produit',
-                                icon: 'pi pi-fw pi-angle-right',
-                                routerLink: ['/backoffice/type-produit']
+                                label: 'Type Produit', icon: 'pi pi-fw pi-angle-right', routerLink: ['/backoffice/type-produit']
                             },
                             {
                                 label: 'Partenaires',
