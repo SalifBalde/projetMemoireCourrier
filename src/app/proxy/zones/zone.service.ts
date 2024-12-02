@@ -1,15 +1,14 @@
 import { environment } from 'src/environments/environment';
-
+import type { CreateUpdateZoneDto, ZoneDto } from './models';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import {RegimeDto} from "./models";
 
 
 @Injectable({
     providedIn: 'root',
 })
-export class RegimeService {
-    apiName = 'regime';
+export class ZoneService {
+    apiName = 'zone';
     private api_host: string= environment.api_host + this.apiName;
     myToken = sessionStorage.getItem("token");
     private httpOptions = {
@@ -22,10 +21,10 @@ export class RegimeService {
 
     findAll()
     {
-        return this.httpClient.get<[RegimeDto]>(this.api_host,this.httpOptions);
+        return this.httpClient.get<[ZoneDto]>(this.api_host,this.httpOptions);
     }
 
-    save(item: RegimeDto)
+    save(item: ZoneDto)
     {
         return this.httpClient.post(this.api_host,item,this.httpOptions);
     }
@@ -34,21 +33,21 @@ export class RegimeService {
         let new_api_host = this.routerParam(this.api_host,id);
         return this.httpClient.delete(new_api_host,this.httpOptions);
     }
-    update(id:string, item:RegimeDto)
+    update(id:string, item:ZoneDto)
     {
         let new_api_host = this.routerParam(this.api_host,id);
-        return this.httpClient.put<RegimeDto>(new_api_host,item,this.httpOptions);
+        return this.httpClient.put<ZoneDto>(new_api_host,item,this.httpOptions);
     }
 
     getOneById(id:string) {
         let new_api_host = this.routerParam(this.api_host,id);
-        return this.httpClient.get<RegimeDto>(new_api_host,this.httpOptions);
+        return this.httpClient.get<ZoneDto>(new_api_host,this.httpOptions);
     }
 
     getOne(id:string)
     {
         let new_api_host = this.routerParam(this.api_host+'/getByreference',id);
-        return this.httpClient.get<RegimeDto>(new_api_host,this.httpOptions);
+        return this.httpClient.get<ZoneDto>(new_api_host,this.httpOptions);
     }
 
     routerParam(host:string, param: string){

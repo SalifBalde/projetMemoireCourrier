@@ -1,7 +1,7 @@
 export const environment = {
     production: false,
     //api_host: "http://localhost:8083/api/",
-    api_host:"http://10.6.4.202:8089/gestionstock-service/api/",
+    api_host:"http://10.6.4.202:8089/courrier-service/api/",
 //    api_host: "https://services.laposte.sn:8090/jotnaci-service/api/",
 //    api_params: "https://services.laposte.sn:8090/parametre-service/api/",
     api_params: "http://10.6.4.202:8089/api/",

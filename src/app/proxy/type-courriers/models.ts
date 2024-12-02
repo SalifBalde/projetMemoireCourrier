@@ -1,11 +1,11 @@
 
-export interface CreateUpdateRegimeDto {
+export interface CreateUpdateTypeCourrierDto  {
     id?: string;
     libelle?: string;
 
 }
 
-export interface RegimeDto {
+export interface TypeCourrierDto {
     id?: string;
     libelle?: string;
 

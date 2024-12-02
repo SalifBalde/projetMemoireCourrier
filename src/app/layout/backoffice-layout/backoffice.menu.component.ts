@@ -64,7 +64,36 @@ export class BackofficeMenuComponent implements OnInit {
                                 icon: 'pi pi-fw pi-angle-right',
                                 routerLink: ['/backoffice/themes']
                             },
-
+                            {
+                                label: 'Zones',
+                                icon: 'pi pi-fw pi-angle-right',
+                                routerLink: ['/backoffice/zones']
+                            },
+                            {
+                                label: 'TypeCourriers',
+                                icon: 'pi pi-fw pi-angle-right',
+                                routerLink: ['/backoffice/typeCourriers']
+                            },
+                            {
+                                label: 'TypeCategories',
+                                icon: 'pi pi-fw pi-angle-right',
+                                routerLink: ['/backoffice/typeCategories']
+                            },
+                            {
+                                label: 'Regimes',
+                                icon: 'pi pi-fw pi-angle-right',
+                                routerLink: ['/backoffice/regimes']
+                            },
+                            {
+                                label: 'PoidsCourriers',
+                                icon: 'pi pi-fw pi-angle-right',
+                                routerLink: ['/backoffice/poidsCourriers']
+                            },
+                            {
+                                label: 'ServiceCourriers',
+                                icon: 'pi pi-fw pi-angle-right',
+                                routerLink: ['/backoffice/serviceCourriers']
+                            },
                         ]
                     },
 
