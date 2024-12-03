@@ -45,7 +45,7 @@ export class ServiceCourrierService {
         let new_api_host = this.routerParam(this.api_host,id);
         return this.httpClient.get<ServiceCourrierDto>(new_api_host,this.httpOptions);
     }
-    getThemes(regimeId:string) {
+        getRegimes(regimeId:string) {
         let new_api_host = this.routerParam(this.api_host,regimeId);
         return this.httpClient.get<RegimeDto[]>(new_api_host,this.httpOptions);
     }

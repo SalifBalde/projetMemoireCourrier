@@ -13,7 +13,7 @@
                 </ng-template>
             </p-toolbar>
 
-            <p-table #dt [value]="produits" [columns]="cols" responsiveLayout="scroll" [rows]="10" [globalFilterFields]="['libelle','description','status']" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"  selectionMode="multiple" [rowHover]="true" dataKey="id">
+            <p-table #dt [value]="produits" [columns]="cols" responsiveLayout="scroll" [rows]="10" [globalFilterFields]="['code-barre','libelle','prix','type-produit','theme']" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"  selectionMode="multiple" [rowHover]="true" dataKey="id">
                 <ng-template pTemplate="caption">
                     <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
                         <h5 class="m-0">Gestion des Produits</h5>
@@ -28,7 +28,6 @@
                         <th pSortableColumn="codeBarre">CodeBarre <p-sortIcon field="codeBarre"></p-sortIcon></th>
                         <th pSortableColumn="libelle">Libelle <p-sortIcon field="libelle"></p-sortIcon></th>
                         <th pSortableColumn="prix">Prix <p-sortIcon field="prix"></p-sortIcon></th>
-<!--                        <th pSortableColumn="description">Description <p-sortIcon field="description"></p-sortIcon></th>-->
                         <th pSortableColumn="themeLibelle">Theme <p-sortIcon field="themeLibelle"></p-sortIcon></th>
                         <th pSortableColumn="typeProduitLibelle">TypeProduit <p-sortIcon field="typeProduitLibelle"></p-sortIcon></th>
 
@@ -47,10 +46,7 @@
                         <td style=" min-width:15rem;">
                             {{produit.prix}}
                         </td>
-<!--                        <td style=" min-width:15rem;">-->
-<!--                            {{produit.description}}-->
-<!--                        </td>-->
-                        <td style=" min-width:15rem;">
+                         <td style=" min-width:15rem;">
                             {{produit.themeLibelle}}
                         </td>
                         <td style=" min-width:15rem;">

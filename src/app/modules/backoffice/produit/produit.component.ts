@@ -14,14 +14,11 @@ import {TypeProduitDto, TypeProduitService} from "../../../proxy/type-produits";
     providers: [MessageService],
 })
 export class ProduitComponent implements OnInit {
-    // selectedtypeProduit: Theme | undefined;
-    //selectedThemeId: number | null = null;
-    //selectedTypeProduitId: number | null = null;
-    //selectedtheme: Theme | undefined;
+
     disableSelect = new FormControl(false);
     form: FormGroup;
     themes: ThemeDto[] = [];
-    typesProduits: any[] = [];
+    typesProduits: TypeProduitDto[] = [];
     isModalOpen = false;
     produitDialog: boolean = false;
     deleteProduitDialog: boolean = false;
@@ -45,12 +42,11 @@ export class ProduitComponent implements OnInit {
         this.typesProduits=[];
         this.loadTypeProduits();
         this.cols = [
-            { field: 'codeBarre', header: 'codeBarre' },
+            { field: 'code-barre', header: 'code-barre' },
             { field: 'libelle', header: 'libelle' },
             { field: 'prix', header: 'prix' },
-            //{ field: 'description', header: 'description' },
-             { field: 'themeLibelle', header: 'themeLibelle' },
-             { field: 'typeProduitLibelle', header: 'typeProduitLibelle' },
+             { field: 'theme', header: 'theme' },
+             { field: 'type-produit', header: 'type-produit' },
         ];
         this.buildForm();
     }
@@ -65,7 +61,6 @@ export class ProduitComponent implements OnInit {
     loadTypeProduits() {
         this.typeProduitService.findAll().subscribe((data) => {
             this.typesProduits = data;
-            //console.log(this.typesProduits)
             //console.log(this.typesProduits)
         });
     }
