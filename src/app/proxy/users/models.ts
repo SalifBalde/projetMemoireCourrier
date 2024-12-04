@@ -1,12 +1,3 @@
-export interface CreateUpdateUserDto {
-    id?: string;
-    matricule?: string;
-    nom?: string;
-    prenom?: string;
-    departementId?: string;
-    email?:string;
-    active?: boolean;
-}
 
 export interface UserDto {
     id?: string;
@@ -15,7 +6,10 @@ export interface UserDto {
     prenom?: string;
     structureId?: string;
     caisseId?: string;
+    caisseLibelle?: string;
     structureLibelle?: string;
+    structureDrpLibelle?: string;
+    structureCode?: string;
     email?:string;
     active?: boolean;
 }

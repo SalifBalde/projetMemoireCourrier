@@ -158,7 +158,7 @@ export class CourrierOrdinaireComponent implements OnInit {
              poids: [ '', Validators.required],
              expediteurId: [ '', Validators.required],
              destinataireId: [ '', Validators.required],
-             paysDestinationId: [ '1', Validators.required],
+             paysDestinationId: [ 210, Validators.required],
              codeBarre: [{ value: '', disabled: true }],
              valeurDeclare: [{ value: '', disabled: true }] ,
              contenu: [ ''],
@@ -171,7 +171,7 @@ export class CourrierOrdinaireComponent implements OnInit {
              ar: [{ value: false, disabled: true }],
              express: [{ value: false, disabled: true }],
              statutCourrierId: ['1'],
-             paysOrigineId: ['1'],
+             paysOrigineId: [210],
              caisseId: [this.sessionService.getAgentAttributes().caisseId],
              structureDepotId: [this.sessionService.getAgentAttributes().structureId],
              totalMontant: [0],
@@ -333,7 +333,7 @@ export class CourrierOrdinaireComponent implements OnInit {
 
         if (regimeId === 1) {
           this.form.get('paysDestinationId')?.disable(); // Désactiver pour tout autre régime
-          this.form.get('paysDestinationId')?.setValue(1);
+          this.form.get('paysDestinationId')?.setValue(210);
 
         } else {
 

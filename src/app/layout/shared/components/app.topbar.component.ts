@@ -16,10 +16,9 @@ export class AppTopBarComponent implements OnInit{
     public userProfile: KeycloakProfile | null = null;
     fullname = "";
     structureLibelle = "";
+    caisseLibelle: string;
 
-    years: { label: string; value: number }[] = [];
 
-      annee: number | null = null;
 
     items: MenuItem[] = [];
 
@@ -43,9 +42,9 @@ export class AppTopBarComponent implements OnInit{
         { label: 'Logout', icon: 'pi pi-sign-out', command: () => { this.keycloak.logout(); } }
     ];
         this.structureLibelle = this.sessionService.getAgentAttributes().structureLibelle;
-        this.getAnnee();
-        this.annee = new Date().getFullYear();
-        this.choixAnnee(this.annee);
+        this.caisseLibelle = this.sessionService.getAgentAttributes().caisseLibelle;
+
+
         this.isLoggedIn = await this.keycloak.isLoggedIn();
 
         if (this.isLoggedIn) {
@@ -54,20 +53,6 @@ export class AppTopBarComponent implements OnInit{
         }
       }
 
-
-
-
-      choixAnnee(year: number) {
-        sessionStorage.setItem('annee', this.annee.toString());
-      }
-
-      getAnnee(): void {
-        const currentYear = new Date().getFullYear();
-        for (let i = 0; i < 3; i++) {
-          const year = currentYear - i;
-          this.years.push({ label: year.toString(), value: year });
-        }
-    }
 
       public login() {
         this.keycloak.login();
