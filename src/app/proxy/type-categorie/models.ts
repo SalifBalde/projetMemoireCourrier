@@ -1,10 +1,11 @@
-export interface typeCategorie {
-    id: string;
+
+export interface CreateUpdateTypeCategorieDto  {
+    id?: string;
     libelle?: string;
 
 }
 
-export interface TypeCatgorieDto {
+export interface TypeCategorieDto {
     id?: string;
     libelle?: string;
 

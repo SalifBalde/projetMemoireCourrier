@@ -91,7 +91,7 @@ import { UserDto } from 'src/app/proxy/users';
     }
 
     generatePdf(): void{
-        this.pdfService.generateAgentSalesReport(this.colis$).then(r => "pdf généré");
+       // this.pdfService.generateAgentSalesReport(this.colis$).then(r => "pdf généré");
   }
 
     isEmpty(){

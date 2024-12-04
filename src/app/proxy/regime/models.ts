@@ -1,12 +1,12 @@
-export  interface RegimeUpdatedto{
-    id?:string;
-    libelle?:string;
-}
 
-
-
-export  interface Regimedto{
+export interface CreateUpdateRegimeDto {
     id?: string;
     libelle?: string;
-    tarifs:any;
+
+}
+
+export interface RegimeDto {
+    id?: string;
+    libelle?: string;
+
 }

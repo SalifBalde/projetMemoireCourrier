@@ -8,7 +8,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 })
 export class StructureService {
   apiName = 'structure';
-  private api_host: string= environment.api_params + this.apiName;
+  private api_host: string= environment.api_host + this.apiName;
   private httpOptions = {
     headers: new HttpHeaders({
       'Content-Type':  'application/json',

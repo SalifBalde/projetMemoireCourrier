@@ -21,14 +21,14 @@ export class BackofficeMenuComponent implements OnInit {
                 ]
             },
             {
-                label: 'Gestion Colis',
+                label: 'Rapport Colis',
                 items: [
                     { label: 'Colis', icon: 'pi pi-fw pi-plus', routerLink: [''] },
                     { label: 'Mes Colis', icon: 'pi pi-fw pi-box', routerLink: [''] },
                 ]
             },
             {
-                label: 'Gestion Location',
+                label: 'Gestion Colis',
                 items: [
                     { label: 'Location', icon: 'pi pi-fw pi-plus', routerLink: [''] },
                     { label: 'Mes Locations', icon: 'pi pi-fw pi-folder', routerLink: [''] },
@@ -49,41 +49,51 @@ export class BackofficeMenuComponent implements OnInit {
                                 icon: 'pi pi-fw pi-angle-right',
                                 routerLink: ['/backoffice/produits']
                             },
+
                             {
-                                label: 'Poids',
-                                icon: 'pi pi-fw pi-angle-right',
-                                routerLink: ['/backoffice/poids']
+                                label: 'Type Produit', icon: 'pi pi-fw pi-angle-right', routerLink: ['/backoffice/type-produit']
                             },
                             {
-                                label: 'Distance',
+                                label: 'Partenaires',
                                 icon: 'pi pi-fw pi-angle-right',
-                                routerLink: ['/backoffice/distances']
-                            },{
-                                label: 'Tarif Produit',
-                                icon: 'pi pi-fw pi-angle-right',
-                                routerLink: ['/backoffice/tarifproduits']
-                            },
-                            {
-                                label: 'Tarif Poids',
-                                icon: 'pi pi-fw pi-angle-right',
-                                routerLink: ['/backoffice/tarifpoids']
-                            },
-                            {
-                                label: 'Type Véhicules',
-                                icon: 'pi pi-fw pi-angle-right',
-                                routerLink: ['/backoffice/typeVehicule']
-                            },
-                            {
-                                label: 'Véhicules',
-                                icon: 'pi pi-fw pi-angle-right',
-                                routerLink: ['/backoffice/vehicule']
-                            },
-                            {
-                                label: 'Distance Bureau',
-                                icon: 'pi pi-fw pi-angle-right',
-                                routerLink: ['/backoffice/distancebureau']
+                                routerLink: ['/backoffice/partenaires']
                             },
 
+                            {
+                                label: 'Themes',
+                                icon: 'pi pi-fw pi-angle-right',
+                                routerLink: ['/backoffice/themes']
+                            },
+                            {
+                                label: 'Zones',
+                                icon: 'pi pi-fw pi-angle-right',
+                                routerLink: ['/backoffice/zones']
+                            },
+                            {
+                                label: 'TypeCourriers',
+                                icon: 'pi pi-fw pi-angle-right',
+                                routerLink: ['/backoffice/typeCourriers']
+                            },
+                            {
+                                label: 'TypeCategories',
+                                icon: 'pi pi-fw pi-angle-right',
+                                routerLink: ['/backoffice/typeCategories']
+                            },
+                            {
+                                label: 'Regimes',
+                                icon: 'pi pi-fw pi-angle-right',
+                                routerLink: ['/backoffice/regimes']
+                            },
+                            {
+                                label: 'PoidsCourriers',
+                                icon: 'pi pi-fw pi-angle-right',
+                                routerLink: ['/backoffice/poidsCourriers']
+                            },
+                            {
+                                label: 'ServiceCourriers',
+                                icon: 'pi pi-fw pi-angle-right',
+                                routerLink: ['/backoffice/serviceCourriers']
+                            },
                         ]
                     },
 

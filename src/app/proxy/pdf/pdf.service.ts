@@ -2,261 +2,216 @@ import { Injectable } from '@angular/core';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import JsBarcode from 'jsbarcode';
-import {ColisDto} from "../colis";
 
 @Injectable({
-  providedIn: 'root',
+    providedIn: 'root',
 })
 export class PdfService {
-  constructor() {}
 
-  async generatePDF(data: any): Promise<void> {
-    const doc = new jsPDF();
-    await this.addHeader(doc);
-    this.addRecipientAndSenderInfo(doc, data);
-    this.addInvoiceDetails(doc, data);
-    this.addFooter(doc);
-    const fileName = 'Facture'+data.code+'.pdf'
-    doc.save(fileName);
-  }
+    generateAgentSalesReport(colis:any){}
 
-  private async addHeader(doc: jsPDF): Promise<void> {
-    // Load images
-    const logoLeft = await this.loadImage('assets/layout/images/laposte.jpeg');
-    const logoRight = await this.loadImage('assets/layout/images/logo.png');
-    // Add left logo
-    if (logoLeft) {
-      doc.addImage(logoLeft, 'PNG', 14, 10, 25, 25);
-    } else {
-      console.error('Logo gauche non téléchargé.');
-    }
-
-    // Add right logo
-    if (logoRight) {
-      doc.addImage(logoRight, 'PNG', 176, 10, 25, 25);
-    } else {
-      console.error('Logo droit non téléchargé.');
-    }
-
-    doc.setFontSize(20);
-    doc.setFont('helvetica', 'bold');
-    const title = 'Facture';
-    const titleWidth = doc.getTextWidth(title);
-    const pageWidth = doc.internal.pageSize.width;
-    const centerX = (pageWidth - titleWidth) / 2;
-    doc.text(title, centerX, 22);
-
-     // Add underline below the title
-  const titleY = 25; // Adjust the Y position for the underline
-  doc.setLineWidth(0.5);
-  doc.setDrawColor(0, 0, 139); // Line color
-  doc.line(centerX, titleY, centerX + titleWidth, titleY); // Draw line below title
-
-  }
-
-  private addRecipientAndSenderInfo(doc: jsPDF, data: any): void {
-    const pageWidth = doc.internal.pageSize.width;
-
-    // Add recipient's information on the left
-    doc.setFontSize(14);
-    doc.setFont('helvetica', 'normal');
-    doc.text(data.bureauDepotLibelle, 14, 42);
-    doc.setFontSize(12);
-    doc.text(`Expéditeur: ${data.nomClient}`, 14, 50);
-    doc.text(`Prénom: ${data.prenomDestinataire}`, 14, 55);
-    doc.text(`Addresse: ${data.adresseDestinataire}`, 14, 60);
-    doc.text(`Téléphone: ${data.telephoneDestinataire}`, 14, 65);
-
-    // Add sender's information on the right
-    doc.setFontSize(14);
-    doc.text(data.bureauDestinationLibelle, pageWidth - 14, 42, { align: 'right' });
-    doc.setFontSize(12);
-    doc.text(`Destinataire: ${data.prenomDestinataire} ${data.nomDestinataire}`, pageWidth - 14, 50, { align: 'right' });
-    doc.text(`Téléphone: ${data.telephoneDestinataire}`, pageWidth - 14, 55, { align: 'right' });
-    doc.text(`Adresse: ${data.adresseDestinataire}`, pageWidth - 14, 60, { align: 'right' });
-
-    // Add barcode in the middle
-    this.addBarcode(doc, data.code, (pageWidth - 50) / 2, 70, 50, 20);  // Adjusted size and position
-  }
-
-  private addInvoiceDetails(doc: jsPDF, data: any): void {
-    const tableColumn = ["Code", "Prénom destinataire", "Nom destinataire", "Montant", "Date d'envoi"];
-    const tableRows = [];
-
-    data.details.forEach((item, index) => {
-      const itemData = [
-        item.code,
-          item.prenomDestinataire,
-        item.nomDestinataire,
-        item.montant,
-          item.createdAt
-      ];
-      tableRows.push(itemData);
-    });
-
-    // Use autoTable from jspdf-autotable
-    (doc as any).autoTable({
-      head: [tableColumn],
-      body: tableRows,
-      startY: 100,
-      theme: 'striped',
-      headStyles: { fillColor: [0, 0, 139] },
-      styles: { fontSize: 12, halign: 'center' },
-    });
-
-    const finalY = (doc as any).autoTable.previous.finalY + 10;
-
-    // Add totals
-    doc.setFontSize(12);
-    doc.setFont('helvetica', 'normal');
-    doc.text(`Montant: ${data.montant} CFA`, 190, finalY, { align: "right" });
-    doc.text(`Livraison: ${data.fraisLivraison} CFA`, 190, finalY + 5, { align: "right" });
-    doc.text(`Enlevement: ${data.fraisEnlevement} CFA`, 190, finalY + 10, { align: "right" });
-
-    // Add total box
-    const totalBoxWidth = 40;
-    const totalBoxHeight = 10;
-    const totalBoxX = 196 - totalBoxWidth;
-    const totalBoxY = finalY + 12;
-
-    doc.setDrawColor(0, 0, 190);
-    doc.setFillColor(0, 0, 190);
-    doc.rect(totalBoxX, totalBoxY, totalBoxWidth, totalBoxHeight, 'FD');
-
-    doc.setFontSize(12);
-    doc.setTextColor(255, 255, 255);
-    doc.text(`Total: ${data.fraisLivraison + data.montant + data.fraisEnlevement} CFA`, totalBoxX + 2, totalBoxY + 7);
-
-    // Add payment information
-    doc.setDrawColor(0, 0, 139);
-    doc.setLineWidth(1);
-    doc.line(14, finalY + 25, 196, finalY + 25);
-
-    doc.setFontSize(12);
-    doc.setTextColor(0, 0, 139);
-    doc.text('Payment Information:', 14, finalY + 35);
-    doc.setFontSize(12);
-    doc.setTextColor(0, 0, 0);
-    doc.text('Payment Options: Counter', 14, finalY + 45);
-    doc.text('Payment Method: Wave', 14, finalY + 55);
-  }
-
-
-  async generateAgentSalesReport(data: ColisDto[]): Promise<void> {
-    const doc = new jsPDF();
-    await this.addHeader(doc);
-    this.addSalesByAgent(doc, data);
-    this.addFooter(doc);
-    doc.save('rapport_periodique.pdf');
-  }
-
-  private addHeaderReport1(doc: jsPDF, data: any): void {
-    // Title
-    doc.setFontSize(24);
-    doc.setFont('helvetica', 'bold');
-    doc.text('Rapport périodique', 14, 25);
-
-    // Subtitle with date range
-    doc.setFontSize(12);
-    doc.setFont('helvetica', 'normal');
-    doc.text(`Period: ${data.startDate} to ${data.endDate}`, 14, 35);
-
-    // Add a line below the title
-    doc.setLineWidth(1);
-    doc.setDrawColor(0, 0, 139);
-    doc.line(14, 40, doc.internal.pageSize.width - 14, 40);
-  }
-
-  private addSalesByAgent(doc: jsPDF, data: ColisDto[]): void {
-    doc.setFontSize(18);
-    doc.setFont('helvetica', 'bold');
-    doc.text('Liste Colis', 14, 50);
-
-    const tableColumn = ["Code", "Prénom destinataire", "Nom destinataire", "Montant", "Date d'envoi"];
-    const tableRows = [];
-
-    if (data && Array.isArray(data)) {
-      data.forEach((item: ColisDto) => {
-        if (item.code && item.prenomDestinataire && item.nomDestinataire && item.montant && item.createdAt) {
-          const itemData = [
-            item.code,
-            item.prenomDestinataire,
-            item.nomDestinataire,
-            `${item.montant} CFA`,
-              item.createdAt,
-          ];
-          tableRows.push(itemData);
+    _base64ToArrayBuffer(base64) {
+        var binary_string = base64.replace(/\\n/g, '');
+        binary_string = window.atob(base64);
+        var len = binary_string.length;
+        var bytes = new Uint8Array(len);
+        for (var i = 0; i < len; i++) {
+            bytes[i] = binary_string.charCodeAt(i);
         }
-      });
-
-      (doc as any).autoTable({
-        head: [tableColumn],
-        body: tableRows,
-        startY: 60,
-        theme: 'striped',
-        headStyles: { fillColor: [0, 0, 139], textColor: [255, 255, 255] },
-        styles: { fontSize: 12, halign: 'center' },
-        columnStyles: { 0: { cellWidth: 40 }, 1: { cellWidth: 30 }, 2: { cellWidth: 60 }, 3: { cellWidth: 30 }, 4: { cellWidth: 40 } }
-      });
-
-      // Summary
-      const totalSales = data.reduce((acc: number, item: any) => acc + item.montant, 0);
-      doc.setFontSize(12);
-      doc.setFont('helvetica', 'bold');
-      doc.text(`Total Sales: ${totalSales} CFA`, 190, (doc as any).autoTable.previous.finalY + 10, { align: 'right' });
-    } else {
-      console.error('Invalid sales data.');
+        return bytes.buffer;
     }
-  }
+    src: any;
 
+    ngOnInit(): void {
+        const doc = new jsPDF({ format: 'a4', orientation: 'l' });
 
+        const pageHeight =
+            doc.internal.pageSize.height || doc.internal.pageSize.getHeight();
+        const pageWidth =
+            doc.internal.pageSize.width || doc.internal.pageSize.getWidth();
+        console.log(pageHeight + ',' + pageWidth);
 
-  private addFooter(doc: jsPDF): void {
-    doc.setFontSize(10);
-    doc.setFont('helvetica', 'italic');
-    doc.setTextColor(0, 0, 139);
-    //doc.text('Company Information', 14, doc.internal.pageSize.height - 40);
-    doc.setFont('helvetica', 'normal');
-    doc.text('Groupe La Poste', 14, doc.internal.pageSize.height - 30);
-    doc.text('Address: Avenue Peytavin Dakar, Senegal', 14, doc.internal.pageSize.height - 25);
-    doc.text('Tel: +221 33 839 34 34', 14, doc.internal.pageSize.height - 20);
-    doc.text('Email: serviceclient@laposte.sn', 14, doc.internal.pageSize.height - 15);
-    doc.setFont('helvetica', 'italic');
-    doc.setTextColor(0, 0, 139);
-    doc.text('www.laposte.com', 14, doc.internal.pageSize.height - 10);
-  }
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(9);
 
-  private addBarcode(doc: jsPDF, text: string, x: number, y: number, width: number, height: number): void {
-    const canvas = document.createElement('canvas');
-    JsBarcode(canvas, text, {
-      format: 'CODE128',
-      displayValue: true,
-     // width: width / 100,  // Adjusted width for scaling
-     // height: height       // Adjusted height for scaling
-    });
+        const barcodeCanvas = document.createElement('canvas');
+        JsBarcode(barcodeCanvas, 'CV000189933SN', {
+            format: 'CODE128',
+            displayValue: true,
+            width: 1,
+            height: 25,
+        });
 
-    const barcodeImage = canvas.toDataURL('image/png');
-    doc.addImage(barcodeImage, 'PNG', x, y, width, height);
-  }
+        // Convertissez le canvas en Data URL
+        const barcodeImage = barcodeCanvas.toDataURL('image/png');
 
-  private loadImage(src: string): Promise<string> {
-    return new Promise((resolve, reject) => {
-      const img = new Image();
-      img.crossOrigin = 'Anonymous';
-      img.onload = () => {
-        const canvas = document.createElement('canvas');
-        canvas.width = img.width;
-        canvas.height = img.height;
-        const ctx = canvas.getContext('2d');
-        if (ctx) {
-          ctx.drawImage(img, 0, 0);
-          resolve(canvas.toDataURL('image/png'));
-        } else {
-          reject(new Error('Failed to get canvas context'));
-        }
-      };
-      img.onerror = () => reject(new Error('Image failed to load: ' + src));
-      img.src = src;
-    });
-  }
+        // Ajoutez le code-barres au PDF
+        doc.addImage(barcodeImage, 'PNG', 190, 63, 80, 30); // Position (x, y) et dimensions (width, height)
+
+        // Ajoutez d'autres contenus comme avant
+        doc.text(
+            'CUSTOMS DECLARATION                        CN23',
+            pageHeight / 1,
+            45,
+            {
+                align: 'left',
+            }
+        );
+        doc.line(pageWidth - 43, 44, pageWidth - 43, 53);
+        doc.line(pageWidth - 20, 60, pageWidth - 20, 68);
+        doc.text('No. of item (barcode if any)', pageHeight / 1, 50, {
+            align: 'left',
+        });
+        doc.text('DECLARATION EN DOUANE', pageHeight / 1, 58, {
+            align: 'left',
+        });
+        doc.text("N° de l'envoie(code à barres ,s'il existe)", pageHeight / 1, 65, {
+            align: 'left',
+        });
+
+        doc.text('FROM \nDe', pageHeight / 20, 49, {
+            align: 'right',
+        });
+        doc.text('Name BABACAR FALL', pageHeight / 4, 49, {
+            align: 'right',
+        });
+        doc.text('Adresse MEDICAL RUE 35* 28 DAKAR SENEGAL', pageHeight / 2.3, 57, {
+            align: 'right',
+        });
+        doc.text('Adresse (count)', pageHeight / 5, 63, {
+            align: 'right',
+        });
+        doc.text(
+            'PostCode 10500                         City DAKAR',
+            pageHeight / 2.6,
+            73,
+            {
+                align: 'right',
+            }
+        );
+        doc.text(
+            'State SENEGAL                        COUNTRY SN(Sénégal)',
+            pageHeight / 2.2,
+            78,
+            {
+                align: 'right',
+            }
+        );
+        doc.text('Name CORONIKA Wave ', pageHeight / 4.1, 83, {
+            align: 'right',
+        });
+        doc.text(
+            'Adresse 787 LAUREL WALK APT J, GOLETA,CA 93117 USA ',
+            pageHeight / 2,
+            88,
+            {
+                align: 'right',
+            }
+        );
+        doc.text('Adresse (count) ', pageHeight / 5.5, 94, {
+            align: 'right',
+        });
+        doc.text('Impoter reference', pageHeight / 1, 94, {
+            align: 'center',
+        });
+        doc.text('Impoter telephone', pageHeight / 1, 103, {
+            align: 'center',
+        });
+        doc.text(
+            'PostCode 93117                         City DAKAR ',
+            pageHeight / 2.6,
+            99,
+            {
+                align: 'right',
+            }
+        );
+        doc.text(
+            'State USA                                          COUNTRY US(Stats-Unis)                       ',
+            pageHeight / 1.7,
+            103,
+            {
+                align: 'right',
+            }
+        );
+        doc.text('Detailed description of contents(1) ', pageHeight / 3, 109, {
+            align: 'right',
+        });
+        doc.text('Quality(2) ', pageHeight / 2, 109, { align: 'right' });
+        doc.text('Net Weight(3) ', pageHeight / 1.5, 109, { align: 'right' });
+        doc.text('Valeur(5) ', pageHeight / 1.2, 109, { align: 'right' });
+        doc.text('For commercial items only ', pageHeight / 1, 108, {
+            align: 'left',
+        });
+        doc.text('HS tarif numner(7) ', pageHeight / 1, 113, { align: 'left' });
+        doc.text('Contry of Origin of goods(8)', pageHeight / 3, 113, {
+            align: 'right',
+        });
+        doc.text('PATALON ', pageHeight / 7, 118, { align: 'left' });
+        doc.text('1', pageHeight / 2, 118, { align: 'left' });
+        doc.text('3.500', pageHeight / 1.5, 118, { align: 'left' });
+        doc.text('620343', pageHeight / 1, 118, { align: 'left' });
+        doc.text('1', pageHeight / 2, 118, { align: 'left' });
+
+        doc.text('To A', pageHeight / 22, 83, {
+            align: 'right',
+        });
+
+        doc.setLineWidth(0.5);
+        doc.line(10, 46, 10, 205);
+        doc.line(287, 205, 287, 90);
+        doc.setLineHeightFactor(0.5);
+
+        doc.line(0, 46, pageWidth - 110, 46);
+        doc.line(10, 53, pageWidth - 140, 53);
+        doc.line(pageWidth - 140, 46, pageWidth - 140, 60);
+        doc.line(10, 60, pageWidth - 110, 60);
+        doc.line(10, 69, pageWidth - 110, 69);
+        doc.line(10, 75, pageWidth - 110, 75);
+        doc.line(0, 79, pageWidth - 110, 79);
+        doc.line(10, 85, pageWidth - 110, 85);
+        doc.line(10, 90, pageWidth - 10, 90);
+        doc.line(10, 95, pageWidth - 110, 95);
+        doc.line(187, 97, pageWidth - 10, 97);
+        doc.line(10, 100, pageWidth - 110, 100);
+        doc.line(0, 105, pageWidth - 10, 105);
+        doc.line(10, 115, pageWidth - 10, 115);
+        doc.line(10, 120, pageWidth - 10, 120);
+        doc.line(10, 125, pageWidth - 10, 125);
+        doc.line(10, 130, pageWidth - 10, 130);
+        doc.line(10, 135, pageWidth - 10, 135);
+        doc.line(10, 140, pageWidth - 10, 140);
+        doc.line(10, 150, pageWidth - 10, 150);
+        doc.line(10, 205, pageWidth - 10, 205);
+        doc.line(10, 200, pageWidth - 100, 200);
+        doc.line(pageWidth - 220, 150, pageWidth - 220, 105);
+        doc.line(pageWidth - 180, 150, pageWidth - 180, 105);
+        doc.line(pageWidth - 140, 150, pageWidth - 140, 105);
+        doc.line(pageWidth - 100, 200, pageWidth - 100, 105);
+        doc.line(pageWidth - 50, 140, pageWidth - 50, 105); //
+        doc.line(197, 110, pageWidth - 10, 110);
+        doc.line(pageWidth - 110, 46, pageWidth - 110, 105); //ligne fermante Milieu
+        doc.line(10, 164, pageWidth - 10, 164);
+        doc.line(10, 184, pageWidth - 100, 184);
+        doc.line(197, 177, pageWidth - 90, 177);
+        doc.line(197, 187, pageWidth - 10, 187);
+
+        //Carre
+        doc.rect(10, 160, 5, 4);
+        doc.rect(10, 155, 5, 9);
+        doc.rect(60, 160, 5, 4);
+        doc.rect(60, 155, 5, 9);
+        doc.rect(60, 150, 5, 9);
+        doc.rect(130, 150, 5, 6);
+        //
+        doc.rect(60, 184, 5, 5);
+        doc.rect(10, 184, 5, 4);
+        doc.rect(117, 184, 5, 6);
+        doc.line(pageWidth - 237, 200, pageWidth - 237, 185);
+        doc.line(pageWidth - 180, 200, pageWidth - 180, 185);
+        // generate
+        let pdf = doc.output('datauristring', { filename: 'RAB' });
+        let uri = pdf.split(',')[1];
+        console.log(uri);
+        this.src = this._base64ToArrayBuffer(uri);
+    }
 }

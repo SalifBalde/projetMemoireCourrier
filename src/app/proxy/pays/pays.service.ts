@@ -1,15 +1,15 @@
 import {Injectable} from "@angular/core";
-import {environment} from "../../../environments/environment";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {CategorieDto} from "../categorie";
 import {Paysdto} from "./models";
+import {Observable} from "rxjs";
+import {environment} from "../../../environments/environment";
 
 @Injectable({
     providedIn: 'root',
 })
 
 export  class PaysService{
-    private api_host = `${environment.api_host}categorieCourrier`;
+    private api_host = `${environment.api_host}client`;
     myToken = sessionStorage.getItem("token");
     private httpOptions = {
         headers: new HttpHeaders({
@@ -20,10 +20,9 @@ export  class PaysService{
 
     constructor(private readonly httpClient : HttpClient) { }
 
-    findAll() {
+
+
+    findAll(): Observable<Paysdto[]> {
         return this.httpClient.get<Paysdto[]>(environment.api_host+'pays', this.httpOptions);
     }
-
-
-
 }

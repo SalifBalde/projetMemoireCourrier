@@ -51,7 +51,7 @@ export class ColisDetailsComponent  implements OnInit{
     }
 
     generatePdf() : void{
-        this.pdfService.generatePDF(this.colis);
+     //   this.pdfService.generatePDF(this.colis);
     }
 
 }
