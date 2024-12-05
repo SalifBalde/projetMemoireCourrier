@@ -7,12 +7,12 @@ import { StructureDto, StructureService } from 'src/app/proxy/structures';
 import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { SessionService } from 'src/app/proxy/auth/Session.service';
 import { Paysdto, PaysService } from 'src/app/proxy/pays';
-import { Regimedto, RegimeService } from 'src/app/proxy/regime';
+import {  RegimeDto, RegimeService } from 'src/app/proxy/regime';
 import { CategorieDto, CategorieService } from 'src/app/proxy/categorie';
 import { TarifCourrierService } from 'src/app/proxy/tarif-courrier';
 import { TarifServiceService } from 'src/app/proxy/TarifService';
 import { HttpErrorResponse } from '@angular/common/http';
-import { CourrierCreateUpdateDto, CourrierService } from 'src/app/proxy/courrier';
+import {  CourrierCreateUpdateDto, CourrierService } from 'src/app/proxy/courrier';
 import { StockDto, StockService } from 'src/app/proxy/stock';
 
 @Component({
@@ -29,9 +29,7 @@ export class CourrierOrdinaireComponent implements OnInit {
     montant = 0;
     pays$: Paysdto[];
 
-    clients: ClientDto[] = [{
-        id: "1", nom: "mamadou diokou", telephone: "773778825"
-    }];
+    clients: ClientDto[] = [];
     courrier : CourrierCreateUpdateDto = new CourrierCreateUpdateDto();
     modesPaiement: any;
     totalMontant: number = 0;
@@ -41,7 +39,7 @@ export class CourrierOrdinaireComponent implements OnInit {
     fraisAr: number=0;
     fraisExpress: number = 0;
     fraisVd: number = 0;
-    regime$: Regimedto[];
+    regime$: RegimeDto[];
     categorie$: CategorieDto[];
     structure$: StructureDto[];
     stocksTimbre$: StockDto[];
@@ -54,6 +52,7 @@ export class CourrierOrdinaireComponent implements OnInit {
     selectedQuantite: number;
     numberOfItems: any;
     selectedTimbre: any;
+    label: string = "RR";
 
 
     constructor(
@@ -83,9 +82,6 @@ export class CourrierOrdinaireComponent implements OnInit {
            // this.cni = params['cni'];
         });
 
-        this.categorieService.findAll().subscribe((result) => {
-            this.categorie$ = result;
-        });
 
         this.paysService.findAll().subscribe(
             (result) => {
@@ -99,11 +95,6 @@ export class CourrierOrdinaireComponent implements OnInit {
             }
         );
 
-        this.categorieService.findAll().subscribe(
-            (result) => {
-                this.categorie$ = result;
-            }
-        );
 
         this.modePaiementService.findAll().subscribe(
             (result) => {
@@ -137,7 +128,7 @@ export class CourrierOrdinaireComponent implements OnInit {
    // this.formClient.get('telephone')?.valueChanges.subscribe(() => this.searchClient());
    this.form.get('poids')?.valueChanges.subscribe((value) => this.poidsChange(value));
    this.form.get('paysDestinationId')?.valueChanges.subscribe((value) => this.paysChange(value));
-
+   this.getCatgories(this.form.get('regimeId').value);
 
     }
 
@@ -148,13 +139,31 @@ export class CourrierOrdinaireComponent implements OnInit {
         return totalMontant === valeurTimbre ? null : { montantMismatch: true };
     }
 
+
+    getAllDestinataire(){
+        const paysId = this.form.get('paysDestinationId').value;
+        this.courrierService.getAllDestinataires(this.client.id, paysId).subscribe(
+            (result) => {
+                this.clients = result;
+            }
+        );
+
+    }
+
     choisirDestinataire(client:ClientDto){
         this.destinataire = client;
+        this.destinataireDialog = false;
+        this.form.patchValue({
+            destinataireId: client.id
+          });
+      //  this.form.updateValueAndValidity();
+
+        console.log(this.form.value);
     }
     buildForm() {
         this.form = this.fb.group({
              modePaiementId: [ '', Validators.required],
-             regimeId: [ '', Validators.required],
+             regimeId: [ 1, Validators.required],
              poids: [ '', Validators.required],
              expediteurId: [ '', Validators.required],
              destinataireId: [ '', Validators.required],
@@ -165,15 +174,15 @@ export class CourrierOrdinaireComponent implements OnInit {
              timbreId: [ ''],
              typeId: [ '1'],
              quantite: [ '1'],
-             typeCategorie: [ ''],
+             categorieId: [ '',Validators.required],
              typeCourrierId:[ '1'],
              recommande: [{ value: false, disabled: true }],
              ar: [{ value: false, disabled: true }],
              express: [{ value: false, disabled: true }],
              statutCourrierId: ['1'],
              paysOrigineId: [210],
-             caisseId: [this.sessionService.getAgentAttributes().caisseId],
-             structureDepotId: [this.sessionService.getAgentAttributes().structureId],
+            caisseId: [this.sessionService.getAgentAttributes().caisseId, Validators.required],
+             structureDepotId: [this.sessionService.getAgentAttributes().structureId, Validators.required],
              totalMontant: [0],
              valeurTimbre: [0],
         },
@@ -210,6 +219,7 @@ export class CourrierOrdinaireComponent implements OnInit {
 
     openDestinataire() {
         this.destinataireDialog = true;
+        this.getAllDestinataire();
     }
 
 
@@ -217,7 +227,7 @@ export class CourrierOrdinaireComponent implements OnInit {
      searchClient(): void {
         const keyword = this.formClient.get('telephone').value;
 
-        if (keyword?.length > 3) {
+        if (keyword?.length > 8) {
             this.loading = true;
             this.client = {};
             this.clientService.searchClient(keyword).subscribe(
@@ -257,10 +267,11 @@ export class CourrierOrdinaireComponent implements OnInit {
      //   return taxeTotale;
       }
 
+
     searchDestinataire(): void {
         const keyword = this.formDestinataire.get('telephone').value;
 
-        if (keyword?.length > 3) {
+        if (keyword?.length > 8) {
             this.loading = true;
             this.destinataire = {};
             this.clientService.searchClient(keyword).subscribe(
@@ -342,9 +353,21 @@ export class CourrierOrdinaireComponent implements OnInit {
 
         }
         this.form.updateValueAndValidity();
+
+        this.getCatgories(regimeId)
       }
 
 
+
+
+      getCatgories(regimeId: number){
+        this.categorieService.getAllByRegimeAndType(regimeId,1).subscribe(
+            (result) => {
+                this.categorie$ = result;
+            }
+        );
+
+    }
       updateServiceState(typeId: string) {
         const formControls = this.form.controls;
 
@@ -369,6 +392,8 @@ export class CourrierOrdinaireComponent implements OnInit {
             this.fraisAr = 0;
             this.fraisExpress = 0;
             this.fraisRecommande = 0;
+            this.totalMontant = this.montant;
+            this.label = "RR";
             break;
 
           case '2':
@@ -381,16 +406,22 @@ export class CourrierOrdinaireComponent implements OnInit {
             formControls['codeBarre'].setValidators(Validators.required);
             this.fraisAr = 0;
             this.fraisExpress = 0;
+            this.label = "RR";
             break;
 
           case '3':
             formControls['recommande'].setValue(true);
-            formControls['ar'].setValue(true);
-            formControls['express'].setValue(true);
+            formControls['ar'].setValue(false);
+            formControls['ar'].enable();
+            formControls['express'].setValue(false);
+            formControls['express'].enable();
             formControls['valeurDeclare'].enable();
             formControls['valeurDeclare'].setValidators(Validators.required);
             formControls['codeBarre'].enable();
             formControls['codeBarre'].setValidators(Validators.required);
+            this.fraisAr = 0;
+            this.fraisExpress = 0;
+            this.label="VV"
             break;
 
           default:
@@ -426,7 +457,7 @@ export class CourrierOrdinaireComponent implements OnInit {
         if (value > 0 && paysDestinationId > 0) {
           this.taxeCourrierService.getTarif(paysDestinationId, value).subscribe((result) => {
             this.montant = result;
-            this.totalMontant = +this.montant; // Met à jour le montant total
+            this.totalMontant = +this.montant + this.fraisRecommande; // Met à jour le montant total
           });
         } else {
           this.montant = 0;
@@ -444,6 +475,7 @@ export class CourrierOrdinaireComponent implements OnInit {
         this.form.value.userId = this.sessionService.getAgentAttributes().id;
         this.form.value.montant = this.totalMontant;
         this.form.value.details = this.courrier.details;
+        this.form.value.codeBarre = this.label+this.form.get('codeBarre')?.value+"SN";
         this.loading = true;
     this.courrierService.save(this.form.value).subscribe(
                 (result) => {

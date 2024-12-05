@@ -9,7 +9,10 @@ export class CustomCurrencyPipe implements PipeTransform {
 
   constructor(private currencyPipe: CurrencyPipe) {}
 
-  transform(value: number, currencyCode: string = 'XOF', display: 'code' | 'symbol' | 'symbol-narrow' | boolean = 'symbol', digitsInfo?: string, locale?: string): string | null {
-    return this.currencyPipe.transform(value, currencyCode, display, digitsInfo, locale);
+  transform(value: number): string {
+    if (value == null) return '';
+    // Conversion en entier sans décimale
+    const integerValue = Math.round(value);
+    return `${integerValue} CFA`;
   }
 }

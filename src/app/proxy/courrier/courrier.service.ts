@@ -2,6 +2,7 @@ import { environment } from 'src/environments/environment';
 import type { CourrierCreateUpdateDto, CourrierDto } from './models';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { ClientDto } from '../client';
 
 @Injectable({
   providedIn: 'root',
@@ -23,6 +24,10 @@ export class CourrierService {
   return this.httpClient.get<[CourrierDto]>(this.api_host,this.httpOptions);
 }
 
+getAllDestinataires(clientId:string, destinationId:string) {
+    let new_api_host = this.routerParam(this.api_host,'client',clientId,'destination', destinationId);
+  return this.httpClient.get<ClientDto[]>(new_api_host,this.httpOptions);
+}
   save(item: CourrierCreateUpdateDto)
 {
   return this.httpClient.post(this.api_host,item,this.httpOptions);
@@ -50,7 +55,7 @@ getOne(id:string)
   return this.httpClient.get<CourrierDto>(new_api_host,this.httpOptions);
 }
 
-routerParam(host:string, param: string){
-  return host + "/" + param;
-}
+private routerParam(baseUrl: string, ...params: string[]) {
+    return `${baseUrl}/${params.join('/')}`;
+  }
 }

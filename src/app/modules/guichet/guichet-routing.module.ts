@@ -17,7 +17,6 @@ const routes: Routes = [
 
     ],
   },
-  { path: 'search-client/:id', loadChildren: () => import('./search-client/search-client.module').then(m => m.SearchClientModule) },
   { path: 'colisDetails/:id', loadChildren: () => import('./colis-details/colis-details.module').then(m => m.ColisDetailsModule) },
   { path: 'rapport', loadChildren: () => import('./rapport-agent/rapport-agent.module').then(m => m.RapportAgentModule) },
   { path: 'rapport-criteres', loadChildren: () => import('./rapport-criteres/rapport-criteres.module').then(m => m.RapportCriteresModule) },

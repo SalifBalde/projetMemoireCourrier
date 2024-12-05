@@ -22,12 +22,13 @@ import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { CalendarModule } from 'primeng/calendar';
 import { StepperModule } from 'primeng/stepper';
-
+import { KeyFilterModule } from 'primeng/keyfilter';
+import { CustomCurrencyPipe } from 'src/app/pipes/custom-currency.pipe';
 
 // shared module c'est ici qu'on va mettre toutes les composants communs à toutes les parties de l'application
 
 @NgModule({
-    declarations: [],
+    declarations: [CustomCurrencyPipe],
     exports: [
         InputTextModule,
         BadgeModule,
@@ -52,6 +53,8 @@ import { StepperModule } from 'primeng/stepper';
         CalendarModule,
         FormsModule,
         StepperModule,
+        KeyFilterModule,
+        CustomCurrencyPipe,
         CommonModule
     ],
     imports: [],

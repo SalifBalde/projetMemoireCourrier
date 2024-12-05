@@ -8,5 +8,7 @@ export interface CreateUpdateRegimeDto {
 export interface RegimeDto {
     id?: string;
     libelle?: string;
+    tarifs?: any;
+
 
 }

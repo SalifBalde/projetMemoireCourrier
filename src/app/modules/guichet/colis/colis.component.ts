@@ -7,13 +7,14 @@ import { StructureDto, StructureService } from 'src/app/proxy/structures';
 import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { SessionService } from 'src/app/proxy/auth/Session.service';
 import { Paysdto, PaysService } from 'src/app/proxy/pays';
-import { Regimedto, RegimeService } from 'src/app/proxy/regime';
+import {  RegimeDto, RegimeService } from 'src/app/proxy/regime';
 import { CategorieDto, CategorieService } from 'src/app/proxy/categorie';
 import { TarifCourrierService } from 'src/app/proxy/tarif-courrier';
 import { TarifServiceService } from 'src/app/proxy/TarifService';
 import { HttpErrorResponse } from '@angular/common/http';
-import { CourrierCreateUpdateDto, CourrierService } from 'src/app/proxy/courrier';
+import {  CourrierCreateUpdateDto, CourrierService } from 'src/app/proxy/courrier';
 import { StockDto, StockService } from 'src/app/proxy/stock';
+import { TarifColisService } from 'src/app/proxy/tarif-colis';
 
 @Component({
     selector: 'app-colis',
@@ -39,7 +40,7 @@ export class ColisComponent implements OnInit {
     fraisAr: number=0;
     fraisExpress: number = 0;
     fraisVd: number = 0;
-    regime$: Regimedto[];
+    regime$: RegimeDto[];
     categorie$: CategorieDto[];
     structure$: StructureDto[];
     stocksTimbre$: StockDto[];
@@ -52,6 +53,7 @@ export class ColisComponent implements OnInit {
     selectedQuantite: number;
     numberOfItems: any;
     selectedTimbre: any;
+    label: string = "RR";
 
 
     constructor(
@@ -64,7 +66,7 @@ export class ColisComponent implements OnInit {
         private  sessionService: SessionService,
         private courrierService : CourrierService,
         private tarifService: TarifServiceService,
-        private taxeCourrierService:TarifCourrierService,
+        private taxeCourrierService:TarifColisService,
         private stocksService: StockService,
         private fb: FormBuilder,
         private modePaiementService:ModePaiementService,
@@ -74,16 +76,9 @@ export class ColisComponent implements OnInit {
     ngOnInit(): void {
 
         this.route.params.subscribe((params: Params) => {
-            //this.id = params['id'];
-          //  this.telephone = params['telephone'];
-           // this.nom = params['nom'];
-           // this.prenom = params['prenom'];
-           // this.cni = params['cni'];
+
         });
 
-        this.categorieService.findAll().subscribe((result) => {
-            this.categorie$ = result;
-        });
 
         this.paysService.findAll().subscribe(
             (result) => {
@@ -97,11 +92,6 @@ export class ColisComponent implements OnInit {
             }
         );
 
-        this.categorieService.findAll().subscribe(
-            (result) => {
-                this.categorie$ = result;
-            }
-        );
 
         this.modePaiementService.findAll().subscribe(
             (result) => {
@@ -135,7 +125,7 @@ export class ColisComponent implements OnInit {
    // this.formClient.get('telephone')?.valueChanges.subscribe(() => this.searchClient());
    this.form.get('poids')?.valueChanges.subscribe((value) => this.poidsChange(value));
    this.form.get('paysDestinationId')?.valueChanges.subscribe((value) => this.paysChange(value));
-
+   this.getCatgories(this.form.get('regimeId').value);
 
     }
 
@@ -146,32 +136,50 @@ export class ColisComponent implements OnInit {
         return totalMontant === valeurTimbre ? null : { montantMismatch: true };
     }
 
+
+    getAllDestinataire(){
+        const paysId = this.form.get('paysDestinationId').value;
+        this.courrierService.getAllDestinataires(this.client.id, paysId).subscribe(
+            (result) => {
+                this.clients = result;
+            }
+        );
+
+    }
+
     choisirDestinataire(client:ClientDto){
         this.destinataire = client;
+        this.destinataireDialog = false;
+        this.form.patchValue({
+            destinataireId: client.id
+          });
+      //  this.form.updateValueAndValidity();
+
+        console.log(this.form.value);
     }
     buildForm() {
         this.form = this.fb.group({
              modePaiementId: [ '', Validators.required],
-             regimeId: [ '', Validators.required],
+             regimeId: [ 1, Validators.required],
              poids: [ '', Validators.required],
              expediteurId: [ '', Validators.required],
              destinataireId: [ '', Validators.required],
-             paysDestinationId: [ '1', Validators.required],
-             codeBarre: [{ value: '', disabled: true }],
+             paysDestinationId: [ 210, Validators.required],
+             codeBarre: [{ value: '', disabled: false }, Validators.required],
              valeurDeclare: [{ value: '', disabled: true }] ,
              contenu: [ ''],
              timbreId: [ ''],
              typeId: [ '1'],
              quantite: [ '1'],
-             typeCategorie: [ ''],
-             typeCourrierId:[ '1'],
-             recommande: [{ value: false, disabled: true }],
-             ar: [{ value: false, disabled: true }],
-             express: [{ value: false, disabled: true }],
+             categorieId: [ '',Validators.required],
+             typeCourrierId:[ '2'],
+             recommande: [{ value: true, disabled: true }],
+             //ar: [{ value: false, disabled: true }],
+             //express: [{ value: false, disabled: true }],
              statutCourrierId: ['1'],
-             paysOrigineId: ['1'],
-             caisseId: [this.sessionService.getAgentAttributes().caisseId],
-             structureDepotId: [this.sessionService.getAgentAttributes().structureId],
+             paysOrigineId: [210],
+            caisseId: [this.sessionService.getAgentAttributes().caisseId, Validators.required],
+             structureDepotId: [this.sessionService.getAgentAttributes().structureId, Validators.required],
              totalMontant: [0],
              valeurTimbre: [0],
         },
@@ -208,6 +216,7 @@ export class ColisComponent implements OnInit {
 
     openDestinataire() {
         this.destinataireDialog = true;
+        this.getAllDestinataire();
     }
 
 
@@ -215,7 +224,7 @@ export class ColisComponent implements OnInit {
      searchClient(): void {
         const keyword = this.formClient.get('telephone').value;
 
-        if (keyword?.length > 3) {
+        if (keyword?.length > 8) {
             this.loading = true;
             this.client = {};
             this.clientService.searchClient(keyword).subscribe(
@@ -258,7 +267,7 @@ export class ColisComponent implements OnInit {
     searchDestinataire(): void {
         const keyword = this.formDestinataire.get('telephone').value;
 
-        if (keyword?.length > 3) {
+        if (keyword?.length > 8) {
             this.loading = true;
             this.destinataire = {};
             this.clientService.searchClient(keyword).subscribe(
@@ -285,7 +294,7 @@ export class ColisComponent implements OnInit {
     }
 
     calculateTariff() {
-        const regimeId = this.form.get('regimeId')?.value;
+        /* const regimeId = this.form.get('regimeId')?.value;
         const isRecommande = this.form.get('recommande')?.value;
         const isAr = this.form.get('ar')?.value;
         const isExpress = this.form.get('express')?.value;
@@ -300,8 +309,8 @@ export class ColisComponent implements OnInit {
             if (isRecommande) {
               const recommandeTarif = selectedRegime.tarifs.find((tarif) => tarif.serviceLibelle === "Recommander");
               if (recommandeTarif){
-                this.fraisRecommande = recommandeTarif.taxe;
-                totalTax += recommandeTarif.taxe;
+               // this.fraisRecommande = recommandeTarif.taxe;
+               // totalTax += recommandeTarif.taxe;
               }
             }
             if (isAr) {
@@ -323,7 +332,7 @@ export class ColisComponent implements OnInit {
             this.form.get('totalMontant')?.setValue(this.totalMontant);
           //  this.form.updateValueAndValidity();
           }
-        }
+        } */
       }
 
     choixRegime() {
@@ -331,7 +340,7 @@ export class ColisComponent implements OnInit {
 
         if (regimeId === 1) {
           this.form.get('paysDestinationId')?.disable(); // Désactiver pour tout autre régime
-          this.form.get('paysDestinationId')?.setValue(1);
+          this.form.get('paysDestinationId')?.setValue(210);
 
         } else {
 
@@ -340,9 +349,21 @@ export class ColisComponent implements OnInit {
 
         }
         this.form.updateValueAndValidity();
+
+        this.getCatgories(regimeId)
       }
 
 
+
+
+      getCatgories(regimeId: number){
+        this.categorieService.getAllByRegimeAndType(regimeId,2).subscribe(
+            (result) => {
+                this.categorie$ = result;
+            }
+        );
+
+    }
       updateServiceState(typeId: string) {
         const formControls = this.form.controls;
 
@@ -359,14 +380,16 @@ export class ColisComponent implements OnInit {
 
         switch (typeId) {
           case '1':
-            formControls['recommande'].setValue(false);
+            formControls['recommande'].setValue(true);
+            formControls['ar'].enable();
             formControls['ar'].setValue(false);
+            formControls['express'].enable();
             formControls['express'].setValue(false);
-            formControls['valeurDeclare'].setValue('0');
-            formControls['recommande'].setValue('0');
+            formControls['codeBarre'].enable();
+            formControls['codeBarre'].setValidators(Validators.required);
             this.fraisAr = 0;
             this.fraisExpress = 0;
-            this.fraisRecommande = 0;
+            this.label = "RR";
             break;
 
           case '2':
@@ -379,6 +402,7 @@ export class ColisComponent implements OnInit {
             formControls['codeBarre'].setValidators(Validators.required);
             this.fraisAr = 0;
             this.fraisExpress = 0;
+            this.label = "RR";
             break;
 
           case '3':
@@ -389,6 +413,7 @@ export class ColisComponent implements OnInit {
             formControls['valeurDeclare'].setValidators(Validators.required);
             formControls['codeBarre'].enable();
             formControls['codeBarre'].setValidators(Validators.required);
+            this.label="VV"
             break;
 
           default:
@@ -442,6 +467,7 @@ export class ColisComponent implements OnInit {
         this.form.value.userId = this.sessionService.getAgentAttributes().id;
         this.form.value.montant = this.totalMontant;
         this.form.value.details = this.courrier.details;
+        this.form.value.codeBarre = this.label+this.form.get('codeBarre')?.value+"SN";
         this.loading = true;
     this.courrierService.save(this.form.value).subscribe(
                 (result) => {

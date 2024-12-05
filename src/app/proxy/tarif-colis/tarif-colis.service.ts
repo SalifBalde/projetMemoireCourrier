@@ -1,13 +1,13 @@
 import { environment } from 'src/environments/environment';
-import type { CreateUpdateThemeDto, ThemeDto } from './models';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { TarifCourrierCreateUpdateDto, TarifCourrierDto } from './models';
 
 @Injectable({
   providedIn: 'root',
 })
-export class ThemeService {
-  apiName = 'theme';
+export class TarifColisService {
+  apiName = 'tarif-poids-colis';
   private api_host: string= environment.api_host + this.apiName;
   myToken = sessionStorage.getItem("token");
   private httpOptions = {
@@ -20,10 +20,12 @@ export class ThemeService {
 
   findAll()
 {
-  return this.httpClient.get<[ThemeDto]>(this.api_host,this.httpOptions);
+  return this.httpClient.get<[TarifCourrierDto]>(this.api_host,this.httpOptions);
 }
 
-  save(item: ThemeDto)
+
+
+  save(item: TarifCourrierCreateUpdateDto)
 {
   return this.httpClient.post(this.api_host,item,this.httpOptions);
 }
@@ -32,25 +34,31 @@ delete(id:string)
   let new_api_host = this.routerParam(this.api_host,id);
   return this.httpClient.delete(new_api_host,this.httpOptions);
 }
-update(id:string, item:ThemeDto)
+update(id:string, item:TarifCourrierCreateUpdateDto)
 {
   let new_api_host = this.routerParam(this.api_host,id);
-  return this.httpClient.put<ThemeDto>(new_api_host,item,this.httpOptions);
+  return this.httpClient.put<TarifCourrierDto>(new_api_host,item,this.httpOptions);
 }
 
 getOneById(id:string)
 {
   let new_api_host = this.routerParam(this.api_host,id);
-  return this.httpClient.get<ThemeDto>(new_api_host,this.httpOptions);
+  return this.httpClient.get<TarifCourrierDto>(new_api_host,this.httpOptions);
 }
 
 getOne(id:string)
 {
   let new_api_host = this.routerParam(this.api_host+'/getByreference',id);
-  return this.httpClient.get<ThemeDto>(new_api_host,this.httpOptions);
+  return this.httpClient.get<TarifCourrierDto>(new_api_host,this.httpOptions);
 }
 
-routerParam(host:string, param: string){
-  return host + "/" + param;
+getTarif(paysId:number, poids :number)
+{
+  let new_api_host = this.routerParam(this.api_host,'pays',paysId,'poids',poids );
+  return this.httpClient.get<number>(new_api_host,this.httpOptions);
+}
+
+routerParam(baseUrl, ...params) {
+    return `${baseUrl}/${params.join('/')}`;
 }
 }

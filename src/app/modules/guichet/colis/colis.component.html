@@ -8,19 +8,11 @@
                         <div class="pb-3 surface-border">
                             <span class="text-900 font-medium text-xl">Nouveau Colis</span>
                             <div class="grid formgrid mt-3 mb-1 align-items-center">
-                               <!--  <div class="col-12 md:col-3">
+                                <div class="col-12 md:col-3">
                                     <div class="field-radiobutton">
                                         <p-radioButton id="ordinaire" formControlName="typeId" name="typeId"
                                             [value]="'1'"></p-radioButton>
                                         <label for="ordinaire">Ordinaire</label>
-                                    </div>
-                                </div> -->
-
-                                <div class="col-12 md:col-3">
-                                    <div class="field-radiobutton">
-                                        <p-radioButton id="recommande" formControlName="typeId" name="typeId"
-                                            [value]="'2'"></p-radioButton>
-                                        <label for="recommande">Recommandé</label>
                                     </div>
                                 </div>
 
@@ -44,7 +36,7 @@
                     </div>
                 </div>
                 <div class="grid">
-                    <div class="col-12 lg:col-6">
+                    <div class="col-12 lg:col-12">
                         <div class="card">
                             <div class="grid formgrid">
                                 <div class="col-12 field">
@@ -86,18 +78,14 @@
                                 </div>
                                 <div class="col-12 lg:col-6 field">
                                     <p-dropdown [options]="categorie$" optionLabel="libelle" optionValue="id"
-                                        [filter]="true" filterBy="libelle" formControlName="typeCategorieId"
+                                        [filter]="true" filterBy="libelle" formControlName="categorieId"
                                         [showClear]="true" placeholder="choisir Catégorie">
                                         <ng-template pTemplate="selectedItem" let-selectedOption>
                                             <div class="flex align-items-center gap-2">
                                                 <div>{{ selectedOption.libelle }}</div>
                                             </div>
                                         </ng-template>
-                                        <ng-template let-structure pTemplate="item">
-                                            <div class="flex align-items-center gap-2">
-                                                <div>{{ structure.libelle }}</div>
-                                            </div>
-                                        </ng-template>
+
                                     </p-dropdown>
                                 </div>
                                 <div class="col-12 lg:col-6 field">
@@ -111,7 +99,7 @@
                     </div>
 
                     <div class="col-12 lg:col-6">
-                        <div class="card">
+                       <!--  <div class="card">
                             <div class="grid formgrid">
                                 <div class="col-12 field">
                                     <span class="text-900 text-xl block font-medium mb-1">
@@ -141,7 +129,7 @@
                                 </div>
 
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
 
@@ -149,12 +137,12 @@
                     <div class="card">
                         <div class="grid formgrid">
                             <div class="col-12 field">
-                                <span class="text-900 text-xl block font-medium mb-3">Ajouter Expéditeur <p-button
-                                        icon="pi pi-user-plus" severity="success" (click)="openClient()" /></span>
+                                <span class="text-900 text-xl block font-medium mb-3"> <p-button
+                                     label="Ajouter Expéditeur"   icon="pi pi-user-plus" severity="success" (click)="openClient()" /></span>
                             </div>
                             <div class="col-12 lg:col-6 field">
                                 <span class="p-float-label">
-                                    <input id="float-input" type="text" value="{{client.nom}}" pInputText readonly />
+                                    <input id="float-input" disabled type="text" value="{{client.nom}}" pInputText readonly />
                                     <input style="display: none;" formControlName="expediteurId" id="float-input"
                                         type="text" pInputText />
                                     <label for="float-input">Nom complet</label>
@@ -162,7 +150,7 @@
                             </div>
                             <div class="col-12 lg:col-6 field">
                                 <span class="p-float-label">
-                                    <input id="float-input" type="text" value="{{client.telephone}}" pInputText
+                                    <input id="float-input"  disabled type="text" value="{{client.telephone}}" pInputText
                                         readonly />
                                     <label for="float-input">Cni</label>
                                 </span>
@@ -176,12 +164,12 @@
                     <div class="card">
                         <div class="grid formgrid">
                             <div class="col-12 field">
-                                <span class="text-900 text-xl block font-medium mb-3">Ajouter Destinataire <p-button
-                                        icon="pi pi-user-plus" severity="success" (click)="openDestinataire()" /></span>
+                                <span class="text-900 text-xl block font-medium mb-3"> <p-button
+                                        icon="pi pi-user-plus" label="Ajouter Destinataire" severity="success" (click)="openDestinataire()" /></span>
                             </div>
                             <div class="col-12 lg:col-6 field">
                                 <span class="p-float-label">
-                                    <input id="float-input" type="text" value="{{ destinataire.nom}}" pInputText
+                                    <input id="float-input" disabled type="text" value="{{ destinataire.nom}}" pInputText
                                         readonly />
                                     <input style="display: none;" formControlName="destinataireId" id="float-input"
                                         type="text" pInputText />
@@ -190,7 +178,7 @@
                             </div>
                             <div class="col-12 lg:col-6 field">
                                 <span class="p-float-label">
-                                    <input id="float-input" type="text" value="{{ destinataire.telephone}}" pInputText
+                                    <input id="float-input" disabled type="text" value="{{ destinataire.telephone}}" pInputText
                                         readonly />
                                     <label for="float-input">Téléphone</label>
                                 </span>
@@ -204,8 +192,11 @@
                         <div class="grid formgrid">
                             <div class="col-12 lg:col-6 field">
                                 <span class="p-float-label">
-                                    <input id="float-input" formControlName="codeBarre" type="text" pInputText />
-                                    <label for="float-input">Code Barre</label>
+                                    <p-inputGroup>
+                                        <p-inputGroupAddon>{{label}}</p-inputGroupAddon>
+                                        <input  formControlName="codeBarre" placeholder="code barre" pKeyFilter="num"  pInputText />
+                                      <p-inputGroupAddon>SN</p-inputGroupAddon>
+                                    </p-inputGroup>
                                 </span>
                             </div>
                             <div class="col-12 lg:col-6 field">
@@ -298,8 +289,8 @@
                                     <div class="flex justify-content-between align-items-center mb-2">
                                         <input id="valeurTimbre" style="display: none;" formControlName="valeurTimbre" type="number">
                                         <span class="text-900 font-medium">Valeur Timbre:</span><span class="text-900">{{
-                                            valeurTimbre
-                                            }} CFA</span>
+                                            valeurTimbre | customCurrency
+                                            }}</span>
                                     </div>
                                     </div>
                             </div>
@@ -325,29 +316,29 @@
                         <div class="py-2">
                             <div class="flex justify-content-between align-items-center mb-2">
                                 <span class="text-900 font-medium">Taxe</span><span class="text-900">{{
-                                    montant | currency
+                                    montant | customCurrency
                                     }}</span>
                             </div>
                             <div class="flex justify-content-between align-items-center mb-2">
                                 <span class="text-900 font-medium">Recommandé</span><span
-                                    class="text-primary font-bold">{{fraisRecommande}}</span>
+                                    class="text-primary font-bold">{{fraisRecommande | customCurrency}}</span>
                             </div>
 
                             <div class="flex justify-content-between align-items-center mb-2">
                                 <span class="text-900 font-medium">AR</span><span
-                                    class="text-primary font-bold">{{fraisAr}}</span>
+                                    class="text-primary font-bold">{{fraisAr | customCurrency}}</span>
                             </div>
                             <div class="flex justify-content-between align-items-center mb-2">
                                 <span class="text-900 font-medium">Express</span><span
-                                    class="text-primary font-bold">{{fraisExpress}}</span>
+                                    class="text-primary font-bold">{{fraisExpress | customCurrency}}</span>
                             </div>
                             <div class="flex justify-content-between align-items-center mb-2">
                                 <span class="text-900 font-medium">Valeur Déclaré</span><span
-                                    class="text-primary font-bold">{{fraisVd}}</span>
+                                    class="text-primary font-bold">{{fraisVd | customCurrency}}</span>
                             </div>
                             <div class="flex justify-content-between align-items-center mb-2">
                                 <span class="text-900 font-bold">Total</span><span class="text-900 font-medium text-xl">
-                                    {{totalMontant}} cfa</span>
+                                    {{totalMontant | customCurrency}}</span>
                                     <input id="totalMontant" formControlName="totalMontant" style="display:none;" type="number">
                             </div>
                         </div>
@@ -379,7 +370,7 @@
                 <div class="col-12 mb-2 lg:col-6 lg:mb-3">
                     <div class="flex align-items-center">
                         <label for="cni" class="font-semibold w-6rem">Téléphone:</label>
-                        <input pInputText id="telephone" (input)="searchClient()" formControlName="telephone"
+                        <input pInputText  pKeyFilter="num"  id="telephone" (input)="searchClient()" formControlName="telephone"
                             class="flex-auto" autocomplete="off" />
                     </div>
                 </div>
@@ -435,18 +426,16 @@
         <ng-template pTemplate="header">
             <tr>
                 <th>Nom</th>
-                <th>Pays</th>
                 <th>Telephone</th>
                 <th></th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-dest>
             <tr>
-                <td>{{ dest.nom }}</td>
-                <td>{{ dest.nom }}</td>
+                <td>{{ dest.nom }} {{dest.prenom}}</td>
                 <td>{{ dest.telephone }}</td>
                 <td>
-                    <p-button icon="pi pi-check" severity="info" (click)="choisirDestinataire(destinataire)" />
+                    <p-button icon="pi pi-check" label="Choisir Destinataire" severity="info" (click)="choisirDestinataire(dest)" />
                 </td>
             </tr>
         </ng-template>
@@ -458,7 +447,7 @@
                 <div class="col-12 mb-2 lg:col-6 lg:mb-3">
                     <div class="flex align-items-center">
                         <label for="cni" class="font-semibold w-6rem">Téléphone:</label>
-                        <input pInputText id="telephone" (input)="searchDestinataire()" formControlName="telephone"
+                        <input pInputText  pKeyFilter="num"  id="telephone" (input)="searchDestinataire()" formControlName="telephone"
                             class="flex-auto" autocomplete="off" />
                     </div>
                 </div>
