@@ -53,6 +53,7 @@ export class CourrierOrdinaireComponent implements OnInit {
     numberOfItems: any;
     selectedTimbre: any;
     label: string = "RR";
+    filteredCountries: Paysdto[];
 
 
     constructor(
@@ -73,15 +74,6 @@ export class CourrierOrdinaireComponent implements OnInit {
     ) { }
 
     ngOnInit(): void {
-
-        this.route.params.subscribe((params: Params) => {
-            //this.id = params['id'];
-          //  this.telephone = params['telephone'];
-           // this.nom = params['nom'];
-           // this.prenom = params['prenom'];
-           // this.cni = params['cni'];
-        });
-
 
         this.paysService.findAll().subscribe(
             (result) => {
@@ -112,7 +104,6 @@ export class CourrierOrdinaireComponent implements OnInit {
             }
         );
 
-
         this.buildForm();
         this.buildFormClient();
         this.buildFormDestinataire();
@@ -129,6 +120,7 @@ export class CourrierOrdinaireComponent implements OnInit {
    this.form.get('poids')?.valueChanges.subscribe((value) => this.poidsChange(value));
    this.form.get('paysDestinationId')?.valueChanges.subscribe((value) => this.paysChange(value));
    this.getCatgories(this.form.get('regimeId').value);
+  //this.choixRegime();
 
     }
 
@@ -163,11 +155,11 @@ export class CourrierOrdinaireComponent implements OnInit {
     buildForm() {
         this.form = this.fb.group({
              modePaiementId: [ '', Validators.required],
-             regimeId: [ 1, Validators.required],
+             regimeId: [ '', Validators.required],
              poids: [ '', Validators.required],
              expediteurId: [ '', Validators.required],
              destinataireId: [ '', Validators.required],
-             paysDestinationId: [ 210, Validators.required],
+             paysDestinationId: [210, Validators.required],
              codeBarre: [{ value: '', disabled: true }],
              valeurDeclare: [{ value: '', disabled: true }] ,
              contenu: [ ''],
@@ -257,15 +249,19 @@ export class CourrierOrdinaireComponent implements OnInit {
         const taxeParDefaut = 1500;
         const taxeSupplementaire = 250;
         const valeurDeclaree = this.form.get('valeurDeclare')?.value || 0;
-        const tranches = Math.ceil(valeurDeclaree / 10000);
-        const taxeTotale = tranches * taxeSupplementaire;
-        if(taxeTotale > taxeParDefaut)
-        this.fraisVd = taxeTotale;
-        else
-            this.fraisVd = taxeParDefaut;
 
-     //   return taxeTotale;
-      }
+        // Calcul des tranches
+        const tranches = Math.ceil(valeurDeclaree / 10000);
+
+        // Calcul du total des taxes
+        const taxeTotale = tranches * taxeSupplementaire;
+
+        // Appliquer la logique de taxe minimale
+        this.fraisVd = taxeTotale > taxeParDefaut ? taxeTotale : taxeParDefaut;
+
+        // Mettre à jour le montant total
+        this.calculateTariff();
+    }
 
 
     searchDestinataire(): void {
@@ -296,67 +292,73 @@ export class CourrierOrdinaireComponent implements OnInit {
             this.destinataire = null;
         }
     }
-
     calculateTariff() {
         const regimeId = this.form.get('regimeId')?.value;
         const isRecommande = this.form.get('recommande')?.value;
         const isAr = this.form.get('ar')?.value;
         const isExpress = this.form.get('express')?.value;
 
-
         if (regimeId) {
-          const selectedRegime = this.regime$.find((regime) => regime.id === regimeId);
-          if (selectedRegime) {
-            let totalTax = 0;
+            const selectedRegime = this.regime$.find((regime) => regime.id === regimeId);
+            if (selectedRegime) {
+                let totalTax = 0;
+                this.fraisAr = 0;
+                this.fraisExpress = 0;
 
-            // Add tax for the selected services
-            if (isRecommande) {
-              const recommandeTarif = selectedRegime.tarifs.find((tarif) => tarif.serviceLibelle === "Recommander");
-              if (recommandeTarif){
-                this.fraisRecommande = recommandeTarif.taxe;
-                totalTax += recommandeTarif.taxe;
-              }
-            }
-            if (isAr) {
-              const arTarif = selectedRegime.tarifs.find((tarif) => tarif.serviceLibelle === "Accusé Réception");
-              if (arTarif) {
-                this.fraisAr = arTarif.taxe;
-                totalTax += arTarif.taxe;
-              }
-            }
-            if (isExpress) {
-              const expressTarif = selectedRegime.tarifs.find((tarif) => tarif.serviceLibelle === "Express");
-              if (expressTarif){
-                this.fraisExpress = expressTarif.taxe;
-                totalTax += expressTarif.taxe;
-              }
-            }
 
-            this.totalMontant = totalTax+this.montant;
-            this.form.get('totalMontant')?.setValue(this.totalMontant);
-          //  this.form.updateValueAndValidity();
-          }
+                // Ajouter les frais pour les services sélectionnés
+                if (isRecommande) {
+                    const recommandeTarif = selectedRegime.tarifs.find((tarif) => tarif.serviceLibelle === "Recommander");
+                    if (recommandeTarif) {
+                        this.fraisRecommande = recommandeTarif.taxe;
+                        totalTax += recommandeTarif.taxe;
+                    }
+                }
+                if (isAr) {
+                    const arTarif = selectedRegime.tarifs.find((tarif) => tarif.serviceLibelle === "Accusé Réception");
+                    if (arTarif) {
+                        this.fraisAr = arTarif.taxe;
+                        totalTax += arTarif.taxe;
+                    }
+                }
+                if (isExpress) {
+                    const expressTarif = selectedRegime.tarifs.find((tarif) => tarif.serviceLibelle === "Express");
+                    if (expressTarif) {
+                        this.fraisExpress = expressTarif.taxe;
+                        totalTax += expressTarif.taxe;
+                    }
+                }
+
+                // Ajouter les frais de valeur déclarée
+                totalTax += this.fraisVd;
+
+                // Calculer le montant total
+                this.totalMontant = totalTax + this.montant;
+                this.form.get('totalMontant')?.setValue(this.totalMontant);
+            }
         }
-      }
+    }
 
-    choixRegime() {
+      choixRegime() {
         const regimeId = this.form.get('regimeId')?.value;
 
         if (regimeId === 1) {
-          this.form.get('paysDestinationId')?.disable(); // Désactiver pour tout autre régime
-          this.form.get('paysDestinationId')?.setValue(210);
-
+            this.form.get('paysDestinationId')?.setValue(210);
+            this.form.get('paysDestinationId')?.disable();
         } else {
+            this.form.get('paysDestinationId')?.enable();
+            this.form.get('paysDestinationId')?.reset();
 
-            this.form.get('paysDestinationId')?.enable(); // Activer si regimeId = 1
-            this.form.get('paysDestinationId')?.reset(); // Réinitialiser la valeur de paysDestinationId si désactivé
-
+            // Supprimer le pays avec l'ID 210 si le régime est 2
+            if (regimeId === 2) {
+                this.filteredCountries = this.pays$.filter((country) => country.id !== 210);
+            } else {
+                this.filteredCountries = this.pays$;
+            }
         }
         this.form.updateValueAndValidity();
-
-        this.getCatgories(regimeId)
-      }
-
+        this.getCatgories(regimeId);
+    }
 
 
 
@@ -388,7 +390,6 @@ export class CourrierOrdinaireComponent implements OnInit {
             formControls['ar'].setValue(false);
             formControls['express'].setValue(false);
             formControls['valeurDeclare'].setValue('0');
-            formControls['recommande'].setValue('0');
             this.fraisAr = 0;
             this.fraisExpress = 0;
             this.fraisRecommande = 0;
@@ -426,11 +427,14 @@ export class CourrierOrdinaireComponent implements OnInit {
 
           default:
             break;
+
         }
+
 
         // Mise à jour de la validation pour appliquer les changements
         formControls['valeurDeclare'].updateValueAndValidity();
         formControls['codeBarre'].updateValueAndValidity();
+        formControls['recommande'].updateValueAndValidity();
       }
 
 
@@ -440,13 +444,19 @@ export class CourrierOrdinaireComponent implements OnInit {
         if (value > 0 && poids > 0) {
           this.taxeCourrierService.getTarif(value, poids).subscribe((result) => {
             this.montant = result;
-            this.totalMontant = +this.montant; // Met à jour le montant total
+            // Mise à jour du montant total en incluant les frais recommandés
+            this.totalMontant = +this.montant + this.fraisRecommande;
+
+            // Appel de calculateTariff pour prendre en compte tous les frais supplémentaires
+            this.calculateTariff();
+
+            // Mise à jour du champ totalMontant dans le formulaire
             this.form.get('totalMontant')?.setValue(this.totalMontant);
           });
         } else {
+          // Si le poids ou le pays de destination ne sont pas valides
           this.montant = 0;
-          this.totalMontant = +this.montant; ;
-          this.form.get('totalMontant')?.setValue(this.totalMontant);
+          this.totalMontant = this.montant; // Reset du montant total
         }
         this.form.updateValueAndValidity();
       }
@@ -454,24 +464,37 @@ export class CourrierOrdinaireComponent implements OnInit {
       poidsChange(value: number) {
         const paysDestinationId = this.form.get('paysDestinationId')?.value;
 
+        // Si le poids et le pays de destination sont valides
         if (value > 0 && paysDestinationId > 0) {
-          this.taxeCourrierService.getTarif(paysDestinationId, value).subscribe((result) => {
-            this.montant = result;
-            this.totalMontant = +this.montant + this.fraisRecommande; // Met à jour le montant total
-          });
-        } else {
-          this.montant = 0;
-          this.totalMontant =+this.montant;
-        }
-        this.form.get('totalMontant')?.setValue(this.totalMontant);
-        this.form.updateValueAndValidity();
-      }
+            // Appel du service pour obtenir le tarif
+            this.taxeCourrierService.getTarif(paysDestinationId, value).subscribe((result) => {
+                this.montant = result; // Mise à jour du montant
 
+                // Mise à jour du montant total en incluant les frais recommandés
+                this.totalMontant = +this.montant + this.fraisRecommande;
+
+                // Appel de calculateTariff pour prendre en compte tous les frais supplémentaires
+                this.calculateTariff();
+
+                // Mise à jour du champ totalMontant dans le formulaire
+                this.form.get('totalMontant')?.setValue(this.totalMontant);
+            });
+        } else {
+            // Si le poids ou le pays de destination ne sont pas valides
+            this.montant = 0;
+            this.totalMontant = this.montant; // Reset du montant total
+        }
+
+        // Toujours mettre à jour la validité du formulaire après chaque changement
+        this.form.updateValueAndValidity();
+    }
 
     saveColis() {
         if (this.form.invalid) {
             return;
         }
+        this.form.get('recommande')?.enable();
+        this.form.get('paysDestinationId')?.enable();
         this.form.value.userId = this.sessionService.getAgentAttributes().id;
         this.form.value.montant = this.totalMontant;
         this.form.value.details = this.courrier.details;

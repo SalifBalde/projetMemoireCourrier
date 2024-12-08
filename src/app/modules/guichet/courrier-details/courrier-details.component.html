@@ -83,6 +83,9 @@
             <div class="col-7">
               <p><strong>Taxe Présentation:</strong> {{ courrier?.taxePresentation | customCurrency }}</p>
             </div>
+           <div class="col-7">
+              <p><strong>Taxe Valeur Déclaré:</strong> {{ courrier?.valeurDeclare | customCurrency }}</p>
+            </div>
             <div class="col-7">
               <p><strong>Montant Total:</strong> {{ (courrier?.montant || 0) + (courrier?.taxeDouane || 0) + (courrier?.taxePresentation || 0) | customCurrency }}</p>
             </div>

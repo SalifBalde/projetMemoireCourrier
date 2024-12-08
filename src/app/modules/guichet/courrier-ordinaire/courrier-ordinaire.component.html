@@ -150,7 +150,7 @@
                             </div>
                             <div class="col-12 lg:col-6 field">
                                 <span class="p-float-label">
-                                    <input id="float-input" type="text" value="{{client.nom}}" pInputText readonly />
+                                    <input id="float-input" disabled type="text" value="{{client.nom}}" pInputText readonly />
                                     <input style="display: none;" formControlName="expediteurId" id="float-input"
                                         type="text" pInputText />
                                     <label for="float-input">Nom complet</label>
@@ -158,7 +158,7 @@
                             </div>
                             <div class="col-12 lg:col-6 field">
                                 <span class="p-float-label">
-                                    <input id="float-input" type="text" value="{{client.telephone}}" pInputText
+                                    <input id="float-input" disabled type="text" value="{{client.telephone}}" pInputText
                                         readonly />
                                     <label for="float-input">Cni</label>
                                 </span>
@@ -245,7 +245,7 @@
 
                             <div class="col-12 lg:col-4 field">
                                 <span class="p-float-label">
-                                    <input id="float-input" type="number" pInputText formControlName="quantite" />
+                                    <input id="float-input" type="number" pInputText formControlName="quantite" min="1" />
                                     <label for="float-input">Quantité</label>
                                 </span>
                             </div>

@@ -8,7 +8,7 @@ export  interface PaysUpdatedto{
 
 
 export  interface Paysdto{
-    id?: string;
+    id?: number;
     libelle?: string;
     zoneId?: string;
 }

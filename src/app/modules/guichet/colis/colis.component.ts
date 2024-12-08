@@ -53,7 +53,7 @@ export class ColisComponent implements OnInit {
     selectedQuantite: number;
     numberOfItems: any;
     selectedTimbre: any;
-    label: string = "RR";
+    label: string = "CP";
 
 
     constructor(
@@ -389,7 +389,7 @@ export class ColisComponent implements OnInit {
             formControls['codeBarre'].setValidators(Validators.required);
             this.fraisAr = 0;
             this.fraisExpress = 0;
-            this.label = "RR";
+            this.label = "CV";
             break;
 
           case '2':
@@ -402,7 +402,7 @@ export class ColisComponent implements OnInit {
             formControls['codeBarre'].setValidators(Validators.required);
             this.fraisAr = 0;
             this.fraisExpress = 0;
-            this.label = "RR";
+            this.label = "CV";
             break;
 
           case '3':
@@ -413,7 +413,7 @@ export class ColisComponent implements OnInit {
             formControls['valeurDeclare'].setValidators(Validators.required);
             formControls['codeBarre'].enable();
             formControls['codeBarre'].setValidators(Validators.required);
-            this.label="VV"
+            this.label="CV"
             break;
 
           default:
