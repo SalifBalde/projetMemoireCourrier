@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { ServiceCourrierRoutingModule } from './service-courrier-routing.module';
 import { ServiceCourrierComponent } from './service-courrier.component';
-import {ButtonDirective} from "primeng/button";
+import {ButtonDirective, ButtonModule} from "primeng/button";
 import {DialogModule} from "primeng/dialog";
 import {DropdownModule} from "primeng/dropdown";
 import {InputSwitchModule} from "primeng/inputswitch";
@@ -12,7 +12,7 @@ import {InputTextareaModule} from "primeng/inputtextarea";
 import {PaginatorModule} from "primeng/paginator";
 import {PrimeTemplate} from "primeng/api";
 import {ReactiveFormsModule} from "@angular/forms";
-import {Ripple} from "primeng/ripple";
+import {Ripple, RippleModule} from "primeng/ripple";
 import {TableModule} from "primeng/table";
 import {TagModule} from "primeng/tag";
 import {ToastModule} from "primeng/toast";
@@ -26,16 +26,15 @@ import {ToolbarModule} from "primeng/toolbar";
     imports: [
         CommonModule,
         ServiceCourrierRoutingModule,
-        ButtonDirective,
+        ButtonModule,
         DialogModule,
         DropdownModule,
         InputSwitchModule,
         InputTextModule,
         InputTextareaModule,
         PaginatorModule,
-        PrimeTemplate,
         ReactiveFormsModule,
-        Ripple,
+        RippleModule,
         TableModule,
         TagModule,
         ToastModule,

@@ -10,7 +10,6 @@ import { RippleModule } from 'primeng/ripple';
 import { ToastModule } from 'primeng/toast';
 import { TagModule } from 'primeng/tag';
 import { ToolbarModule } from 'primeng/toolbar';
-import { InputTextareaModule } from 'primeng/inputtextarea';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { DialogModule } from 'primeng/dialog';
@@ -21,14 +20,42 @@ import { SplitButtonModule } from 'primeng/splitbutton';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { CalendarModule } from 'primeng/calendar';
-import { StepperModule } from 'primeng/stepper';
 import { KeyFilterModule } from 'primeng/keyfilter';
 import { CustomCurrencyPipe } from 'src/app/pipes/custom-currency.pipe';
+import { SharedModule } from 'primeng/api';
+import { InputTextareaModule } from 'primeng/inputtextarea';
 
 // shared module c'est ici qu'on va mettre toutes les composants communs à toutes les parties de l'application
 
 @NgModule({
     declarations: [CustomCurrencyPipe],
+    imports: [
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        InputTextModule,
+        BadgeModule,
+        TagModule,
+        TableModule,
+        ButtonModule,
+        RippleModule,
+        MenubarModule,
+        ToastModule,
+        InputTextareaModule,
+        ToolbarModule,
+        DropdownModule,
+        SplitButtonModule,
+        RadioButtonModule,
+        InputNumberModule,
+        DialogModule,
+        CheckboxModule,
+        InputSwitchModule,
+        InputGroupAddonModule,
+        InputGroupModule,
+        CalendarModule,
+        KeyFilterModule,
+        SharedModule // Ajoutez SharedModule dans imports
+    ],
     exports: [
         InputTextModule,
         BadgeModule,
@@ -38,8 +65,8 @@ import { CustomCurrencyPipe } from 'src/app/pipes/custom-currency.pipe';
         RippleModule,
         MenubarModule,
         ToastModule,
-        ToolbarModule,
         InputTextareaModule,
+        ToolbarModule,
         DropdownModule,
         SplitButtonModule,
         RadioButtonModule,
@@ -52,11 +79,10 @@ import { CustomCurrencyPipe } from 'src/app/pipes/custom-currency.pipe';
         InputGroupModule,
         CalendarModule,
         FormsModule,
-        StepperModule,
         KeyFilterModule,
         CustomCurrencyPipe,
-        CommonModule
+        CommonModule,
+        SharedModule
     ],
-    imports: [],
 })
 export class SharedComponentModule {}

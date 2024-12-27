@@ -60,7 +60,8 @@ function initializeKeycloak(keycloak: KeycloakService) {
         RapportModule,
         BrowserAnimationsModule,
         MatButtonModule,
-        BrowserAnimationsModule
+        BrowserAnimationsModule,
+
 
     ],
     providers: [

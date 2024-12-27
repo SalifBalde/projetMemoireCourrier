@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { PoidsCourrierRoutingModule } from './poids-courrier-routing.module';
 import { PoidsCourrierComponent } from './poids-courrier.component';
-import {ButtonDirective} from "primeng/button";
+import {ButtonDirective, ButtonModule} from "primeng/button";
 import {DialogModule} from "primeng/dialog";
 import {DropdownModule} from "primeng/dropdown";
 import {InputSwitchModule} from "primeng/inputswitch";
@@ -11,7 +11,7 @@ import {InputTextModule} from "primeng/inputtext";
 import {InputTextareaModule} from "primeng/inputtextarea";
 import {PrimeTemplate} from "primeng/api";
 import {ReactiveFormsModule} from "@angular/forms";
-import {Ripple} from "primeng/ripple";
+import {Ripple, RippleModule} from "primeng/ripple";
 import {SharedComponentModule} from "../../../layout/shared/shared-component.module";
 import {TableModule} from "primeng/table";
 import {TagModule} from "primeng/tag";
@@ -26,15 +26,14 @@ import {ToolbarModule} from "primeng/toolbar";
     imports: [
         CommonModule,
         PoidsCourrierRoutingModule,
-        ButtonDirective,
+        ButtonModule,
         DialogModule,
         DropdownModule,
         InputSwitchModule,
         InputTextModule,
         InputTextareaModule,
-        PrimeTemplate,
         ReactiveFormsModule,
-        Ripple,
+        RippleModule,
         SharedComponentModule,
         TableModule,
         TagModule,

@@ -10,9 +10,10 @@ import { TagModule } from 'primeng/tag';
 import {ReactiveFormsModule} from "@angular/forms";
 import {DialogModule} from "primeng/dialog";
 import {InputSwitchModule} from "primeng/inputswitch";
-import {Ripple} from "primeng/ripple";
-import {ButtonDirective} from "primeng/button";
+import {Ripple, RippleModule} from "primeng/ripple";
+import {ButtonDirective, ButtonModule} from "primeng/button";
 import {ChipsModule} from "primeng/chips";
+//import {ChipsModule} from "primeng/chips";
 
 @NgModule({
   declarations: [
@@ -28,8 +29,8 @@ import {ChipsModule} from "primeng/chips";
         TypeCourrierRoutingModule,
         DialogModule,
         InputSwitchModule,
-        Ripple,
-        ButtonDirective,
+        RippleModule,
+        ButtonModule,
         ChipsModule
     ]
 })

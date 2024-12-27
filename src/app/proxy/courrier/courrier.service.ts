@@ -3,6 +3,7 @@ import type { CourrierCreateUpdateDto, CourrierDto } from './models';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ClientDto } from '../client';
+import {BehaviorSubject, Observable} from "rxjs";
 
 @Injectable({
   providedIn: 'root',
@@ -17,6 +18,7 @@ export class CourrierService {
       "Authorization" : "Bearer "+this.myToken
     })
   }
+
   constructor(private readonly httpClient : HttpClient) { }
 
   findAll()
@@ -39,9 +41,15 @@ delete(id:string)
 }
 update(id:string, item:CourrierCreateUpdateDto)
 {
-  let new_api_host = this.routerParam(this.api_host,id);
+  let new_api_host = this.routerParam(this.api_host,);
   return this.httpClient.put<CourrierDto>(new_api_host,item,this.httpOptions);
 }
+    // Méthode pour mettre à jour plusieurs courriers
+
+    updateCourriers(courriers: CourrierDto[]): Observable<CourrierDto[]> {
+        const url = `${environment.api_host}courrier/update`;
+        return this.httpClient.put<CourrierDto[]>(url, courriers,this.httpOptions);
+    }
 
 getOneById(id:string)
 {
@@ -58,4 +66,19 @@ getOne(id:string)
 private routerParam(baseUrl: string, ...params: string[]) {
     return `${baseUrl}/${params.join('/')}`;
   }
+
+    findCourrierByStrutureDepot(idStrut: string)
+    {
+        return this.httpClient.get<[CourrierDto]>(this.api_host+'/structureDepot/'+idStrut,this.httpOptions);
+    }
+
+    findCourrierByTypeCourrierAndStructureDepotAndIdStut(idType: string,idStructureDepot: string, IdStatut: string)
+    {
+        return this.httpClient.get<[CourrierDto]>(this.api_host+'/by-type/'+idType+'/'+idStructureDepot+ '/'+IdStatut,this.httpOptions);
+    }
+
+
+
+
+
 }

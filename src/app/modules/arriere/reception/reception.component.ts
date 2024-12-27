@@ -12,6 +12,8 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { StructureDto, StructureService } from 'src/app/proxy/structures';
 import { PdfService } from 'src/app/proxy/pdf/pdf.service';
 import { SessionService } from 'src/app/proxy/auth/Session.service';
+import {CourrierDto, CourrierService} from "../../../proxy/courrier";
+import {color} from "chart.js/helpers";
 
 @Component({
     selector: 'app-reception',
@@ -20,6 +22,7 @@ import { SessionService } from 'src/app/proxy/auth/Session.service';
   })
   export class ReceptionComponent implements OnInit {
     form: FormGroup;
+    myGroupReception:FormGroup;
     isModalOpen = false;
     montant = 0;
     cols: any[] = [];
@@ -27,22 +30,43 @@ import { SessionService } from 'src/app/proxy/auth/Session.service';
     id ="";
     structure$: StructureDto[];
     colis$!: ColisDto[];
+    courriers!: CourrierDto[];
     colis:ColisDto ={};
+    courries: any ={};
     openColisDialog: boolean = false;
-    selectedColis!: ColisDto;
+    openCourrierDialog: boolean = false;
+    selectedCourriers!: any;
+    selectedCourrier: any;
 
 
     @ViewChild('dt') dt: Table;
+     listeCourrier: [CourrierDto];
+     listeCourriers: [CourrierDto];
+
+    buttonSeverity: string = 'danger';
+    listeInitiale: CourrierDto[] = [];
+    courriersReceptions: CourrierDto[] = [];
+     listeCourriersDepos: CourrierDto[]=[];
+
+    cities: any[] | undefined;
+
+    selectedCity: any | undefined;
+    courrier: any={};
+    isVide: boolean=false
+    protected readonly color = color;
+
 
     constructor(
         private colisService: ColisService,
+        private courrierService:CourrierService,
         private pdfService: PdfService,
         private sessionService: SessionService,
         private fb: FormBuilder,
         private router: Router,
         private route : ActivatedRoute,
         private structureService: StructureService,
-        private messageService: MessageService
+        private messageService: MessageService,
+
     ) {}
 
     loading: boolean = false;
@@ -64,7 +88,11 @@ import { SessionService } from 'src/app/proxy/auth/Session.service';
             }
         );
 
-        this.getAllColis();
+
+
+        this.getAllCourriers();
+        this.getCourriersByStructure();
+        this.getCourriers();
 
         this.buildForm();
     }
@@ -72,66 +100,104 @@ import { SessionService } from 'src/app/proxy/auth/Session.service';
     buildForm() {
         this.form = this.fb.group({
             bureauDestinataireId: [undefined, Validators.required],
+            listeSelect:[undefined,Validators.required]
         });
     }
 
-    getAllColis(){
 
-        this.colisService.findColisByStatus("3",this.sessionService.getAgentAttributes().structureId).subscribe(
+    getCourriersByStructure(){
+        console.log(this.sessionService.getAgentAttributes().structureId)
+
+        this.courrierService.findCourrierByStrutureDepot(this.sessionService.getAgentAttributes().structureId).subscribe(
             (result) => {
-                this.colis$ = result;
+                this.courriers = result;
+                console.log(this.courriers)
             }
         );
     }
+    getAllCourriers(){
 
+        this.courrierService.findAll().subscribe(
+            (result) => {
+                this.listeCourrier = result;
+                console.log(this.listeCourrier)
+            }
+        );
+    }
+    getCourriers(){
+        const idType ="1"
+        const idStatu= '1'
+        const idStructureDepo = this.sessionService.getAgentAttributes().structureId.toString()
+        this.courrierService.findCourrierByTypeCourrierAndStructureDepotAndIdStut(idType,idStructureDepo, idStatu).subscribe(
+            (result) => {
+                this.listeCourriers = result;
+                console.log(this.listeCourriers)
+            }
+        );
+    }
+    isExpeditionDisabled(): boolean {
+        return !this.selectedCourriers
 
-    openDialog(colis: ColisDto) {
-        this.openColisDialog = true;
-        this.colis = { ...colis };
     }
 
-    confirmReception() {
-        this.openColisDialog = false;
-        this.colisService
-            .delete(this.colis.id)
-            .subscribe(() => this.getAllColis());
-        this.messageService.add({
-            severity: 'success',
-            summary: 'Successful',
-            detail: 'Poids Deleted',
-            life: 3000,
-        });
-        this.colis = {};
+
+    openDialog(courrie: CourrierDto) {
+        this.openCourrierDialog = true;
+        this.courries = { ...courrie };
+        console.log(courrie)
     }
+
 
 
     saveReception() {
         if (this.form.invalid) {
             return;
         }
+     }
 
-    this.colisService.savePoids(this.form.value).subscribe(
-                (result) => {
-                    this.getAllColis();
-                    this.messageService.add({
-                        severity: 'success',
-                        summary: 'Successful',
-                        detail: 'Colis expédié avec succés',
-                        life: 3000,
-                    });
-                },
-                (error) => {
-                     this.messageService.add({
-                        severity: 'danger',
-                        summary: 'Error',
-                        detail: 'Erreur enregistrement',
-                        life: 3000,
-                    });
-                }
-            );
 
+
+
+    confirmReception() {
+        console.log(this.selectedCourriers);
+
+        this.openCourrierDialog = false;
+
+        this.selectedCourriers.forEach((courrier) => {
+            courrier.statutCourrier = { id: 2 }; // Met le statut à 'réceptionné'
+        });
+        console.log(this.selectedCourriers);
+
+        // Appel au service pour mettre à jour l'élément
+        this.courrierService.updateCourriers(this.selectedCourriers).subscribe(
+            (result) => {
+                this.getCourriers();
+                this.messageService.add({
+                    severity: 'success',
+                    summary: 'Successful',
+                    detail: 'Courrier réceptionné avec succès',
+                    life: 3000,
+                });
+            },
+            (error) => {
+                // En cas d'erreur
+                this.messageService.add({
+                    severity: 'danger',
+                    summary: 'Error',
+                    detail: 'Erreur de réception',
+                    life: 3000,
+                });
+            }
+        );
     }
 
 
+    getBadgeSeverity(statutCourrier: string ): string {
+        switch (statutCourrier?.toLowerCase()) {
+            case 'déposé': return 'danger';  // Rouge
+            case 'reçu': return 'success';  // Vert
+            default: return 'info';         // Bleu
+        }
+    }
 
 }
