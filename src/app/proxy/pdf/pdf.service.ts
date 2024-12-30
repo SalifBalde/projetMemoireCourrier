@@ -2,216 +2,646 @@ import { Injectable } from '@angular/core';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import JsBarcode from 'jsbarcode';
+import { CourrierDto } from '../courrier';
 
 @Injectable({
     providedIn: 'root',
 })
 export class PdfService {
 
-    generateAgentSalesReport(colis:any){}
 
-    _base64ToArrayBuffer(base64) {
-        var binary_string = base64.replace(/\\n/g, '');
-        binary_string = window.atob(base64);
-        var len = binary_string.length;
-        var bytes = new Uint8Array(len);
-        for (var i = 0; i < len; i++) {
-            bytes[i] = binary_string.charCodeAt(i);
+    async generatePDF(data: any): Promise<void> {
+        const doc = new jsPDF();
+
+        await this.addHeader(doc);
+        this.addRecipientAndSenderInfo(doc, data);
+        if (data.details && data.details.length > 0) {
+            this.addInvoiceDetails(doc, data);
+        } else {
+            this.addInvoiceDetailsPoids(doc, data);
         }
-        return bytes.buffer;
+        const isLivraisonDetails = window.location.pathname.includes(
+            "LivraisonDetails"
+        );
+
+        const payerText = isLivraisonDetails
+            ? "A la livraison"
+            : data.payer ? "Au guichet" : "A la livraison";
+        this.addFooter(doc);
+
+        await this.addHeader1(doc);
+        this.addRecipientAndSenderInfo1(doc, data);
+        if (data.details && data.details.length > 0) {
+            this.addInvoiceDetails1(doc, data);
+        } else {
+            this.addInvoiceDetailsPoids1(doc, data);
+        }
+        const isLivraisonDetails1 = window.location.pathname.includes(
+            "LivraisonDetails"
+        );
+
+        const payerText1 = isLivraisonDetails1
+            ? "A la livraison"
+            : data.payer ? "Au guichet" : "A la livraison";
+        this.addFooter1(doc);
+        const fileName = "Facture_colis_" + data.code + ".pdf";
+        doc.save(fileName);
     }
-    src: any;
 
-    ngOnInit(): void {
-        const doc = new jsPDF({ format: 'a4', orientation: 'l' });
 
-        const pageHeight =
-            doc.internal.pageSize.height || doc.internal.pageSize.getHeight();
-        const pageWidth =
-            doc.internal.pageSize.width || doc.internal.pageSize.getWidth();
-        console.log(pageHeight + ',' + pageWidth);
+    private async addHeader(doc: jsPDF): Promise<void> {
+        const logoLeft = await this.loadImage("assets/layout/images/poste-removebg-preview.png");
+        const logoRight = await this.loadImage("assets/layout/images/logo.png");
 
-        doc.setFont('helvetica', 'bold');
-        doc.setFontSize(9);
+        const logoWidth = 13;
+        const logoHeight = 13;
 
-        const barcodeCanvas = document.createElement('canvas');
-        JsBarcode(barcodeCanvas, 'CV000189933SN', {
-            format: 'CODE128',
+        if (logoLeft) {
+            doc.addImage(logoLeft, "PNG", 14, 8, logoWidth, logoHeight);
+        }
+        if (logoRight) {
+            doc.addImage(logoRight, "PNG", 180, 8, logoWidth, logoHeight);
+        }
+
+        doc.setFontSize(11);
+        doc.setFont("helvetica", "bold");
+        const title = "Reçu";
+        const titleWidth = doc.getTextWidth(title);
+        const pageWidth = doc.internal.pageSize.width;
+        const centerX = (pageWidth - titleWidth) / 2;
+        const titleY = 182;
+        doc.text(title, centerX, titleY);
+
+    }
+
+    private async addHeader1(doc: jsPDF): Promise<void> {
+        const logoLeft = await this.loadImage("assets/layout/images/poste-removebg-preview.png");
+        const logoRight = await this.loadImage("assets/layout/images/logo.png");
+
+        const logoWidth = 13;
+        const logoHeight = 13;
+
+        if (logoLeft) {
+            doc.addImage(logoLeft, "PNG", 14, 160, logoWidth, logoHeight);
+        }
+        if (logoRight) {
+            doc.addImage(logoRight, "PNG", 180, 160, logoWidth, logoHeight);
+        }
+
+        doc.setFontSize(11);
+        doc.setFont("helvetica", "bold");
+        doc.setTextColor(0, 0, 0)
+        const title = "Reçu";
+        const titleWidth = doc.getTextWidth(title);
+        const pageWidth = doc.internal.pageSize.width;
+        const centerX = (pageWidth - titleWidth) / 2;
+        const titleY = 30;
+        doc.text(title, centerX, titleY);
+
+
+    }
+    
+    private addRecipientAndSenderInfo(doc: jsPDF, data: CourrierDto): void {
+        const pageWidth = doc.internal.pageSize.width;
+        const margin = 14;
+        const rightMargin = margin;
+        const rightTextStartX = pageWidth - rightMargin;
+        
+        const lineHeight = 8;
+        const fontSize = 9;
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(fontSize);
+    
+        let yOffset = 25;
+    
+        doc.text(data.codeBarre || "", margin, yOffset);
+        yOffset += lineHeight;
+    
+        doc.text(`Structure Depot: ${data.structureDepotLibelle || ""}`, margin, yOffset);
+        yOffset += lineHeight;
+    
+        doc.text(`Type Courrier: ${data.typeCourrierLibelle || ""}`, margin, yOffset);
+        yOffset += lineHeight;
+    
+        doc.text(`Expediteur: ${data.expediteurPrenom || ""} ${data.expediteurNom || ""}`, margin, yOffset);
+        yOffset += lineHeight;
+    
+        const rightSectionYOffset = yOffset -25; 
+    
+        let rightYPosition = rightSectionYOffset;
+    
+        doc.text(`Destinataire: ${data.destinatairePrenom || ""} ${data.destinataireNom || ""}`, rightTextStartX, rightYPosition, { align: "right" });
+        rightYPosition += lineHeight;
+    
+        doc.text(`Pays Origine: ${data.paysOrigineLibelle || ""}`, rightTextStartX, rightYPosition, { align: "right" });
+        rightYPosition += lineHeight;
+    
+        doc.text(`Pays Destination: ${data.paysDestinationLibelle || ""}`, rightTextStartX, rightYPosition, { align: "right" });
+        rightYPosition += lineHeight;
+    
+        // // Recommande
+        // doc.text(`Recommande: ${data.recommande || ""}`, rightTextStartX, rightYPosition, { align: "right" });
+        // rightYPosition += lineHeight;
+    
+        // // AR
+        // doc.text(`Ar: ${data.ar || ""}`, rightTextStartX, rightYPosition, { align: "right" });
+        // rightYPosition += lineHeight;
+    
+        // // Express
+        // doc.text(`Express: ${data.express || ""}`, rightTextStartX, rightYPosition, { align: "right" });
+        // rightYPosition += lineHeight;
+    
+        this.addBarcode(doc, data.codeBarre, (pageWidth - 50) / 2, rightYPosition - 15, 50, 20); 
+    }
+    
+    private addRecipientAndSenderInfo1(doc: jsPDF, data: CourrierDto): void {
+        const pageWidth = doc.internal.pageSize.width;
+        const margin = 14;
+        const rightMargin = margin;
+        const rightTextStartX = pageWidth - rightMargin;
+        const lineSpacing = 6; 
+        let yOffset = 180;  
+        
+        doc.setFont("helvetica", "normal");
+        const fontSize = 9;
+        doc.setFontSize(fontSize);
+        doc.setTextColor(0, 0, 0);
+        
+        doc.text(data.codeBarre || "", margin, yOffset);
+        yOffset += lineSpacing;
+    
+        doc.text(`Structure Depot: ${data.structureDepotLibelle || ""}`, margin, yOffset);
+        yOffset += lineSpacing;
+    
+        doc.text(`Type de Courrier: ${data.typeCourrierLibelle || ""}`, margin, yOffset);
+        yOffset += lineSpacing;
+
+        // doc.text(`Categorie: ${data.categorieLibelle || ""}`, margin, yOffset,);
+        // yOffset += lineSpacing;
+    
+        // doc.text(`Poids: ${data.poids || ""}`, margin, yOffset,);
+        // yOffset += lineSpacing;
+    
+        doc.text(`Expediteur: ${data.expediteurPrenom || ""} ${data.expediteurNom || ""}`, margin, yOffset, );
+        yOffset += lineSpacing;
+    
+        const rightSectionYOffset = yOffset - 20;  
+    
+        let rightYPosition = rightSectionYOffset;
+    
+       
+    
+        doc.text(`Destinataire: ${data.destinatairePrenom || ""} ${data.destinataireNom || ""}`, rightTextStartX, rightYPosition, { align: "right" });
+        rightYPosition += lineSpacing;
+    
+        doc.text(`Pays Origine: ${data.paysOrigineLibelle || ""}`, rightTextStartX, rightYPosition, { align: "right" });
+        rightYPosition += lineSpacing;
+    
+        doc.text(`Pays Destination: ${data.paysDestinationLibelle || ""}`, rightTextStartX, rightYPosition, { align: "right" });
+        rightYPosition += lineSpacing;
+    
+        // doc.text(`Recommande : ${data.recommande || ""}`, rightTextStartX, rightYPosition, { align: "right" });
+        // rightYPosition += lineSpacing;
+        
+        // doc.text(`Ar: ${data.ar || ""}`, rightTextStartX, rightYPosition, { align: "right" });
+        // rightYPosition += lineSpacing;
+        
+        // doc.text(`Express: ${data.express || ""}`, rightTextStartX, rightYPosition, { align: "right" });
+        // rightYPosition += lineSpacing;
+    
+        this.addBarcode(doc, data.codeBarre, (pageWidth - 50) / 2, rightYPosition - 10, 50, 20);
+    }
+    
+    
+
+    private addWatermark(
+        doc: jsPDF,
+        xOffset: number,
+        yOffset: number,
+        payer: boolean
+    ): void {
+        const text = payer ? "PAYÉ" : "NON PAYÉ";
+        const fontSize = 12;
+        const padding = 2;
+
+        const originalTextColor = doc.getTextColor();
+
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(fontSize);
+
+        const textWidth = doc.getTextWidth(text);
+        const textHeight = fontSize * 0.35;
+
+        const rectWidth = textWidth + padding * 2;
+        const rectHeight = textHeight + padding * 2;
+
+        const rectX = xOffset - rectWidth;
+        const rectY = yOffset - rectHeight / 2 + 5;
+
+        const color = payer ? [0, 128, 0] : [255, 0, 0];
+        doc.setDrawColor(color[0], color[1], color[2]);
+        doc.setLineWidth(1);
+        doc.rect(rectX, rectY, rectWidth, rectHeight);
+
+        doc.setTextColor(color[0], color[1], color[2]);
+        const textX = rectX + rectWidth / 2;
+        const textY = rectY + rectHeight / 2 + textHeight / 3;
+        doc.text(text, textX, textY, { align: "center" });
+
+        doc.setTextColor(originalTextColor);
+    }
+    private addWatermark1(
+        doc: jsPDF,
+        xOffset: number,
+        yOffset: number,
+        payer: boolean
+    ): void {
+        const text = payer ? "PAYÉ" : "NON PAYÉ";
+        const fontSize = 12;
+        const padding = 2;
+
+        const originalTextColor = doc.getTextColor();
+
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(fontSize);
+
+        const textWidth = doc.getTextWidth(text);
+        const textHeight = fontSize * 0.35;
+
+        const rectWidth = textWidth + padding * 2;
+        const rectHeight = textHeight + padding * 2;
+
+        const rectX = xOffset - rectWidth;
+        const rectY = yOffset - rectHeight / 2 + 5;
+
+        const color = payer ? [0, 128, 0] : [255, 0, 0];
+        doc.setDrawColor(color[0], color[1], color[2]);
+        doc.setLineWidth(1);
+        doc.rect(rectX, rectY, rectWidth, rectHeight);
+
+        doc.setTextColor(color[0], color[1], color[2]);
+        const textX = rectX + rectWidth / 2;
+        const textY = rectY + rectHeight / 2 + textHeight / 3;
+        doc.text(text, textX, textY, { align: "center" });
+
+        doc.setTextColor(originalTextColor);
+    }
+
+    private async addInvoiceDetails(doc: jsPDF, data: any): Promise<void> {
+        const tableColumn = ["Contenu"];
+        const tableRows: any[] = [];
+
+        [data].forEach((item) => {
+            const itemData = [item.contenu];
+            tableRows.push(itemData);
+        });
+
+        if (tableRows.length > 0) {
+            (doc as any).autoTable({
+                head: [tableColumn],
+                body: tableRows,
+                startY: 68,
+                theme: "striped",
+                headStyles: { fillColor: [77, 77, 255] },
+                styles: { fontSize: 9, halign: "center" },
+                margin: { top: 10 },
+            });
+
+            const finalY = (doc as any).autoTable.previous.finalY + 5;
+            doc.setFontSize(9);
+            doc.setFont("helvetica", "normal");
+            doc.text(`Montant: ${data.montant} CFA`, 195, finalY + 10, { align: "right" });
+            doc.text(`Taxe douane: ${data.taxeDouane} CFA`, 195, finalY + 15, { align: "right" });
+            doc.text(`Taxe presentation: ${data.taxePresentation} CFA`, 195, finalY + 20, { align: "right" });
+
+            const totalBoxWidth = 30;
+            const totalBoxHeight = 9;
+            const totalBoxX = 195 - totalBoxWidth;
+            const totalBoxY = finalY + 26;
+
+            doc.setDrawColor(77, 77, 255);
+            doc.setFillColor(77, 77, 255);
+            doc.rect(totalBoxX, totalBoxY, totalBoxWidth, totalBoxHeight, "FD");
+
+            doc.setFontSize(9);
+            doc.setTextColor(255, 255, 255);
+            doc.text(
+                `Total: ${data.taxeDouane + data.montant + data.taxePresentation} CFA`,
+                totalBoxX + 2,
+                totalBoxY + 6
+            );
+
+            doc.setFontSize(9);
+            doc.setTextColor(77, 77, 255);
+            doc.text(`Informations de paiement :`, 14, finalY + 10);
+            doc.setFontSize(9);
+            doc.setTextColor(0, 0, 0);
+         
+           
+          
+            doc.text(
+                `Méthode de paiement : ${data.modePaiementLibelle}`,
+                14,
+                finalY + 20
+            );
+        }
+    }
+
+    private addInvoiceDetails1(doc: jsPDF, data: any): void {
+        const tableColumn = ["Contenu"];
+        const tableRows: any[] = [];
+
+        [data].forEach(item => {
+            const itemData = [item.contenu];
+            tableRows.push(itemData);
+        });
+
+        if (tableRows.length > 0) {
+            (doc as any).autoTable({
+                head: [tableColumn],
+                body: tableRows,
+                startY: 224,
+                theme: "striped",
+                headStyles: { fillColor: [77, 77, 255] },
+                styles: { fontSize: 9, halign: "center" },
+                margin: { top: 10 },
+            });
+
+            const finalY = (doc as any).autoTable.previous.finalY + 5;
+
+            doc.setFontSize(9);
+            doc.setFont("helvetica", "normal");
+            doc.text(`Montant: ${data.montant} CFA`, 195, finalY + 10, { align: "right" });
+            doc.text(`Livraison: ${data.fraisLivraison} CFA`, 195, finalY + 15, {
+                align: "right",
+            });
+            doc.text(`Enlevement: ${data.fraisEnlevement} CFA`, 195, finalY + 20, {
+                align: "right",
+            });
+
+            const totalBoxWidth = 30;
+            const totalBoxHeight = 9;
+            const totalBoxX = 195 - totalBoxWidth;
+            const totalBoxY = finalY + 26;
+
+            doc.setDrawColor(77, 77, 255);
+            doc.setFillColor(77, 77, 255);
+            doc.rect(totalBoxX, totalBoxY, totalBoxWidth, totalBoxHeight, "FD");
+
+            doc.setFontSize(9);
+            doc.setTextColor(255, 255, 255);
+            doc.text(
+                `Total: ${data.taxeDouane +
+                data.montant +
+                data.taxePresentation} CFA`,
+                totalBoxX + 2,
+                totalBoxY + 5
+            );
+
+            doc.setFontSize(9);
+            doc.setTextColor(77, 77, 255);
+            doc.text(`Informations de paiement :`, 14, finalY + 10);
+            doc.setFontSize(9);
+            doc.setTextColor(0, 0, 0);
+            const path = window.location.hash.split("guichet")[1];
+          
+            doc.text(`Options de paiement :  ${"nean"}`, 14, finalY + 15);
+            doc.text(
+                `Méthode de paiement : ${"nean"}`,
+                14,
+                finalY + 20
+            );
+
+            doc.setLineWidth(0.2);
+            doc.setDrawColor(0, 0, 0);
+            const startX = 10;
+            const startY = 150;
+            const lineLength = 200;
+            const pageWidth = doc.internal.pageSize.width;
+
+            let endX = startX + lineLength;
+            if (endX > pageWidth - 10) {
+                endX = pageWidth - 10;
+            }
+
+            for (let i = startX; i < endX; i += 5) {
+                doc.line(i, startY, i + 3, startY);
+            }
+        }
+    }
+
+    private addInvoiceDetailsPoids(doc: jsPDF, data: CourrierDto): void {
+        const tableColumn = ["Contenu"];
+        const tableRows: any[] = [];
+
+        [data].forEach(item => {
+            const itemData = [
+                item.contenu,
+
+            ];
+            tableRows.push(itemData);
+        });
+
+        if (tableRows.length > 0) {
+            (doc as any).autoTable({
+                head: [tableColumn],
+                body: tableRows,
+                startY: 68,
+                theme: "striped",
+                headStyles: { fillColor: [77, 77, 255] },
+                styles: { fontSize: 9, halign: "center" },
+                margin: { top: 10 },
+            })
+
+            const finalY = (doc as any).autoTable.previous.finalY + 5;
+            doc.setFontSize(9);
+            doc.setFont("helvetica", "normal");
+            doc.text(`Montant: ${data.montant} CFA`, 195, finalY + 10, { align: "right" });
+            doc.text(`Taxe douane: ${data.taxeDouane} CFA`, 195, finalY + 15, { align: "right" });
+            doc.text(`Taxe presentation: ${data.taxePresentation} CFA`, 195, finalY + 20, { align: "right" });
+
+            const totalBoxWidth = 30;
+            const totalBoxHeight = 9;
+            const totalBoxX = 195 - totalBoxWidth;
+            const totalBoxY = finalY + 26;
+
+            doc.setDrawColor(77, 77, 255);
+            doc.setFillColor(77, 77, 255);
+            doc.rect(totalBoxX, totalBoxY, totalBoxWidth, totalBoxHeight, "FD");
+
+            doc.setFontSize(9);
+            doc.setTextColor(255, 255, 255);
+            doc.text(
+                `Total: ${data.taxeDouane + data.montant + data.taxePresentation} CFA`,
+                totalBoxX + 2,
+                totalBoxY + 6
+            );
+
+            doc.setFontSize(9);
+            doc.setTextColor(77, 77, 255);
+            doc.text(`Informations de paiement :`, 14, finalY + 10);
+            doc.setFontSize(9);
+            doc.setTextColor(0, 0, 0);
+            
+           
+            doc.text(`Options de paiement :  ${"NEAN"}`, 14, finalY + 15);
+            doc.text(
+                `Méthode de paiement : ${"NEAN "}`,
+                14,
+                finalY + 20
+            );
+        }
+    }
+
+    private addInvoiceDetailsPoids1(doc: jsPDF, data: CourrierDto): void {
+        const tableColumn = ["Contenu"];
+        const tableRows: any[] = [];
+
+        [data].forEach(item => {
+            const itemData = [
+                item.contenu,
+            ];
+            tableRows.push(itemData);
+        });
+        if (tableRows.length > 0) {
+            (doc as any).autoTable({
+                head: [tableColumn],
+                body: tableRows,
+                startY: 224,
+                theme: "striped",
+                headStyles: { fillColor: [77, 77, 255] },
+                styles: { fontSize: 9, halign: "center" },
+                margin: { top: 10 },
+            });
+
+            const finalY = (doc as any).autoTable.previous.finalY + 5;
+
+            doc.setFontSize(9);
+            doc.setFont("helvetica", "normal");
+            doc.text(`Montant: ${data.montant} CFA`, 195, finalY + 10, { align: "right" });
+            doc.text(`Taxe douane: ${data.taxeDouane} CFA`, 195, finalY + 15, {
+                align: "right",
+            });
+            doc.text(`Taxe presentation: ${data.taxePresentation} CFA`, 195, finalY + 20, {
+                align: "right",
+            });
+
+            const totalBoxWidth = 30;
+            const totalBoxHeight = 9;
+            const totalBoxX = 195 - totalBoxWidth;
+            const totalBoxY = finalY + 26;
+
+            doc.setDrawColor(77, 77, 255);
+            doc.setFillColor(77, 77, 255);
+            doc.rect(totalBoxX, totalBoxY, totalBoxWidth, totalBoxHeight, "FD");
+
+            doc.setFontSize(9);
+            doc.setTextColor(255, 255, 255);
+            doc.text(
+                `Total: ${data.taxeDouane +
+                data.montant +
+                data.taxePresentation} CFA`,
+                totalBoxX + 2,
+                totalBoxY + 5
+            );
+
+            doc.setFontSize(9);
+            doc.setTextColor(77, 77, 255);
+            doc.text(`Informations de paiement :`, 14, finalY + 10);
+            doc.setFontSize(9);
+            doc.setTextColor(0, 0, 0);
+           
+            doc.text(`Options de paiement :  ${"NEAN"}`, 14, finalY + 15);
+            doc.text(
+                `Méthode de paiement : ${"NEAN"}`,
+                14,
+                finalY + 20
+            );
+
+            doc.setLineWidth(0.2);
+            doc.setDrawColor(0, 0, 0);
+            const startX = 10;
+            const startY = 150;
+            const lineLength = 200;
+            const pageWidth = doc.internal.pageSize.width;
+
+            let endX = startX + lineLength;
+            if (endX > pageWidth - 10) {
+                endX = pageWidth - 10;
+            }
+
+            for (let i = startX; i < endX; i += 5) {
+                doc.line(i, startY, i + 3, startY);
+            }
+        }
+    }
+
+    private addFooter(doc: jsPDF): void {
+        doc.setFontSize(7);
+        doc.setFont("helvetica", "italic");
+        doc.setTextColor(77, 77, 255);
+        const footerText =
+            "Groupe La Poste | Adresse: Avenue Peytavin Dakar, Senegal | Tel: +221 33 839 34 34 | Email: serviceclient@laposte.sn | Site Web: www.laposte.com";
+        const pageWidth = doc.internal.pageSize.width;
+        const textWidth = doc.getTextWidth(footerText);
+        const centerX = (pageWidth - textWidth) / 2;
+        doc.text(footerText, centerX, doc.internal.pageSize.height - 160);
+
+
+    }
+    private addFooter1(doc: jsPDF): void {
+        doc.setFontSize(7);
+        doc.setFont("helvetica", "italic");
+        doc.setTextColor(77, 77, 255);
+        const footerText =
+            "Groupe La Poste | Adresse: Avenue Peytavin Dakar, Senegal | Tel: +221 33 839 34 34 | Email: serviceclient@laposte.sn | Site Web: www.laposte.com";
+        const pageWidth = doc.internal.pageSize.width;
+        const textWidth = doc.getTextWidth(footerText);
+        const centerX = (pageWidth - textWidth) / 2;
+
+
+        doc.text(footerText, centerX, doc.internal.pageSize.height - 9);
+    }
+
+    private addBarcode(
+        doc: jsPDF,
+        text: string,
+        x: number,
+        y: number,
+        width: number,
+        height: number
+    ): void {
+        const canvas = document.createElement("canvas");
+        JsBarcode(canvas, text, {
+            format: "CODE128",
             displayValue: true,
-            width: 1,
-            height: 25,
+            // width: width / 100,
+            // height: height
         });
 
-        // Convertissez le canvas en Data URL
-        const barcodeImage = barcodeCanvas.toDataURL('image/png');
-
-        // Ajoutez le code-barres au PDF
-        doc.addImage(barcodeImage, 'PNG', 190, 63, 80, 30); // Position (x, y) et dimensions (width, height)
-
-        // Ajoutez d'autres contenus comme avant
-        doc.text(
-            'CUSTOMS DECLARATION                        CN23',
-            pageHeight / 1,
-            45,
-            {
-                align: 'left',
-            }
-        );
-        doc.line(pageWidth - 43, 44, pageWidth - 43, 53);
-        doc.line(pageWidth - 20, 60, pageWidth - 20, 68);
-        doc.text('No. of item (barcode if any)', pageHeight / 1, 50, {
-            align: 'left',
-        });
-        doc.text('DECLARATION EN DOUANE', pageHeight / 1, 58, {
-            align: 'left',
-        });
-        doc.text("N° de l'envoie(code à barres ,s'il existe)", pageHeight / 1, 65, {
-            align: 'left',
-        });
-
-        doc.text('FROM \nDe', pageHeight / 20, 49, {
-            align: 'right',
-        });
-        doc.text('Name BABACAR FALL', pageHeight / 4, 49, {
-            align: 'right',
-        });
-        doc.text('Adresse MEDICAL RUE 35* 28 DAKAR SENEGAL', pageHeight / 2.3, 57, {
-            align: 'right',
-        });
-        doc.text('Adresse (count)', pageHeight / 5, 63, {
-            align: 'right',
-        });
-        doc.text(
-            'PostCode 10500                         City DAKAR',
-            pageHeight / 2.6,
-            73,
-            {
-                align: 'right',
-            }
-        );
-        doc.text(
-            'State SENEGAL                        COUNTRY SN(Sénégal)',
-            pageHeight / 2.2,
-            78,
-            {
-                align: 'right',
-            }
-        );
-        doc.text('Name CORONIKA Wave ', pageHeight / 4.1, 83, {
-            align: 'right',
-        });
-        doc.text(
-            'Adresse 787 LAUREL WALK APT J, GOLETA,CA 93117 USA ',
-            pageHeight / 2,
-            88,
-            {
-                align: 'right',
-            }
-        );
-        doc.text('Adresse (count) ', pageHeight / 5.5, 94, {
-            align: 'right',
-        });
-        doc.text('Impoter reference', pageHeight / 1, 94, {
-            align: 'center',
-        });
-        doc.text('Impoter telephone', pageHeight / 1, 103, {
-            align: 'center',
-        });
-        doc.text(
-            'PostCode 93117                         City DAKAR ',
-            pageHeight / 2.6,
-            99,
-            {
-                align: 'right',
-            }
-        );
-        doc.text(
-            'State USA                                          COUNTRY US(Stats-Unis)                       ',
-            pageHeight / 1.7,
-            103,
-            {
-                align: 'right',
-            }
-        );
-        doc.text('Detailed description of contents(1) ', pageHeight / 3, 109, {
-            align: 'right',
-        });
-        doc.text('Quality(2) ', pageHeight / 2, 109, { align: 'right' });
-        doc.text('Net Weight(3) ', pageHeight / 1.5, 109, { align: 'right' });
-        doc.text('Valeur(5) ', pageHeight / 1.2, 109, { align: 'right' });
-        doc.text('For commercial items only ', pageHeight / 1, 108, {
-            align: 'left',
-        });
-        doc.text('HS tarif numner(7) ', pageHeight / 1, 113, { align: 'left' });
-        doc.text('Contry of Origin of goods(8)', pageHeight / 3, 113, {
-            align: 'right',
-        });
-        doc.text('PATALON ', pageHeight / 7, 118, { align: 'left' });
-        doc.text('1', pageHeight / 2, 118, { align: 'left' });
-        doc.text('3.500', pageHeight / 1.5, 118, { align: 'left' });
-        doc.text('620343', pageHeight / 1, 118, { align: 'left' });
-        doc.text('1', pageHeight / 2, 118, { align: 'left' });
-
-        doc.text('To A', pageHeight / 22, 83, {
-            align: 'right',
-        });
-
-        doc.setLineWidth(0.5);
-        doc.line(10, 46, 10, 205);
-        doc.line(287, 205, 287, 90);
-        doc.setLineHeightFactor(0.5);
-
-        doc.line(0, 46, pageWidth - 110, 46);
-        doc.line(10, 53, pageWidth - 140, 53);
-        doc.line(pageWidth - 140, 46, pageWidth - 140, 60);
-        doc.line(10, 60, pageWidth - 110, 60);
-        doc.line(10, 69, pageWidth - 110, 69);
-        doc.line(10, 75, pageWidth - 110, 75);
-        doc.line(0, 79, pageWidth - 110, 79);
-        doc.line(10, 85, pageWidth - 110, 85);
-        doc.line(10, 90, pageWidth - 10, 90);
-        doc.line(10, 95, pageWidth - 110, 95);
-        doc.line(187, 97, pageWidth - 10, 97);
-        doc.line(10, 100, pageWidth - 110, 100);
-        doc.line(0, 105, pageWidth - 10, 105);
-        doc.line(10, 115, pageWidth - 10, 115);
-        doc.line(10, 120, pageWidth - 10, 120);
-        doc.line(10, 125, pageWidth - 10, 125);
-        doc.line(10, 130, pageWidth - 10, 130);
-        doc.line(10, 135, pageWidth - 10, 135);
-        doc.line(10, 140, pageWidth - 10, 140);
-        doc.line(10, 150, pageWidth - 10, 150);
-        doc.line(10, 205, pageWidth - 10, 205);
-        doc.line(10, 200, pageWidth - 100, 200);
-        doc.line(pageWidth - 220, 150, pageWidth - 220, 105);
-        doc.line(pageWidth - 180, 150, pageWidth - 180, 105);
-        doc.line(pageWidth - 140, 150, pageWidth - 140, 105);
-        doc.line(pageWidth - 100, 200, pageWidth - 100, 105);
-        doc.line(pageWidth - 50, 140, pageWidth - 50, 105); //
-        doc.line(197, 110, pageWidth - 10, 110);
-        doc.line(pageWidth - 110, 46, pageWidth - 110, 105); //ligne fermante Milieu
-        doc.line(10, 164, pageWidth - 10, 164);
-        doc.line(10, 184, pageWidth - 100, 184);
-        doc.line(197, 177, pageWidth - 90, 177);
-        doc.line(197, 187, pageWidth - 10, 187);
-
-        //Carre
-        doc.rect(10, 160, 5, 4);
-        doc.rect(10, 155, 5, 9);
-        doc.rect(60, 160, 5, 4);
-        doc.rect(60, 155, 5, 9);
-        doc.rect(60, 150, 5, 9);
-        doc.rect(130, 150, 5, 6);
-        //
-        doc.rect(60, 184, 5, 5);
-        doc.rect(10, 184, 5, 4);
-        doc.rect(117, 184, 5, 6);
-        doc.line(pageWidth - 237, 200, pageWidth - 237, 185);
-        doc.line(pageWidth - 180, 200, pageWidth - 180, 185);
-        // generate
-        let pdf = doc.output('datauristring', { filename: 'RAB' });
-        let uri = pdf.split(',')[1];
-        console.log(uri);
-        this.src = this._base64ToArrayBuffer(uri);
+        const barcodeImage = canvas.toDataURL("image/png");
+        doc.addImage(barcodeImage, "PNG", x, y, width, height);
     }
+
+    private loadImage(src: string): Promise<string> {
+        return new Promise((resolve, reject) => {
+            const img = new Image();
+            img.crossOrigin = "Anonymous";
+            img.onload = () => {
+                const canvas = document.createElement("canvas");
+                canvas.width = img.width;
+                canvas.height = img.height;
+                const ctx = canvas.getContext("2d");
+                if (ctx) {
+                    ctx.drawImage(img, 0, 0);
+                    resolve(canvas.toDataURL("image/png"));
+                } else {
+                    reject(new Error("Failed to get canvas context"));
+                }
+            };
+            img.onerror = () => reject(new Error("Image failed to load: " + src));
+            img.src = src;
+        });
+    }
+
 }
