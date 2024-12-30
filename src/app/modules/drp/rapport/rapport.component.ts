@@ -111,7 +111,7 @@ import { StructureDto, StructureService } from 'src/app/proxy/structures';
     }
 
     generatePdf(): void{
-        this.pdfService.generateAgentSalesReport(this.colis$).then(r => "pdf généré");
+        //this.pdfService.generateAgentSalesReport(this.colis$).then(r => "pdf généré");
   }
 
     isEmpty(){

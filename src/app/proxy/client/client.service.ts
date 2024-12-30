@@ -37,18 +37,6 @@ export class ClientService {
       return this.httpClient.put<ClientDto>(new_api_host,item,this.httpOptions);
     }
 
-    getBureaux() {
-        return this.httpClient.get<any>('assets/demo/data/bureau.json')
-            .toPromise()
-            .then(res => res.data as any[])
-            .then(data => data);
-    }
-    getProduits() {
-        return this.httpClient.get<any>('assets/demo/data/produit.json')
-            .toPromise()
-            .then(res => res.data as any[])
-            .then(data => data);
-    }
 
 
 routerParam(host:string, param: string){

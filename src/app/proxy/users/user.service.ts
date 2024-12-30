@@ -33,11 +33,7 @@ findAllByStructure(id:string)
 {
   return this.httpClient.post(this.api_host,item,this.httpOptions);
 }
-delete(id:string)
-{
-  let new_api_host = this.routerParam(this.api_host,id);
-  return this.httpClient.delete(new_api_host,this.httpOptions);
-}
+
 update(id:string, item:UserDto)
 {
   let new_api_host = this.routerParam(this.api_host,id);

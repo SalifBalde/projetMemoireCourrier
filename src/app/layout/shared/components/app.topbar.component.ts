@@ -1,13 +1,11 @@
-
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { LayoutService } from "../../service/app.layout.service";
-import { AuthService } from 'src/app/proxy/auth/auth.service';
+// import { AuthService } from 'src/app/proxy/auth/auth.service';
 import { Router } from '@angular/router';
 import { KeycloakService } from 'keycloak-angular';
 import { KeycloakProfile } from 'keycloak-js';
 import { SessionService } from 'src/app/proxy/auth/Session.service';
-import { UserDto } from 'src/app/proxy/users';
 
 @Component({
     selector: 'app-topbar',
@@ -17,7 +15,11 @@ export class AppTopBarComponent implements OnInit{
     public isLoggedIn = false;
     public userProfile: KeycloakProfile | null = null;
     fullname = "";
-    user: UserDto;
+    structureLibelle = "";
+    caisseLibelle: string;
+
+
+
     items: MenuItem[] = [];
 
     @ViewChild('menubutton') menuButton!: ElementRef;
@@ -26,26 +28,31 @@ export class AppTopBarComponent implements OnInit{
 
     @ViewChild('topbarmenu') menu!: ElementRef;
 
-    constructor(public layoutService: LayoutService,private readonly keycloak: KeycloakService,private sessionService: SessionService, private router:Router) { }
+    constructor(public layoutService: LayoutService,private readonly keycloak: KeycloakService, private router:Router, private sessionService: SessionService) { }
     public async ngOnInit() {
-        this.items = [
-            { label: 'Profil', icon: 'pi pi-refresh' },
-            { label: 'Angular.io', icon: 'pi pi-info', url: '' },
-            { separator: true },
-            { label: 'Logout', icon: 'pi pi-sign-out', command:()=>{
-                this.keycloak.logout()
-            }
-        }
-        ];
+        const userRoles = this.keycloak.getUserRoles();
+
+    // Define items based on roles
+    this.items = [
+        { label: 'Profil', icon: 'pi pi-refresh', command: () => { this.router.navigate(['/profile']); } },
+        ...(userRoles.includes('ROLE_DCG') ? [{ label: 'DCG', icon: 'pi pi-unlock', command: () => { this.router.navigate(['/dcg']); } }] : []),
+        ...(userRoles.includes('ROLE_DRP') ? [{ label: 'DRP', icon: 'pi pi-unlock', command: () => { this.router.navigate(['/drp']); } }] : []),
+        ...(userRoles.includes('ROLE_RECEVEUR') ? [{ label: 'RECEVEUR', icon: 'pi pi-unlock', command: () => { this.router.navigate(['/receveur']); } }] : []),
+        { separator: true },
+        { label: 'Logout', icon: 'pi pi-sign-out', command: () => { this.keycloak.logout(); } }
+    ];
+        this.structureLibelle = this.sessionService.getAgentAttributes().structureLibelle;
+        this.caisseLibelle = this.sessionService.getAgentAttributes().caisseLibelle;
+
+
         this.isLoggedIn = await this.keycloak.isLoggedIn();
 
-      
         if (this.isLoggedIn) {
           this.userProfile = await this.keycloak.loadUserProfile();
           this.fullname = this.userProfile.firstName + " " + this.userProfile.lastName;
-          this.user=this.sessionService.getAgentAttributes();
         }
       }
+
 
       public login() {
         this.keycloak.login();

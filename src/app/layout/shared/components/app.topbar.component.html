@@ -1,7 +1,7 @@
 <div class="layout-topbar">
     <a class="layout-topbar-logo" routerLink="">
-        <img src="assets/layout/images/{{layoutService.config.colorScheme === 'light' ? 'logo' : 'logo'}}.png" alt="logo">
-        <span>Jotnaci</span>
+        <img src="assets/layout/images/{{layoutService.config.colorScheme === 'light' ? 'laposte' : 'laposte'}}.jpeg" alt="logo">
+        <span>Courrier</span>
     </a>
 
     <button #menubutton class="p-link layout-menu-button layout-topbar-button" (click)="layoutService.onMenuToggle()">
@@ -11,8 +11,14 @@
     <button #topbarmenubutton class="p-link layout-topbar-menu-button layout-topbar-button" (click)="layoutService.showProfileSidebar()">
         <i class="pi pi-ellipsis-v"></i>
     </button>
+    <div class="ms-5 mr-3">
+        <span style="font-family: 'Times new Roman', sans-serif; font-size: 18px; color:rgb(10, 116, 19); font-weight: bold; text-shadow: 4px 4px 4px rgba(33, 33, 33, 0.3);">
+            {{structureLibelle}}
+        </span>
+    </div>
     <div class="ms-5">
-        <span class="p-badge" *ngIf="userProfile">{{user?.structureLibelle}}</span>
+
+        <p-badge *ngIf="caisseLibelle" value="{{caisseLibelle}}" size="large" severity="info"></p-badge>
     </div>
 
     <div #topbarmenu class="layout-topbar-menu flex flex-wrap gap-2" [ngClass]="{'layout-topbar-menu-mobile-active': layoutService.state.profileSidebarVisible}">
@@ -22,9 +28,6 @@
             <i class="pi pi-search"></i>
         </span>
         <p-splitButton label="{{fullname}}" icon="pi pi-user" [model]="items" styleClass="p-text-info"></p-splitButton>
-       <!--  <button class="p-link layout-topbar-button" *ngIf="isLoggedIn" type="button" (click)="logout()">
-            <i class="pi pi-fw pi-sign-out"></i>
-            <span>Settings</span>
-        </button> -->
+
     </div>
 </div>

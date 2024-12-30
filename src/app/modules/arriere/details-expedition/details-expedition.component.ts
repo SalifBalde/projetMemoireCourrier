@@ -50,7 +50,7 @@ export class DetailsExpeditionComponent  implements OnInit{
     }
 
     generatePdf() : void{
-        this.pdfService.generatePDF(this.expedition);
+        //this.pdfService.generatePDF(this.expedition);
     }
 
 }

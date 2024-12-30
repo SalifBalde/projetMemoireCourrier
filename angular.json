@@ -33,11 +33,13 @@
                             "src/assets"
                         ],
                         "styles": [
-                            "src/styles.scss"
+                          "@angular/material/prebuilt-themes/indigo-pink.css",
+                          "src/styles.scss"
                         ],
                         "scripts": [
                             "node_modules/prismjs/prism.js",
                             "node_modules/prismjs/components/prism-typescript.js"
+
                         ]
                     },
                     "configurations": {
@@ -106,7 +108,8 @@
                         "karmaConfig": "karma.conf.js",
                         "inlineStyleLanguage": "scss",
                         "styles": [
-                            "src/styles.scss"
+                          "@angular/material/prebuilt-themes/indigo-pink.css",
+                          "src/styles.scss"
                         ],
                         "scripts": [],
                         "assets": [

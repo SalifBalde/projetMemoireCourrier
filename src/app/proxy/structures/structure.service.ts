@@ -8,7 +8,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 })
 export class StructureService {
   apiName = 'structure';
-  private api_host: string= environment.api_params + this.apiName;
+  private api_host: string= environment.api_host + this.apiName;
   private httpOptions = {
     headers: new HttpHeaders({
       'Content-Type':  'application/json',
@@ -19,7 +19,7 @@ export class StructureService {
 
   findAll()
 {
-  return this.httpClient.get<[StructureDto]>(this.api_host,this.httpOptions);
+  return this.httpClient.get<[StructureDto]>(environment.api_params+'structure',this.httpOptions);
 }
 
   save(item: StructureDto)
@@ -39,14 +39,14 @@ update(id:string, item:StructureDto)
 
 getOneById(id:string)
 {
-  let new_api_host = this.routerParam(this.api_host,id);
+  let new_api_host = this.routerParam(this.apiName,id);
   return this.httpClient.get<StructureDto>(new_api_host,this.httpOptions);
 }
 
 getOne(id:string)
 {
-  let new_api_host = this.routerParam(this.api_host+'/getByreference',id);
-  return this.httpClient.get<StructureDto>(new_api_host,this.httpOptions);
+ // let new_api_host = this.routerParam(this.api_host+'/getByreference',id);
+  return this.httpClient.get<StructureDto>(environment.api_params+ 'structure/'+id,this.httpOptions);
 }
 
 routerParam(host:string, param: string){

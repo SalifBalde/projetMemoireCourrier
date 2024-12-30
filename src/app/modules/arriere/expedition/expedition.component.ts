@@ -13,6 +13,9 @@ import { StructureDto, StructureService } from 'src/app/proxy/structures';
 import { PdfService } from 'src/app/proxy/pdf/pdf.service';
 import { ExpeditionDetailsDto, ExpeditionDto, ExpeditionService } from 'src/app/proxy/expeditions';
 import { SessionService } from 'src/app/proxy/auth/Session.service';
+import {CourrierDto, CourrierService} from "../../../proxy/courrier";
+import {Fermeturedto, FermetureService} from "../../../proxy/fermeture";
+import {StatutCourrierService, Statutdto} from "../../../proxy/statut-courrier";
 
 @Component({
     selector: 'app-expedition',
@@ -31,10 +34,27 @@ import { SessionService } from 'src/app/proxy/auth/Session.service';
     colis$!: ColisDto[];
     expedition:ExpeditionDto={};
 
-    selectedColis!: ColisDto;
+    selectedColis!: any;
+    courriersReceptions: any[] = [];
+    courries: any ={};
+
+    numeroDepech: any
+    currentYearLastTwoDigits: string;
 
 
     @ViewChild('dt') dt: Table;
+     openCourrierDialog: boolean=false;
+     openNumExpDialog: boolean=false;
+     listeCourriers: [CourrierDto];
+     structure: StructureDto;
+    idStatutFermetureCourrier: any;
+
+    loading: boolean = false;
+    selectedStructure: any;
+    fermetureData :Fermeturedto;
+    courrier: any={};
+    statutCourrier: Statutdto[];
+
 
     constructor(
         private colisService: ColisService,
@@ -45,10 +65,16 @@ import { SessionService } from 'src/app/proxy/auth/Session.service';
         private router: Router,
         private route : ActivatedRoute,
         private structureService: StructureService,
-        private messageService: MessageService
-    ) {}
+        private courrierService: CourrierService,
+        private messageService: MessageService,
+        private  fermetureService: FermetureService,
+        private  statutCourrierService: StatutCourrierService
+    ) {
+        const currentYear = new Date().getFullYear();
+        this.currentYearLastTwoDigits = currentYear.toString().slice(-2); // Prendre les 2 derniers chiffres
+    }
 
-    loading: boolean = false;
+
 
     load() {
         this.loading = true;
@@ -63,64 +89,182 @@ import { SessionService } from 'src/app/proxy/auth/Session.service';
 
         this.structureService.findAll().subscribe(
             (result) => {
-                this.structure$ = result;
+                this.structure$ = result
+                const idRecherche = 16;
+                console.log(this.structure$);// Remplacez par l'ID que vous recherchez
+                this.structure$ = result.filter((structure: any) => structure.id === idRecherche);
+                console.log(this.structure$);
+            },
+            (error) => {
+                console.error("Erreur lors de la récupération des structures :", error);
             }
         );
+        this.getCourriers();
 
-        this.getAllColis();
+
 
         this.buildForm();
+       // this.clearList()
+        this.getStructureById()
+        this.getAllSatutCourrier()
     }
+
+    getAllSatutCourrier(){
+        this.statutCourrierService.findAll().subscribe((data)=>{
+            this.statutCourrier=data;
+            console.log(this.statutCourrier)
+
+            this.idStatutFermetureCourrier =this.statutCourrier = data.filter(statut => statut.id === 3);
+            console.log(this.idStatutFermetureCourrier);  // Afficher les résultats filtrés
+        })
+
+    }
+    getStructureById(){
+        this.structureService.getOne(this.sessionService.getAgentAttributes().structureId.toString()).subscribe((data)=>{
+            this.structure=data;
+            console.log(this.structure.code)
+        })
+    }
+
+
+    getBadgeSeverity(statutCourrier: string ): string {
+        switch (statutCourrier?.toLowerCase()) {
+            case 'déposé': return 'danger';  // Rouge
+            case 'reçu': return 'success';  // Vert
+            default: return 'info';         // Bleu
+        }
+    }
+    openDialog(courrie: CourrierDto) {
+        if (this.selectedColis.length > 0) {
+            this.openNumExpDialog=true
+        }
+        this.courrier = { ...courrie };
+        console.log(courrie)
+        console.log(this.selectedColis)
+    }
+
+    openDialog1(courrie: CourrierDto) {
+        console.log(this.structure.code+this.numeroDepech+this.currentYearLastTwoDigits)
+
+        this.openCourrierDialog=true
+
+        this.courrier = { ...courrie };
+        console.log(courrie)
+        console.log(this.selectedColis)
+        this.openNumExpDialog=false
+    }
+
 
     buildForm() {
         this.form = this.fb.group({
             bureauDestination: [undefined, Validators.required],
         });
     }
-
-    getAllColis(){
-        this.colisService.findColisByStatus("2","1").subscribe(
-            (result) => {
-                this.colis$ = result;
-            }
-        );
+    isExpeditionDisabled(): boolean {
+        return !this.selectedStructure
     }
+
 
      mapIdsToColis(ids: any): ExpeditionDetailsDto[] {
         return ids.map(id => ({ colisId: id.id }));
     }
 
-    saveExpedition() {
-        if (this.form.invalid) {
-            return;
-        }
 
-    this.form.value.details = this.mapIdsToColis(this.selectedColis);
-    this.form.value.bureauExpediteur = this.sessionService.getAgentAttributes().structureId;
-    this.expeditionService.save(this.form.value).subscribe(
-                (result) => {
-                    //this.getAllColis();
-                    this.expedition = result;
-                    this.router.navigateByUrl('/arriere/details-expedition/'+this.expedition.id);
+
+    confirmReception() {
+        // Appeler la méthode saveFermeture pour enregistrer la fermeture
+        this.saveFermetureCourrier();
+        this.selectedColis = []; // Réinitialiser la sélection après l'enregistrement
+        this.openCourrierDialog=false;
+
+
+    }
+    getCourriers(){
+        const idType ="1"
+        const idStatu= '2'
+        const idStructureDepo = this.sessionService.getAgentAttributes().structureId.toString()
+
+
+        this.courrierService.findCourrierByTypeCourrierAndStructureDepotAndIdStut(idType, idStructureDepo, idStatu).subscribe(
+            (result) => {
+                this.listeCourriers = result;
+                console.log(this.listeCourriers)
+            }
+        );
+    }
+
+    saveFermetureCourrier() {
+        try {
+            const structureDepotId = Number(this.sessionService.getAgentAttributes().structureId);
+            const numeroDepeche = `${this.structure.code}${this.numeroDepech}${this.currentYearLastTwoDigits}`;
+            console.log(numeroDepeche);
+            // Vérification des colis sélectionnés
+            if (!this.selectedColis || this.selectedColis.length === 0) {
+                this.messageService.add({
+                    severity: 'warn',
+                    summary: 'Attention',
+                    detail: 'Veuillez sélectionner au moins un colis.',
+                    life: 3000,
+                });
+                return;
+            }
+            // Préparation des données pour l'enregistrement
+            this.fermetureData = {
+                structureDepotId: structureDepotId,
+                structureDestinationId: this.selectedStructure,
+                numeroDepeche: numeroDepeche,
+                date: new Date().toISOString(),
+                userId: 1, // Vous pouvez ajuster selon l'utilisateur connecté
+                idStatutCourrier: this.idStatutFermetureCourrier[0]?.id,
+                fermetureCourriers: this.selectedColis.map((colis) => ({
+                    courrierId: colis.id,
+                })),
+            };
+            const selectedColisCopy = [...this.selectedColis];
+            console.log( this.fermetureData)// Copie défensive
+            // Appel au service pour enregistrer la fermeture
+            this.fermetureService.saveFermeture(this.fermetureData).subscribe(
+                (response) => {
+
+                    // Mise à jour des courriers après la fermeture
+                    selectedColisCopy.forEach((colis) => {
+                        const courrieId = colis.id.toString();
+                        colis.statutCourrier.id=this.idStatutFermetureCourrier[0]?.id
+                        this.courrierService.update(courrieId, colis).subscribe(
+                            () => {
+                                this.getCourriers()
+                            },
+                            (error) => {
+                                console.error(`Erreur lors de la mise à jour du colis ${colis.id}:`, error);
+                            }
+                        );
+                    });
                     this.messageService.add({
                         severity: 'success',
-                        summary: 'Successful',
-                        detail: 'Colis expédié avec succés',
+                        summary: 'Succès',
+                        detail: 'Colis expédié avec succès.',
                         life: 3000,
                     });
                 },
                 (error) => {
-                     this.messageService.add({
-                        severity: 'danger',
-                        summary: 'Error',
-                        detail: 'Erreur enregistrement',
+                    console.error('Erreur lors de l\'enregistrement de la fermeture:', error);
+                    this.messageService.add({
+                        severity: 'error',
+                        summary: 'Erreur',
+                        detail: 'Une erreur s\'est produite lors de l\'enregistrement de la fermeture.',
                         life: 3000,
                     });
                 }
             );
-
+        } catch (error) {
+            console.error('Erreur inattendue:', error);
+            this.messageService.add({
+                severity: 'error',
+                summary: 'Erreur inattendue',
+                detail: 'Veuillez contacter l\'administrateur.',
+                life: 3000,
+            });
+        }
     }
-
-
 
 }

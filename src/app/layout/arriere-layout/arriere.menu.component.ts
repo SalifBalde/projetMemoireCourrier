@@ -14,20 +14,39 @@ export class ArriereMenuComponent implements OnInit {
     ngOnInit() {
         this.model = [
             {
-                label: 'Arriere',
+                label: 'Expedition',
                 items: [
                     {
-                        label: 'Expedition',
+                        label: 'Expedition Courrier',
                         icon: 'pi pi-fw pi-send',
                         routerLink: ['/arriere/expedition'],
                     },
                     {
-                        label: 'Reception',
+                        label: 'Expedition Colis',
+                        icon: 'pi pi-fw pi-send',
+                        routerLink: ['/arriere/expedition/expeditionColis'],
+                    }
+                ],
+
+
+
+
+            },
+            {
+                label: 'Reception',
+                items: [
+
+                    {
+                        label: 'Reception Courriers',
                         icon: 'pi pi-fw pi-download',
                         routerLink: ['/arriere/reception'],
                     },
-
-                ],
+                    {
+                        label: 'Reception Colis',
+                        icon: 'pi pi-fw pi-download',
+                        routerLink: ['/arriere/reception/receptionColis'],
+                    },
+                ]
             },
             {
                 label: 'Reporting',
