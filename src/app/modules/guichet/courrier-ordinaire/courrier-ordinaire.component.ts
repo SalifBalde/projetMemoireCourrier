@@ -86,6 +86,11 @@ export class CourrierOrdinaireComponent implements OnInit {
                 this.regime$ = result;
             }
         );
+        this.categorieService.findAll().subscribe(
+            (result) => {
+                this.categorie$ = result;
+            }
+        )
 
 
         this.modePaiementService.findAll().subscribe(

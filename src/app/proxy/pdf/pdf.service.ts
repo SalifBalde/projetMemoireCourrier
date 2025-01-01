@@ -20,13 +20,6 @@ export class PdfService {
         } else {
             this.addInvoiceDetailsPoids(doc, data);
         }
-        const isLivraisonDetails = window.location.pathname.includes(
-            "LivraisonDetails"
-        );
-
-        const payerText = isLivraisonDetails
-            ? "A la livraison"
-            : data.payer ? "Au guichet" : "A la livraison";
         this.addFooter(doc);
 
         await this.addHeader1(doc);
@@ -36,13 +29,7 @@ export class PdfService {
         } else {
             this.addInvoiceDetailsPoids1(doc, data);
         }
-        const isLivraisonDetails1 = window.location.pathname.includes(
-            "LivraisonDetails"
-        );
-
-        const payerText1 = isLivraisonDetails1
-            ? "A la livraison"
-            : data.payer ? "Au guichet" : "A la livraison";
+       
         this.addFooter1(doc);
         const fileName = "Facture_colis_" + data.code + ".pdf";
         doc.save(fileName);
@@ -51,7 +38,7 @@ export class PdfService {
 
     private async addHeader(doc: jsPDF): Promise<void> {
         const logoLeft = await this.loadImage("assets/layout/images/poste-removebg-preview.png");
-        const logoRight = await this.loadImage("assets/layout/images/logo.png");
+ 
 
         const logoWidth = 13;
         const logoHeight = 13;
@@ -59,9 +46,7 @@ export class PdfService {
         if (logoLeft) {
             doc.addImage(logoLeft, "PNG", 14, 8, logoWidth, logoHeight);
         }
-        if (logoRight) {
-            doc.addImage(logoRight, "PNG", 180, 8, logoWidth, logoHeight);
-        }
+       
 
         doc.setFontSize(11);
         doc.setFont("helvetica", "bold");
@@ -76,7 +61,7 @@ export class PdfService {
 
     private async addHeader1(doc: jsPDF): Promise<void> {
         const logoLeft = await this.loadImage("assets/layout/images/poste-removebg-preview.png");
-        const logoRight = await this.loadImage("assets/layout/images/logo.png");
+       
 
         const logoWidth = 13;
         const logoHeight = 13;
@@ -84,9 +69,7 @@ export class PdfService {
         if (logoLeft) {
             doc.addImage(logoLeft, "PNG", 14, 160, logoWidth, logoHeight);
         }
-        if (logoRight) {
-            doc.addImage(logoRight, "PNG", 180, 160, logoWidth, logoHeight);
-        }
+
 
         doc.setFontSize(11);
         doc.setFont("helvetica", "bold");

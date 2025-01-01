@@ -8,7 +8,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 })
 export class ThemeService {
   apiName = 'theme';
-  private api_host: string = environment.api_host + this.apiName;
+  private api_host: string = environment.api_stock + this.apiName;
   myToken = sessionStorage.getItem("token");
   private httpOptions = {
     headers: new HttpHeaders({

@@ -61,8 +61,6 @@ function initializeKeycloak(keycloak: KeycloakService) {
         BrowserAnimationsModule,
         MatButtonModule,
         BrowserAnimationsModule,
-
-
     ],
     providers: [
         {provide: APP_INITIALIZER, useFactory:initializeKeycloak,multi :true, deps:[KeycloakService]},
