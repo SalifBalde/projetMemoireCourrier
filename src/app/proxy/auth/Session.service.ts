@@ -27,7 +27,6 @@ export class SessionService {
     return attributes ? JSON.parse(attributes) : null;
   }
 
-
   clearUserAttributes(): void {
     sessionStorage.removeItem('userAttributes');
   }

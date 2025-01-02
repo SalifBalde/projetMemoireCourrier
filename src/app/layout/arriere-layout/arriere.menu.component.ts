@@ -25,10 +25,13 @@ export class ArriereMenuComponent implements OnInit {
                         label: 'Expedition Colis',
                         icon: 'pi pi-fw pi-send',
                         routerLink: ['/arriere/expedition/expeditionColis'],
+                    },
+                    {
+                        label: 'Expedition E-commerce',
+                        icon: 'pi pi-fw pi-send',
+                        routerLink: ['/arriere/expedition/expedition-E-commerce'],
                     }
                 ],
-
-
 
 
             },
@@ -46,25 +49,30 @@ export class ArriereMenuComponent implements OnInit {
                         icon: 'pi pi-fw pi-download',
                         routerLink: ['/arriere/reception/receptionColis'],
                     },
+                    {
+                        label: 'Reception E-commerce',
+                        icon: 'pi pi-fw pi-download',
+                        routerLink: ['/arriere/reception/reception-E-commerce'],
+                    },
                 ]
             },
-            {
-                label: 'E-commerce',
-                items: [
+            // {
+            //     label: 'E-commerce',
+            //     items: [
 
-                    {
-                        // label: 'Reception Courriers',
-                        // icon: 'pi pi-fw pi-download',
-                        // routerLink: ['/arriere/reception'],
-                    },
-                    {
-                        // label: 'Reception Colis',
-                        // icon: 'pi pi-fw pi-download',
-                        // routerLink: ['/arriere/reception/receptionColis'],
-                    },
-                ]
-            },
-            {
+            //         {
+            //             // label: 'Reception Courriers',
+            //             // icon: 'pi pi-fw pi-download',
+            //             // routerLink: ['/arriere/reception'],
+            //         },
+            //         {
+            //             // label: 'Reception Colis',
+            //             // icon: 'pi pi-fw pi-download',
+            //             // routerLink: ['/arriere/reception/receptionColis'],
+            //         },
+            //     ]
+            // },
+            {                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
                 label: 'Reporting',
                 items: [
                     {
