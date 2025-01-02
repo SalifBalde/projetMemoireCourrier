@@ -1,10 +1,10 @@
-<form [formGroup]="form" (ngSubmit)="saveExpedition()">
+<form [formGroup]="" >
   <div class="card p-fluid">
       <h4>Liste des envoies E-commerce à expédier</h4>
       <div class="p-formgrid grid justify-content-center">
           <div class="field col-4">
               <label htmlFor="du">Destination</label>
-              <p-dropdown [options]="structure$" optionLabel="libelle" optionValue="id" [filter]="true"
+              <p-dropdown  optionLabel="libelle" optionValue="id" [filter]="true"
                   filterBy="libelle" formControlName="bureauDestination" [showClear]="true"
                   placeholder="choisissez un bureau">
                   <ng-template pTemplate="selectedItem" let-selectedOption>
@@ -53,18 +53,14 @@
                   </ng-template>
               </p-table>
               <div class="col-12 flex flex-column lg:flex-row justify-content-end align-items-center">
-                  <button pbutton="" pripple="" class="p-element p-button-primary lg:w-auto flex-order-1  p-button p-component"  [disabled]="form.invalid">
+                  <button pbutton="" pripple="" class="p-element p-button-primary lg:w-auto flex-order-1  p-button p-component" >
                       <span class="p-button-icon p-button-icon-left pi pi-fw pi-check"></span><span class="p-button-label">Sauvegarder</span>
                   </button>
               </div>
           </div>
-
       </div>
-
   </div>
-
 </form>
-<div *ngIf="loading" class="loading-message">
+<div class="loading-message">
   <p>Chargement, veuillez patienter...</p>
-            
 </div>
