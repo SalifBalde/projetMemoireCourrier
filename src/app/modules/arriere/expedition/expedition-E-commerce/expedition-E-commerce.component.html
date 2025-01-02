@@ -1,6 +1,6 @@
 <form [formGroup]="form" (ngSubmit)="saveExpedition()">
   <div class="card p-fluid">
-      <h4>Liste des envoieS E-commerce  à expédier</h4>
+      <h4>Liste des envoies E-commerce à expédier</h4>
       <div class="p-formgrid grid justify-content-center">
           <div class="field col-4">
               <label htmlFor="du">Destination</label>
@@ -9,12 +9,12 @@
                   placeholder="choisissez un bureau">
                   <ng-template pTemplate="selectedItem" let-selectedOption>
                       <div class="flex align-items-center gap-2">
-                          <div>{{ selectedOption.libelle }}</div>
+                          <div></div>
                       </div>
                   </ng-template>
                   <ng-template let-structure pTemplate="item">
                       <div class="flex align-items-center gap-2">
-                          <div>{{ structure.libelle }}</div>
+                          <div></div>
                       </div>
                   </ng-template>
               </p-dropdown>
@@ -29,7 +29,7 @@
       <div class="col-12">
           <div class="card px-6 py-6">
 
-              <p-table [value]="colis$" [(selection)]="selectedColis" dataKey="code"
+              <p-table  dataKey="code"
                   [tableStyle]="{'min-width': '50rem'}">
                   <ng-template pTemplate="header">
                       <tr>
@@ -40,15 +40,15 @@
                           <th>Status</th>
                       </tr>
                   </ng-template>
-                  <ng-template pTemplate="body" let-colis>
+                  <ng-template pTemplate="body" let-Ecommerce>
                       <tr>
                           <td>
-                              <p-tableCheckbox [value]="colis" />
+                              <p-tableCheckbox [value]="Ecommerce" />
                           </td>
-                          <td>{{colis.code}}</td>
-                          <td>{{colis.bureauDestinationLibelle}}</td>
-                          <td>{{colis.createdAt}}</td>
-                          <td>{{colis.statusLibelle}}</td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
                       </tr>
                   </ng-template>
               </p-table>
