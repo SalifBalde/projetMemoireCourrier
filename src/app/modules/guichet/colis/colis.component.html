@@ -35,7 +35,6 @@
                         </div>
                     </div>
                 </div>
-                <div class="grid">
                     <div class="col-12 lg:col-12">
                         <div class="card">
                             <div class="grid formgrid">
@@ -98,41 +97,6 @@
                         </div>
                     </div>
 
-                    <div class="col-12 lg:col-6">
-                       <!--  <div class="card">
-                            <div class="grid formgrid">
-                                <div class="col-12 field">
-                                    <span class="text-900 text-xl block font-medium mb-1">
-                                        Services
-                                    </span>
-                                </div>
-
-                                <div class="col-12 lg:col-4 field">
-                                    <div class="field-checkbox">
-                                        <p-checkbox name="recommande" formControlName="recommande" binary="true"
-                                            id="recommande"></p-checkbox>
-                                        <label for="ny">Recommandé</label>
-                                    </div>
-                                </div>
-                                <div class="col-12 lg:col-4 field">
-                                    <div class="field-checkbox">
-                                        <p-checkbox name="ar" formControlName="ar" binary="true" id="ar"></p-checkbox>
-                                        <label for="ny">AR</label>
-                                    </div>
-                                </div>
-                                <div class="col-12 lg:col-4 field">
-                                    <div class="field-checkbox">
-                                        <p-checkbox name="express" formControlName="express" binary="true"
-                                            id="express"></p-checkbox>
-                                        <label for="ny">Express</label>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div> -->
-                    </div>
-                </div>
-
                 <div class="col-12 lg:col-6 md:px-1">
                     <div class="card">
                         <div class="grid formgrid">
@@ -187,7 +151,7 @@
                     </div>
                 </div>
 
-                <div class="col-12 lg:col-6 md:px-1">
+                <div class="col-12 lg:col-7 md:px-1">
                     <div class="card">
                         <div class="grid formgrid">
                             <div class="col-12 lg:col-6 field">
@@ -218,7 +182,7 @@
                         <span class="text-900 text-xl block font-medium mb-3">Choix Timbres</span>
 
                         <div class="grid formgrid">
-                            <div class="col-12 lg:col-5 field">
+                            <div class="col-12 lg:col-6 field">
                                 <p-dropdown [options]="stocksTimbre$" optionLabel="combinedLibelle" optionValue="id" [filter]="true"
                                     filterBy="combinedLibelle" formControlName="timbreId" (ngModelChange)="getTarifProduit()" [showClear]="true"
                                     placeholder="Choisir Timbre">
@@ -242,7 +206,7 @@
                                 </span>
                             </div>
 
-                            <div class="col-12 lg:col-3 field">
+                            <div class="col-12 lg:col-2 field">
                                 <p-button icon="pi pi-plus" severity="info" (click)="ajouterProduit()" />
                             </div>
 
@@ -300,7 +264,7 @@
                 </div>
 
 
-                <div class="col-12 md:col-6">
+                <div class="col-12 md:col-5">
                     <div class="card">
                         <h5>Paiement</h5>
                         <div class="grid formgrid">
@@ -350,9 +314,7 @@
                                 <span class="p-button-icon p-button-icon-left pi pi-fw pi-check"></span><span
                                     class="p-button-label">Sauvegarder</span>
                             </button>
-                            <div *ngIf="loading" class="loading-message">
-                                <p>Chargement, veuillez patienter...</p>
-                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -369,15 +331,15 @@
             <div class="grid formgrid">
                 <div class="col-12 mb-2 lg:col-6 lg:mb-3">
                     <div class="flex align-items-center">
-                        <label for="cni" class="font-semibold w-6rem">Téléphone:</label>
+                        <label for="telephone" class="font-semibold w-6rem">Téléphone:</label>
                         <input pInputText  pKeyFilter="num"  id="telephone" (input)="searchClient()" formControlName="telephone"
                             class="flex-auto" autocomplete="off" />
                     </div>
                 </div>
                 <div class="col-12 mb-2 lg:col-6 lg:mb-3">
                     <div class="flex align-items-center">
-                        <label for="cni" class="font-semibold w-6rem">Cni:</label>
-                        <input pInputText id="cni" formControlName="cni" class="flex-auto" autocomplete="off" />
+                        <label for="codePostal" class="font-semibold w-6rem">code Postal:</label>
+                        <input pInputText id="codePostal" formControlName="codePostal" class="flex-auto" autocomplete="off" />
                     </div>
                 </div>
 
@@ -453,8 +415,8 @@
                 </div>
                 <div class="col-12 mb-2 lg:col-6 lg:mb-3">
                     <div class="flex align-items-center">
-                        <label for="cni" class="font-semibold w-6rem">Cni:</label>
-                        <input pInputText id="cni" formControlName="cni" class="flex-auto" autocomplete="off" />
+                        <label for="codePostal" class="font-semibold w-6rem">code Postal:</label>
+                        <input pInputText id="codePostal" formControlName="codePostal" class="flex-auto" autocomplete="off" />
                     </div>
                 </div>
 
@@ -495,3 +457,7 @@
         </div>
     </form>
 </p-dialog>
+
+<div *ngIf="loading" class="loading-message">
+    <p>Chargement, veuillez patienter...</p>
+</div>

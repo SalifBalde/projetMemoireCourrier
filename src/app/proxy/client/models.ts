@@ -6,5 +6,5 @@ export interface ClientDto {
     cni?: string;
     email?: string;
     telephone?: string;
-
+    codePostal?: string;
   }

@@ -7,6 +7,7 @@ import { catchError, firstValueFrom, of } from 'rxjs';
 import { KeycloakProfile } from 'keycloak-js';
 import { TokenService } from './proxy/auth/token.service';
 import { SessionService } from './proxy/auth/Session.service';
+import { JournalResultDto, JournalService } from './proxy/journal';
 
 @Component({
     selector: 'app-root',
@@ -16,10 +17,12 @@ export class AppComponent implements OnInit {
 
    user :UserDto;
     public userProfile: KeycloakProfile | null = null;
+    journal: JournalResultDto ={};
 
 
     constructor(private primengConfig: PrimeNGConfig,
          private keycloakService: KeycloakService,
+         private journalService: JournalService,
          private sessionService: SessionService,
          private tokenService : TokenService,
          private userService:UserService,
@@ -41,11 +44,24 @@ export class AppComponent implements OnInit {
                 })
             )
         );
+        this.loadJournal(this.user.caisseId);
         this.sessionService.setAgentAttributes(this.user);
         await this.redirectBasedOnRole();
         this.primengConfig.ripple = true;
       }
 
+      async  loadJournal(id:string): Promise<void> {
+        this.journalService
+              .getJournalToday(id)
+              .subscribe({
+                  next: (data: JournalResultDto) => {
+                      this.journal = data;
+                      this.sessionService.setJournalAttributes(this.journal);
+                  },
+                  error: (err) => {
+                  },
+              });
+     }
 
 async redirectBasedOnRole(): Promise<void> {
     const isLoggedIn = await this.keycloakService.isLoggedIn();

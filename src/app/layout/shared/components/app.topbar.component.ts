@@ -42,8 +42,13 @@ export class AppTopBarComponent implements OnInit{
         { label: 'Logout', icon: 'pi pi-sign-out', command: () => { this.keycloak.logout(); } }
     ];
         this.structureLibelle = this.sessionService.getAgentAttributes().structureLibelle;
-        this.caisseLibelle = this.sessionService.getAgentAttributes().caisseLibelle;
+        const caisseLibelle = this.sessionService.getAgentAttributes()?.caisseLibelle;
+        const date = this.sessionService.getJournalAttributes()?.date || 'Date inconnue';
+        const soldeOuverture = this.sessionService.getJournalAttributes()?.soldeOuverture || 0;
 
+        if (caisseLibelle) {
+            this.caisseLibelle = `${caisseLibelle}: ${date} - Num Veil: ${soldeOuverture} CFA`;
+        }
 
         this.isLoggedIn = await this.keycloak.isLoggedIn();
 

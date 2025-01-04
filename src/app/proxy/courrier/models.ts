@@ -41,10 +41,9 @@ export class CourrierCreateUpdateDto {
     userId?: number;
     codeBarre?: string;
     caisseId?: number;
-
     contenu?: string;
-    typeCourrierId: number;
-    typeCourrierLibelle: string;
+    typeCourrierId?: number;
+    typeCourrierLibelle?: string;
     paysOrigineId?: number;
     paysOrigineLibelle?: string;
     paysDestinationId?: number;

@@ -12,7 +12,7 @@ import { PdfService } from 'src/app/proxy/pdf/pdf.service';
   templateUrl: './courrier-details.component.html',
 })
 export class CourrierDetailsComponent implements OnInit {
-  courrier: CourrierDto  = null;
+  courrier: CourrierDto  = {};
 
   constructor(
     private courrierService: CourrierService,
