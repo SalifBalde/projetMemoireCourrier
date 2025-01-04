@@ -1,171 +1,141 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {MessageService} from "primeng/api";
-import {ColisService} from "../../../../proxy/colis";
-import {CourrierDto, CourrierService} from "../../../../proxy/courrier";
-import {PdfService} from "../../../../proxy/pdf/pdf.service";
-import {SessionService} from "../../../../proxy/auth/Session.service";
-import {FormBuilder} from "@angular/forms";
-import {ActivatedRoute, Router} from "@angular/router";
-import {StructureDto, StructureService} from "../../../../proxy/structures";
-import {Table} from "primeng/table";
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MessageService } from 'primeng/api';
+import { PdfService } from '../../../../proxy/pdf/pdf.service';
+import { SessionService } from '../../../../proxy/auth/Session.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { StructureDto, StructureService } from '../../../../proxy/structures';
+import { Table } from 'primeng/table';
+import { EcommerceService } from 'src/app/proxy/ecommerce/ecommerce.service';
+import { EcommerceDto } from 'src/app/proxy/ecommerce';
 
 @Component({
-  selector: 'app-reception-E-commerce',
-  templateUrl: './reception-E-commerce.component.html',
+  selector: 'app-reception-e-commerce',
+  templateUrl: './reception-e-commerce.component.html',
   providers: [MessageService],
 })
 export class ReceptionECommerceComponent implements OnInit {
- 
-    
-         listeCourrier: [CourrierDto];
-         listeColis: [CourrierDto];
-         openColisDialog: boolean;
-         colis: any={}
-        @ViewChild('dt') dt: Table;
-         structure$: [StructureDto];
-        selectedColis: any;
-    
-    
-        constructor( private colisService: ColisService,
-                     private courrierService:CourrierService,
-                     private pdfService: PdfService,
-                     private sessionService: SessionService,
-                     private fb: FormBuilder,
-                     private router: Router,
-                     private route : ActivatedRoute,
-                     private structureService: StructureService,
-                     private messageService: MessageService,) {
-    
-    
-        }
-        loading: boolean = false;
-        cities: any;
-        selectedCity: any;
-    
-    
-        load() {
-            this.loading = true;
-    
-            setTimeout(() => {
-                this.loading = false
-            }, 2000);
-        }
-    
-        ngOnInit(): void {
-            this.structureService.findAll().subscribe(
-                (result) => {
-                    this.structure$ = result;
-                }
-            );
-           this.getAllCourriers()
-            this.getCourriers()
-    
-        }
-    
-    
-        getAllCourriers(){
-    
-            this.courrierService.findAll().subscribe(
-                (result) => {
-                    this.listeCourrier = result;
-                    console.log(this.listeCourrier)
-                }
-            );
-        }
-    
-        getCourriers(){
-            const idType ="2"
-            const idStatu= '1'
-            const idStructureDepo = this.sessionService.getAgentAttributes().structureId.toString()
-    
-    
-            this.courrierService.findCourrierByTypeCourrierAndStructureDepotAndIdStut(idType, idStructureDepo, idStatu).subscribe(
-                (result) => {
-                    this.listeColis = result;
-                    console.log(this.listeColis)
-                }
-            );
-        }
-        openDialog(courrie: CourrierDto) {
-            this.openColisDialog = true;
-            this.colis = { ...courrie };
-            console.log(courrie)
-        }
-        isExpeditionDisabled(): boolean {
-            return !this.selectedColis
-    
-        }
-    
-        // confirmReception() {
-        //     console.log(this.colis)
-        //     const courrieId = this.colis.id.toString();
-        //     console.log(courrieId)
-        //     this.colis.statutCourrier.id = 2
-        //     this.openColisDialog=false
-        //
-        //     this.courrierService.update(courrieId,this.colis).subscribe(
-        //         (result) => {
-        //             this.getCourriers();
-        //             this.messageService.add({
-        //                 severity: 'success',
-        //                 summary: 'Successful',
-        //                 detail: 'Colis Réceptionné avec succés',
-        //                 life: 3000,
-        //             });
-        //         },
-        //         (error) => {
-        //             this.messageService.add({
-        //                 severity: 'danger',
-        //                 summary: 'Error',
-        //                 detail: 'Erreur de Réceptionne',
-        //                 life: 3000,
-        //             });
-        //         }
-        //     );
-        //
-        //
-        // }
-        confirmReception() {
-            console.log(this.selectedColis);
-    
-            this.openColisDialog = false;
-    
-            this.selectedColis.forEach((courrier) => {
-                courrier.statutCourrier = { id: 2 }; // Met le statut à 'réceptionné'
-            });
-            console.log(this.selectedColis);
-    
-            // Appel au service pour mettre à jour l'élément
-            this.courrierService.updateCourriers(this.selectedColis).subscribe(
-                (result) => {
-                    this.getCourriers();
-                    this.messageService.add({
-                        severity: 'success',
-                        summary: 'Successful',
-                        detail: 'Courrier réceptionné avec succès',
-                        life: 3000,
-                    });
-                },
-                (error) => {
-                    // En cas d'erreur
-                    this.messageService.add({
-                        severity: 'danger',
-                        summary: 'Error',
-                        detail: 'Erreur de réception',
-                        life: 3000,
-                    });
-                }
-            );
-        }
-        getBadgeSeverity(statutCourrier: string ): string {
-            switch (statutCourrier?.toLowerCase()) {
-                case 'déposé': return 'danger';  // Rouge
-                case 'reçu': return 'success';  // Vert
-                default: return 'info';         // Bleu
-            }
-        }
-    
-    
-    
+  ecommerce: EcommerceDto[] = []; // Correctly named as an array
+  structure$: StructureDto[] = [];
+  structure!: StructureDto;
+  selectedColis: EcommerceDto[] = [];
+  openColisDialog: boolean = false;
+  loading: boolean = false;
+  selectedEcommerce: EcommerceDto | null = null; // To hold selected ecommerce
+  form: FormGroup;
+
+  @ViewChild('dt') dt!: Table;
+
+  constructor(
+    private pdfService: PdfService,
+    private sessionService: SessionService,
+    private fb: FormBuilder,
+    private router: Router,
+    private ecommerceService: EcommerceService,
+    private route: ActivatedRoute,
+    private structureService: StructureService,
+    private messageService: MessageService
+  ) {}
+
+  ngOnInit(): void {
+    this.getAllEcommerceByStatut();
+    this.buildForm();
+  }
+
+  buildForm(): void {
+    this.form = this.fb.group({
+      bureauDestinataireId: [undefined, Validators.required],
+    });
+  }
+
+  // Open a dialog for confirming reception of a specific ecommerce
+  openDialog(ecommerce: EcommerceDto): void {
+    this.selectedEcommerce = { ...ecommerce };
+    this.openColisDialog = true;
+  }
+
+  // Confirm reception of the selected ecommerce
+  confirmReception(): void {
+    if (this.selectedEcommerce) {
+      this.openColisDialog = false;
+
+      const ecommerceId = this.selectedEcommerce.id.toString();
+
+      this.ecommerceService
+        .reception(ecommerceId, this.sessionService.getAgentAttributes().structureId.toString()) // Convert to string
+        .subscribe(() => this.getAllEcommerceByStatut());
+
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Successful',
+        detail: 'Reception confirmed',
+        life: 3000,
+      });
+
+      this.selectedEcommerce = null; // Reset after confirmation
     }
-    
+  }
+
+  // Get all ecommerce based on the current status
+  getAllEcommerceByStatut(): void {
+    this.loading = true;
+    const bureauId: number = Number(this.sessionService.getAgentAttributes().structureId);
+
+    if (isNaN(bureauId)) {
+      this.loading = false;
+      return;
+    }
+
+    this.ecommerceService.findEcommerceByDestinationReception(bureauId).subscribe(
+      (data) => {
+        console.log('Données récupérées : ', data);
+        this.ecommerce = data;
+        this.loading = false;
+      },
+      (error) => {
+        console.error('Erreur lors du chargement des données eCommerce', error);
+        this.loading = false;
+      }
+    );
+  }
+
+  // Save the reception details of the ecommerce item
+  saveReception(): void {
+    if (this.form.invalid) {
+      return;
+    }
+
+
+    this.ecommerceService.save(this.form.value).subscribe(
+      (result) => {
+        this.getAllEcommerceByStatut();
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Successful',
+          detail: 'Colis expédié avec succès',
+          life: 3000,
+        });
+      },
+      (error) => {
+        this.messageService.add({
+          severity: 'danger',
+          summary: 'Error',
+          detail: 'Erreur enregistrement',
+          life: 3000,
+        });
+      }
+    );
+  }
+
+  getBadgeSeverity(statutCourrier: string): string {
+    if (!statutCourrier) return 'info';
+    switch (statutCourrier.toLowerCase()) {
+      case 'déposé':
+        return 'danger';
+      case 'reçu':
+        return 'success';
+      default:
+        return 'info';
+    }
+  }
+}

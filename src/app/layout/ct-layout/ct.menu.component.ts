@@ -13,6 +13,8 @@ export class CtMenuComponent implements OnInit {
 
     ngOnInit() {
         this.model = [
+
+            
             {
                 label: 'Ct',
                 items: [
@@ -22,16 +24,25 @@ export class CtMenuComponent implements OnInit {
                         routerLink: ['/ct/expedition'],
                     },
                     {
+                        label: 'Expedition Ecommerce',
+                        icon: 'pi pi-fw pi-send',
+                        routerLink: ['/ct/expedition/expedition-E-commerce'],
+                    },
+                    {
                         label: 'Reception',
                         icon: 'pi pi-fw pi-download',
                         routerLink: ['/ct/reception'],
+                    },
+                    {
+                        label: 'Reception Ecommerce',
+                        icon: 'pi pi-fw pi-download',
+                        routerLink: ['/ct/reception/reception-E-commerce'],
                     },
                     {
                         label: 'Reception Code',
                         icon: 'pi pi-fw pi-qrcode',
                         routerLink: ['/ct/reception'],
                     },
-
                 ],
             },
             {
