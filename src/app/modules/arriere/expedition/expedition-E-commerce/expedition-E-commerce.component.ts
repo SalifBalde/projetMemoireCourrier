@@ -9,13 +9,20 @@ import { EcommerceService } from 'src/app/proxy/ecommerce/ecommerce.service';
 import { StructureDto, StructureService } from 'src/app/proxy/structures';
 import { ExpeditionEcomService, ExpeditionEcomDto, ExpeditionEcomDetailsDto } from 'src/app/proxy/expeditionEcommerce';
 
+
+interface Structure {
+  id: number;
+  nom: string;
+  adresse?: string;
+}
+
 @Component({
   selector: 'app-expedition-e-commerce',
   templateUrl: './expedition-e-commerce.component.html',
   providers: [MessageService],
 })
 export class ExpeditionECommerceComponent implements OnInit {
-  structure$: StructureDto[] = [];
+  structure$: Structure[] = [];
   ecommerce$!: EcommerceDto[];  // Liste des eCommerce
   expedition!: ExpeditionEcomDto;  // Données de l'expédition créée
 
@@ -53,25 +60,33 @@ export class ExpeditionECommerceComponent implements OnInit {
     });
   }
 
+  // private loadStructures() {
+  //   // Chargement des structures disponibles, filtrage sur celles avec l'id 16
+  //   this.structureService.findAll().subscribe(
+  //     (result) => {
+  //       this.structure$ = result.filter((structure: StructureDto) => +structure.id === 16);
+  //     },
+  //     (error) => {
+  //       console.error('Error loading structures', error);
+  //     }
+  //   );
+  // }
+
   private loadStructures() {
-    // Chargement des structures disponibles, filtrage sur celles avec l'id 16
-    this.structureService.findAll().subscribe(
-      (result) => {
-        this.structure$ = result.filter((structure: StructureDto) => +structure.id === 16);
-      },
-      (error) => {
-        console.error('Error loading structures', error);
-      }
-    );
+    // Simulating data instead of fetching from a service
+    this.structure$ = [
+      { id: 1, nom: 'Structure A', adresse: 'Adresse A' },
+      { id: 2, nom: 'Structure B', adresse: 'Adresse B' },
+      { id: 3, nom: 'Structure C', adresse: 'Adresse C' },
+    ];
   }
+
 
   buildForm() {
     this.form = this.fb.group({
         bureauDestination: [undefined, Validators.required],
     });
 }
-
-  
 
 
   saveExpedition() {
@@ -80,7 +95,7 @@ export class ExpeditionECommerceComponent implements OnInit {
     }
 
 this.form.value.details = this.mapIdsToColis(this.selectedEcommerce);
-this.form.value.bureauExpediteur = this.sessionService.getAgentAttributes().structureId;
+this.form.value.bureauExpediteur = 1;
 this.expeditionEcomService.save(this.form.value).subscribe(
             (result) => {
                 //this.getAllColis();
@@ -105,10 +120,23 @@ this.expeditionEcomService.save(this.form.value).subscribe(
 
 }
 
+onSelectColis(ecommerce: EcommerceDto) {
+  if (this.selectedEcommerce.includes(ecommerce)) {
+    // Si l'élément est déjà sélectionné, on le retire
+    this.selectedEcommerce = this.selectedEcommerce.filter(item => item !== ecommerce);
+  } else {
+    // Sinon, on l'ajoute
+    this.selectedEcommerce.push(ecommerce);
+  }
+}
+
+
   getAllEcommerceByStatut() {
     this.loading = true;
-    const id: string = '3';  // Statut des eCommerce à récupérer
-    const bureauId: number = Number(this.sessionService.getAgentAttributes().structureId);
+    const id: string = '3';  
+    // const bureauId: number = Number(this.sessionService.getAgentAttributes().structureId);
+
+    const bureauId: number = Number(1);
 
     if (isNaN(bureauId)) {
       this.loading = false;

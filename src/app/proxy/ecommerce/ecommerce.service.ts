@@ -114,7 +114,7 @@ export class EcommerceService {
   }
   
   reception(id: string, idStructure: string) {
-    let new_api_host = this.routerParam(this.api_host + '/reception', id, idStructure);
+    let new_api_host = this.routerParam(this.api_host+'/reception', id,idStructure);
     return this.httpClient.get(new_api_host, this.httpOptions);
   }
 
