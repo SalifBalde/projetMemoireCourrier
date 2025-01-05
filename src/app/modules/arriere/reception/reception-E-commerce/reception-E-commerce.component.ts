@@ -6,8 +6,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { StructureDto, StructureService } from '../../../../proxy/structures';
 import { Table } from 'primeng/table';
-import { EcommerceService } from 'src/app/proxy/ecommerce/ecommerce.service';
-import { EcommerceDto } from 'src/app/proxy/ecommerce';
+import { EcommerceDto,EcommerceService } from 'src/app/proxy/ecommerce';
 import { ExpeditionEcomService } from 'src/app/proxy/expeditionEcommerce';
 
 @Component({
@@ -64,7 +63,7 @@ export class ReceptionECommerceComponent  implements OnInit {
       this.ecommerce$ = result;
     });
   }
-  
+
 
   openDialog(ecommerce: EcommerceDto) {
     this.openEcommerceDialog = true;
@@ -73,20 +72,20 @@ export class ReceptionECommerceComponent  implements OnInit {
 
   confirmReception() {
     this.openEcommerceDialog = false;
-  
+
     if (this.ecommerce) {
       // Assurez-vous que ecommerce est défini avant de l'utiliser
       this.ecommerceService
         .reception(this.ecommerce.id.toString(), '1')
         .subscribe(() => this.getAllEcommerceByDestinationReception());
-  
+
       this.messageService.add({
         severity: 'success',
         summary: 'Successful',
         detail: 'Poids Deleted',
         life: 3000,
       });
-  
+
       this.ecommerce = null;  // Réinitialiser ecommerce à null
     } else {
       this.messageService.add({
@@ -97,7 +96,7 @@ export class ReceptionECommerceComponent  implements OnInit {
       });
     }
   }
-  
+
 
 
   saveReception() {

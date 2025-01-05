@@ -6,8 +6,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { StructureDto,StructureService } from 'src/app/proxy/structures';
 import { Table } from 'primeng/table';
-import { EcommerceService } from 'src/app/proxy/ecommerce/ecommerce.service';
-import { EcommerceDto } from 'src/app/proxy/ecommerce';
+import { EcommerceDto ,EcommerceService } from 'src/app/proxy/ecommerce';
 import { ExpeditionEcomService } from 'src/app/proxy/expeditionEcommerce';
 
 @Component({

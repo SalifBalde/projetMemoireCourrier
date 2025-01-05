@@ -1,2 +1,2 @@
 export * from './models';
-// export * from './ecommerce.service';
+export * from './ecommerce.service';

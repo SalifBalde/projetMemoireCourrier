@@ -4,8 +4,7 @@ import { Router } from '@angular/router';
 import { Table } from 'jspdf-autotable';
 import { MessageService } from 'primeng/api';
 import { SessionService } from 'src/app/proxy/auth/Session.service';
-import { EcommerceDto } from 'src/app/proxy/ecommerce';
-import { EcommerceService } from 'src/app/proxy/ecommerce/ecommerce.service';
+import { EcommerceDto,EcommerceService } from 'src/app/proxy/ecommerce';
 import { StructureDto, StructureService } from 'src/app/proxy/structures';
 import { ExpeditionEcomService, ExpeditionEcomDto, ExpeditionEcomDetailsDto } from 'src/app/proxy/expeditionEcommerce';
 
@@ -133,7 +132,7 @@ onSelectColis(ecommerce: EcommerceDto) {
 
   getAllEcommerceByStatut() {
     this.loading = true;
-    const id: string = '3';  
+    const id: string = '3';
     // const bureauId: number = Number(this.sessionService.getAgentAttributes().structureId);
 
     const bureauId: number = Number(1);
