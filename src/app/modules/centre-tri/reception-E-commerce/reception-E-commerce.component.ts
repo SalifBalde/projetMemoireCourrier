@@ -42,7 +42,7 @@ export class ReceptionECommerceComponent  implements OnInit {
   ) {}
 
    ngOnInit() {
-    this.getAllEcommerceReceptionCt(); 
+    this.getAllEcommerceReceptionCt();
   }
 
   getAllEcommerceReceptionCt() {
@@ -63,24 +63,24 @@ export class ReceptionECommerceComponent  implements OnInit {
 
   openDialog(ecommerce: EcommerceDto) {
     this.openEcommerceDialog = true;
-    this.ecommerce = { ...ecommerce }; 
+    this.ecommerce = { ...ecommerce };
   }
 
   confirmReception() {
     this.openEcommerceDialog = false;
-  
+
     if (this.ecommerce) {
       this.ecommerceService
         .reception(this.ecommerce.id.toString(), '1')
         .subscribe(() => this.getAllEcommerceReceptionCt());
-  
+
       this.messageService.add({
         severity: 'success',
         summary: 'Successful',
         detail: 'Poids Deleted',
         life: 3000,
       });
-  
+
       this.ecommerce = null;  // Réinitialiser ecommerce à null
     } else {
       this.messageService.add({
@@ -91,7 +91,7 @@ export class ReceptionECommerceComponent  implements OnInit {
       });
     }
   }
-  
+
 
 
   saveReception() {
