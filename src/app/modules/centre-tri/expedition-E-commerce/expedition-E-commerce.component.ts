@@ -101,8 +101,8 @@ export class ExpeditionECommerceComponent implements OnInit {
             return;
         }
     
-        console.log('Structure sélectionnée:', this.selectedStructure);
-        console.log('E-commerce sélectionnés:', this.selectedEcommerce);
+        // console.log('Structure sélectionnée:', this.selectedStructure);
+        // console.log('E-commerce sélectionnés:', this.selectedEcommerce);
     
         if (!this.selectedStructure) {
             this.messageService.add({
@@ -119,14 +119,14 @@ export class ExpeditionECommerceComponent implements OnInit {
         );
     
         if (invalidEcommerce) {
-            console.log('E-commerce non valide détecté:', invalidEcommerce);
+            // console.log('E-commerce non valide détecté:', invalidEcommerce);
             this.messageService.add({
-                severity: 'error',
-                summary: 'Erreur',
-                detail: 'Vous n\'avez pas choisi la bonne destination pour l\'e-commerce sélectionné.',
-                life: 3000,
+                severity: 'warn', 
+                summary: 'Attention',
+                detail: 'Vous n\'avez pas choisi la bonne destination pour l\'envoi sélectionné.',
+                life: 3000,  
             });
-            return;
+            return;  
         }
     
         this.form.value.details = this.mapIdsToEcommerce(this.selectedEcommerce);
@@ -155,38 +155,6 @@ export class ExpeditionECommerceComponent implements OnInit {
         );
     }
     
-    
-    // saveExpedition() {
-    //     if (this.form.invalid) {
-    //         return;
-    //     }
-
-    //     this.form.value.details = this.mapIdsToEcommerce(this.selectedEcommerce);
-    //     this.form.value.bureauExpediteur = 1;
-    //     this.expeditionEcomService.save(this.form.value).subscribe(
-    //         (result) => {
-    //             //this.getAllEcommerce();
-    //             this.expedition = result;
-    //             this.router.navigateByUrl('/ct/details-expeditionEcom/' + this.expedition.id);
-    //             this.messageService.add({
-    //                 severity: 'success',
-    //                 summary: 'Successful',
-    //                 detail: 'Envoi ecommerce expédié avec succés',
-    //                 life: 3000,
-    //             });
-    //         },
-    //         (error) => {
-    //             this.messageService.add({
-    //                 severity: 'danger',
-    //                 summary: 'Error',
-    //                 detail: 'Erreur enregistrement',
-    //                 life: 3000,
-    //             });
-    //         }
-    //     );
-
-    // }
-
     onSelectEcommerce(ecommerce: EcommerceDto) {
         if (this.selectedEcommerce.includes(ecommerce)) {
 

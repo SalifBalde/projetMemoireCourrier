@@ -76,7 +76,7 @@ export class ReceptionECommerceComponent implements OnInit {
       this.messageService.add({
         severity: 'success',
         summary: 'Successful',
-        detail: 'Poids Deleted',
+        detail: 'L\'envoi a été réceptionné avec succès.',
         life: 3000,
       });
 
@@ -85,7 +85,7 @@ export class ReceptionECommerceComponent implements OnInit {
       this.messageService.add({
         severity: 'warn',
         summary: 'Données manquantes',
-        detail: 'Aucun colis sélectionné.',
+        detail: 'Aucun envoi a été  sélectionné.',
         life: 3000,
       });
     }

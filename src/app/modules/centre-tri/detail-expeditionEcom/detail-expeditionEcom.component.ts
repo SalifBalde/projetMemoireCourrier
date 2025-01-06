@@ -11,34 +11,29 @@ import { PdfService } from 'src/app/proxy/pdf/pdf.service';
   templateUrl: './detail-expeditionEcom.component.html',
 })
 export class DetailExpeditionEcomComponent implements OnInit {
-    expeditionEcom: ExpeditionEcomDto = {} as ExpeditionEcomDto;
+    expeditionEcom: ExpeditionEcomDto | null = null; 
     isModalOpen = false;
-    type : any;
+    type: any;
     events1: any[] = [];
-
 
     constructor(
         private expeditionEcomService: ExpeditionEcomService,
-        private pdfService:PdfService,
+        private pdfService: PdfService,
         private fb: FormBuilder,
         private router: Router,
-        private route : ActivatedRoute,
+        private route: ActivatedRoute,
     ) {}
-
     ngOnInit(): void {
         this.route.params.subscribe((params: Params) => {
             const id = params['id'];
-
+    
             this.expeditionEcomService.getOne(id).subscribe((expeditionEcom) => {
-                this.expeditionEcom = { ...this.expeditionEcom };
+                this.expeditionEcom = expeditionEcom;
+                console.log('ExpeditionEcom data loaded:', this.expeditionEcom);  // Affichage des données dans la console
             });
-
-          });
-
-
-
+        });
     }
-
+    
     openDialog() {
         this.isModalOpen = true;
         this.events1 = [
@@ -49,8 +44,7 @@ export class DetailExpeditionEcomComponent implements OnInit {
         ];
     }
 
-    generatePdf() : void{
-        //this.pdfService.generatePDF(this.expedition);
+    generatePdf(): void {
+        // this.pdfService.generatePDF(this.expedition); 
     }
-
 }
