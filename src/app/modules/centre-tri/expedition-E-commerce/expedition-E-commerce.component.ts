@@ -51,6 +51,10 @@ export class ExpeditionECommerceComponent implements OnInit {
         this.initializeForm();
         this.loadStructures();
         this.getAllEcommerceExpeditionCt()
+        this.form.get('bureauDestination')?.valueChanges.subscribe((value) => {
+            this.selectedStructure = this.structure$.find((structure) => structure.id === value) || null;
+            console.log('Structure synchronisée:', this.selectedStructure);
+        });
     }
 
     private initializeForm() {
@@ -86,81 +90,102 @@ export class ExpeditionECommerceComponent implements OnInit {
         });
     }
 
+    saveExpedition() {
+        if (this.form.invalid) {
+            this.messageService.add({
+                severity: 'error',
+                summary: 'Erreur',
+                detail: 'Veuillez remplir tous les champs obligatoires.',
+                life: 3000,
+            });
+            return;
+        }
+    
+        console.log('Structure sélectionnée:', this.selectedStructure);
+        console.log('E-commerce sélectionnés:', this.selectedEcommerce);
+    
+        if (!this.selectedStructure) {
+            this.messageService.add({
+                severity: 'error',
+                summary: 'Erreur',
+                detail: 'Veuillez sélectionner une destination valide.',
+                life: 3000,
+            });
+            return;
+        }
+    
+        const invalidEcommerce = this.selectedEcommerce.find(
+            (ecommerce) => String(ecommerce.idbureau).trim() !== String(this.selectedStructure?.id).trim()
+        );
+    
+        if (invalidEcommerce) {
+            console.log('E-commerce non valide détecté:', invalidEcommerce);
+            this.messageService.add({
+                severity: 'error',
+                summary: 'Erreur',
+                detail: 'Vous n\'avez pas choisi la bonne destination pour l\'e-commerce sélectionné.',
+                life: 3000,
+            });
+            return;
+        }
+    
+        this.form.value.details = this.mapIdsToEcommerce(this.selectedEcommerce);
+        this.form.value.bureauExpediteur = this.selectedStructure?.id;
+    
+        this.expeditionEcomService.save(this.form.value).subscribe(
+            (result) => {
+                this.expedition = result;
+                this.router.navigateByUrl('/ct/details-expeditionEcom/' + this.expedition.id);
+                this.messageService.add({
+                    severity: 'success',
+                    summary: 'Succès',
+                    detail: 'Envoi ecommerce expédié avec succès.',
+                    life: 3000,
+                });
+            },
+            (error) => {
+                console.error('Erreur lors de l\'enregistrement:', error);
+                this.messageService.add({
+                    severity: 'error',
+                    summary: 'Erreur',
+                    detail: 'Erreur lors de l\'enregistrement.',
+                    life: 3000,
+                });
+            }
+        );
+    }
+    
+    
     // saveExpedition() {
     //     if (this.form.invalid) {
     //         return;
     //     }
-    
-    //     const invalidEcommerce = this.selectedEcommerce.find(
-    //         (ecommerce) => Number(ecommerce.idbureau) !== Number(this.selectedStructure?.id)
-    //     );
-    // console.log(this.selectedStructure)
-    //     if (invalidEcommerce) {
-    //         this.messageService.add({
-    //             severity: 'error',
-    //             summary: 'Erreur',
-    //             detail: 'Vous n\'avez pas choisi la bonne destination pour l\'e-commerce sélectionné.',
-    //             life: 3000,
-    //         });
-    //         return;
-    //     }
-    
+
     //     this.form.value.details = this.mapIdsToEcommerce(this.selectedEcommerce);
-    //     this.form.value.bureauExpediteur = this.selectedStructure?.id;
-    
+    //     this.form.value.bureauExpediteur = 1;
     //     this.expeditionEcomService.save(this.form.value).subscribe(
     //         (result) => {
+    //             //this.getAllEcommerce();
     //             this.expedition = result;
     //             this.router.navigateByUrl('/ct/details-expeditionEcom/' + this.expedition.id);
     //             this.messageService.add({
     //                 severity: 'success',
-    //                 summary: 'Succès',
-    //                 detail: 'Envoi ecommerce expédié avec succès.',
+    //                 summary: 'Successful',
+    //                 detail: 'Envoi ecommerce expédié avec succés',
     //                 life: 3000,
     //             });
     //         },
     //         (error) => {
     //             this.messageService.add({
-    //                 severity: 'error',
-    //                 summary: 'Erreur',
-    //                 detail: 'Erreur lors de l\'enregistrement.',
+    //                 severity: 'danger',
+    //                 summary: 'Error',
+    //                 detail: 'Erreur enregistrement',
     //                 life: 3000,
     //             });
     //         }
     //     );
+
     // }
-    
-    
-    saveExpedition() {
-        if (this.form.invalid) {
-            return;
-        }
-
-        this.form.value.details = this.mapIdsToEcommerce(this.selectedEcommerce);
-        this.form.value.bureauExpediteur = 1;
-        this.expeditionEcomService.save(this.form.value).subscribe(
-            (result) => {
-                //this.getAllEcommerce();
-                this.expedition = result;
-                this.router.navigateByUrl('/ct/details-expeditionEcom/' + this.expedition.id);
-                this.messageService.add({
-                    severity: 'success',
-                    summary: 'Successful',
-                    detail: 'Envoi ecommerce expédié avec succés',
-                    life: 3000,
-                });
-            },
-            (error) => {
-                this.messageService.add({
-                    severity: 'danger',
-                    summary: 'Error',
-                    detail: 'Erreur enregistrement',
-                    life: 3000,
-                });
-            }
-        );
-
-    }
 
     onSelectEcommerce(ecommerce: EcommerceDto) {
         if (this.selectedEcommerce.includes(ecommerce)) {
