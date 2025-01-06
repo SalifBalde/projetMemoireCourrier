@@ -4,102 +4,101 @@ import { Router } from '@angular/router';
 import { Table } from 'jspdf-autotable';
 import { MessageService } from 'primeng/api';
 import { SessionService } from 'src/app/proxy/auth/Session.service';
-import { EcommerceDto ,EcommerceService } from 'src/app/proxy/ecommerce';
+import { EcommerceDto, EcommerceService } from 'src/app/proxy/ecommerce';
 import { StructureDto, StructureService } from 'src/app/proxy/structures';
 import { ExpeditionEcomService, ExpeditionEcomDto, ExpeditionEcomDetailsDto } from 'src/app/proxy/expeditionEcommerce';
 
 
-interface Structure {
-  id: number;
-  nom: string;
-  adresse?: string;
-}
+// interface Structure {
+//   id: number;
+//   nom: string;
+//   adresse?: string;
+// }
 
 @Component({
-  selector: 'app-expedition-e-commerce',
-  templateUrl: './expedition-e-commerce.component.html',
-  providers: [MessageService],
+    selector: 'app-expedition-e-commerce',
+    templateUrl: './expedition-e-commerce.component.html',
+    providers: [MessageService],
 })
 export class ExpeditionECommerceComponent implements OnInit {
-  structure$: Structure[] = [];
-  ecommerce$!: EcommerceDto[];  // Liste des eCommerce
-  expedition!: ExpeditionEcomDto;  // Données de l'expédition créée
+    structure$: StructureDto[] = [];
+    ecommerce$!: EcommerceDto[];
+    expedition!: ExpeditionEcomDto;
 
-  @ViewChild('dt') dt!: Table;  // Table de présentation des données
-  openCourrierDialog: boolean = false;
-  openNumExpDialog: boolean = false;
+    @ViewChild('dt') dt!: Table;
+    openCourrierDialog: boolean = false;
+    openNumExpDialog: boolean = false;
 
-  structure!: StructureDto;
-  idStatutFermetureCourrier: any;
+    structure!: StructureDto;
+    idStatutFermetureCourrier: any;
 
-  loading: boolean = false;
-  selectedStructure: StructureDto | null = null;
-  selectedEcommerce: EcommerceDto[] = [];  // Liste des eCommerce sélectionnés
-  form!: FormGroup;  // Formulaire pour l'expédition
+    loading: boolean = false;
+    selectedStructure: StructureDto | null = null;
+    selectedEcommerce: EcommerceDto[] = [];
+    form!: FormGroup;
 
-  constructor(
-    private sessionService: SessionService,
-    private fb: FormBuilder,
-    private router: Router,
-    private structureService: StructureService,
-    private messageService: MessageService,
-    private ecommerceService: EcommerceService,
-    private expeditionEcomService: ExpeditionEcomService
-  ) {}
+    constructor(
+        private sessionService: SessionService,
+        private fb: FormBuilder,
+        private router: Router,
+        private structureService: StructureService,
+        private messageService: MessageService,
+        private ecommerceService: EcommerceService,
+        private expeditionEcomService: ExpeditionEcomService
+    ) { }
 
-  ngOnInit() {
-    this.initializeForm();
-    this.loadStructures();
-    this.getAllEcommerceExpeditionCt()
-  }
-
-  private initializeForm() {
-    this.form = this.fb.group({
-      bureauDestination: ['', Validators.required],
-    });
-  }
-
-  // private loadStructures() {
-  //   // Chargement des structures disponibles, filtrage sur celles avec l'id 16
-  //   this.structureService.findAll().subscribe(
-  //     (result) => {
-  //       this.structure$ = result.filter((structure: StructureDto) => +structure.id === 16);
-  //     },
-  //     (error) => {
-  //       console.error('Error loading structures', error);
-  //     }
-  //   );
-  // }
-
-  private loadStructures() {
-    // Simulating data instead of fetching from a service
-    this.structure$ = [
-      { id: 1, nom: 'Structure A', adresse: 'Adresse A' },
-      { id: 2, nom: 'Structure B', adresse: 'Adresse B' },
-      { id: 3, nom: 'Structure C', adresse: 'Adresse C' },
-    ];
-  }
-
-
-  buildForm() {
-    this.form = this.fb.group({
-        bureauDestination: [undefined, Validators.required],
-    });
-}
-
-
-  saveExpedition() {
-    if (this.form.invalid) {
-        return;
+    ngOnInit() {
+        this.initializeForm();
+        this.loadStructures();
+        this.getAllEcommerceExpeditionCt()
     }
 
-this.form.value.details = this.mapIdsToEcommerce(this.selectedEcommerce);
-this.form.value.bureauExpediteur = 1;
-this.expeditionEcomService.save(this.form.value).subscribe(
+    private initializeForm() {
+        this.form = this.fb.group({
+            bureauDestination: ['', Validators.required],
+        });
+    }
+
+    private loadStructures() {
+        this.structureService.findAll().subscribe(
+            (result) => {
+                this.structure$ = result.filter((structure: StructureDto) => +structure.id === 16);
+            },
+            (error) => {
+                console.error('Error loading structures', error);
+            }
+        );
+    }
+
+    //   private loadStructures() {
+    //     // Simulating data instead of fetching from a service
+    //     this.structure$ = [
+    //       { id: 1, nom: 'Structure A', adresse: 'Adresse A' },
+    //       { id: 2, nom: 'Structure B', adresse: 'Adresse B' },
+    //       { id: 3, nom: 'Structure C', adresse: 'Adresse C' },
+    //     ];
+    //   }
+
+
+    buildForm() {
+        this.form = this.fb.group({
+            bureauDestination: [undefined, Validators.required],
+        });
+    }
+
+
+    saveExpedition() {
+        if (this.form.invalid) {
+            return;
+        }
+
+        this.form.value.details = this.mapIdsToEcommerce(this.selectedEcommerce);
+        this.form.value.bureauExpediteur = 1;
+        this.expeditionEcomService.save(this.form.value).subscribe(
             (result) => {
                 //this.getAllEcommerce();
                 this.expedition = result;
-                this.router.navigateByUrl('/ct/details-expeditionEcom/'+this.expedition.id);
+                this.router.navigateByUrl('/ct/details-expeditionEcom/' + this.expedition.id);
                 this.messageService.add({
                     severity: 'success',
                     summary: 'Successful',
@@ -108,7 +107,7 @@ this.expeditionEcomService.save(this.form.value).subscribe(
                 });
             },
             (error) => {
-                 this.messageService.add({
+                this.messageService.add({
                     severity: 'danger',
                     summary: 'Error',
                     detail: 'Erreur enregistrement',
@@ -117,40 +116,40 @@ this.expeditionEcomService.save(this.form.value).subscribe(
             }
         );
 
-}
+    }
 
-onSelectEcommerce(ecommerce: EcommerceDto) {
-  if (this.selectedEcommerce.includes(ecommerce)) {
-    // Si l'élément est déjà sélectionné, on le retire
-    this.selectedEcommerce = this.selectedEcommerce.filter(item => item !== ecommerce);
-  } else {
-    // Sinon, on l'ajoute
-    this.selectedEcommerce.push(ecommerce);
-  }
-}
+    onSelectEcommerce(ecommerce: EcommerceDto) {
+        if (this.selectedEcommerce.includes(ecommerce)) {
 
-  getAllEcommerceExpeditionCt() {
-    this.loading = true;
-    this.ecommerceService.findEcommerceExpeditionCt().subscribe(
-      (data) => {
-        console.log('Données d\'expédition récupérées : ', data);
-        this.ecommerce$ = data;
-        this.loading = false;
-      },
-      (error) => {
-        console.error('Erreur lors du chargement des données d\'expédition', error);
-        this.loading = false;
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Erreur',
-          detail: 'Échec du chargement des données d\'expédition',
-          life: 3000,
-        });
-      }
-    );
-  }
+            this.selectedEcommerce = this.selectedEcommerce.filter(item => item !== ecommerce);
+        } else {
 
-  mapIdsToEcommerce(ids: any): ExpeditionEcomDetailsDto[] {
-    return ids.map(id => ({ ecomId: id.id }));
-}
+            this.selectedEcommerce.push(ecommerce);
+        }
+    }
+
+    getAllEcommerceExpeditionCt() {
+        this.loading = true;
+        this.ecommerceService.findEcommerceExpeditionCt().subscribe(
+            (data) => {
+                console.log('Données d\'expédition récupérées : ', data);
+                this.ecommerce$ = data;
+                this.loading = false;
+            },
+            (error) => {
+                console.error('Erreur lors du chargement des données d\'expédition', error);
+                this.loading = false;
+                this.messageService.add({
+                    severity: 'error',
+                    summary: 'Erreur',
+                    detail: 'Échec du chargement des données d\'expédition',
+                    life: 3000,
+                });
+            }
+        );
+    }
+
+    mapIdsToEcommerce(ids: any): ExpeditionEcomDetailsDto[] {
+        return ids.map(id => ({ ecomId: id.id }));
+    }
 }
