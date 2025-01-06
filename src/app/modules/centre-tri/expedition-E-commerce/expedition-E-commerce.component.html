@@ -3,26 +3,20 @@
 <form [formGroup]="form" (ngSubmit)="saveExpedition()">
 
   <div class="card p-fluid">
-    <h4>Liste des envoies E-commerce à expédier</h4>
+    <h4>Liste des envois E-commerce à expédier</h4>
     <div class="p-formgrid grid justify-content-center">
       <div class="field col-4">
         <label for="bureauDestination">Destination</label>
-        <p-dropdown [options]="structure$" optionLabel="libelle" optionValue="id" [filter]="true" filterBy="nom"
-          formControlName="bureauDestination" [showClear]="true" placeholder="Choisissez un bureau"
-          aria-label="Choisissez un bureau">
-          <ng-template pTemplate="selectedItem" let-selectedOption>
-            <div class="flex align-items-center gap-2">
-              <div>{{ selectedOption.libelle }}</div>
-            </div>
-          </ng-template>
-          <ng-template let-structure pTemplate="item">
-            <div class="flex align-items-center gap-2">
-              <div>{{ structure.libelle }}</div>
-            </div>
-          </ng-template>
+        <p-dropdown 
+          [options]="structure$" 
+          optionLabel="libelle" 
+          optionValue="id" 
+          [filter]="true" 
+          formControlName="bureauDestination" 
+          [showClear]="true" 
+          placeholder="Choisissez un bureau">
         </p-dropdown>
-        <div *ngIf="form.get('bureauDestination')?.invalid && form.get('bureauDestination')?.touched"
-          class="error-message">
+        <div *ngIf="form.get('bureauDestination')?.invalid && form.get('bureauDestination')?.touched" class="error-message">
           Veuillez sélectionner une destination.
         </div>
       </div>
@@ -32,17 +26,16 @@
   <div class="grid">
     <div class="col-12">
       <div class="card px-6 py-6">
-        <p-table [value]="ecommerce$" dataKey="id" [tableStyle]="{ 'min-width': '50rem' }" selectionMode="checkbox"
+        <p-table 
+          [value]="ecommerce$" 
+          selectionMode="checkbox" 
           [(selection)]="selectedEcommerce">
           <ng-template pTemplate="header">
             <tr>
-              <th>
-                <p-tableHeaderCheckbox [table]="dt"></p-tableHeaderCheckbox>
-              </th>
+              <th><p-tableHeaderCheckbox></p-tableHeaderCheckbox></th>
               <th>Numéro d'envoi</th>
               <th>Nom complet client</th>
               <th>Téléphone</th>
-              <th>Destination</th>
               <th>Adresse Client</th>
               <th>Date</th>
             </tr>
@@ -50,9 +43,7 @@
 
           <ng-template pTemplate="body" let-ecommerce>
             <tr>
-              <td>
-                <p-tableCheckbox [value]="ecommerce" />
-              </td>
+              <td><p-tableCheckbox [value]="ecommerce"></p-tableCheckbox></td>
               <td>{{ ecommerce.numenvoi }}</td>
               <td>{{ ecommerce.prenomClient }} {{ ecommerce.nomClient }}</td>
               <td>{{ ecommerce.telephoneClient }}</td>
@@ -63,10 +54,13 @@
         </p-table>
 
         <div class="col-12 flex flex-column lg:flex-row justify-content-end align-items-center">
-          <button pButton class="p-element p-button-primary lg:w-auto flex-order-1" type="button"
-            (click)="saveExpedition()" [disabled]="form.invalid || selectedEcommerce.length === 0">
-            <span class="p-button-icon p-button-icon-left pi pi-fw pi-check"></span>
-            <span class="p-button-label">Sauvegarder</span>
+          <button 
+            pButton 
+            class="p-button-primary lg:w-auto" 
+            type="button" 
+            (click)="saveExpedition()" 
+            [disabled]="form.invalid || selectedEcommerce.length === 0">
+            Sauvegarder
           </button>
         </div>
       </div>
