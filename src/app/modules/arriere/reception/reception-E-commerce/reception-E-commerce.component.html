@@ -19,7 +19,7 @@
       <td>
         <p-tableCheckbox [value]="ecommerce" (onChange)="onSelectColis(ecommerce)" [selected]="isSelected(ecommerce)"/>
       </td>
-      <td>{{ ecommerce.numEnvoi }}</td>
+      <td>{{ ecommerce.numenvoi }}</td>
       <td>{{ ecommerce.prenomClient }} {{ ecommerce.nomClient }}</td>
       <td>{{ ecommerce.telephoneClient }}</td>
       <td>{{ ecommerce.adresseClient }}</td>
@@ -50,7 +50,7 @@
               <td>
                 <p-tableCheckbox [value]="ecommerce" />
               </td>
-              <td>{{ ecommerce.numEnvoi }}</td>
+              <td>{{ ecommerce.numenvoi }}</td>
               <td>{{ ecommerce.prenomClient }} {{ ecommerce.nomClient }}</td>
               <td>{{ ecommerce.telephoneClient }}</td>
               <td>{{ ecommerce.adresseClient }}</td>
@@ -91,5 +91,5 @@
 
 <div *ngIf="loading" class="loading-message">
   <p>Chargement, veuillez patienter...</p>
-            
+
 </div>

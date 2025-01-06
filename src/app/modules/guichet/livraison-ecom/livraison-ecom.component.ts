@@ -8,114 +8,136 @@ import { ModePaiementService } from 'src/app/proxy/mode-paiements';
 import { EcommerceDto, EcommerceService } from 'src/app/proxy/ecommerce';
 
 @Component({
-  selector: 'app-livraison-ecom',
-  templateUrl: './livraison-ecom.component.html',
-  providers: [ConfirmationService],
+    selector: 'app-livraison-ecom',
+    templateUrl: './livraison-ecom.component.html',
+    providers: [ConfirmationService],
 })
 export class LivraisonEcomComponent implements OnInit {
-  form: FormGroup;
-  montant = 0;
-  ecommerce$: EcommerceDto[] = [];
-  loadingEcommerce: boolean = false;
-  selectedEcommerce: EcommerceDto | null = null;
-  displayDialog: boolean = false;
-  montantTotal: number = 0;
-  payer: boolean = false;
-  isModalOpen = false;
-  mode$: ModePaiementDto[] = [];
-  selectedEcommerceForDeletion: Set<EcommerceDto> = new Set();
-  selectedModePaiement: ModePaiementDto | null = null;
-  allSelected: boolean = false;
-  events1: any[] = [];
-  loading: boolean = false;
+    form: FormGroup;
+    montant = 0;
+    ecommerce$: EcommerceDto[] = [];
+    loadingEcommerce: boolean = false;
+    selectedEcommerce: EcommerceDto | null = null;
+    displayDialog: boolean = false;
+    montantTotal: number = 0;
+    payer: boolean = false;
+    isModalOpen = false;
+    mode$: ModePaiementDto[] = [];
+    selectedEcommerceForDeletion: Set<EcommerceDto> = new Set();
+    selectedModePaiement: ModePaiementDto | null = null;
+    allSelected: boolean = false;
+    events1: any[] = [];
+    loading: boolean = false;
 
-  constructor(
-    private fb: FormBuilder,
-    private sessionService: SessionService,
-    private router: Router,
-    private messageService: MessageService,
-    private confirmationService: ConfirmationService,
-    private ecommerceService: EcommerceService,
-    private modePaiementService: ModePaiementService
-  ) {}
+    constructor(
+        private fb: FormBuilder,
+        private sessionService: SessionService,
+        private router: Router,
+        private messageService: MessageService,
+        private confirmationService: ConfirmationService,
+        private ecommerceService: EcommerceService,
+        private modePaiementService: ModePaiementService
+    ) { }
 
-  ngOnInit(): void {
-    this.buildForm();
-    this.getAllEcommerceALivrer();
+    ngOnInit(): void {
+        this.buildForm();
+        this.getAllEcommerceALivrer();
+    }
 
-    this.modePaiementService.findAll().subscribe(
-      (result) => {
-        this.mode$ = result;
-      },
-      (error) => {
-        console.error('Erreur lors du chargement des modes de paiement', error);
-      }
-    );
-  }
+    buildForm() {
+        this.form = this.fb.group({
+            dateDebut: [undefined, Validators.required],
+            dateFin: [undefined, Validators.required],
+        });
+    }
+    getAllEcommerceALivrer() {
+        this.loading = true;
+        this.ecommerceService.findEcommerceALivrer(1).subscribe(
+            (result) => {
+                console.log(result);
+                this.loading = false;
+                if (result && result.length > 0) {
+                    this.ecommerce$ = result;
+                } else {
+                    this.messageService.add({ severity: 'info', summary: 'Pas d\'envoie', detail: 'Aucun envoie à livrer' });
+                }
+            },
+            (error) => {
+                this.loading = false;
+                console.error('Erreur lors du chargement des ecommerces', error);
+                this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Could not load ecommerce data.' });
+            }
+        );
+    }
 
-  buildForm() {
-    this.form = this.fb.group({
-      dateDebut: [undefined, Validators.required],
-      dateFin: [undefined, Validators.required],
-      modePaiement: [undefined, Validators.required],
-    });
-  }
-  getAllEcommerceALivrer() {
-    this.loading = true;
-    this.ecommerceService.findEcommerceALivrer(1).subscribe(
-      (result) => {
-        console.log(result);
-        this.loading = false;
-        if (result && result.length > 0) {
-          this.ecommerce$ = result;
-        } else {
-          this.messageService.add({severity: 'info', summary: 'No Data', detail: 'No ecommerce found.'});
+    voirEcommerce(ecommerce: EcommerceDto) {
+        this.selectedEcommerce = ecommerce;
+        // this.calculerMontantTotal();
+        this.payer = ecommerce.payer;
+        this.displayDialog = true;
+    }
+
+    livrer() {
+        if (!this.selectedEcommerce) {
+            this.messageService.add({
+                severity: 'warn',
+                summary: 'Avertissement',
+                detail: 'Aucun envoi e-commerce sélectionné pour la livraison.',
+            });
+            return;
         }
-      },
-      (error) => {
-        this.loading = false;
-        console.error('Erreur lors du chargement des ecommerces', error);
-        this.messageService.add({severity: 'error', summary: 'Error', detail: 'Could not load ecommerce data.'});
-      }
-    );
-  }
-
-  voirEcommerce(ecommerce: EcommerceDto) {
-    this.selectedEcommerce = ecommerce; // Correction ici
-    // this.calculerMontantTotal();
-    this.payer = ecommerce.payer;
-    this.displayDialog = true;
-  }
-
-  toggleSelection(ecommerce: EcommerceDto) {
-    if (this.selectedEcommerceForDeletion.has(ecommerce)) {
-      this.selectedEcommerceForDeletion.delete(ecommerce);
-    } else {
-      this.selectedEcommerceForDeletion.add(ecommerce);
+        if (!this.selectedEcommerce.payer) {
+            this.selectedEcommerce.payer = true;
+        }
+        this.ecommerceService.livrer(this.selectedEcommerce.id).subscribe(
+            (result: EcommerceDto) => {
+                this.displayDialog = false;
+                this.messageService.add({
+                    severity: 'success',
+                    summary: 'Succès',
+                    detail: 'L\'envoie ecommerce a été livré avec succès.',
+                });
+            },
+            (error) => {
+                console.error('Erreur lors de la mise à jour de l\'envoie ecommerce', error);
+                this.messageService.add({
+                    severity: 'error',
+                    summary: 'Erreur',
+                    detail: 'Une erreur est survenue lors de la mise à jour de l\'envoie ecommerce.',
+                });
+            }
+        );
     }
-    this.allSelected = this.selectedEcommerceForDeletion.size === this.ecommerce$.length;
-  }
 
-  selectAll(event: any): void {
-    if (event.checked) {
-      this.ecommerce$.forEach((ecommerce) => this.selectedEcommerceForDeletion.add(ecommerce));
-    } else {
-      this.selectedEcommerceForDeletion.clear();
+    toggleSelection(ecommerce: EcommerceDto) {
+        if (this.selectedEcommerceForDeletion.has(ecommerce)) {
+            this.selectedEcommerceForDeletion.delete(ecommerce);
+        } else {
+            this.selectedEcommerceForDeletion.add(ecommerce);
+        }
+        this.allSelected = this.selectedEcommerceForDeletion.size === this.ecommerce$.length;
     }
-    this.allSelected = event.checked;
-  }
 
-  onRowSelect(event: any) {
-    const ecommerce = event.data;
-    this.selectedEcommerceForDeletion.add(ecommerce);
-    console.log('Row Selected:', ecommerce);
-    this.allSelected = this.selectedEcommerceForDeletion.size === this.ecommerce$.length;
-  }
+    selectAll(event: any): void {
+        if (event.checked) {
+            this.ecommerce$.forEach((ecommerce) => this.selectedEcommerceForDeletion.add(ecommerce));
+        } else {
+            this.selectedEcommerceForDeletion.clear();
+        }
+        this.allSelected = event.checked;
+    }
 
-  onRowUnselect(event: any) {
-    const ecommerce = event.data;
-    this.selectedEcommerceForDeletion.delete(ecommerce);
-    console.log('Row Unselected:', ecommerce);
-    this.allSelected = this.selectedEcommerceForDeletion.size === this.ecommerce$.length;
-  }
+    onRowSelect(event: any) {
+        const ecommerce = event.data;
+        this.selectedEcommerceForDeletion.add(ecommerce);
+        console.log('Row Selected:', ecommerce);
+        this.allSelected = this.selectedEcommerceForDeletion.size === this.ecommerce$.length;
+    }
+
+    onRowUnselect(event: any) {
+        const ecommerce = event.data;
+        this.selectedEcommerceForDeletion.delete(ecommerce);
+        console.log('Row Unselected:', ecommerce);
+        this.allSelected = this.selectedEcommerceForDeletion.size === this.ecommerce$.length;
+    }
 }

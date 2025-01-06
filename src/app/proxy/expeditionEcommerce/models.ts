@@ -1,16 +1,14 @@
 export interface ExpeditionEcomDetailsDto {
-    ecomCode: string;
+    numenvoie: string;
     ecomId: number;
-    ecomNomDestinataire: string;
-    ecomPrenomDestinataire: string;
-    bureauDestination: string;
-    bureauDepot: string;
-    ecomBureauDestinataireId: number;
-    ecomBureauDepotId: number;
+    nomClient: string;
+    prenomClient: string;
+    idbureau: string;
     valider: boolean;
-  }
- 
-  
+}
+
+
+
   export interface ExpeditionEcomDto {
     id: number;
     bureauExpediteur: number;
@@ -19,8 +17,8 @@ export interface ExpeditionEcomDetailsDto {
     details: ExpeditionEcomDetailsDto[];
   }
   export interface ExpeditionEcomCreateDto {
-    id?: number; 
-    bureauExpediteur: number; 
+    id?: number;
+    bureauExpediteur: number;
     bureauDestination: number;
     details: ExpeditionEcomDetailsDto[];
 }

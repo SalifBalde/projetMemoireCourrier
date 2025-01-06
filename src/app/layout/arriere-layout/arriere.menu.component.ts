@@ -72,13 +72,18 @@ export class ArriereMenuComponent implements OnInit {
             //         },
             //     ]
             // },
-            {                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
+            {
                 label: 'Reporting',
                 items: [
                     {
                         label: 'Report Jt',
                         icon: 'pi pi-fw pi-file-pdf',
                         routerLink: ['/arriere/rapport'],
+                    },
+                    {
+                        label: 'Report Jt Ecommerce',
+                        icon: 'pi pi-fw pi-file-pdf',
+                        routerLink: ['/arriere/RapportEcommerce'],
                     },
                 ],
             },

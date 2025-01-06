@@ -93,17 +93,17 @@ export class ExpeditionECommerceComponent implements OnInit {
         return;
     }
 
-this.form.value.details = this.mapIdsToColis(this.selectedEcommerce);
+this.form.value.details = this.mapIdsToEcommerce(this.selectedEcommerce);
 this.form.value.bureauExpediteur = 1;
 this.expeditionEcomService.save(this.form.value).subscribe(
             (result) => {
-                //this.getAllColis();
+                //this.getAllEcommerce();
                 this.expedition = result;
-                this.router.navigateByUrl('/arriere/details-expedition/'+this.expedition.id);
+                this.router.navigateByUrl('/ct/details-expeditionEcom/'+this.expedition.id);
                 this.messageService.add({
                     severity: 'success',
                     summary: 'Successful',
-                    detail: 'Colis expédié avec succés',
+                    detail: 'Envoi ecommerce expédié avec succés',
                     life: 3000,
                 });
             },
@@ -119,7 +119,7 @@ this.expeditionEcomService.save(this.form.value).subscribe(
 
 }
 
-onSelectColis(ecommerce: EcommerceDto) {
+onSelectEcommerce(ecommerce: EcommerceDto) {
   if (this.selectedEcommerce.includes(ecommerce)) {
     // Si l'élément est déjà sélectionné, on le retire
     this.selectedEcommerce = this.selectedEcommerce.filter(item => item !== ecommerce);
@@ -150,7 +150,7 @@ onSelectColis(ecommerce: EcommerceDto) {
     );
   }
 
-  mapIdsToColis(ids: any): ExpeditionEcomDetailsDto[] {
+  mapIdsToEcommerce(ids: any): ExpeditionEcomDetailsDto[] {
     return ids.map(id => ({ ecomId: id.id }));
 }
 }

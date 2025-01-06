@@ -1,16 +1,16 @@
 export interface EcommerceDto {
     id: number;
-    dateExp: string;
-    dateLivraison: string;
-    montantVerse: number;
+    dateexp: string;
+    datelivraison: string;
+    montantverse: number;
     numenvoi: string;
-    numVersement: string;
+    numversement: string;
     observation: string;
-    partenaireEComId: number;
-    taxeTransp: number;
-    idBureau: number;
-    idUser: number;
-    heureLivraison: string;
+    partenaireEcomId: number;
+    taxetransp: number;
+    idbureau: number;
+    iduser: number;
+    heurelivraison: string;
     etatEcomId: number;
     version: number;
     adresseClient: string;
@@ -23,25 +23,26 @@ export interface EcommerceDto {
     taxeLivraison: number;
     dateRetourner: string;
     echanger: boolean;
-    envoieChange: string;
+    envoiechange: string;
     gabarit: number;
     produitId: number;
     versementEffectuer: boolean;
-  }
-  
+}
+
+
   export interface EcommerceSearchResultDto {
     id: number;
-    dateExp: string;
-    dateLivraison: string;
-    montantVerse: number;
+    dateexp: string;
+    datelivraison: string;
+    montantverse: number;
     numenvoi: string;
-    numVersement: string;
+    numversement: string;
     observation: string;
-    partenaireEComId: number;
-    taxeTransp: number;
-    idBureau: number;
-    idUser: number;
-    heureLivraison: string;
+    partenaireEcomId: number;
+    taxetransp: number;
+    idbureau: number;
+    iduser: number;
+    heurelivraison: string;
     etatEcomId: number;
     version: number;
     adresseClient: string;
@@ -54,9 +55,8 @@ export interface EcommerceDto {
     taxeLivraison: number;
     dateRetourner: string;
     echanger: boolean;
-    envoieChange: string;
+    envoiechange: string;
     gabarit: number;
     produitId: number;
     versementEffectuer: boolean;
   }
-  

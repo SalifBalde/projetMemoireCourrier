@@ -11,7 +11,10 @@ const routes: Routes = [{ path: '', component: ArriereComponent },
    { path: 'expedition/expedition-E-commerce', loadChildren: () => import('./expedition/expedition-E-commerce/expedition-E-commerce.module').then(m => m.ExpeditionECommerceModule) },
    { path: 'rapport', loadChildren: () => import('../drp/rapport/rapport.module').then(m => m.RapportModule) },
    { path: 'details-expedition/:id', loadChildren: () => import('./details-expedition/details-expedition.module').then(m => m.DetailsExpeditionModule) },
-   
+   { path: 'details-expeditionEcom/:id', loadChildren: () => import('./detail-expeditionEcom/detail-expeditionEcom.module').then(m => m.DetailExpeditionEcomModule) },
+   { path: 'RapportEcommerce', loadChildren: () => import('./rapportEcommerce/rapportEcommerce.module').then(m => m.RapportEcommerceModule) },
+
+
   ];
 
 @NgModule({
