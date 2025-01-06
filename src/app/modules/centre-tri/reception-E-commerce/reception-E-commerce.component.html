@@ -1,32 +1,3 @@
-<!-- Template HTML - reception-e-commerce.component.html
-<p-table [value]="ecommerce$ | async" dataKey="code" [tableStyle]="{ 'min-width': '50rem' }" #dt>
-  <ng-template pTemplate="header">
-    <tr>
-      <th>
-        <p-tableHeaderCheckbox [table]="dt"></p-tableHeaderCheckbox>
-      </th>
-      <th>Numéro d'envoi</th>
-      <th>Nom complet client</th>
-      <th>Téléphone</th>
-      <th>Destination</th>
-      <th>Adresse Client</th>
-      <th>Date</th>
-    </tr>
-  </ng-template>
-
-  <ng-template pTemplate="body" let-ecommerce>
-    <tr>
-      <td>
-        <p-tableCheckbox [value]="ecommerce" (onChange)="onSelectColis(ecommerce)" [selected]="isSelected(ecommerce)"/>
-      </td>
-      <td>{{ ecommerce.numenvoi }}</td>
-      <td>{{ ecommerce.prenomClient }} {{ ecommerce.nomClient }}</td>
-      <td>{{ ecommerce.telephoneClient }}</td>
-      <td>{{ ecommerce.adresseClient }}</td>
-      <td>{{ ecommerce.date | date: 'short' }}</td>
-    </tr>
-  </ng-template>
-</p-table> -->
 <form [formGroup]="form" (ngSubmit)="saveReception()">
   <div class="grid">
     <div class="col-12">

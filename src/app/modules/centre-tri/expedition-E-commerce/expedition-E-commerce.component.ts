@@ -62,7 +62,7 @@ export class ExpeditionECommerceComponent implements OnInit {
     private loadStructures() {
         this.structureService.findAll().subscribe(
             (result) => {
-                this.structure$ = result.filter((structure: StructureDto) => +structure.id === 16);
+                this.structure$ = result
             },
             (error) => {
                 console.error('Error loading structures', error);
@@ -86,7 +86,51 @@ export class ExpeditionECommerceComponent implements OnInit {
         });
     }
 
-
+    // saveExpedition() {
+    //     if (this.form.invalid) {
+    //         return;
+    //     }
+    
+    //     const invalidEcommerce = this.selectedEcommerce.find(
+    //         (ecommerce) => Number(ecommerce.idbureau) !== Number(this.selectedStructure?.id)
+    //     );
+    // console.log(this.selectedStructure)
+    //     if (invalidEcommerce) {
+    //         this.messageService.add({
+    //             severity: 'error',
+    //             summary: 'Erreur',
+    //             detail: 'Vous n\'avez pas choisi la bonne destination pour l\'e-commerce sélectionné.',
+    //             life: 3000,
+    //         });
+    //         return;
+    //     }
+    
+    //     this.form.value.details = this.mapIdsToEcommerce(this.selectedEcommerce);
+    //     this.form.value.bureauExpediteur = this.selectedStructure?.id;
+    
+    //     this.expeditionEcomService.save(this.form.value).subscribe(
+    //         (result) => {
+    //             this.expedition = result;
+    //             this.router.navigateByUrl('/ct/details-expeditionEcom/' + this.expedition.id);
+    //             this.messageService.add({
+    //                 severity: 'success',
+    //                 summary: 'Succès',
+    //                 detail: 'Envoi ecommerce expédié avec succès.',
+    //                 life: 3000,
+    //             });
+    //         },
+    //         (error) => {
+    //             this.messageService.add({
+    //                 severity: 'error',
+    //                 summary: 'Erreur',
+    //                 detail: 'Erreur lors de l\'enregistrement.',
+    //                 life: 3000,
+    //             });
+    //         }
+    //     );
+    // }
+    
+    
     saveExpedition() {
         if (this.form.invalid) {
             return;
