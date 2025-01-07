@@ -4,9 +4,9 @@ import { PdfService } from 'src/app/proxy/pdf/pdf.service';
 import { SessionService } from 'src/app/proxy/auth/Session.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { StructureDto,StructureService } from 'src/app/proxy/structures';
+import { StructureDto, StructureService } from 'src/app/proxy/structures';
 import { Table } from 'primeng/table';
-import { EcommerceDto ,EcommerceService } from 'src/app/proxy/ecommerce';
+import { EcommerceDto, EcommerceService } from 'src/app/proxy/ecommerce';
 import { ExpeditionEcomService } from 'src/app/proxy/expeditionEcommerce';
 
 @Component({
@@ -14,7 +14,7 @@ import { ExpeditionEcomService } from 'src/app/proxy/expeditionEcommerce';
   templateUrl: './reception-e-commerce.component.html',
   providers: [MessageService],
 })
-export class ReceptionECommerceComponent  implements OnInit {
+export class ReceptionECommerceComponent implements OnInit {
   form: FormGroup;
   isModalOpen = false;
   montant = 0;
@@ -38,9 +38,9 @@ export class ReceptionECommerceComponent  implements OnInit {
     private messageService: MessageService,
     private ecommerceService: EcommerceService,
     private expeditionEcomService: ExpeditionEcomService
-  ) {}
+  ) { }
 
-   ngOnInit() {
+  ngOnInit() {
     this.getAllEcommerceReceptionCt();
   }
 
@@ -70,22 +70,22 @@ export class ReceptionECommerceComponent  implements OnInit {
 
     if (this.ecommerce) {
       this.ecommerceService
-        .reception(this.ecommerce.id.toString(), '1')
+        .reception(this.ecommerce.id.toString(), this.sessionService.getAgentAttributes().structureId.toString())
         .subscribe(() => this.getAllEcommerceReceptionCt());
 
       this.messageService.add({
         severity: 'success',
         summary: 'Successful',
-        detail: 'Poids Deleted',
+        detail: 'L\'envoi a été réceptionné avec succès.',
         life: 3000,
       });
 
-      this.ecommerce = null;  // Réinitialiser ecommerce à null
+      this.ecommerce = null;  
     } else {
       this.messageService.add({
         severity: 'warn',
         summary: 'Données manquantes',
-        detail: 'Aucun colis sélectionné.',
+        detail: 'Aucun envoi a été  sélectionné.',
         life: 3000,
       });
     }
@@ -104,7 +104,7 @@ export class ReceptionECommerceComponent  implements OnInit {
         this.messageService.add({
           severity: 'success',
           summary: 'Succès',
-          detail: 'Colis expédié avec succès',
+          detail: 'Envoie ecommerce expédié avec succès',
           life: 3000,
         });
       },

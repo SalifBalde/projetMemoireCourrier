@@ -7,7 +7,7 @@ import { EcommerceDto, EcommerceService } from "src/app/proxy/ecommerce";
 import { PdfService } from "src/app/proxy/pdf/pdf.service";
 
 @Component({
-  selector: "app-colis-details",
+  selector: "app-livraison-details",
   templateUrl: "./livraison-details.component.html",
 })
 export class LivraisonDetailsComponent implements OnInit {
@@ -29,7 +29,7 @@ export class LivraisonDetailsComponent implements OnInit {
       const id = params["id"];
     //   this.updateTimeline();
       this.ecommerceService.getOne(id).subscribe((ecommerce) => {
-        this.ecommerce = ecommerce; // Assign the fetched data to ecommerce
+        this.ecommerce = ecommerce; 
       });
     });
   }

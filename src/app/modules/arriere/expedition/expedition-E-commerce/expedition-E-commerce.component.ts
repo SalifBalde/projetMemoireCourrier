@@ -152,10 +152,15 @@ export class ExpeditionECommerceComponent implements OnInit {
         );
     }
 
-
-    mapIdsToEcommerce(ids: any): ExpeditionEcomDetailsDto[] {
-        return ids.map(id => ({ ecomId: id.id }));
+    mapIdsToEcommerce(selectedEcommerce: EcommerceDto[]): ExpeditionEcomDetailsDto[] {
+        return selectedEcommerce.map(ecommerce => ({
+            ecommerceId: ecommerce.id, 
+            ecommerceNumenvoie: ecommerce.numenvoi,
+            ecommerceNomClient: ecommerce.nomClient, 
+            ecommercePrenomClient: ecommerce.prenomClient, 
+            ecommerceIdbureau: ecommerce.idbureau, 
+            valider: true 
+        }));
     }
-
 
 }

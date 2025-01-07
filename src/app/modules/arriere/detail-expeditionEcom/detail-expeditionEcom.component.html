@@ -2,66 +2,70 @@
     <p-toolbar>
         <div class="p-toolbar-group-left flex flex-wrap">
             <button pButton type="button" icon="pi pi-trash" class="p-button-warning mr-2"></button>
-            <button pButton type="button" icon="pi pi-print" class="p-button-danger" ></button>
+            <button pButton type="button" icon="pi pi-print" class="p-button-danger" (click)="generatePdf()"></button>
         </div>
     </p-toolbar>
 </div>
 
 <div class="card py-8 px-6 md:px-8 overflow-auto">
-<div
-    class="flex flex-column align-items-start md:flex-row md:align-items-center md:justify-content-between border-bottom-1 surface-border pb-5 min-w-max">
-    <div class="flex flex-column">
-        <img src="assets/layout/images/logo.png" width="100" height="50" alt="logo">
-        <div class="my-3 text-2xl font-bold text-900">Groupe La Poste</div><span class="mb-2">
-            </span><span>{{expeditionEcom.bureauDestination}}</span>
-    </div>
-    <div class="flex flex-column mt-5 md:mt-0">
-        <div class="text-2xl font-semibold text-left md:text-right mb-3">JT3</div>
+    <div class="flex flex-column align-items-start md:flex-row md:align-items-center md:justify-content-between border-bottom-1 surface-border pb-5 min-w-max">
         <div class="flex flex-column">
-            <div class="flex justify-content-between align-items-center mb-2"><span
-                    class="font-semibold mr-6">DATE</span><span>{{""}}</span></div>
-            <div class="flex justify-content-between align-items-center mb-2"><span
-                    class="font-semibold mr-6">N #</span><span>{{expeditionEcom.numero}}</span></div>
-            <div class="flex justify-content-between align-items-center"><span class="font-semibold mr-6">Convoyeur
-                </span><span>{{expeditionEcom.id}}</span></div>
+            <img src="assets/layout/images/logo.png" width="100" height="50" alt="logo">
+            <div class="my-3 text-2xl font-bold text-900">Groupe La Poste</div>
+            <span class="mb-2"></span>
+
+            <span>{{ expeditionEcom?.bureauDestination }}</span>
+        </div>
+        <div class="flex flex-column mt-5 md:mt-0">
+            <div class="text-2xl font-semibold text-left md:text-right mb-3">JT3</div>
+            <div class="flex flex-column">
+                <div class="flex justify-content-between align-items-center mb-2">
+                    <span class="font-semibold mr-6">DATE</span>
+                    <span>{{ "" }}</span>
+                </div>
+                <div class="flex justify-content-between align-items-center mb-2">
+                    <span class="font-semibold mr-6">N #</span>
+                    <span>{{ expeditionEcom?.numenvoi }}</span>
+                </div>
+                <div class="flex justify-content-between align-items-center">
+                    <span class="font-semibold mr-6">Convoyeur</span>
+                    <span>{{ expeditionEcom?.id }}</span>
+                </div>
+            </div>
         </div>
     </div>
-</div>
 
-
-<div class="overflow-x-auto" *ngIf="expeditionEcom.details.length > 0">
-    <table class="w-full" style="border-collapse: collapse; table-layout: auto;">
-        <thead>
-            <tr>
-                <th class="text-left font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
-                    Code</th>
-                <th class="text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap px-3">
-                    Destinataire<th>
-                <!-- <th class="text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap px-3">
-                    Dépot</th> -->
-                <th class="text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
-                    Destination</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let item of expeditionEcom.details">
-                <td class="text-left py-3 border-bottom-1 surface-border white-space-nowrap">{{item.numenvoi}}</td>
-                <td class="text-right py-3 border-bottom-1 surface-border px-3">{{item.prenomClient}} {{item.nomClient}}</td>
-                <!-- <td class="text-right py-3 border-bottom-1 surface-border px-3">{{item.idbureau}}</td> -->
-                <td class="text-right py-3 border-bottom-1 surface-border px-3">{{item.idbureau}}</td>
-            </tr>
-
-        </tbody>
-    </table>
-</div>
-<div class="flex flex-column md:flex-row md:align-items-start md:justify-content-between mt-8">
-    <div class="flex flex-column">
-        <ul class="list-none p-0 m-0 w-full" *ngIf="expeditionEcom.details">
-            <li class="mb-2"><span class="font-medium text-900">Résumé</span></li>
-            <li class="flex justify-content-between mb-0"  *ngIf="expeditionEcom.details.length > 0"><span class="text-900">Nombre</span><span
-                    class="text-900 font-medium text-lg">{{expeditionEcom.details.length}}</span></li>
-
-        </ul>
-
-</div>
+    <div class="overflow-x-auto" *ngIf="expeditionEcom?.details?.length > 0">
+        <table class="w-full" style="border-collapse: collapse; table-layout: auto;">
+            <thead>
+                <tr>
+                    <th class="text-left font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">Code</th>
+                    <th class="text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap px-3">Destinataire</th>
+                    <th class="text-right font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">Destination</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of expeditionEcom.details">
+                    <td class="text-left py-3 border-bottom-1 surface-border white-space-nowrap">{{ item.ecommerceNumenvoi || 'N/A' }}</td>
+                    <td class="text-right py-3 border-bottom-1 surface-border px-3">{{ item.ecommerceNomClient || 'Inconnu' }} {{ item.ecommercePrenomClient || 'Inconnu' }}</td>
+                    <td class="text-right py-3 border-bottom-1 surface-border px-3">{{ item.idbureau || 'Non disponible' }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div *ngIf="!expeditionEcom?.details?.length">
+        <p>Aucun détail à afficher.</p>
+    </div>
+    
+    <div class="flex flex-column md:flex-row md:align-items-start md:justify-content-between mt-8">
+        <div class="flex flex-column">
+            <ul class="list-none p-0 m-0 w-full" *ngIf="expeditionEcom?.details">
+                <li class="mb-2"><span class="font-medium text-900">Résumé</span></li>
+                <li class="flex justify-content-between mb-0" *ngIf="expeditionEcom?.details?.length > 0">
+                    <span class="text-900">Nombre</span>
+                    <span class="text-900 font-medium text-lg">{{ expeditionEcom?.details?.length }}</span>
+                </li>
+            </ul>
+        </div>
+    </div>
 </div>

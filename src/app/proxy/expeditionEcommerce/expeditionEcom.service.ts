@@ -29,6 +29,12 @@ export class ExpeditionEcomService {
     let new_api_host = this.routerParam(this.api_host, id);
     return this.httpClient.get<ExpeditionEcomDto>(new_api_host, this.httpOptions);
   }
+  getAllByStrucuture(id:string)
+  {
+    let new_api_host = this.routerParam(this.api_host+'/getAllByStructure',id);
+    return this.httpClient.get<[ExpeditionEcomDto]>(new_api_host,this.httpOptions);
+  }
+  
 
   save(item: ExpeditionEcomCreateDto): Observable<ExpeditionEcomDto> {
     return this.httpClient.post<ExpeditionEcomDto>(this.api_host, item, this.httpOptions);

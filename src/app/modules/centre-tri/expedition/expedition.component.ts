@@ -95,6 +95,7 @@
 //             return;
 //         }
 
+<<<<<<< HEAD
 //     this.form.value.details = this.mapIdsToColis(this.selectedColis);
 //     this.form.value.bureauExpediteur = this.sessionService.getAgentAttributes().structureId;
 //     this.expeditionService.save(this.form.value).subscribe(
@@ -118,6 +119,31 @@
 //                     });
 //                 }
 //             );
+=======
+    this.form.value.details = this.mapIdsToColis(this.selectedColis);
+    this.form.value.bureauExpediteur = this.sessionService.getAgentAttributes().structureId;
+    this.expeditionService.save(this.form.value).subscribe(
+                (result) => {
+                    //this.getAllColis();
+                    this.expedition = result;
+                    this.router.navigateByUrl('/ct/details-expedition/'+this.expedition.id);
+                    this.messageService.add({
+                        severity: 'success',
+                        summary: 'Successful',
+                        detail: 'Colis expédié avec succés',
+                        life: 3000,
+                    });
+                },
+                (error) => {
+                     this.messageService.add({
+                        severity: 'danger',
+                        summary: 'Error',
+                        detail: 'Erreur enregistrement',
+                        life: 3000,
+                    });
+                }
+            );
+>>>>>>> 284f8f14de081f7e0834100b959d98044284c35f
 
 //     }
 

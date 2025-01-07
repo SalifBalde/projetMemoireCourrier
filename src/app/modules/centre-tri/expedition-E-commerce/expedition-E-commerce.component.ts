@@ -1,3 +1,12 @@
+
+
+
+
+
+
+
+
+
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -6,7 +15,7 @@ import { MessageService } from 'primeng/api';
 import { SessionService } from 'src/app/proxy/auth/Session.service';
 import { EcommerceDto, EcommerceService } from 'src/app/proxy/ecommerce';
 import { StructureDto, StructureService } from 'src/app/proxy/structures';
-import { ExpeditionEcomService, ExpeditionEcomDto, ExpeditionEcomDetailsDto } from 'src/app/proxy/expeditionEcommerce';
+import { ExpeditionEcomDetailsDto, ExpeditionEcomDto, ExpeditionEcomService } from 'src/app/proxy/expeditionEcommerce';
 
 
 // interface Structure {
@@ -51,6 +60,10 @@ export class ExpeditionECommerceComponent implements OnInit {
         this.initializeForm();
         this.loadStructures();
         this.getAllEcommerceExpeditionCt()
+        this.form.get('bureauDestination')?.valueChanges.subscribe((value) => {
+            this.selectedStructure = this.structure$.find((structure) => structure.id === value) || null;
+            console.log('Structure synchronisée:', this.selectedStructure);
+        });
     }
 
     private initializeForm() {
@@ -62,7 +75,7 @@ export class ExpeditionECommerceComponent implements OnInit {
     private loadStructures() {
         this.structureService.findAll().subscribe(
             (result) => {
-                this.structure$ = result.filter((structure: StructureDto) => +structure.id === 16);
+                this.structure$ = result
             },
             (error) => {
                 console.error('Error loading structures', error);
@@ -86,38 +99,8 @@ export class ExpeditionECommerceComponent implements OnInit {
         });
     }
 
-
-    saveExpedition() {
-        if (this.form.invalid) {
-            return;
-        }
-
-        this.form.value.details = this.mapIdsToEcommerce(this.selectedEcommerce);
-        this.form.value.bureauExpediteur = 1;
-        this.expeditionEcomService.save(this.form.value).subscribe(
-            (result) => {
-                //this.getAllEcommerce();
-                this.expedition = result;
-                this.router.navigateByUrl('/ct/details-expeditionEcom/' + this.expedition.id);
-                this.messageService.add({
-                    severity: 'success',
-                    summary: 'Successful',
-                    detail: 'Envoi ecommerce expédié avec succés',
-                    life: 3000,
-                });
-            },
-            (error) => {
-                this.messageService.add({
-                    severity: 'danger',
-                    summary: 'Error',
-                    detail: 'Erreur enregistrement',
-                    life: 3000,
-                });
-            }
-        );
-
-    }
-
+    
+    
     onSelectEcommerce(ecommerce: EcommerceDto) {
         if (this.selectedEcommerce.includes(ecommerce)) {
 
@@ -148,8 +131,75 @@ export class ExpeditionECommerceComponent implements OnInit {
             }
         );
     }
-
-    mapIdsToEcommerce(ids: any): ExpeditionEcomDetailsDto[] {
-        return ids.map(id => ({ ecomId: id.id }));
+    saveExpedition() {
+        if (this.form.invalid) {
+            this.messageService.add({
+                severity: 'error',
+                summary: 'Erreur',
+                detail: 'Veuillez remplir tous les champs obligatoires.',
+                life: 3000,
+            });
+            return;
+        }
+    
+        if (!this.selectedStructure) {
+            this.messageService.add({
+                severity: 'error',
+                summary: 'Erreur',
+                detail: 'Veuillez sélectionner une destination valide.',
+                life: 3000,
+            });
+            return;
+        }
+    
+        const invalidEcommerce = this.selectedEcommerce.find(
+            (ecommerce) => String(ecommerce.idbureau).trim() !== String(this.selectedStructure?.id).trim()
+        );
+    
+        if (invalidEcommerce) {
+            this.messageService.add({
+                severity: 'warn', 
+                summary: 'Attention',
+                detail: 'Vous n\'avez pas choisi la bonne destination pour l\'envoi sélectionné.',
+                life: 3000,  
+            });
+            return;  
+        }
+    
+        this.form.value.details = this.mapIdsToEcommerce(this.selectedEcommerce);
+        this.form.value.bureauExpediteur = this.selectedStructure?.id;
+    
+        this.expeditionEcomService.save(this.form.value).subscribe(
+            (result) => {
+                this.expedition = result;
+                this.router.navigateByUrl('/ct/details-expeditionEcom/' + this.expedition.id);
+                this.messageService.add({
+                    severity: 'success',
+                    summary: 'Succès',
+                    detail: 'Envoi ecommerce expédié avec succès.',
+                    life: 3000,
+                });
+            },
+            (error) => {
+                console.error('Erreur lors de l\'enregistrement:', error);
+                this.messageService.add({
+                    severity: 'error',
+                    summary: 'Erreur',
+                    detail: 'Erreur lors de l\'enregistrement.',
+                    life: 3000,
+                });
+            }
+        );
+    }
+    
+    mapIdsToEcommerce(selectedEcommerce: EcommerceDto[]): ExpeditionEcomDetailsDto[] {
+        return selectedEcommerce.map(ecommerce => ({
+            ecommerceId: ecommerce.id, 
+            ecommerceNumenvoie: ecommerce.numenvoi,
+            ecommerceNomClient: ecommerce.nomClient, 
+            ecommercePrenomClient: ecommerce.prenomClient, 
+            ecommerceIdbureau: ecommerce.idbureau, 
+            valider: true 
+        }));
     }
 }

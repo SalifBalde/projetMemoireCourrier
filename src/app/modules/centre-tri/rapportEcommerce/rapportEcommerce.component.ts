@@ -89,9 +89,7 @@ export class RapportEcommerceComponent implements OnInit {
         });
     }
     getAllExpedition(){
-        // this.expeditionEcomService.getAllByStrucuture(this.sessionService.getAgentAttributes().structureId).subscribe(
-            this.expeditionEcomService.getAllByStrucuture("1").subscribe(
-
+        this.expeditionEcomService.getAllByStrucuture(this.sessionService.getAgentAttributes().structureId).subscribe(
             (result) => {
                 this.expeditions = result;
             }

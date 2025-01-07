@@ -1,32 +1,4 @@
-<!-- Template HTML - reception-e-commerce.component.html
-<p-table [value]="ecommerce$ | async" dataKey="code" [tableStyle]="{ 'min-width': '50rem' }" #dt>
-  <ng-template pTemplate="header">
-    <tr>
-      <th>
-        <p-tableHeaderCheckbox [table]="dt"></p-tableHeaderCheckbox>
-      </th>
-      <th>Numéro d'envoi</th>
-      <th>Nom complet client</th>
-      <th>Téléphone</th>
-      <th>Destination</th>
-      <th>Adresse Client</th>
-      <th>Date</th>
-    </tr>
-  </ng-template>
-
-  <ng-template pTemplate="body" let-ecommerce>
-    <tr>
-      <td>
-        <p-tableCheckbox [value]="ecommerce" (onChange)="onSelectColis(ecommerce)" [selected]="isSelected(ecommerce)"/>
-      </td>
-      <td>{{ ecommerce.numenvoi }}</td>
-      <td>{{ ecommerce.prenomClient }} {{ ecommerce.nomClient }}</td>
-      <td>{{ ecommerce.telephoneClient }}</td>
-      <td>{{ ecommerce.adresseClient }}</td>
-      <td>{{ ecommerce.date | date: 'short' }}</td>
-    </tr>
-  </ng-template>
-</p-table> -->
+<p-toast></p-toast>
 <form [formGroup]="form" (ngSubmit)="saveReception()">
   <div class="grid">
     <div class="col-12">
@@ -69,17 +41,14 @@
                   </button>
               </div> -->
       </div>
-
     </div>
-
   </div>
-
 </form>
 
 <p-dialog [(visible)]="openEcommerceDialog" header="Confirmer" [modal]="true" [style]="{width:'450px'}">
   <div class="flex align-items-center justify-content-center">
     <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
-    <span *ngIf="ecommerce">Etes-vous sûr que vous voulez réceptionner <b>{{ecommerce.id}}</b>?</span>
+    <span *ngIf="ecommerce">Etes-vous sûr que vous voulez réceptionner l'envoi <b> {{ecommerce.numenvoi}} </b>?</span>
   </div>
   <ng-template pTemplate="footer">
     <button pButton pRipple icon="pi pi-times" class="p-button-text" label="Non"

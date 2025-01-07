@@ -53,6 +53,11 @@ export class CtMenuComponent implements OnInit {
                         icon: 'pi pi-fw pi-file-pdf',
                         routerLink: ['/ct/rapport'],
                     },
+                    {
+                        label: 'Report Jt3 e-commerce ',
+                        icon: 'pi pi-fw pi-file-pdf',
+                        routerLink: ['/ct/RapportEcommerce'],
+                    },
                 ],
             },
 

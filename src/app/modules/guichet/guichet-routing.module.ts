@@ -24,7 +24,9 @@ const routes: Routes = [
   { path: 'courrier-ordinaire', loadChildren: () => import('./courrier-ordinaire/courrier-ordinaire.module').then(m => m.CourrierOrdinaireModule) },
   { path: 'courrier-details/:id', loadChildren: () => import('./courrier-details/courrier-details.module').then(m => m.CourrierDetailsModule) },
   { path: 'colis', loadChildren: () => import('./colis/colis.module').then(m => m.ColisModule) },
-  { path: 'livraison-ecom', loadChildren: () => import('./livraison-ecom/livraison-ecom.module').then(m => m.LivraisonEcomModule) }
+  { path: 'livraison-ecom', loadChildren: () => import('./livraison-ecom/livraison-ecom.module').then(m => m.LivraisonEcomModule) },
+  { path: 'livraisonDetails/:id', loadChildren: () => import('./livraison-ecom-details/livraison-details.module').then(m => m.LivraisonDetailsModule) },
+ 
 ];
 
 @NgModule({
