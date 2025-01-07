@@ -18,10 +18,10 @@ export interface ExpeditionDto {
 
 export interface ExpeditionDetailsDto{
     id?: string;
-    colisId?:string;
-    colisCode?:string;
-    colisPrenomDestinataire?:string;
-    colisNomDestinataire?:string;
+    ecommerceId?:string;
+    ecommerceCode?:string;
+    ecommercePrenomDestinataire?:string;
+    ecommerceNomDestinataire?:string;
     bureauDestination?:string;
     BureauDepot?:string;
 }

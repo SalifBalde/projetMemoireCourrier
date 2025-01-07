@@ -6,7 +6,7 @@ import { MessageService } from 'primeng/api';
 import { SessionService } from 'src/app/proxy/auth/Session.service';
 import { EcommerceDto, EcommerceService } from 'src/app/proxy/ecommerce';
 import { StructureDto, StructureService } from 'src/app/proxy/structures';
-import { ExpeditionEcomService, ExpeditionEcomDto, ExpeditionEcomDetailsDto } from 'src/app/proxy/expeditionEcommerce';
+import { ExpeditionDetailsDto, ExpeditionDto, ExpeditionService } from 'src/app/proxy/expeditions';
 
 
 // interface Structure {
@@ -23,7 +23,7 @@ import { ExpeditionEcomService, ExpeditionEcomDto, ExpeditionEcomDetailsDto } fr
 export class ExpeditionECommerceComponent implements OnInit {
     structure$: StructureDto[] = [];
     ecommerce$!: EcommerceDto[];
-    expedition!: ExpeditionEcomDto;
+    expedition!: ExpeditionDto;
 
     @ViewChild('dt') dt!: Table;
     openCourrierDialog: boolean = false;
@@ -44,7 +44,7 @@ export class ExpeditionECommerceComponent implements OnInit {
         private structureService: StructureService,
         private messageService: MessageService,
         private ecommerceService: EcommerceService,
-        private expeditionEcomService: ExpeditionEcomService
+        private expeditionService: ExpeditionService
     ) { }
 
     ngOnInit() {
@@ -132,7 +132,7 @@ export class ExpeditionECommerceComponent implements OnInit {
         this.form.value.details = this.mapIdsToEcommerce(this.selectedEcommerce);
         this.form.value.bureauExpediteur = this.selectedStructure?.id;
     
-        this.expeditionEcomService.save(this.form.value).subscribe(
+        this.expeditionService.save(this.form.value).subscribe(
             (result) => {
                 this.expedition = result;
                 this.router.navigateByUrl('/ct/details-expeditionEcom/' + this.expedition.id);
@@ -186,7 +186,7 @@ export class ExpeditionECommerceComponent implements OnInit {
         );
     }
 
-    mapIdsToEcommerce(ids: any): ExpeditionEcomDetailsDto[] {
+    mapIdsToEcommerce(ids: any): ExpeditionDetailsDto[] {
         return ids.map(id => ({ ecomId: id.id }));
     }
 }

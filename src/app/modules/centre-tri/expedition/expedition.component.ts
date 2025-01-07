@@ -101,7 +101,7 @@ import { SessionService } from 'src/app/proxy/auth/Session.service';
                 (result) => {
                     //this.getAllColis();
                     this.expedition = result;
-                    this.router.navigateByUrl('/arriere/details-expedition/'+this.expedition.id);
+                    this.router.navigateByUrl('/ct/details-expedition/'+this.expedition.id);
                     this.messageService.add({
                         severity: 'success',
                         summary: 'Successful',
