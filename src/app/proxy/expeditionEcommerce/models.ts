@@ -1,12 +1,11 @@
 export interface ExpeditionEcomDetailsDto {
-    numenvoie: string;
+    ecomNumenvoie: string;
     ecomId: number;
-    nomClient: string;
-    prenomClient: string;
-    idbureau: string;
+    ecomNomClient: string;
+    ecomPrenomClient: string;
+    ecomIdbureau: string;
     valider: boolean;
 }
-
 
 
   export interface ExpeditionEcomDto {

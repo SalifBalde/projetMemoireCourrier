@@ -5,17 +5,17 @@
         <div class="p-formgrid grid justify-content-center">
             <div class="field col-4">
                 <label for="bureauDestination">Destination</label>
-                <p-dropdown [options]="structure$" optionLabel="nom" optionValue="id" [filter]="true" filterBy="libelle"
+                <p-dropdown [options]="structure$" optionLabel="nom" optionValue="id" [filter]="true" filterBy="nom"
                     formControlName="bureauDestination" [showClear]="true" placeholder="Choisissez un bureau"
                     aria-label="Choisissez un bureau">
                     <ng-template pTemplate="selectedItem" let-selectedOption>
                         <div class="flex align-items-center gap-2">
-                            <div>{{ selectedOption.libelle }}</div>
+                            <div>{{ selectedOption.nom }}</div>
                         </div>
                     </ng-template>
                     <ng-template let-structure pTemplate="item">
                         <div class="flex align-items-center gap-2">
-                            <div>{{ structure.libelle }}</div>
+                            <div>{{ structure.nom }}</div>
                         </div>
                     </ng-template>
                 </p-dropdown>
