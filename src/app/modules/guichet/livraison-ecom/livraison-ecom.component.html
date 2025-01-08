@@ -76,13 +76,13 @@
     </div>
     <div class="col-12 field mb-4">
       <div class="flex align-items-center">
-        <label for="montantVerse" class="font-semibold w-14rem">Frais Enlevement :</label>
+        <label for="montantVerse" class="font-semibold w-14rem">Taxe Transport :</label>
         <input pInputText id="montantVerse" class="flex-auto" [value]="montantTotal" readonly />
       </div>
     </div>
     <div class="col-12 field mb-4">
       <div class="flex align-items-center">
-        <label for="verserPar" class="font-semibold w-14rem">Frais Livraison :</label>
+        <label for="verserPar" class="font-semibold w-14rem">Taxe Livraison :</label>
         <input pInputText id="verserPar" class="flex-auto" readonly />
       </div>
     </div>
@@ -92,18 +92,13 @@
         <input pInputText id="montantTotal" class="flex-auto" [value]="montantTotal" readonly />
       </div>
     </div>
-    <div class="col-12 field mb-4">
-      <div class="flex align-items-center">
-        <label for="cniDestinataire" class="font-semibold w-14rem">CNI Destinataire :</label>
-        <input pInputText id="cniDestinataire" class="flex-auto" required />
-      </div>
-    </div>
   </div>
 
   <div class="col-12 flex justify-content-center mt-3">
     <button pButton pRipple label="Livrer" class="p-button-success w-full md:w-auto" (click)="livrer()"></button>
   </div>
 </p-dialog>
+
 
 <p-dialog [(visible)]="isModalOpen" [breakpoints]="{ '600px': '75vw', '575px': '90vw' }" [style]="{ width: '30vw' }"
   [draggable]="false" [resizable]="false" header="Tracking: " [modal]="true" class="p-fluid">

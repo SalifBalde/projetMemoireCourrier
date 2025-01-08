@@ -45,7 +45,7 @@ export class EcommerceService {
     return this.httpClient.get<EcommerceSearchResultDto[]>(new_api_host, this.httpOptions);
   }
 
-   livrer(id: number): Observable<EcommerceDto> {
+  livrer(id: number): Observable<EcommerceDto> {
     const url = `${this.api_host}/livrerEnvoieEcommerce/${id}`;
 
     return this.httpClient.put<EcommerceDto>(url, {}, this.httpOptions);

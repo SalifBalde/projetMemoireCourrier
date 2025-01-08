@@ -37,7 +37,7 @@ export class LivraisonEcomComponent implements OnInit {
     private confirmationService: ConfirmationService,
     private ecommerceService: EcommerceService,
     private modePaiementService: ModePaiementService,
-    private cdr: ChangeDetectorRef // Injection de ChangeDetectorRef pour forcer la détection des changements
+    private cdr: ChangeDetectorRef
   ) { }
 
   ngOnInit(): void {
@@ -60,7 +60,7 @@ export class LivraisonEcomComponent implements OnInit {
         this.loading = false;
         if (result && result.length > 0) {
           this.ecommerce$ = result;
-          this.cdr.detectChanges(); // Déclenche la détection de changement manuellement
+          this.cdr.detectChanges();
         } else {
           this.messageService.add({ severity: 'info', summary: 'Pas d\'envoie', detail: 'Aucun envoie à livrer' });
         }
@@ -88,25 +88,26 @@ export class LivraisonEcomComponent implements OnInit {
       });
       return;
     }
-  
+
     if (!this.selectedEcommerce.payer) {
-      this.selectedEcommerce.payer = true; // Marquer comme payé
+      this.selectedEcommerce.payer = true;
     }
-  
-    // Appel du service pour livrer l'envoi
+
     this.ecommerceService.livrer(this.selectedEcommerce.id).subscribe(
       (result: EcommerceDto) => {
-        this.displayDialog = false;  // Fermer la fenêtre modale
+        this.displayDialog = false;
         this.messageService.add({
           severity: 'success',
           summary: 'Succès',
           detail: 'L\'envoi ecommerce a été livré avec succès.',
         });
-  
-        // Mettre à jour la liste des ecommerces : supprimer l'élément correspondant
-        this.ecommerce$ = this.ecommerce$.filter(e => e.id !== this.selectedEcommerce.id);
-  
-        // Réinitialiser la sélection et les données pour un nouvel envoi
+
+        setTimeout(() => {
+          if (result && result.id) {
+            this.router.navigateByUrl('/guichet/livraisonDetails/' + result.id);
+          }
+        }, 500);
+
         this.selectedEcommerce = null;
       },
       (error) => {
@@ -119,8 +120,8 @@ export class LivraisonEcomComponent implements OnInit {
       }
     );
   }
-  
-  
+
+
   toggleSelection(ecommerce: EcommerceDto) {
     if (this.selectedEcommerceForDeletion.has(ecommerce)) {
       this.selectedEcommerceForDeletion.delete(ecommerce);

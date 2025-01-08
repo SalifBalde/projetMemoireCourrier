@@ -54,10 +54,10 @@
               </ng-template>
               <ng-template pTemplate="body" let-expedition>
                   <tr>
-                      <td>{{ expedition.numero }}</td>
+                      <td>{{ expedition.numenvoi }}</td>
                       <td>{{ expedition.bureauExpediteurLibelle }}</td>
                       <td>{{ expedition.bureauDestinationLibelle }}</td>
-                      <td>{{ expedition.createdAt }}</td>
+                      <td>{{ expedition.createdAt | date:'dd/MM/yyyy'}}</td>
                       <td>
                           <a routerLink="/ct/details-expeditionEcom/{{
                                   expedition.id

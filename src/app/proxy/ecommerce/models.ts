@@ -27,6 +27,8 @@ export interface EcommerceDto {
     gabarit: number;
     produitId: number;
     versementEffectuer: boolean;
+    produitEcommerces?: ProduitEcommerceDto[];
+    suiviEcoms?: SuiviEcomDto[];
 }
 
 
@@ -59,4 +61,27 @@ export interface EcommerceDto {
     gabarit: number;
     produitId: number;
     versementEffectuer: boolean;
+  }
+
+  export interface SuiviEcomDto{
+  id: number;
+  datemaj: string; 
+  ecommerceId: number;
+  bureauId: number;
+  userId: number;
+  etatEcomId: number;
+  motif: string;
+  version: number;
+  motifretourId: number;
+  }
+
+  export interface ProduitEcommerceDto{
+  id: number;
+  version: number;
+  ecommerceId: number;
+  libelle: string;
+  marque: string;
+  model: string;
+  prix: number;
+  quantite: number;
   }

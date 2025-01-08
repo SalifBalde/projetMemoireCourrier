@@ -25,7 +25,7 @@
                 </div>
                 <div class="flex justify-content-between align-items-center mb-2">
                     <span class="font-semibold mr-6">N #</span>
-                    <span>{{ expeditionEcom?.numero }}</span>
+                    <span>{{ expeditionEcom?.numenvoi }}</span>
                 </div>
                 <div class="flex justify-content-between align-items-center">
                     <span class="font-semibold mr-6">Convoyeur</span>
@@ -46,8 +46,8 @@
             </thead>
             <tbody>
                 <tr *ngFor="let item of expeditionEcom.details">
-                    <td class="text-left py-3 border-bottom-1 surface-border white-space-nowrap">{{ item.ecomId || 'N/A' }}</td>
-                    <td class="text-right py-3 border-bottom-1 surface-border px-3">{{ item.nomClient || 'Inconnu' }} {{ item.prenomClient || 'Inconnu' }}</td>
+                    <td class="text-left py-3 border-bottom-1 surface-border white-space-nowrap">{{ item.ecommerceNumenvoi || 'N/A' }}</td>
+                    <td class="text-right py-3 border-bottom-1 surface-border px-3">{{ item.ecommerceNomClient || 'Inconnu' }} {{ item.ecommercePrenomClient || 'Inconnu' }}</td>
                     <td class="text-right py-3 border-bottom-1 surface-border px-3">{{ item.idbureau || 'Non disponible' }}</td>
                 </tr>
             </tbody>
