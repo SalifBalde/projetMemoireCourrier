@@ -4,7 +4,7 @@ import { ActivatedRoute, Params, Router } from "@angular/router";
 import { MessageService, PrimeIcons } from "primeng/api";
 import { ColisDto, ColisService } from "src/app/proxy/colis";
 import { EcommerceDto, EcommerceService } from "src/app/proxy/ecommerce";
-import { PdfService } from "src/app/proxy/pdf/pdf.service";
+import { PdfEcomService } from "src/app/proxy/pdf/pdfEcom.service";
 
 @Component({
   selector: "app-livraison-details",
@@ -18,7 +18,7 @@ export class LivraisonDetailsComponent implements OnInit {
 
   constructor(
     private ecommerceService: EcommerceService,
-    private pdfService: PdfService,
+    private pdfEcomService: PdfEcomService,
     private fb: FormBuilder,
     private router: Router,
     private route: ActivatedRoute
@@ -27,10 +27,11 @@ export class LivraisonDetailsComponent implements OnInit {
   ngOnInit(): void {
     this.route.params.subscribe((params: Params) => {
       const id = params["id"];
-    //   this.updateTimeline();
       this.ecommerceService.getOne(id).subscribe((ecommerce) => {
-        this.ecommerce = ecommerce; 
+        console.log('Produit Ecommerce:', ecommerce.produitEcommerces);
+        this.ecommerce = ecommerce;
       });
+
     });
   }
 
@@ -73,6 +74,6 @@ export class LivraisonDetailsComponent implements OnInit {
 //   }
 
   generatePdf(): void {
-    this.pdfService.generatePDF(this.ecommerce); // Assuming `ecommerce` is correct for PDF generation
+    this.pdfEcomService.generatePDF(this.ecommerce); // Assuming `ecommerce` is correct for PDF generation
   }
 }
