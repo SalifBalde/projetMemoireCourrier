@@ -14,7 +14,7 @@ import { EcommerceDto, EcommerceService } from 'src/app/proxy/ecommerce';
 })
 export class LivraisonEcomComponent implements OnInit {
   form: FormGroup;
-  montant = 0;
+  
   ecommerce$: EcommerceDto[] = [];
   loadingEcommerce: boolean = false;
   selectedEcommerce: EcommerceDto | null = null;
@@ -52,29 +52,46 @@ export class LivraisonEcomComponent implements OnInit {
     });
   }
 
+  private calculerMontantTotal() {
+    if (this. selectedEcommerce) {
+      const taxetransport = Number(this. selectedEcommerce.taxetransp) || 0;
+      const taxeLivraison = Number(this. selectedEcommerce.taxeLivraison) || 0;
+      this.montantTotal = taxetransport + taxeLivraison
+    }
+  }
+
+
   getAllEcommerceALivrer() {
     this.loading = true;
-    this.ecommerceService.findEcommerceALivrer(1).subscribe(
+    const structureId = Number(this.sessionService.getAgentAttributes().structureId);
+    if (isNaN(structureId)) {
+      this.loading = false;
+      console.error('Invalid structure ID');
+      this.messageService.add({ severity: 'error', summary: 'Erreur', detail: 'Structure ID invalide.' });
+      return;
+    }
+    this.ecommerceService.findEcommerceALivrer(structureId).subscribe(
       (result) => {
         console.log(result);
         this.loading = false;
         if (result && result.length > 0) {
           this.ecommerce$ = result;
-          this.cdr.detectChanges();
+          this.cdr.detectChanges(); 
         } else {
-          this.messageService.add({ severity: 'info', summary: 'Pas d\'envoie', detail: 'Aucun envoie à livrer' });
+          this.messageService.add({ severity: 'info', summary: 'Pas d\'envois', detail: 'Aucun envoi à livrer.' });
         }
       },
       (error) => {
         this.loading = false;
         console.error('Erreur lors du chargement des ecommerces', error);
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Could not load ecommerce data.' });
+        this.messageService.add({ severity: 'error', summary: 'Erreur', detail: 'Impossible de charger les données des ecommerces.' });
       }
     );
   }
-
+  
   voirEcommerce(ecommerce: EcommerceDto) {
     this.selectedEcommerce = ecommerce;
+    this.calculerMontantTotal()
     this.payer = ecommerce.payer;
     this.displayDialog = true;
   }
@@ -153,4 +170,6 @@ export class LivraisonEcomComponent implements OnInit {
     console.log('Row Unselected:', ecommerce);
     this.allSelected = this.selectedEcommerceForDeletion.size === this.ecommerce$.length;
   }
+
+
 }

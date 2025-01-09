@@ -70,20 +70,14 @@
   <div class="grid formgrid">
     <div class="col-12 field mb-4">
       <div class="flex align-items-center">
-        <label for="montant" class="font-semibold w-14rem">Montant :</label>
-        <input pInputText id="montant" class="flex-auto" [value]="montant" readonly />
-      </div>
-    </div>
-    <div class="col-12 field mb-4">
-      <div class="flex align-items-center">
         <label for="montantVerse" class="font-semibold w-14rem">Taxe Transport :</label>
-        <input pInputText id="montantVerse" class="flex-auto" [value]="montantTotal" readonly />
+        <input pInputText id="montantVerse" class="flex-auto" [value]="selectedEcommerce?.taxetransp" readonly />
       </div>
     </div>
     <div class="col-12 field mb-4">
       <div class="flex align-items-center">
         <label for="verserPar" class="font-semibold w-14rem">Taxe Livraison :</label>
-        <input pInputText id="verserPar" class="flex-auto" readonly />
+        <input pInputText id="verserPar" class="flex-auto"  [value]="selectedEcommerce?.taxeLivraison"  readonly />
       </div>
     </div>
     <div class="col-12 field mb-4">
