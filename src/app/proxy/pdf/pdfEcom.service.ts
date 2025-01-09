@@ -396,8 +396,8 @@ export class PdfEcomService {
             const finalY = (doc as any).autoTable.previous.finalY + 5;
             doc.setFontSize(9);
             doc.setFont("helvetica", "normal");
-            doc.text(`Taxe douane: ${data.taxetransp} CFA`, 195, finalY + 15, { align: "right" });
-            doc.text(`Taxe presentation: ${data.taxeLivraison} CFA`, 195, finalY + 20, { align: "right" });
+            doc.text(`Taxe transport: ${data.taxetransp} CFA`, 195, finalY + 15, { align: "right" });
+            doc.text(`Taxe livraison: ${data.taxeLivraison} CFA`, 195, finalY + 20, { align: "right" });
 
             const totalBoxWidth = 30;
             const totalBoxHeight = 9;
