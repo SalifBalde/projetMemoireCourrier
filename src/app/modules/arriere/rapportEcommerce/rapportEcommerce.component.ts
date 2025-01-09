@@ -1,5 +1,4 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { KeycloakProfile } from "keycloak-js";
 import { Table } from "primeng/table";
@@ -41,7 +40,6 @@ export class RapportEcommerceComponent implements OnInit {
     loadingExpedition: boolean = false;
     loadingReset: boolean = false;
 
-    
     searchExpeditionByCriteres() {
         this.loadingExpedition = true;
         setTimeout(() => {
@@ -50,9 +48,6 @@ export class RapportEcommerceComponent implements OnInit {
             1000);
         let dateDebut = this.form.get('dateDebut').value;
         let dateFin = this.form.get('dateFin').value;
-        /*  this.expeditionEcomService.findExpeditionByCriteres(dateDebut,dateFin).subscribe(coli=>{this.expeditionByCriteres=coli;
-             this.montant = this.expeditionByCriteres.reduce((sum, item) => sum + parseInt(item.montant), 0);
-         }) */
     }
     
     resetForm() {
@@ -94,15 +89,15 @@ export class RapportEcommerceComponent implements OnInit {
             nom: [undefined, Validators.required]
         });
     }
-    getAllExpedition() {
-        // this.expeditionEcomService.getAllByStrucuture(this.sessionService.getAgentAttributes().structureId).subscribe(
-        this.expeditionEcomService.getAllByStrucuture(this.sessionService.getAgentAttributes().structureId.toString()).subscribe(
 
+    getAllExpedition() {
+        this.expeditionEcomService.getAllByStrucuture(this.sessionService.getAgentAttributes().structureId.toString()).subscribe(
             (result) => {
                 this.expeditions = result;
             }
         );
     }
+
     isEmpty() {
         return this.form.value.dateFin != null && this.form.value.dateDebut != null && this.form.value.prenom != null && this.form.value.nom != null;
     }
