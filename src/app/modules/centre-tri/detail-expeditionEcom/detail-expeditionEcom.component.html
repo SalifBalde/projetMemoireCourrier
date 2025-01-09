@@ -12,9 +12,9 @@
         <div class="flex flex-column">
             <img src="assets/layout/images/poste-removebg-preview.png" width="150" height="100"  alt="logo" />
             <div class="my-3 text-2xl font-bold text-900">Groupe La Poste</div>
-            <span class="mb-2"></span>
+            <span class="mb-2">Bureau Expediteur</span>
 
-            <span>{{ expeditionEcom?.bureauDestination }}</span>
+            <span>{{ expeditionEcom?.bureauExpediteurLibelle }}</span>
         </div>
         <div class="flex flex-column mt-5 md:mt-0">
             <div class="text-2xl font-semibold text-left md:text-right mb-3">JT3</div>
@@ -48,7 +48,7 @@
                 <tr *ngFor="let item of expeditionEcom.details">
                     <td class="text-left py-3 border-bottom-1 surface-border white-space-nowrap">{{ item.ecommerceNumenvoi || 'N/A' }}</td>
                     <td class="text-right py-3 border-bottom-1 surface-border px-3">{{ item.ecommerceNomClient || 'Inconnu' }} {{ item.ecommercePrenomClient || 'Inconnu' }}</td>
-                    <td class="text-right py-3 border-bottom-1 surface-border px-3">{{ item.ecommerceIdbureau || 'Non disponible' }}</td>
+                    <td class="text-right py-3 border-bottom-1 surface-border px-3">{{  expeditionEcom?.bureauDestinationLibelle|| 'Non disponible' }}</td>
                 </tr>
             </tbody>
         </table>

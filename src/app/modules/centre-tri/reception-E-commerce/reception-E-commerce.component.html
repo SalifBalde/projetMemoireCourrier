@@ -12,8 +12,6 @@
               <th>Nom complet client</th>
               <th>Téléphone</th>
               <th>Destination</th>
-              <th>Adresse Client</th>
-              <th>Date</th>
               <th></th>
             </tr>
           </ng-template>
@@ -25,8 +23,7 @@
               <td>{{ ecommerce.numenvoi }}</td>
               <td>{{ ecommerce.prenomClient }} {{ ecommerce.nomClient }}</td>
               <td>{{ ecommerce.telephoneClient }}</td>
-              <td>{{ ecommerce.adresseClient }}</td>
-              <td>{{ ecommerce.date | date: 'short' }}</td>
+              <td>{{ ecommerce.bureauDestinationLibelle }}</td>
               <td>
                 <button pbutton pripple class=" p-button p-component p-button-text p-button-icon-only p-button-success"
                   (click)="openDialog(ecommerce)"><span class="p-button-icon pi pi-check"

@@ -84,7 +84,7 @@ export class LivraisonEcomComponent implements OnInit {
       (error) => {
         this.loading = false;
         console.error('Erreur lors du chargement des ecommerces', error);
-        this.messageService.add({ severity: 'error', summary: 'Erreur', detail: 'Impossible de charger les données des ecommerces.' });
+        this.messageService.add({ severity: 'error', summary: 'Erreur', detail: 'Impossible de charger les données des envois e-commerces.' });
       }
     );
   }

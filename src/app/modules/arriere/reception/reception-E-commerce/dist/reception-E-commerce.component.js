@@ -78,7 +78,7 @@ var ReceptionECommerceComponent = /** @class */ (function () {
             this.messageService.add({
                 severity: 'success',
                 summary: 'Successful',
-                detail: 'Poids Deleted',
+                detail: 'envoi Deleted',
                 life: 3000
             });
             this.ecommerce = null;
@@ -87,7 +87,7 @@ var ReceptionECommerceComponent = /** @class */ (function () {
             this.messageService.add({
                 severity: 'warn',
                 summary: 'Données manquantes',
-                detail: 'Aucun colis sélectionné.',
+                detail: 'Aucun envoi sélectionné.',
                 life: 3000
             });
         }
@@ -102,7 +102,7 @@ var ReceptionECommerceComponent = /** @class */ (function () {
             _this.messageService.add({
                 severity: 'success',
                 summary: 'Succès',
-                detail: 'Colis expédié avec succès',
+                detail: 'Envoi expédié avec succès',
                 life: 3000
             });
         }, function (error) {

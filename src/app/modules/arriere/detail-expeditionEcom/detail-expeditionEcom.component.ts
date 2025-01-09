@@ -47,4 +47,13 @@ export class DetailExpeditionEcomComponent implements OnInit {
     generatePdf(): void {
         // this.pdfService.generatePDF(this.expedition); 
     }
+    
+    // async generatePDF() {
+    //     try {
+    //       await this.cn23Service.createPDF();  // Appel de la méthode createPDF
+    //       console.log('PDF généré avec succès.');
+    //     } catch (error) {
+    //       console.error('Erreur lors de la génération du PDF:', error);
+    //     }
+    //   }
 }

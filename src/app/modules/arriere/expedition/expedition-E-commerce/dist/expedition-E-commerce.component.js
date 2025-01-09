@@ -76,7 +76,7 @@ var ExpeditionECommerceComponent = /** @class */ (function () {
             _this.messageService.add({
                 severity: 'success',
                 summary: 'Successful',
-                detail: 'Envoi ecommerce expédié avec succés',
+                detail: 'Envoi e-commerce expédié avec succés',
                 life: 3000
             });
         }, function (error) {

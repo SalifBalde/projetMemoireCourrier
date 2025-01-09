@@ -35,6 +35,10 @@ export class ExpeditionEcomService {
     return this.httpClient.get<[ExpeditionEcomDto]>(new_api_host,this.httpOptions);
   }
   
+  findExpeditionByCriteres(search: ExpeditionEcomDto) {
+    const new_api_host = this.routerParam(this.api_host, 'search-by-criteria');
+    return this.httpClient.post<ExpeditionEcomDto[]>(new_api_host, search, this.httpOptions);
+  }
 
   save(item: ExpeditionEcomCreateDto): Observable<ExpeditionEcomDto> {
     return this.httpClient.post<ExpeditionEcomDto>(this.api_host, item, this.httpOptions);

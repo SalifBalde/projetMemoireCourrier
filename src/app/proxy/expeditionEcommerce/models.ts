@@ -13,7 +13,7 @@ export interface ExpeditionEcomDto {
   bureauExpediteur: number;
   bureauExpediteurLibelle: string;
   bureauDestination: number;
-  bureauDestinataireLibelle: string;
+  bureauDestinationLibelle: string;
   numenvoi: string;
   details: ExpeditionEcomDetailsDto[];
 }
@@ -24,4 +24,13 @@ export interface ExpeditionEcomCreateDto {
   bureauExpediteur: number;
   bureauDestination: number;
   details: ExpeditionEcomDetailsDto[];
+}
+
+
+export interface ExpeditionSearchDto {
+  debut?: string; 
+  fin?: string;   
+  bureauExpediteur?: number; 
+  bureauDestination?: number;
+  numenvoi?: string;
 }

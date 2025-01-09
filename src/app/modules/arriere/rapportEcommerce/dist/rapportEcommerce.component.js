@@ -47,13 +47,14 @@ var core_1 = require("@angular/core");
 var forms_1 = require("@angular/forms");
 var api_1 = require("primeng/api");
 var RapportEcommerceComponent = /** @class */ (function () {
-    function RapportEcommerceComponent(expeditionEcomService, pdfService, sessionService, fb, router, route, messageService, keycloak) {
+    function RapportEcommerceComponent(expeditionEcomService, pdfService, sessionService, fb, router, route, structureService, messageService, keycloak) {
         this.expeditionEcomService = expeditionEcomService;
         this.pdfService = pdfService;
         this.sessionService = sessionService;
         this.fb = fb;
         this.router = router;
         this.route = route;
+        this.structureService = structureService;
         this.messageService = messageService;
         this.keycloak = keycloak;
         this.isLoggedIn = false;
@@ -62,40 +63,14 @@ var RapportEcommerceComponent = /** @class */ (function () {
         this.isModalOpen = false;
         this.montant = 0;
         this.cols = [];
+        this.structure$ = [];
+        this.expeditionSearch = {};
         this.rowsPerPageOptions = [5, 10, 20];
         this.id = "";
+        this.loading = false;
         this.loadingExpedition = false;
         this.loadingReset = false;
     }
-    RapportEcommerceComponent.prototype.searchExpeditionByCriteres = function () {
-        var _this = this;
-        this.loadingExpedition = true;
-        setTimeout(function () {
-            _this.loadingExpedition = false;
-        }, 1000);
-        var dateDebut = this.form.get('dateDebut').value;
-        var dateFin = this.form.get('dateFin').value;
-        /*  this.expeditionEcomService.findExpeditionByCriteres(dateDebut,dateFin).subscribe(coli=>{this.expeditionByCriteres=coli;
-             this.montant = this.expeditionByCriteres.reduce((sum, item) => sum + parseInt(item.montant), 0);
-         }) */
-    };
-    RapportEcommerceComponent.prototype.resetForm = function () {
-        var _this = this;
-        this.loadingReset = true;
-        setTimeout(function () {
-            _this.loadingReset = false;
-        }, 1000);
-        this.form = this.fb.group({
-            dateDebut: [undefined, forms_1.Validators.required],
-            dateFin: [undefined, forms_1.Validators.required],
-            prenom: [undefined, forms_1.Validators.required],
-            nom: [undefined, forms_1.Validators.required]
-        });
-        this.getAllExpedition();
-    };
-    RapportEcommerceComponent.prototype.generatePdf = function () {
-        // this.pdfService.generateAgentSalesReport(this.expeditions);
-    };
     RapportEcommerceComponent.prototype.ngOnInit = function () {
         return __awaiter(this, void 0, Promise, function () {
             var _a, _b;
@@ -103,6 +78,7 @@ var RapportEcommerceComponent = /** @class */ (function () {
                 switch (_c.label) {
                     case 0:
                         this.buildForm();
+                        this.loadStructures();
                         this.getAllExpedition();
                         _a = this;
                         return [4 /*yield*/, this.keycloak.isLoggedIn()];
@@ -130,10 +106,81 @@ var RapportEcommerceComponent = /** @class */ (function () {
     };
     RapportEcommerceComponent.prototype.getAllExpedition = function () {
         var _this = this;
-        // this.expeditionEcomService.getAllByStrucuture(this.sessionService.getAgentAttributes().structureId).subscribe(
         this.expeditionEcomService.getAllByStrucuture(this.sessionService.getAgentAttributes().structureId.toString()).subscribe(function (result) {
             _this.expeditions = result;
         });
+    };
+    RapportEcommerceComponent.prototype.loadStructures = function () {
+        var _this = this;
+        this.structureService.findAll().subscribe(function (result) {
+            _this.structure$ = result;
+        }, function (error) {
+            console.error('Error loading structures', error);
+        });
+    };
+    // searchExpeditionByCriteres(): void {
+    //     const dateDebut = this.form.get('dateDebut')?.value;
+    //     const dateFin = this.form.get('dateFin')?.value;
+    //     if (!dateDebut || !dateFin) {
+    //         this.messageService.add({
+    //             severity: 'warn',
+    //             summary: 'Avertissement',
+    //             detail: 'Veuillez sélectionner une période valide.'
+    //         });
+    //         return;
+    //     }
+    //     if (new Date(dateDebut) > new Date(dateFin)) {
+    //         this.messageService.add({
+    //             severity: 'error',
+    //             summary: 'Erreur',
+    //             detail: 'La date de début ne peut pas être après la date de fin.'
+    //         });
+    //         return;
+    //     }
+    //     this.loading = true;
+    //     this.expeditionEcomService.findExpeditionByCriteres(this.form.value).subscribe({
+    //         next: (expeditions) => {
+    //             if (expeditions.length > 0) {
+    //                 this.expeditions = expeditions || [];
+    //                 this.loading = false;
+    //             } else {
+    //                 this.messageService.add({
+    //                     severity: 'info',
+    //                     summary: 'Aucun résultat',
+    //                     detail: 'Aucun colis trouvé pour la période sélectionnée.'
+    //                 });
+    //                 this.expeditions = [];
+    //                 this.montant = 0;
+    //                 this.loading = false;
+    //                 return;
+    //             }
+    //         },
+    //         error: (err) => {
+    //             this.messageService.add({
+    //                 severity: 'error',
+    //                 summary: 'Erreur',
+    //                 detail: 'Une erreur est survenue lors de la récupération des données.'
+    //             });
+    //             this.loading = false;
+    //         }
+    //     });
+    // }
+    RapportEcommerceComponent.prototype.resetForm = function () {
+        var _this = this;
+        this.loadingReset = true;
+        setTimeout(function () {
+            _this.loadingReset = false;
+        }, 1000);
+        this.form = this.fb.group({
+            dateDebut: [undefined, forms_1.Validators.required],
+            dateFin: [undefined, forms_1.Validators.required],
+            prenom: [undefined, forms_1.Validators.required],
+            nom: [undefined, forms_1.Validators.required]
+        });
+        this.getAllExpedition();
+    };
+    RapportEcommerceComponent.prototype.generatePdf = function () {
+        // this.pdfService.generateAgentSalesReport(this.expeditions);
     };
     RapportEcommerceComponent.prototype.isEmpty = function () {
         return this.form.value.dateFin != null && this.form.value.dateDebut != null && this.form.value.prenom != null && this.form.value.nom != null;

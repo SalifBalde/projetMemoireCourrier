@@ -20,7 +20,6 @@ var LivraisonEcomComponent = /** @class */ (function () {
         this.ecommerceService = ecommerceService;
         this.modePaiementService = modePaiementService;
         this.cdr = cdr;
-        this.montant = 0;
         this.ecommerce$ = [];
         this.loadingEcommerce = false;
         this.selectedEcommerce = null;
@@ -45,10 +44,24 @@ var LivraisonEcomComponent = /** @class */ (function () {
             dateFin: [undefined, forms_1.Validators.required]
         });
     };
+    LivraisonEcomComponent.prototype.calculerMontantTotal = function () {
+        if (this.selectedEcommerce) {
+            var taxetransport = Number(this.selectedEcommerce.taxetransp) || 0;
+            var taxeLivraison = Number(this.selectedEcommerce.taxeLivraison) || 0;
+            this.montantTotal = taxetransport + taxeLivraison;
+        }
+    };
     LivraisonEcomComponent.prototype.getAllEcommerceALivrer = function () {
         var _this = this;
         this.loading = true;
-        this.ecommerceService.findEcommerceALivrer(1).subscribe(function (result) {
+        var structureId = Number(this.sessionService.getAgentAttributes().structureId);
+        if (isNaN(structureId)) {
+            this.loading = false;
+            console.error('Invalid structure ID');
+            this.messageService.add({ severity: 'error', summary: 'Erreur', detail: 'Structure ID invalide.' });
+            return;
+        }
+        this.ecommerceService.findEcommerceALivrer(structureId).subscribe(function (result) {
             console.log(result);
             _this.loading = false;
             if (result && result.length > 0) {
@@ -56,16 +69,17 @@ var LivraisonEcomComponent = /** @class */ (function () {
                 _this.cdr.detectChanges();
             }
             else {
-                _this.messageService.add({ severity: 'info', summary: 'Pas d\'envoie', detail: 'Aucun envoie à livrer' });
+                _this.messageService.add({ severity: 'info', summary: 'Pas d\'envois', detail: 'Aucun envoi à livrer.' });
             }
         }, function (error) {
             _this.loading = false;
             console.error('Erreur lors du chargement des ecommerces', error);
-            _this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Could not load ecommerce data.' });
+            _this.messageService.add({ severity: 'error', summary: 'Erreur', detail: 'Impossible de charger les données des envois e-commerces.' });
         });
     };
     LivraisonEcomComponent.prototype.voirEcommerce = function (ecommerce) {
         this.selectedEcommerce = ecommerce;
+        this.calculerMontantTotal();
         this.payer = ecommerce.payer;
         this.displayDialog = true;
     };
