@@ -9,11 +9,11 @@ import { StructureDto, StructureService } from 'src/app/proxy/structures';
 import { ExpeditionEcomService, ExpeditionEcomDto, ExpeditionEcomDetailsDto } from 'src/app/proxy/expeditionEcommerce';
 
 
-interface Structure {
-    id: number;
-    nom: string;
-    adresse?: string;
-}
+// interface Structure {
+//     id: number;
+//     nom: string;
+//     adresse?: string;
+// }
 
 @Component({
     selector: 'app-expedition-e-commerce',
@@ -21,7 +21,7 @@ interface Structure {
     providers: [MessageService],
 })
 export class ExpeditionECommerceComponent implements OnInit {
-    structure$: Structure[] = [];
+    structure$: StructureDto[] = [];
     ecommerce$!: EcommerceDto[];
     expedition!: ExpeditionEcomDto;
 
@@ -59,26 +59,25 @@ export class ExpeditionECommerceComponent implements OnInit {
         });
     }
 
-    // private loadStructures() {
-    //   // Chargement des structures disponibles, filtrage sur celles avec l'id 16
-    //   this.structureService.findAll().subscribe(
-    //     (result) => {
-    //       this.structure$ = result.filter((structure: StructureDto) => +structure.id === 16);
-    //     },
-    //     (error) => {
-    //       console.error('Error loading structures', error);
-    //     }
-    //   );
-    // }
-
     private loadStructures() {
-        // Simulating data instead of fetching from a service
-        this.structure$ = [
-            { id: 1, nom: 'Structure A', adresse: 'Adresse A' },
-            { id: 2, nom: 'Structure B', adresse: 'Adresse B' },
-            { id: 3, nom: 'Structure C', adresse: 'Adresse C' },
-        ];
+      this.structureService.findAll().subscribe(
+        (result) => {
+          this.structure$ = result.filter((structure: StructureDto) => +structure.id === 16);
+        },
+        (error) => {
+          console.error('Error loading structures', error);
+        }
+      );
     }
+
+    // private loadStructures() {
+    //     // Simulating data instead of fetching from a service
+    //     this.structure$ = [
+    //         { id: 1, nom: 'Structure A', adresse: 'Adresse A' },
+    //         { id: 2, nom: 'Structure B', adresse: 'Adresse B' },
+    //         { id: 3, nom: 'Structure C', adresse: 'Adresse C' },
+    //     ];
+    // }
 
 
     buildForm() {
@@ -94,7 +93,7 @@ export class ExpeditionECommerceComponent implements OnInit {
         }
 
         this.form.value.details = this.mapIdsToEcommerce(this.selectedEcommerce);
-        this.form.value.bureauExpediteur = 1;
+        this.form.value.bureauExpediteur = this.sessionService.getAgentAttributes().structureId.toString();
         this.expeditionEcomService.save(this.form.value).subscribe(
             (result) => {
                 //this.getAllEcommerce();
@@ -131,7 +130,7 @@ export class ExpeditionECommerceComponent implements OnInit {
     getAllEcommerceByStatut() {
         this.loading = true;
         const id: string = '3';
-        const bureauId: number = Number(1);
+        const bureauId: number = Number(this.sessionService.getAgentAttributes().structureId.toString());
 
         // const bureauId: number = Number(1);
 

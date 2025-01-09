@@ -10,11 +10,6 @@ exports.ExpeditionECommerceComponent = void 0;
 var core_1 = require("@angular/core");
 var forms_1 = require("@angular/forms");
 var api_1 = require("primeng/api");
-// interface Structure {
-//   id: number;
-//   nom: string;
-//   adresse?: string;
-// }
 var ExpeditionECommerceComponent = /** @class */ (function () {
     function ExpeditionECommerceComponent(sessionService, fb, router, structureService, messageService, ecommerceService, expeditionEcomService) {
         this.sessionService = sessionService;
@@ -55,14 +50,6 @@ var ExpeditionECommerceComponent = /** @class */ (function () {
             console.error('Error loading structures', error);
         });
     };
-    //   private loadStructures() {
-    //     // Simulating data instead of fetching from a service
-    //     this.structure$ = [
-    //       { id: 1, nom: 'Structure A', adresse: 'Adresse A' },
-    //       { id: 2, nom: 'Structure B', adresse: 'Adresse B' },
-    //       { id: 3, nom: 'Structure C', adresse: 'Adresse C' },
-    //     ];
-    //   }
     ExpeditionECommerceComponent.prototype.buildForm = function () {
         this.form = this.fb.group({
             bureauDestination: [undefined, forms_1.Validators.required]

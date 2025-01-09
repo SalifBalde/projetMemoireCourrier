@@ -17,13 +17,6 @@ import { EcommerceDto, EcommerceService } from 'src/app/proxy/ecommerce';
 import { StructureDto, StructureService } from 'src/app/proxy/structures';
 import { ExpeditionEcomDetailsDto, ExpeditionEcomDto, ExpeditionEcomService } from 'src/app/proxy/expeditionEcommerce';
 
-
-// interface Structure {
-//   id: number;
-//   nom: string;
-//   adresse?: string;
-// }
-
 @Component({
     selector: 'app-expedition-e-commerce',
     templateUrl: './expedition-e-commerce.component.html',
@@ -82,15 +75,6 @@ export class ExpeditionECommerceComponent implements OnInit {
             }
         );
     }
-
-    //   private loadStructures() {
-    //     // Simulating data instead of fetching from a service
-    //     this.structure$ = [
-    //       { id: 1, nom: 'Structure A', adresse: 'Adresse A' },
-    //       { id: 2, nom: 'Structure B', adresse: 'Adresse B' },
-    //       { id: 3, nom: 'Structure C', adresse: 'Adresse C' },
-    //     ];
-    //   }
 
 
     buildForm() {

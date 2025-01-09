@@ -43,7 +43,6 @@ var ExpeditionECommerceComponent = /** @class */ (function () {
     };
     ExpeditionECommerceComponent.prototype.loadStructures = function () {
         var _this = this;
-        // Chargement des structures disponibles, filtrage sur celles avec l'id 16
         this.structureService.findAll().subscribe(function (result) {
             _this.structure$ = result.filter(function (structure) { return +structure.id === 16; });
         }, function (error) {
@@ -69,7 +68,7 @@ var ExpeditionECommerceComponent = /** @class */ (function () {
             return;
         }
         this.form.value.details = this.mapIdsToEcommerce(this.selectedEcommerce);
-        this.form.value.bureauExpediteur = 1;
+        this.form.value.bureauExpediteur = this.sessionService.getAgentAttributes().structureId.toString();
         this.expeditionEcomService.save(this.form.value).subscribe(function (result) {
             //this.getAllEcommerce();
             _this.expedition = result;
@@ -101,7 +100,7 @@ var ExpeditionECommerceComponent = /** @class */ (function () {
         var _this = this;
         this.loading = true;
         var id = '3';
-        var bureauId = Number(this.sessionService.getAgentAttributes().structureId);
+        var bureauId = Number(this.sessionService.getAgentAttributes().structureId.toString());
         // const bureauId: number = Number(1);
         if (isNaN(bureauId)) {
             this.loading = false;
