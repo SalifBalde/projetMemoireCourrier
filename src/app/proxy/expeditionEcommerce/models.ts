@@ -11,7 +11,9 @@ export interface ExpeditionEcomDetailsDto {
 export interface ExpeditionEcomDto {
   id: number;
   bureauExpediteur: number;
+  bureauExpediteurLibelle: string;
   bureauDestination: number;
+  bureauDestinataireLibelle: string;
   numenvoi: string;
   details: ExpeditionEcomDetailsDto[];
 }

@@ -57,13 +57,14 @@ export class ReceptionECommerceComponent  implements OnInit {
 
   getAllEcommerceByDestinationReception() {
     this.loading = true;
-    this.ecommerceService.findEcommerceByDestinationReception(1).subscribe((result) => {
-      console.log(result); 
+    const structureId = Number(this.sessionService.getAgentAttributes().structureId);
+    this.ecommerceService.findEcommerceByDestinationReception(structureId).subscribe((result) => {
+      console.log(result);
       this.loading = false;
       this.ecommerce$ = result;
     });
   }
-
+  
 
   openDialog(ecommerce: EcommerceDto) {
     this.openEcommerceDialog = true;
@@ -76,7 +77,7 @@ export class ReceptionECommerceComponent  implements OnInit {
     if (this.ecommerce) {
       
       this.ecommerceService
-        .reception(this.ecommerce.id.toString(), '1')
+        .reception(this.ecommerce.id.toString(), this.sessionService.getAgentAttributes().structureId.toString())
         .subscribe(() => this.getAllEcommerceByDestinationReception());
 
       this.messageService.add({

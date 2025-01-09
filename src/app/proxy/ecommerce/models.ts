@@ -9,6 +9,7 @@ export interface EcommerceDto {
     partenaireEcomId: number;
     taxetransp: number;
     idbureau: number;
+    bureauDestinationLibelle: string;
     iduser: number;
     heurelivraison: string;
     etatEcomId: number;
@@ -43,6 +44,7 @@ export interface EcommerceDto {
     partenaireEcomId: number;
     taxetransp: number;
     idbureau: number;
+    bureauDestinationLibelle: string;
     iduser: number;
     heurelivraison: string;
     etatEcomId: number;

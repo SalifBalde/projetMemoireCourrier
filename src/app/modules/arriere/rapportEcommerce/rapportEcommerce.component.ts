@@ -1,19 +1,19 @@
-import { Component, OnInit,ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {KeycloakProfile} from "keycloak-js";
-import {Table} from "primeng/table";
-import {PdfService} from "../../../proxy/pdf/pdf.service";
-import {ActivatedRoute, Router} from "@angular/router";
-import {MessageService} from "primeng/api";
-import {KeycloakService} from "keycloak-angular";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { KeycloakProfile } from "keycloak-js";
+import { Table } from "primeng/table";
+import { PdfService } from "../../../proxy/pdf/pdf.service";
+import { ActivatedRoute, Router } from "@angular/router";
+import { MessageService } from "primeng/api";
+import { KeycloakService } from "keycloak-angular";
 import { SessionService } from 'src/app/proxy/auth/Session.service';
 import { ExpeditionEcomDto, ExpeditionEcomService } from 'src/app/proxy/expeditionEcommerce';
 
 @Component({
-  selector: 'app-rapportEcommerce',
-  templateUrl: './rapportEcommerce.component.html',
-  providers:[MessageService]
+    selector: 'app-rapportEcommerce',
+    templateUrl: './rapportEcommerce.component.html',
+    providers: [MessageService]
 })
 export class RapportEcommerceComponent implements OnInit {
     form: FormGroup;
@@ -22,10 +22,10 @@ export class RapportEcommerceComponent implements OnInit {
     fullname = "";
     isModalOpen = false;
     montant = 0;
-    expeditions:ExpeditionEcomDto[];
+    expeditions: ExpeditionEcomDto[];
     cols: any[] = [];
     rowsPerPageOptions = [5, 10, 20];
-    id ="";
+    id = "";
     @ViewChild('dt') dt: Table;
 
     constructor(
@@ -34,40 +34,46 @@ export class RapportEcommerceComponent implements OnInit {
         private sessionService: SessionService,
         private fb: FormBuilder,
         private router: Router,
-        private route : ActivatedRoute,
-        private messageService: MessageService,private readonly keycloak: KeycloakService
-    ) {}
+        private route: ActivatedRoute,
+        private messageService: MessageService, private readonly keycloak: KeycloakService
+    ) { }
 
     loadingExpedition: boolean = false;
     loadingReset: boolean = false;
+
+    
     searchExpeditionByCriteres() {
         this.loadingExpedition = true;
         setTimeout(() => {
-                this.loadingExpedition = false
-            },
+            this.loadingExpedition = false
+        },
             1000);
-        let dateDebut=this.form.get('dateDebut').value;
-        let dateFin=this.form.get('dateFin').value;
-       /*  this.expeditionEcomService.findExpeditionByCriteres(dateDebut,dateFin).subscribe(coli=>{this.expeditionByCriteres=coli;
-            this.montant = this.expeditionByCriteres.reduce((sum, item) => sum + parseInt(item.montant), 0);
-        }) */
+        let dateDebut = this.form.get('dateDebut').value;
+        let dateFin = this.form.get('dateFin').value;
+        /*  this.expeditionEcomService.findExpeditionByCriteres(dateDebut,dateFin).subscribe(coli=>{this.expeditionByCriteres=coli;
+             this.montant = this.expeditionByCriteres.reduce((sum, item) => sum + parseInt(item.montant), 0);
+         }) */
     }
-    resetForm(){
+    
+    resetForm() {
+        
         this.loadingReset = true;
         setTimeout(() => {
             this.loadingReset = false
-        },1000);
+        }, 1000);
+
         this.form = this.fb.group({
             dateDebut: [undefined, Validators.required],
             dateFin: [undefined, Validators.required],
-            prenom:[undefined,Validators.required],
-            nom:[undefined,Validators.required]
+            prenom: [undefined, Validators.required],
+            nom: [undefined, Validators.required]
         });
+
         this.getAllExpedition();
     }
 
-    generatePdf(): void{
-       // this.pdfService.generateAgentSalesReport(this.expeditions);
+    generatePdf(): void {
+        // this.pdfService.generateAgentSalesReport(this.expeditions);
     }
 
     async ngOnInit(): Promise<void> {
@@ -84,20 +90,20 @@ export class RapportEcommerceComponent implements OnInit {
         this.form = this.fb.group({
             dateDebut: [undefined, Validators.required],
             dateFin: [undefined, Validators.required],
-            prenom:[undefined,Validators.required],
-            nom:[undefined,Validators.required]
+            prenom: [undefined, Validators.required],
+            nom: [undefined, Validators.required]
         });
     }
-    getAllExpedition(){
+    getAllExpedition() {
         // this.expeditionEcomService.getAllByStrucuture(this.sessionService.getAgentAttributes().structureId).subscribe(
-            this.expeditionEcomService.getAllByStrucuture("1").subscribe(
+        this.expeditionEcomService.getAllByStrucuture(this.sessionService.getAgentAttributes().structureId.toString()).subscribe(
 
             (result) => {
                 this.expeditions = result;
             }
         );
     }
-    isEmpty(){
-        return this.form.value.dateFin!=null && this.form.value.dateDebut!=null&& this.form.value.prenom!=null && this.form.value.nom!=null;
+    isEmpty() {
+        return this.form.value.dateFin != null && this.form.value.dateDebut != null && this.form.value.prenom != null && this.form.value.nom != null;
     }
 }

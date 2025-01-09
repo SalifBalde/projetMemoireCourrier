@@ -13,14 +13,14 @@
       <div class="flex flex-column ">
         <img src="assets/layout/images/poste-removebg-preview.png" width="150" height="100"  alt="logo" />
         <div class="my-3 text-2xl font-bold text-900">Groupe La Poste</div>
-        <span class="mb-2">Bureau: {{ ecommerce.idbureau }}</span>
+        <span class="mb-2">Bureau Destination : {{ ecommerce.bureauDestinationLibelle }}</span>
       </div>
       <div class="flex flex-column mt-5 md:mt-0">
         <div class="text-2xl font-semibold text-left md:text-right mb-3">FACTURE</div>
         <div class="flex flex-column">
           <div class="flex justify-content-between align-items-center mb-2">
             <span class="font-semibold mr-6">DATE</span>
-            <span>{{ ecommerce.dateexp | date: 'short' }}</span>
+            <span>{{ ecommerce.dateexp | date: 'dd/MM/yyyy' }}</span>
           </div>
           <div class="flex justify-content-between align-items-center mb-2">
             <span class="font-semibold mr-6">INVOICE #</span>
@@ -40,22 +40,6 @@
         <span class="mb-2">{{ ecommerce.prenomClient }} {{ ecommerce.nomClient }}</span>
         <span>{{ ecommerce.adresseClient }}</span>
         <span>{{ ecommerce.telephoneClient }}</span>
-      </div>
-      <div class="flex flex-column mt-5 md:mt-0">
-        <div class="flex flex-column">
-          <div class="flex justify-content-between align-items-center mb-2">
-            <span class="font-semibold mr-6">DATE</span>
-            <span>{{ ecommerce.datelivraison | date: 'short' }}</span>
-          </div>
-          <div class="flex justify-content-between align-items-center mb-2">
-            <span class="font-semibold mr-6">CODE</span>
-            <span>{{ ecommerce.numenvoi }}</span>
-          </div>
-          <div class="flex justify-content-between align-items-center">
-            <span class="font-semibold mr-6">CLIENT</span>
-            <span>{{ecommerce.prenomClient}} {{ ecommerce.nomClient }}</span>
-          </div>
-        </div>
       </div>
     </div>
 

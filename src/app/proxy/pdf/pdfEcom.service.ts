@@ -70,7 +70,6 @@ export class PdfEcomService {
             doc.addImage(logoLeft, "PNG", 14, 160, logoWidth, logoHeight);
         }
 
-
         doc.setFontSize(11);
         doc.setFont("helvetica", "bold");
         doc.setTextColor(0, 0, 0)
@@ -86,26 +85,27 @@ export class PdfEcomService {
 
     private addRecipientAndSenderInfo(doc: jsPDF, data: EcommerceDto): void {
         const pageWidth = doc.internal.pageSize.width;
-        const margin = 14;
+        const margin = 10;
         const rightMargin = margin;
         const rightTextStartX = pageWidth - rightMargin;
 
-        const lineHeight = 8;
+        const lineHeight = 10;
         const fontSize = 9;
         doc.setFont("helvetica", "normal");
         doc.setFontSize(fontSize);
 
-        let yOffset = 25;
+        let yOffset = 33;
 
         doc.text(data.numenvoi || "", margin, yOffset);
         yOffset += lineHeight;
 
-        doc.text(`Structure Depot: ${data.idbureau || ""}`, margin, yOffset);
+        doc.text(`Structure Destination : ${data.bureauDestinationLibelle || ""}`, margin, yOffset);
         yOffset += lineHeight;
 
-        const rightSectionYOffset = yOffset -25;
+        const rightSectionYOffset = yOffset - 25;
 
         let rightYPosition = rightSectionYOffset;
+
 
         doc.text(`Destinataire: ${data.prenomClient || ""} ${data.nomClient || ""}`, rightTextStartX, rightYPosition, { align: "right" });
         rightYPosition += lineHeight;
@@ -115,18 +115,6 @@ export class PdfEcomService {
 
         doc.text(`Adresse client : ${data.adresseClient || ""}`, rightTextStartX, rightYPosition, { align: "right" });
         rightYPosition += lineHeight;
-
-        // // Recommande
-        // doc.text(`Recommande: ${data.recommande || ""}`, rightTextStartX, rightYPosition, { align: "right" });
-        // rightYPosition += lineHeight;
-
-        // // AR
-        // doc.text(`Ar: ${data.ar || ""}`, rightTextStartX, rightYPosition, { align: "right" });
-        // rightYPosition += lineHeight;
-
-        // // Express
-        // doc.text(`Express: ${data.express || ""}`, rightTextStartX, rightYPosition, { align: "right" });
-        // rightYPosition += lineHeight;
 
         this.addBarcode(doc, data.numenvoi, (pageWidth - 50) / 2, rightYPosition - 15, 50, 20);
     }
@@ -147,24 +135,12 @@ export class PdfEcomService {
         doc.text(data.numenvoi || "", margin, yOffset);
         yOffset += lineSpacing;
 
-        doc.text(`Structure Depot: ${data.idbureau || ""}`, margin, yOffset);
+        doc.text(`Structure Destination: ${data.bureauDestinationLibelle || ""}`, margin, yOffset);
         yOffset += lineSpacing;
-
-
-
-        // doc.text(`Categorie: ${data.categorieLibelle || ""}`, margin, yOffset,);
-        // yOffset += lineSpacing;
-
-        // doc.text(`Poids: ${data.poids || ""}`, margin, yOffset,);
-        // yOffset += lineSpacing;
-
-
 
         const rightSectionYOffset = yOffset - 20;
 
         let rightYPosition = rightSectionYOffset;
-
-
 
         doc.text(`Destinataire: ${data.prenomClient || ""} ${data.nomClient || ""}`, rightTextStartX, rightYPosition, { align: "right" });
         rightYPosition += lineSpacing;
@@ -175,16 +151,7 @@ export class PdfEcomService {
         doc.text(`Adresse client : ${data.adresseClient || ""}`, rightTextStartX, rightYPosition, { align: "right" });
         rightYPosition += lineSpacing;
 
-        // doc.text(`Recommande : ${data.recommande || ""}`, rightTextStartX, rightYPosition, { align: "right" });
-        // rightYPosition += lineSpacing;
-
-        // doc.text(`Ar: ${data.ar || ""}`, rightTextStartX, rightYPosition, { align: "right" });
-        // rightYPosition += lineSpacing;
-
-        // doc.text(`Express: ${data.express || ""}`, rightTextStartX, rightYPosition, { align: "right" });
-        // rightYPosition += lineSpacing;
-
-        this.addBarcode(doc, data.numenvoi, (pageWidth - 50) / 2, rightYPosition - 10, 50, 20);
+        this.addBarcode(doc, data.numenvoi, (pageWidth - 50) / 2, rightYPosition - 1, 50, 20);
     }
 
 
@@ -300,7 +267,7 @@ export class PdfEcomService {
             doc.setFontSize(9);
             doc.setTextColor(255, 255, 255);
             doc.text(
-                `Total: ${data.taxetransp +  data.taxelivraison} CFA`,
+                `Total: ${data.taxetransp + data.taxelivraison} CFA`,
                 totalBoxX + 2,
                 totalBoxY + 6
             );
@@ -444,7 +411,7 @@ export class PdfEcomService {
             doc.setFontSize(9);
             doc.setTextColor(255, 255, 255);
             doc.text(
-                `Total: ${data.taxetransp  + data.taxeLivraison} CFA`,
+                `Total: ${data.taxetransp + data.taxeLivraison} CFA`,
                 totalBoxX + 2,
                 totalBoxY + 6
             );
