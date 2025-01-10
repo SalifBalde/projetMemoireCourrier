@@ -4,6 +4,7 @@ import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { PrimeIcons } from 'primeng/api';
 import { ExpeditionEcomDto, ExpeditionEcomService } from 'src/app/proxy/expeditionEcommerce';
+import { Cn23Service } from 'src/app/proxy/pdf/cn23.service';
 import { PdfService } from 'src/app/proxy/pdf/pdf.service';
 
 @Component({
@@ -22,6 +23,7 @@ export class DetailExpeditionEcomComponent implements OnInit {
         private fb: FormBuilder,
         private router: Router,
         private route: ActivatedRoute,
+        private cn23Service : Cn23Service,
     ) {}
     ngOnInit(): void {
         this.route.params.subscribe((params: Params) => {
@@ -29,8 +31,8 @@ export class DetailExpeditionEcomComponent implements OnInit {
     
             this.expeditionEcomService.getOne(id).subscribe((expeditionEcom) => {
                 this.expeditionEcom = expeditionEcom;
-                console.log('ExpeditionEcom data loaded:', this.expeditionEcom);  // Affichage des données dans la console
-            });
+                console.log('ExpeditionEcom data loaded:', this.expeditionEcom);
+                        });
         });
     }
     
@@ -50,7 +52,7 @@ export class DetailExpeditionEcomComponent implements OnInit {
     
     // async generatePDF() {
     //     try {
-    //       await this.cn23Service.createPDF();  // Appel de la méthode createPDF
+    //       await this.pdfGeneratorService.generateShippingBulletin  // Appel de la méthode createPDF
     //       console.log('PDF généré avec succès.');
     //     } catch (error) {
     //       console.error('Erreur lors de la génération du PDF:', error);

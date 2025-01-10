@@ -86,20 +86,20 @@ var Cn23Service = /** @class */ (function () {
     };
     Cn23Service.prototype.addRecipientInfo = function (doc) {
         var pageWidth = doc.internal.pageSize.width;
-        doc.text('Reçu de dépot dun colis postal', pageWidth / 1, 18, { align: 'right' });
+        doc.text('Reçu de dépot dun colis postal', pageWidth / 1.01, 18, { align: 'right' });
         doc.text('COLIS EXPORT', pageWidth / 1, 7, { align: 'right' });
-        doc.text('Numéro 546146  Date 11/30/23   12:00', pageWidth / 1, 3, { align: 'right' });
-        doc.text("     Partie à remplir par l'expediteur", pageWidth / 1, 30, { align: 'right' });
-        doc.text('DESTINATAIRE', pageWidth / 1, 40, { align: 'right' });
-        doc.text('Prenom: BARBARA', pageWidth / 1, 50, { align: 'right' });
-        doc.text('Nom: PATERSON', pageWidth / 1, 60, { align: 'right' });
-        doc.text('Adresse:', pageWidth / 1, 66, { align: 'right' });
-        doc.text('123 GREY ST EAST MELBOURNE', pageWidth / 1, 69, { align: 'right' });
-        doc.text('VICTORIA 3002 AUSTRALIA', pageWidth / 1, 73, { align: 'right' });
-        doc.text('Poids: 5,000  g', pageWidth / 1, 85, { align: 'right' });
-        doc.text('Taxe de port: 57,960  ', pageWidth / 1, 89, { align: 'right' });
-        doc.text('Taxe VD:0  ', pageWidth / 1, 94, { align: 'right' });
-        doc.text('Net A payer:57,960  ', pageWidth / 1, 99, { align: 'right' });
+        doc.text('Numéro 546146  Date 11/30/23   12:00', pageWidth / 1.01, 3, { align: 'right' });
+        doc.text("     Partie à remplir par l'expediteur", pageWidth / 1.01, 30, { align: 'right' });
+        doc.text('DESTINATAIRE', pageWidth / 1.05, 40, { align: 'right' });
+        doc.text('Prenom: BARBARA', pageWidth / 1.09, 50, { align: 'right' });
+        doc.text('Nom: PATERSON', pageWidth / 1.10, 60, { align: 'right' });
+        doc.text('Adresse:', pageWidth / 1.15, 66, { align: 'right' });
+        // doc.text('123 GREY ST EAST MELBOURNE', pageWidth / 1.12, 69, { align: 'right' });
+        // doc.text('VICTORIA 3002 AUSTRALIA', pageWidth / 1.12, 73, { align: 'right' });
+        doc.text('Poids: 5,000  g', pageWidth / 1.12, 85, { align: 'right' });
+        doc.text('Taxe de port: 57,960  ', pageWidth / 1.08, 89, { align: 'right' });
+        doc.text('Taxe VD:0  ', pageWidth / 1.14, 94, { align: 'right' });
+        doc.text('Net A payer:57,960  ', pageWidth / 1.09, 99, { align: 'right' });
     };
     Cn23Service.prototype.addSenderInfo = function (doc) {
         var pageWidth = doc.internal.pageSize.width;
@@ -119,11 +119,11 @@ var Cn23Service = /** @class */ (function () {
     };
     Cn23Service.prototype.addDetails = function (doc) {
         var pageWidth = doc.internal.pageSize.width;
-        doc.text('A remplir par le bureau de  ', pageWidth / 1, 110, { align: 'right' });
-        doc.text('Numéro colis: ', pageWidth / 1, 120, { align: 'right' });
-        doc.text('CP001601001SN', pageWidth / 1, 130, { align: 'right' });
+        doc.text('A remplir par le bureau de  ', pageWidth / 1.05, 110, { align: 'right' });
+        doc.text('Numéro colis: ', pageWidth / 1.11, 120, { align: 'right' });
+        doc.text('CP001601001SN', pageWidth / 1.10, 130, { align: 'right' });
         doc.text('NOTA -Aucune réclamation ne peut    ', pageWidth / 1, 170, { align: 'right' });
-        doc.text('etre examinée sans la production du', pageWidth / 1, 178, { align: 'right' });
+        doc.text('etre examinée sans la production du', pageWidth / 1.01, 178, { align: 'right' });
         doc.text('Taxe reçue: 57960.0', pageWidth / 1, 195, { align: 'right' });
     };
     Cn23Service.prototype.addFooter = function (doc) {

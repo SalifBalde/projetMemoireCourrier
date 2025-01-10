@@ -46,20 +46,20 @@ export class Cn23Service {
     private addRecipientInfo(doc: jsPDF) {
         const pageWidth = doc.internal.pageSize.width;
 
-        doc.text('Reçu de dépot dun colis postal', pageWidth / 1, 18, { align: 'right' });
+        doc.text('Reçu de dépot dun colis postal', pageWidth / 1.01, 18, { align: 'right' });
         doc.text('COLIS EXPORT', pageWidth / 1, 7, { align: 'right' });
-        doc.text('Numéro 546146  Date 11/30/23   12:00', pageWidth / 1, 3, { align: 'right' });
-        doc.text("     Partie à remplir par l'expediteur", pageWidth / 1, 30, { align: 'right' });
-        doc.text('DESTINATAIRE', pageWidth / 1, 40, { align: 'right' });
-        doc.text('Prenom: BARBARA', pageWidth / 1, 50, { align: 'right' });
-        doc.text('Nom: PATERSON', pageWidth / 1, 60, { align: 'right' });
-        doc.text('Adresse:', pageWidth / 1, 66, { align: 'right' });
-        doc.text('123 GREY ST EAST MELBOURNE', pageWidth / 1, 69, { align: 'right' });
-        doc.text('VICTORIA 3002 AUSTRALIA', pageWidth / 1, 73, { align: 'right' });
-        doc.text('Poids: 5,000  g', pageWidth / 1, 85, { align: 'right' });
-        doc.text('Taxe de port: 57,960  ', pageWidth / 1, 89, { align: 'right' });
-        doc.text('Taxe VD:0  ', pageWidth / 1, 94, { align: 'right' });
-        doc.text('Net A payer:57,960  ', pageWidth / 1, 99, { align: 'right' });
+        doc.text('Numéro 546146  Date 11/30/23   12:00', pageWidth / 1.01, 3, { align: 'right' });
+        doc.text("     Partie à remplir par l'expediteur", pageWidth / 1.01, 30, { align: 'right' });
+        doc.text('DESTINATAIRE', pageWidth / 1.05, 40, { align: 'right' });
+        doc.text('Prenom: BARBARA', pageWidth / 1.09, 50, { align: 'right' });
+        doc.text('Nom: PATERSON', pageWidth / 1.10, 60, { align: 'right' });
+        doc.text('Adresse:', pageWidth / 1.15, 66, { align: 'right' });
+        // doc.text('123 GREY ST EAST MELBOURNE', pageWidth / 1.12, 69, { align: 'right' });
+        // doc.text('VICTORIA 3002 AUSTRALIA', pageWidth / 1.12, 73, { align: 'right' });
+        doc.text('Poids: 5,000  g', pageWidth / 1.12, 85, { align: 'right' });
+        doc.text('Taxe de port: 57,960  ', pageWidth / 1.08, 89, { align: 'right' });
+        doc.text('Taxe VD:0  ', pageWidth / 1.14, 94, { align: 'right' });
+        doc.text('Net A payer:57,960  ', pageWidth / 1.09, 99, { align: 'right' });
     }
 
     private addSenderInfo(doc: jsPDF) {
@@ -83,12 +83,12 @@ export class Cn23Service {
     private addDetails(doc: jsPDF) {
         const pageWidth = doc.internal.pageSize.width;
 
-        doc.text('A remplir par le bureau de  ', pageWidth / 1, 110, { align: 'right' });
-        doc.text('Numéro colis: ', pageWidth / 1, 120, { align: 'right' });
-        doc.text('CP001601001SN', pageWidth / 1, 130, { align: 'right' });
-        doc.text('NOTA -Aucune réclamation ne peut    ', pageWidth / 1, 170, { align: 'right' });
-        doc.text('etre examinée sans la production du', pageWidth / 1, 178, { align: 'right' });
-        doc.text('Taxe reçue: 57960.0', pageWidth / 1, 195, { align: 'right' });
+        doc.text('A remplir par le bureau de  ', pageWidth / 1.05, 110, { align: 'right' });
+        doc.text('Numéro colis: ', pageWidth / 1.11, 120, { align: 'right' });
+        doc.text('CP001601001SN', pageWidth / 1.10, 130, { align: 'right' });
+        doc.text('NOTA -Aucune réclamation ne peut   ', pageWidth / 1, 170, { align: 'right' });
+        doc.text('etre examinée sans la production du', pageWidth / 1.0085, 178, { align: 'right' });
+        doc.text('Taxe reçue: 57960.0', pageWidth / 1.09, 195, { align: 'right' });
     }
 
     private addFooter(doc: jsPDF) {
@@ -101,25 +101,25 @@ export class Cn23Service {
         doc.text('HOTEL NDIAMBOUR', pageWidth / 6, 35, { align: 'right' });
         doc.text('00221338227745', pageWidth / 7, 40, { align: 'right' });
         doc.text('13000', pageWidth / 11, 45, { align: 'right' });
-        doc.text('A', pageWidth / 50, 59, {align: 'right',});
+        doc.text('A', pageWidth / 50, 59, { align: 'right', });
         doc.text(' Bureau: DAKAR PEYTAVIN', pageHeight / 10, 8, { align: 'left' });
         doc.text('Logo', pageWidth / 10, 3, { align: 'right' });
         doc.text('LA POSTEE SENEGAL', pageHeight / 2, 3, { align: 'right' });
         doc.text(' Agent:Aliou Balde', pageWidth / 2, 8, { align: 'center' });
-        doc.text('Nom et Adresse,Colis Postal et le Téléphone du destinataire y compis', pageHeight / 13, 50, {align: 'left',});
-        doc.text('PATERSON', pageHeight / 13, 60, {align: 'left',});
-        doc.text('BARBARA', pageHeight / 3, 60, {align: 'left',});
-        doc.text('123 GREY ST EAST MELBOURNE VICTORIA 300S AUSTRALIA',pageHeight / 13,68,{align: 'left', } );
-        doc.text('AUSTRALIA', pageHeight / 13, 75, {align: 'left',});
-        doc.text('+61413542629', pageHeight / 13, 80, {align: 'left',});
-        doc.text('3002', pageHeight / 13, 89, {align: 'left',});
-        doc.text('Timbre de la ', pageHeight / 13, 95, {align: 'left',});
-        doc.text('Bureau ', pageHeight / 3, 95, {align: 'left',});
-        doc.text('DARA MESSAGERIE', pageWidth / 4, 99, {align: 'left',});
-        doc.text('Droit de douane ', pageHeight / 13, 105, {align: 'left',});
-        doc.text('Catégorie de colis ', pageHeight / 13, 115, {align: 'left', });
-        doc.text('aerien ', pageHeight / 10, 150, {align: 'left',});
-        doc.text('surface ', pageWidth / 4, 150, { align: 'left',});
+        doc.text('Nom et Adresse,Colis Postal et le Téléphone du destinataire y compis', pageHeight / 13, 50, { align: 'left', });
+        doc.text('PATERSON', pageHeight / 13, 60, { align: 'left', });
+        doc.text('BARBARA', pageHeight / 3, 60, { align: 'left', });
+        doc.text('123 GREY ST EAST MELBOURNE VICTORIA 300S AUSTRALIA', pageHeight / 13, 68, { align: 'left', });
+        doc.text('AUSTRALIA', pageHeight / 13, 75, { align: 'left', });
+        doc.text('+61413542629', pageHeight / 13, 80, { align: 'left', });
+        doc.text('3002', pageHeight / 13, 89, { align: 'left', });
+        doc.text('Timbre de la ', pageHeight / 13, 95, { align: 'left', });
+        doc.text('Bureau ', pageHeight / 3, 95, { align: 'left', });
+        doc.text('DARA MESSAGERIE', pageWidth / 4, 99, { align: 'left', });
+        doc.text('Droit de douane ', pageHeight / 13, 105, { align: 'left', });
+        doc.text('Catégorie de colis ', pageHeight / 13, 115, { align: 'left', });
+        doc.text('aerien ', pageHeight / 10, 150, { align: 'left', });
+        doc.text('surface ', pageWidth / 4, 150, { align: 'left', });
         doc.text('A', pageWidth / 50, 59, { align: 'right' });
         doc.text(' Bureau: DAKAR PEYTAVIN', pageHeight / 10, 8, { align: 'left' });
         doc.text('Logo', pageWidth / 10, 3, { align: 'right' });
@@ -127,7 +127,7 @@ export class Cn23Service {
         doc.text(' Agent:Aliou Balde', pageWidth / 2, 8, { align: 'center' });
         doc.text("Instruction de l'expéditeur en cas de non-livraison ", pageHeight / 13, 160, { align: 'left' });
         doc.text("Renvoyer à l'expéditeur ", pageHeight / 13, 170, { align: 'left' });
-        doc.text('Remarque:Pour tenir compte des besoins de leur service, les Administrations ont la latitude d utiliser cette formule unique,soit comme partie de la formule-Liasse CP72 ', pageHeight / 29,209,{align: 'left',});
+        doc.text('Remarque:Pour tenir compte des besoins de leur service, les Administrations ont la latitude d utiliser cette formule unique,soit comme partie de la formule-Liasse CP72 ', pageHeight / 29, 209, { align: 'left', });
         doc.setLineWidth(0.5);
     }
 

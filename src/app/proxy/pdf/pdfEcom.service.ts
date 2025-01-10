@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import JsBarcode from 'jsbarcode';
-import { EcommerceDto } from '../ecommerce';
+import { EcommerceDto, ProduitEcommerceDto } from '../ecommerce';
 
 @Injectable({
     providedIn: 'root',
@@ -370,13 +370,13 @@ export class PdfEcomService {
         }
     }
 
-    private addInvoiceDetailsPoids(doc: jsPDF, data: EcommerceDto): void {
+    private addInvoiceDetailsPoids(doc: jsPDF, data: any): void {
         const tableColumn = ["Contenu"];
         const tableRows: any[] = [];
 
         [data].forEach(item => {
             const itemData = [
-                item.observation,
+                item.libelle,
 
             ];
             tableRows.push(itemData);
@@ -432,7 +432,7 @@ export class PdfEcomService {
         }
     }
 
-    private addInvoiceDetailsPoids1(doc: jsPDF, data: EcommerceDto): void {
+    private addInvoiceDetailsPoids1(doc: jsPDF, data: any): void {
         const tableColumn = ["Contenu"];
         const tableRows: any[] = [];
 
