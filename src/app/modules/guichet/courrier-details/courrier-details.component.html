@@ -3,9 +3,7 @@
     <div class="card">
         <p-toolbar>
             <div class="p-toolbar-group-left flex flex-wrap">
-                <button pButton type="button" icon="pi pi-check" class="p-button-success mr-2" ></button>
-                <button pButton type="button" icon="pi pi-trash" class="p-button-warning mr-2"></button>
-                <button pButton type="button" icon="pi pi-print" (click)="imprimerFacture()" class="p-button-danger" ></button>
+                <button pButton type="button" label="Imprmer" icon="pi pi-print" (click)="imprimerFacture()" class="p-button-info" ></button>
             </div>
         </p-toolbar>
     </div>
@@ -49,7 +47,7 @@
 
     <!-- Détails des produits -->
     <div class="col-12 md:col-6">
-      <div class="card">
+      <div class="card" *ngIf="courrier.typeCourrierId ==1">
         <h3>Détails des Produits</h3>
         <p-table [value]="courrier?.details" [paginator]="true" [rows]="5">
           <ng-template pTemplate="header">

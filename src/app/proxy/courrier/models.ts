@@ -10,6 +10,7 @@ export class CourrierCreateUpdateDto {
     valeurDeclare?: number;
     userId?: number;
     caisseId?: number;
+    journalId?: number;
     codeBarre?: string;
     contenu?: string;
     typeCourrierId?: number;
@@ -41,6 +42,7 @@ export class CourrierCreateUpdateDto {
     userId?: number;
     codeBarre?: string;
     caisseId?: number;
+    journalId?: number;
     contenu?: string;
     typeCourrierId?: number;
     typeCourrierLibelle?: string;

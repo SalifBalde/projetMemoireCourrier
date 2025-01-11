@@ -3,6 +3,7 @@ export interface CreateUpdateStructureDto {
     libelle: string;
     description: string;
     active: boolean;
+    code?:string;
 }
 
 export interface StructureDto {
@@ -10,4 +11,5 @@ export interface StructureDto {
     libelle?: string;
     description?: string;
     active?: boolean;
+    code?:string;
 }

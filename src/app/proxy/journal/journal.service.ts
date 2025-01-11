@@ -22,8 +22,8 @@ export class JournalService{
 
 
 // Récupérer une action pp ID
-getJournalToday(id: string) {
-    const new_api_host = this.routerParam(this.api_host,"journal-today", id);
+getJournalToday(id: string,userId:string) {
+    const new_api_host = this.routerParam(this.api_host,"journal-today", id, userId);
     return this.httpClient.get<JournalResultDto>(new_api_host, this.httpOptions);
   }
 

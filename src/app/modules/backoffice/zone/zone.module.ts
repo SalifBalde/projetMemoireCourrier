@@ -9,9 +9,10 @@ import { ToastModule } from 'primeng/toast';
 import { TagModule } from 'primeng/tag';
 import {ReactiveFormsModule} from "@angular/forms";
 import {InputSwitchModule} from "primeng/inputswitch";
-import {ButtonDirective} from "primeng/button";
-import {Ripple} from "primeng/ripple";
+import {ButtonDirective, ButtonModule} from "primeng/button";
+import {Ripple, RippleModule} from "primeng/ripple";
 import {InputTextModule} from "primeng/inputtext";
+import {SharedModule} from "../../../layout/shared/shared.module";
 
 @NgModule({
   declarations: [
@@ -27,9 +28,10 @@ import {InputTextModule} from "primeng/inputtext";
         ZoneRoutingModule,
         ReactiveFormsModule,
         InputSwitchModule,
-        ButtonDirective,
-        Ripple,
-        InputTextModule
+        ButtonModule,
+        RippleModule,
+        InputTextModule,
+        SharedModule
     ]
 })
 export class ZoneModule { }

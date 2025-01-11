@@ -1,28 +1,27 @@
-
-import { Component, OnInit, ViewChild } from '@angular/core';
-
-import { FormGroup,FormBuilder, Validators } from '@angular/forms';
-import { MessageService } from 'primeng/api';
-import { Table } from 'primeng/table';
-
-//import * as jsPDF from 'jspdf';
-import autoTable from 'jspdf-autotable';
-import {ColisDto, ColisService, CreateUpdateColisDto } from 'src/app/proxy/colis';
-import { ActivatedRoute, Params, Router } from '@angular/router';
-import { StructureDto, StructureService } from 'src/app/proxy/structures';
-import { PdfService } from 'src/app/proxy/pdf/pdf.service';
-import { ExpeditionDetailsDto, ExpeditionDto, ExpeditionService } from 'src/app/proxy/expeditions';
-import { SessionService } from 'src/app/proxy/auth/Session.service';
-import {CourrierDto, CourrierService} from "../../../proxy/courrier";
-import {Fermeturedto, FermetureService} from "../../../proxy/fermeture";
-import {StatutCourrierService, Statutdto} from "../../../proxy/statut-courrier";
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {MessageService} from "primeng/api";
+import {ColisDto, ColisService} from "../../../../proxy/colis";
+import {ExpeditionDto, ExpeditionService} from "../../../../proxy/expeditions";
+import {PdfService} from "../../../../proxy/pdf/pdf.service";
+import {SessionService} from "../../../../proxy/auth/Session.service";
+import {FormBuilder, FormGroup} from "@angular/forms";
+import {ActivatedRoute, Router} from "@angular/router";
+import {StructureDto, StructureService} from "../../../../proxy/structures";
+import {CourrierDto, CourrierService} from "../../../../proxy/courrier";
+import {Table} from "primeng/table";
+import {color} from "chart.js/helpers";
+import {Fermeturedto, FermetureService} from "../../../../proxy/fermeture";
+import {KeycloakService} from "keycloak-angular";
+import {KeycloakProfile} from "keycloak-js";
+import {StatutCourrierService, Statutdto} from "../../../../proxy/statut-courrier";
 
 @Component({
-    selector: 'app-expedition',
-  templateUrl: './expedition.component.html',
-    providers: [MessageService],
-  })
-  export class ExpeditionComponent implements OnInit {
+  selector: 'app-expedition-colis',
+  templateUrl: './expedition-colis.component.html',
+  styleUrl: './expedition-colis.component.scss',
+    providers: [MessageService]
+})
+export class ExpeditionColisComponent implements  OnInit{
     form: FormGroup;
     isModalOpen = false;
     montant = 0;
@@ -38,22 +37,24 @@ import {StatutCourrierService, Statutdto} from "../../../proxy/statut-courrier";
     courriersReceptions: any[] = [];
     courries: any ={};
 
-    numeroDepech: any
-    currentYearLastTwoDigits: string;
-
 
     @ViewChild('dt') dt: Table;
-     openCourrierDialog: boolean=false;
-     openNumExpDialog: boolean=false;
-     listeCourriers: [CourrierDto];
-     structure: StructureDto;
-    idStatutFermetureCourrier: any;
+    openCourrierDialog: boolean=false;
+    listeCourriers: [CourrierDto];
+     openColisDialog: boolean= false;
+    colis: any={};
+    selectedStructure: any
+     fermetureData :Fermeturedto;
+    openNumExpDialog: boolean=false;
+    currentYearLastTwoDigits: string;
+    numeroDepech: any
+    structure: StructureDto;
+    public isLoggedIn = false;
+    public userProfile: KeycloakProfile | null = null;
+    fullname = "";
+     statutCourrier: Statutdto[];
+     idStatutFermetureCourrier: any;
 
-    loading: boolean = false;
-    selectedStructure: any;
-    fermetureData :Fermeturedto;
-    courrier: any={};
-    statutCourrier: Statutdto[];
 
 
     constructor(
@@ -68,30 +69,18 @@ import {StatutCourrierService, Statutdto} from "../../../proxy/statut-courrier";
         private courrierService: CourrierService,
         private messageService: MessageService,
         private  fermetureService: FermetureService,
-        private  statutCourrierService: StatutCourrierService
+        private readonly keycloak: KeycloakService,
+        private  statutCourrierService: StatutCourrierService,
     ) {
         const currentYear = new Date().getFullYear();
-        this.currentYearLastTwoDigits = currentYear.toString().slice(-2); // Prendre les 2 derniers chiffres
+        this.currentYearLastTwoDigits = currentYear.toString().slice(-2);
+       // Prendre les 2 derniers chiffres
     }
 
-
-
-    load() {
-        this.loading = true;
-
-        setTimeout(() => {
-            this.loading = false
-        }, 2000);
-    }
-
-
-    ngOnInit(): void {
-
+    async ngOnInit() {
         this.structureService.findAll().subscribe(
             (result) => {
-                this.structure$ = result
-                const idRecherche = 16;
-                console.log(this.structure$);// Remplacez par l'ID que vous recherchez
+                const idRecherche = 18; // Remplacez par l'ID que vous recherchez
                 this.structure$ = result.filter((structure: any) => structure.id === idRecherche);
                 console.log(this.structure$);
             },
@@ -102,10 +91,13 @@ import {StatutCourrierService, Statutdto} from "../../../proxy/statut-courrier";
         this.getCourriers();
 
 
-
-        this.buildForm();
-       // this.clearList()
         this.getStructureById()
+        this.isLoggedIn = await this.keycloak.isLoggedIn();
+        if (this.isLoggedIn) {
+            this.userProfile = await this.keycloak.loadUserProfile();
+            this.fullname = this.userProfile.firstName + " " + this.userProfile.lastName;
+            console.log(this.userProfile)
+        }
         this.getAllSatutCourrier()
     }
 
@@ -114,7 +106,7 @@ import {StatutCourrierService, Statutdto} from "../../../proxy/statut-courrier";
             this.statutCourrier=data;
             console.log(this.statutCourrier)
 
-            this.idStatutFermetureCourrier =this.statutCourrier = data.filter(statut => statut.id === 3);
+           this.idStatutFermetureCourrier =this.statutCourrier = data.filter(statut => statut.id === 3);
             console.log(this.idStatutFermetureCourrier);  // Afficher les résultats filtrés
         })
 
@@ -125,8 +117,9 @@ import {StatutCourrierService, Statutdto} from "../../../proxy/statut-courrier";
             console.log(this.structure.code)
         })
     }
-
-
+    isExpeditionDisabled(): boolean {
+        return !this.selectedStructure
+    }
     getBadgeSeverity(statutCourrier: string ): string {
         switch (statutCourrier?.toLowerCase()) {
             case 'déposé': return 'danger';  // Rouge
@@ -134,53 +127,8 @@ import {StatutCourrierService, Statutdto} from "../../../proxy/statut-courrier";
             default: return 'info';         // Bleu
         }
     }
-    openDialog(courrie: CourrierDto) {
-        if (this.selectedColis.length > 0) {
-            this.openNumExpDialog=true
-        }
-        this.courrier = { ...courrie };
-        console.log(courrie)
-        console.log(this.selectedColis)
-    }
-
-    openDialog1(courrie: CourrierDto) {
-        console.log(this.structure.code+this.numeroDepech+this.currentYearLastTwoDigits)
-
-        this.openCourrierDialog=true
-
-        this.courrier = { ...courrie };
-        console.log(courrie)
-        console.log(this.selectedColis)
-        this.openNumExpDialog=false
-    }
-
-
-    buildForm() {
-        this.form = this.fb.group({
-            bureauDestination: [undefined, Validators.required],
-        });
-    }
-    isExpeditionDisabled(): boolean {
-        return !this.selectedStructure
-    }
-
-
-     mapIdsToColis(ids: any): ExpeditionDetailsDto[] {
-        return ids.map(id => ({ colisId: id.id }));
-    }
-
-
-
-    confirmReception() {
-        // Appeler la méthode saveFermeture pour enregistrer la fermeture
-        this.saveFermetureCourrier();
-        this.selectedColis = []; // Réinitialiser la sélection après l'enregistrement
-        this.openCourrierDialog=false;
-
-
-    }
     getCourriers(){
-        const idType ="1"
+        const idType ="2"
         const idStatu= '2'
         const idStructureDepo = this.sessionService.getAgentAttributes().structureId.toString()
 
@@ -192,8 +140,36 @@ import {StatutCourrierService, Statutdto} from "../../../proxy/statut-courrier";
             }
         );
     }
+    openDialog(courrie: CourrierDto) {
+        if (this.selectedColis.length > 0) {
+            this.openNumExpDialog=true
+        }
+        this.colis = { ...courrie };
+        console.log(courrie)
+        console.log(this.selectedColis)
+    }
+    openDialog1(courrie: CourrierDto) {
+        console.log(this.structure.code+this.numeroDepech+this.currentYearLastTwoDigits)
 
-    saveFermetureCourrier() {
+            this.openColisDialog=true
+
+        this.colis = { ...courrie };
+        console.log(courrie)
+        console.log(this.selectedColis)
+        this.openNumExpDialog=false
+    }
+
+
+    confirmReception() {
+        // Appeler la méthode saveFermeture pour enregistrer la fermeture
+        this.saveFermetureColis();
+        this.selectedColis = []; // Réinitialiser la sélection après l'enregistrement
+        this.openColisDialog=false;
+
+
+    }
+
+    saveFermetureColis() {
         try {
             const structureDepotId = Number(this.sessionService.getAgentAttributes().structureId);
             const numeroDepeche = `${this.structure.code}${this.numeroDepech}${this.currentYearLastTwoDigits}`;
@@ -220,8 +196,7 @@ import {StatutCourrierService, Statutdto} from "../../../proxy/statut-courrier";
                     courrierId: colis.id,
                 })),
             };
-            const selectedColisCopy = [...this.selectedColis];
-            console.log( this.fermetureData)// Copie défensive
+            const selectedColisCopy = [...this.selectedColis]; // Copie défensive
             // Appel au service pour enregistrer la fermeture
             this.fermetureService.saveFermeture(this.fermetureData).subscribe(
                 (response) => {

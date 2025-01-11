@@ -192,12 +192,25 @@ export class CourrierOrdinaireComponent implements OnInit {
                     this.sessionService.getAgentAttributes().structureId,
                     Validators.required,
                 ],
+                 journalId: [
+                    this.sessionService.getJournalAttributes().id,
+                    Validators.required,
+                ],
                 totalMontant: [0],
                 valeurTimbre: [0],
             },
 
             { validators: this.validateMontant }
         );
+
+        const journalId = this.form.get('journalId')?.value;
+        if (!journalId) {
+            this.messageService.add({
+                severity: 'warn',
+                summary: 'Avertissement',
+                detail: 'Vous n\'avez pas de caisse. Demandez à votre supérieur de vous attribuer une caisse.'
+            });
+        }
     }
 
     buildFormClient() {

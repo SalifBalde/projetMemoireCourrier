@@ -18,7 +18,7 @@ export class FactureService {
         format: [80, 150], // Format ticket : largeur 80mm
     });
 
-    const logoRight = await this.loadImage('assets/layout/images/logo.png');
+    const logoRight = await this.loadImage('assets/layout/images/laposte.jpeg');
 
     let currentY = 10; // Position Y initiale
 

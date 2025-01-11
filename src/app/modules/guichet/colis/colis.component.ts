@@ -46,7 +46,7 @@ export class ColisComponent implements OnInit {
     modesPaiement: any;
     totalMontant: number = 0;
     taxe: number = 0;
-    valeurTimbre: number = 0;
+   // valeurTimbre: number = 0;
     fraisRecommande: number = 0;
     fraisAr: number = 0;
     fraisExpress: number = 0;
@@ -54,7 +54,7 @@ export class ColisComponent implements OnInit {
     regime$: RegimeDto[];
     categorie$: CategorieDto[];
     structure$: StructureDto[];
-    stocksTimbre$: StockDto[];
+   // stocksTimbre$: StockDto[];
     mode$: ModePaiementDto[];
     clientDialog: boolean;
     loading: boolean;
@@ -63,7 +63,7 @@ export class ColisComponent implements OnInit {
     destinataireDialog: boolean;
     selectedQuantite: number;
     numberOfItems: any;
-    selectedTimbre: any;
+   // selectedTimbre: any;
     label: string = 'CP';
 
     constructor(
@@ -95,20 +95,20 @@ export class ColisComponent implements OnInit {
             this.mode$ = result;
         });
 
-        this.stocksService
-            .getStocksByCaisseIdAndTypeProduit(
-                this.sessionService.getAgentAttributes().structureId,
-                '2'
-            )
-            .subscribe((result) => {
-                //  this.stocksTimbre$ = result;
-                this.stocksTimbre$ = result.map((stock) => ({
-                    ...stock,
-                    combinedLibelle: `${stock.produitLibelle} ${
-                        stock.produitThemeLibelle
-                    }  ${`(${stock.quantite})`}`,
-                }));
-            });
+        // this.stocksService
+        //     .getStocksByCaisseIdAndTypeProduit(
+        //         this.sessionService.getAgentAttributes().structureId,
+        //         '2'
+        //     )
+        //     .subscribe((result) => {
+        //         //  this.stocksTimbre$ = result;
+        //         this.stocksTimbre$ = result.map((stock) => ({
+        //             ...stock,
+        //             combinedLibelle: `${stock.produitLibelle} ${
+        //                 stock.produitThemeLibelle
+        //             }  ${`(${stock.quantite})`}`,
+        //         }));
+        //     });
 
         this.buildForm();
         this.buildFormClient();
@@ -181,7 +181,7 @@ export class ColisComponent implements OnInit {
                 quantite: ['1'],
                 categorieId: ['', Validators.required],
                 typeCourrierId: ['2'],
-                recommande: [{ value: true, disabled: true }],
+                recommande: [{ value: true}],
                 //ar: [{ value: false, disabled: true }],
                 //express: [{ value: false, disabled: true }],
                 statutCourrierId: ['1'],
@@ -190,16 +190,30 @@ export class ColisComponent implements OnInit {
                     this.sessionService.getAgentAttributes().caisseId,
                     Validators.required,
                 ],
+                journalId: [
+                    this.sessionService.getJournalAttributes().id,
+                    Validators.required,
+                ],
+
                 structureDepotId: [
                     this.sessionService.getAgentAttributes().structureId,
                     Validators.required,
                 ],
                 totalMontant: [0],
-                valeurTimbre: [0],
+              //  valeurTimbre: [0],
             },
 
-            { validators: this.validateMontant }
+          //  { validators: this.validateMontant }
         );
+
+        const journalId = this.form.get('journalId')?.value;
+        if (!journalId) {
+            this.messageService.add({
+                severity: 'warn',
+                summary: 'Avertissement',
+                detail: 'Vous n\'avez pas de caisse. Demandez à votre supérieur de vous attribuer une caisse.'
+            });
+        }
     }
 
     buildFormClient() {
@@ -446,9 +460,11 @@ export class ColisComponent implements OnInit {
         this.form.get('paysDestinationId')?.enable();
         this.form.value.userId = this.sessionService.getAgentAttributes().id;
         this.form.value.montant = this.totalMontant;
+        this.form.value.recommande = true;
         this.form.value.details = this.courrier.details;
-        this.form.value.codeBarre =
-            this.label + this.form.get('codeBarre')?.value + 'SN';
+        if(this.form.get('codeBarre')?.value)
+            this.form.value.codeBarre = this.label + this.form.get('codeBarre')?.value + 'SN';
+
         this.loading = true;
         this.courrierService.save(this.form.value).subscribe(
             (result) => {
@@ -605,29 +621,29 @@ export class ColisComponent implements OnInit {
     }
 
     //Panier Timbre
-    updateMetrics() {
-        this.numberOfItems = this.courrier.details.length;
-        this.valeurTimbre = this.courrier.details.reduce(
-            (sum, detail) => sum + (detail.quantite || 0) * (detail.prix || 0),
-            0
-        );
-        this.form.get('valeurTimbre')?.setValue(this.valeurTimbre);
-        this.form.updateValueAndValidity();
-    }
+    // updateMetrics() {
+    //     this.numberOfItems = this.courrier.details.length;
+    //     this.valeurTimbre = this.courrier.details.reduce(
+    //         (sum, detail) => sum + (detail.quantite || 0) * (detail.prix || 0),
+    //         0
+    //     );
+    //     this.form.get('valeurTimbre')?.setValue(this.valeurTimbre);
+    //     this.form.updateValueAndValidity();
+    // }
 
     getTarifProduit() {}
 
-    onQuantiteChange(event: any): void {
-        this.checkAndAddProduct();
-    }
+    // onQuantiteChange(event: any): void {
+    //     this.checkAndAddProduct();
+    // }
 
-    checkAndAddProduct(): void {
-        if (this.selectedTimbre && this.selectedQuantite > 0) {
-            this.ajouterProduit();
-        }
-    }
+    // checkAndAddProduct(): void {
+    //     if (this.selectedTimbre && this.selectedQuantite > 0) {
+    //         this.ajouterProduit();
+    //     }
+    // }
 
-    ajouterProduit(): void {
+   /*  ajouterProduit(): void {
         const quantite = this.form.value.quantite;
         const timbreId = this.form.value.timbreId;
         this.selectedTimbre = this.stocksTimbre$.find((p) => p.id === timbreId);
@@ -670,5 +686,5 @@ export class ColisComponent implements OnInit {
         this.form.get('timbreId')?.reset();
         this.form.get('quantite')?.reset();
         this.selectedTimbre = null;
-    }
+    } */
 }

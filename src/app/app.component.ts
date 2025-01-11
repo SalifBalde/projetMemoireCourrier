@@ -44,15 +44,15 @@ export class AppComponent implements OnInit {
                 })
             )
         );
-        this.loadJournal(this.user.caisseId);
+        this.loadJournal(this.user.caisseId,this.user.id);
         this.sessionService.setAgentAttributes(this.user);
         await this.redirectBasedOnRole();
         this.primengConfig.ripple = true;
       }
 
-      async  loadJournal(id:string): Promise<void> {
+      async  loadJournal(id:string, userid:string): Promise<void> {
         this.journalService
-              .getJournalToday(id)
+              .getJournalToday(id, userid)
               .subscribe({
                   next: (data: JournalResultDto) => {
                       this.journal = data;
