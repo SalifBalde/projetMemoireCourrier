@@ -18,7 +18,7 @@ const routes: Routes = [
 
     ],
   },
-  {path: 'tracking-ecommerce',  loadChildren: () => import('./tracking-ecommerce/tracking.module').then(m => m.TrackingModule) },
+  {path: 'suiviCourrier',  loadChildren: () => import('./suiviCourrier/suiviCourrier.module').then(m => m.SuiviCourrierModule) },
 
 ];
 

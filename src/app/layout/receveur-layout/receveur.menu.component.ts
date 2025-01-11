@@ -26,12 +26,12 @@ export class ReceveurMenuComponent implements OnInit {
                 ],
             },
             {
-                label: 'Tracking',
+                label: 'SuiviCourrier',
                 items: [
                     {
-                        label:'Tracking Envoi e-commerce',
+                        label:'suiviCourrier',
                         icon : 'pi pi-fw pi-search',
-                        routerLink:['/receveur/tracking-ecommerce']
+                        routerLink:['/receveur/suiviCourrier']
                     }
                 ]
             },

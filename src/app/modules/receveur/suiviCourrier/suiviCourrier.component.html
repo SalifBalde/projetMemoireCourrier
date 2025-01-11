@@ -1,0 +1,44 @@
+<div class="col-7">
+  <div class="card">
+    <h5>Suivi Courrier</h5>
+    <div class="grid">
+      <div class="col-12 md:col-6">
+        <p-inputGroup>
+          <input type="text" pInputText [(ngModel)]="codeBarre" placeholder="Veuillez saisir le numéro d'envoi" />
+          <button type="button" pButton label="Suivre" (click)="rechercherParCodeBarre()"></button>
+        </p-inputGroup>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="col-12">
+  <div class="card" *ngIf="suivis.length > 0">
+    <h2>Numéro de suivi : {{ suivis[0]?.courrier?.codeBarre }}</h2>
+    <p-table #dt1 *ngIf="suivis.length > 0" [value]="suivis" dataKey="id" [rowHover]="true"
+      styleClass="p-datatable-gridlines" responsiveLayout="scroll">
+      <ng-template pTemplate="header">
+        <tr>
+          <th style="min-width: 12rem">Date</th>
+          <th style="min-width: 14rem">Structure</th>
+          <th style="min-width: 12rem">Status</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-suivi>
+        <tr>
+          <td>{{ suivi.createdAt | date: 'dd/MM/yyyy' }}</td>
+          <td>{{ suivi.structureDepotLibelle }}</td>
+          <td><span [class]="'customer-badge status-' + suivi.courrier?.statutCourrier?.couleur">
+              {{ suivi.courrier?.statutCourrier?.libelle }}</span>
+          </td>
+        </tr>
+      </ng-template>
+
+    </p-table>
+    <ng-template #emptyState>
+      <div *ngIf="suivis.length === 0" class="p-text-center">
+        Aucun suivi trouvé.
+      </div>
+    </ng-template>
+  </div>
+</div>
