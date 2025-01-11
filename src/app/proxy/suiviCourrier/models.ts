@@ -1,6 +1,7 @@
 export interface SuiviCourrierdto {
     id?: number;
     structureId?: number;
+    structureLibelle?:String;
     courrierStructureDepotId?: number;
     courrierStructureDestinationId?: number;
     StructureDepotLibelle?: string;
