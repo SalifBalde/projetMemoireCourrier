@@ -14,9 +14,11 @@ const routes: Routes = [
     children: [
       { path: '', redirectTo: 'receveur', pathMatch: 'full' },
       { path: 'receveur', component: IndexComponent },
+     
 
     ],
   },
+  {path: 'tracking-ecommerce',  loadChildren: () => import('./tracking-ecommerce/tracking.module').then(m => m.TrackingModule) },
 
 ];
 

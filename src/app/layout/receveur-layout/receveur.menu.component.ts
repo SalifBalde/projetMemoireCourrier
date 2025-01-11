@@ -2,6 +2,7 @@ import { OnInit } from '@angular/core';
 import { Component } from '@angular/core';
 import { LayoutService } from '../service/app.layout.service';
 import { IndexComponent } from 'src/app/modules/receveur/index/index.component';
+import { RouterLink } from '@angular/router';
 
 @Component({
     selector: 'receveur-menu',
@@ -24,7 +25,16 @@ export class ReceveurMenuComponent implements OnInit {
                     },
                 ],
             },
-
+            {
+                label: 'Tracking',
+                items: [
+                    {
+                        label:'Tracking Envoi e-commerce',
+                        icon : 'pi pi-fw pi-search',
+                        routerLink:['/receveur/tracking-ecommerce']
+                    }
+                ]
+            },
             {
                 label: 'Gestion des locations',
                 icon: 'pi pi-fw pi-briefcase',
