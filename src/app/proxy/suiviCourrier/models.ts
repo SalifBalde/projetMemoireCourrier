@@ -4,8 +4,8 @@ export interface SuiviCourrierdto {
   structureLibelle: string;
   userId: number;
   user: string;
-  statutCourrierId: number;
-  statutCourrierLibelle: string;
+  courrierStatutCourrierId: number;
+  courrierStatutCourrierLibelle: string;
   courrierId: number;
   courrierCodeBarre: string;
   createdAt: Date;

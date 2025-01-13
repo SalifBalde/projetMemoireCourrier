@@ -20,6 +20,8 @@
       <ng-template pTemplate="header">
         <tr>
           <th style="min-width: 12rem">Date</th>
+          <th style="min-width: 12rem">Agent</th>
+
           <th style="min-width: 14rem">Structure</th>
           <th style="min-width: 12rem">Status</th>
         </tr>
@@ -28,9 +30,13 @@
         <tr>
           <td>{{ suivi.createdAt | date: 'dd/MM/yyyy' }}</td>
           <td>{{ suivi.structureDepotLibelle }}</td>
-          <td><span [class]="'customer-badge status-' + suivi.courrier?.statutCourrier?.couleur">
-              {{ suivi.courrier?.statutCourrier?.libelle }}</span>
-          </td>
+          <td></td>
+          <!-- <td><span [class]="'customer-badge status-' + suivi.courrier?.statutCourrier?.couleur">
+              {{ suivi.courrierStatutCourrierLibelle }}</span>
+          </td> -->
+          <td>
+            {{ suivi.courrierStatutCourrierLibelle }}
+        </td>
         </tr>
       </ng-template>
 

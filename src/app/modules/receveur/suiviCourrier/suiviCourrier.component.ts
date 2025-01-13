@@ -25,50 +25,50 @@ export class SuiviCourrierComponent implements OnInit {
   ngOnInit() {
   }
 
-  // rechercherParCodeBarre() {
-  //   if (this.codeBarre.trim() !== '') {
-  //     console.log(`Recherche avec code barre: ${this.codeBarre}`);
-  //     this.suiviCourrierService.getByCodeBarre(this.codeBarre).subscribe(
-  //       (data: SuiviCourrierdto[]) => {
-  //         console.log('Données reçues:', data); 
-  //         this.suivis = data;
-  //         if (this.suivis.length === 0) {
-  //           this.messageService.add({severity:'info', summary: 'Information', detail: 'Aucun suivi trouvé avec ce code barre.'});
-  //         }
-  //       },
-  //       (error) => {
-  //         console.error(error);
-  //         this.messageService.add({severity:'error', summary: 'Erreur', detail: 'Erreur lors de la récupération des données.'});
-  //       }
-  //     );
-  //   } else {
-  //     this.messageService.add({severity:'warn', summary: 'Attention', detail: 'Veuillez saisir un code barre valide.'});
-  //   }
-  // }
   rechercherParCodeBarre() {
-    this.loading = true;
-
     if (this.codeBarre.trim() !== '') {
+      console.log(`Recherche avec code barre: ${this.codeBarre}`);
       this.suiviCourrierService.getByCodeBarre(this.codeBarre).subscribe(
         (data: SuiviCourrierdto[]) => {
+          console.log('Données reçues:', data); 
           this.suivis = data;
-
-          if (this.suivis.length > 1) {
-            this.suivis = [this.suivis[0]];
-          }
-          this.loading = false;
           if (this.suivis.length === 0) {
-            this.messageService.add({ severity: 'info', summary: 'Information', detail: 'Aucun suivi trouvé avec ce code barre.' });
+            this.messageService.add({severity:'info', summary: 'Information', detail: 'Aucun suivi trouvé avec ce code barre.'});
           }
         },
         (error) => {
           console.error(error);
-          this.messageService.add({ severity: 'error', summary: 'Erreur', detail: 'Erreur lors de la récupération des données.' });
+          this.messageService.add({severity:'error', summary: 'Erreur', detail: 'Erreur lors de la récupération des données.'});
         }
       );
     } else {
-      this.messageService.add({ severity: 'warn', summary: 'Attention', detail: 'Veuillez saisir un code barre valide.' });
+      this.messageService.add({severity:'warn', summary: 'Attention', detail: 'Veuillez saisir un code barre valide.'});
     }
   }
+  // rechercherParCodeBarre() {
+  //   this.loading = true;
+
+  //   if (this.codeBarre.trim() !== '') {
+  //     this.suiviCourrierService.getByCodeBarre(this.codeBarre).subscribe(
+  //       (data: SuiviCourrierdto[]) => {
+  //         this.suivis = data;
+
+  //         if (this.suivis.length > 1) {
+  //           this.suivis = [this.suivis[0]];
+  //         }
+  //         this.loading = false;
+  //         if (this.suivis.length === 0) {
+  //           this.messageService.add({ severity: 'info', summary: 'Information', detail: 'Aucun suivi trouvé avec ce code barre.' });
+  //         }
+  //       },
+  //       (error) => {
+  //         console.error(error);
+  //         this.messageService.add({ severity: 'error', summary: 'Erreur', detail: 'Erreur lors de la récupération des données.' });
+  //       }
+  //     );
+  //   } else {
+  //     this.messageService.add({ severity: 'warn', summary: 'Attention', detail: 'Veuillez saisir un code barre valide.' });
+  //   }
+  // }
   
 }
