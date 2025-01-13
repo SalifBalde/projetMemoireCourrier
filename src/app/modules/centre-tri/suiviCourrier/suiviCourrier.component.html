@@ -14,12 +14,14 @@
 
 <div class="col-12">
   <div class="card" *ngIf="suivis.length > 0">
-    <h2>Numéro de suivi : {{ suivis[0]?.courrier?.codeBarre }}</h2>
+    <h2>Numéro de suivi : {{ suivis[0].courrierCodeBarre }}</h2>
     <p-table #dt1 *ngIf="suivis.length > 0" [value]="suivis" dataKey="id" [rowHover]="true"
       styleClass="p-datatable-gridlines" responsiveLayout="scroll">
       <ng-template pTemplate="header">
         <tr>
           <th style="min-width: 12rem">Date</th>
+          <th style="min-width: 12rem">Agent</th>
+
           <th style="min-width: 14rem">Structure</th>
           <th style="min-width: 12rem">Status</th>
         </tr>
@@ -27,10 +29,14 @@
       <ng-template pTemplate="body" let-suivi>
         <tr>
           <td>{{ suivi.createdAt | date: 'dd/MM/yyyy' }}</td>
-          <td>{{ suivi.structureLibelle }}</td>
-          <td><span [class]="'customer-badge status-' + suivi.courrier?.statutCourrier?.couleur">
-              {{ suivi.statutCourrierLibelle}}</span>
-          </td>
+          <td>{{ suivi.structureDepotLibelle }}</td>
+          <td></td>
+          <!-- <td><span [class]="'customer-badge status-' + suivi.courrier?.statutCourrier?.couleur">
+              {{ suivi.courrierStatutCourrierLibelle }}</span>
+          </td> -->
+          <td>
+            {{ suivi.courrierStatutCourrierLibelle }}
+        </td>
         </tr>
       </ng-template>
 

@@ -14,7 +14,7 @@
 
 <div class="col-12">
   <div class="card" *ngIf="suivis.length > 0">
-    <h2>Numéro de suivi : {{ suivis[0]?.courrier?.codeBarre }}</h2>
+    <h2>Numéro de suivi : {{ suivis[0].courrierCodeBarre }}</h2>
     <p-table #dt1 *ngIf="suivis.length > 0" [value]="suivis" dataKey="id" [rowHover]="true"
       styleClass="p-datatable-gridlines" responsiveLayout="scroll">
       <ng-template pTemplate="header">
