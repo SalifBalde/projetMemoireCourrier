@@ -22,12 +22,11 @@ export class RapportEcommerceComponent implements OnInit {
     fullname = "";
     isModalOpen = false;
     montant = 0;
-    expeditions: ExpeditionEcomDto[];
+    expeditions: ExpeditionEcomDto[] = [];
     cols: any[] = [];
     structure$: StructureDto[] = [];
     expeditionSearch: ExpeditionSearchDto = {};
     rowsPerPageOptions = [5, 10, 20];
-    id = "";
     loading: boolean = false;
     loadingExpedition: boolean = false;
     loadingReset: boolean = false;
@@ -40,16 +39,15 @@ export class RapportEcommerceComponent implements OnInit {
         private fb: FormBuilder,
         private router: Router,
         private route: ActivatedRoute,
-        private structureService : StructureService,
-        private messageService: MessageService, private readonly keycloak: KeycloakService
+        private structureService: StructureService,
+        private messageService: MessageService,
+        private readonly keycloak: KeycloakService
     ) { }
-
 
     async ngOnInit(): Promise<void> {
         this.buildForm();
         this.loadStructures();
 
-        this.getAllExpedition();
         this.isLoggedIn = await this.keycloak.isLoggedIn();
         if (this.isLoggedIn) {
             this.userProfile = await this.keycloak.loadUserProfile();
@@ -58,39 +56,33 @@ export class RapportEcommerceComponent implements OnInit {
     }
 
     buildForm() {
+        const today = new Date(); 
         this.form = this.fb.group({
-            dateDebut: [undefined, Validators.required],
-            dateFin: [undefined, Validators.required],
-            prenom: [undefined, Validators.required],
-            nom: [undefined, Validators.required]
+            debut: [today, Validators.required],
+            fin: [today, Validators.required],
+            numenvoi: [undefined],
+            bureauDestination: [undefined],
+            bureauExpediteur: [undefined]
         });
-    }
-
-    getAllExpedition() {
-        this.expeditionEcomService.getAllByStrucuture(this.sessionService.getAgentAttributes().structureId.toString()).subscribe(
-            (result) => {
-                this.expeditions = result;
-            }
-        );
     }
 
     private loadStructures() {
         this.structureService.findAll().subscribe(
             (result) => {
-                this.structure$ = result
+                this.structure$ = result;
             },
             (error) => {
                 console.error('Error loading structures', error);
             }
         );
     }
- 
 
     searchExpeditionByCriteres(): void {
-        const dateDebut = this.form.get('dateDebut')?.value;
-        const dateFin = this.form.get('dateFin')?.value;
-    
-        if (!dateDebut || !dateFin) {
+        this.loading=true;
+        const debut = this.form.get('debut')?.value;
+        const fin = this.form.get('fin')?.value;
+
+        if (!debut || !fin) {
             this.messageService.add({
                 severity: 'warn',
                 summary: 'Avertissement',
@@ -98,8 +90,8 @@ export class RapportEcommerceComponent implements OnInit {
             });
             return;
         }
-    
-        if (new Date(dateDebut) > new Date(dateFin)) {
+
+        if (new Date(debut) > new Date(fin)) {
             this.messageService.add({
                 severity: 'error',
                 summary: 'Erreur',
@@ -107,13 +99,21 @@ export class RapportEcommerceComponent implements OnInit {
             });
             return;
         }
-    
+
+        const bureauId = this.sessionService.getAgentAttributes().structureId.toString();
+        
+        const formattedCriteria = {
+            ...this.form.value,
+            debut: new Date(debut).toISOString().split('T')[0],
+            fin: new Date(fin).toISOString().split('T')[0],
+            bureauId: bureauId 
+        };
+
         this.loading = true;
-        this.expeditionEcomService.findExpeditionByCriteres(this.form.value).subscribe({
+        this.expeditionEcomService.findExpeditionByCriteres(formattedCriteria).subscribe({
             next: (expeditions) => {
                 if (expeditions.length > 0) {
                     this.expeditions = expeditions || [];
-                    this.loading = false;
                 } else {
                     this.messageService.add({
                         severity: 'info',
@@ -122,9 +122,8 @@ export class RapportEcommerceComponent implements OnInit {
                     });
                     this.expeditions = [];
                     this.montant = 0;
-                    this.loading = false;
-                    return;
                 }
+                this.loading = false;
             },
             error: (err) => {
                 this.messageService.add({
@@ -136,30 +135,29 @@ export class RapportEcommerceComponent implements OnInit {
             }
         });
     }
-    
+
     resetForm() {
-        
         this.loadingReset = true;
         setTimeout(() => {
-            this.loadingReset = false
+            this.loadingReset = false;
         }, 1000);
 
+        const today = new Date().toISOString().split('T')[0];
         this.form = this.fb.group({
-            dateDebut: [undefined, Validators.required],
-            dateFin: [undefined, Validators.required],
+            debut: [today, Validators.required],
+            fin: [today, Validators.required],
             prenom: [undefined, Validators.required],
             nom: [undefined, Validators.required]
         });
 
-        this.getAllExpedition();
+        this.searchExpeditionByCriteres();
     }
 
     generatePdf(): void {
         // this.pdfService.generateAgentSalesReport(this.expeditions);
     }
 
-   
     isEmpty() {
-        return this.form.value.dateFin != null && this.form.value.dateDebut != null && this.form.value.prenom != null && this.form.value.nom != null;
+        return this.form.value.fin != null && this.form.value.debut != null && this.form.value.prenom != null && this.form.value.nom != null;
     }
 }

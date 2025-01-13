@@ -21,7 +21,6 @@
         <tr>
           <th style="min-width: 12rem">Date</th>
           <th style="min-width: 12rem">Agent</th>
-
           <th style="min-width: 14rem">Structure</th>
           <th style="min-width: 12rem">Status</th>
         </tr>
@@ -29,14 +28,11 @@
       <ng-template pTemplate="body" let-suivi>
         <tr>
           <td>{{ suivi.createdAt | date: 'dd/MM/yyyy' }}</td>
-          <td>{{ suivi.structureDepotLibelle }}</td>
-          <td></td>
-          <!-- <td><span [class]="'customer-badge status-' + suivi.courrier?.statutCourrier?.couleur">
+          <td>{{ suivi.structureLibelle }}</td>
+          <td>{{suivi.user}}</td>
+          <td><span [class]="'customer-badge status-' + suivi.courrierStatutCourrierCouleur">
               {{ suivi.courrierStatutCourrierLibelle }}</span>
-          </td> -->
-          <td>
-            {{ suivi.courrierStatutCourrierLibelle }}
-        </td>
+          </td>
         </tr>
       </ng-template>
 

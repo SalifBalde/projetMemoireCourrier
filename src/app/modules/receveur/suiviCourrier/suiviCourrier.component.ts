@@ -41,10 +41,15 @@ export class SuiviCourrierComponent implements OnInit {
           console.error(error);
           this.messageService.add({severity:'error', summary: 'Erreur', detail: 'Erreur lors de la récupération des données.'});
         }
+        
       );
+      this.loading = false;
+
     } else {
       this.messageService.add({severity:'warn', summary: 'Attention', detail: 'Veuillez saisir un code barre valide.'});
     }
+    this.loading = false;
+
   }
   
 }

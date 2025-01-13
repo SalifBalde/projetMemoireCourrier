@@ -6,6 +6,7 @@ export interface SuiviCourrierdto {
   user: string;
   courrierStatutCourrierId: number;
   courrierStatutCourrierLibelle: string;
+  courrierStatutCourrierCouleur:string;
   courrierId: number;
   courrierCodeBarre: string;
   createdAt: Date;
