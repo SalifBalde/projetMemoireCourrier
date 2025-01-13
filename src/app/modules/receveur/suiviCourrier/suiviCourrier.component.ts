@@ -31,7 +31,6 @@ export class SuiviCourrierComponent implements OnInit {
       console.log(`Recherche avec code barre: ${this.codeBarre}`);
       this.suiviCourrierService.getByCodeBarre(this.codeBarre).subscribe(
         (data: SuiviCourrierdto[]) => {
-          console.log('Données reçues:', data); 
           this.suivis = data;
           if (this.suivis.length === 0) {
             this.messageService.add({severity:'info', summary: 'Information', detail: 'Aucun suivi trouvé avec ce code barre.'});
