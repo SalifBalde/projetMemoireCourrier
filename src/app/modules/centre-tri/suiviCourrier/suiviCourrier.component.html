@@ -27,9 +27,9 @@
       <ng-template pTemplate="body" let-suivi>
         <tr>
           <td>{{ suivi.createdAt | date: 'dd/MM/yyyy' }}</td>
-          <td>{{ suivi.structureDepotLibelle }}</td>
+          <td>{{ suivi.structureLibelle }}</td>
           <td><span [class]="'customer-badge status-' + suivi.courrier?.statutCourrier?.couleur">
-              {{ suivi.courrier?.statutCourrier?.libelle }}</span>
+              {{ suivi.statutCourrierLibelle}}</span>
           </td>
         </tr>
       </ng-template>

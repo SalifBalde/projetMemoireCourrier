@@ -14,12 +14,11 @@ export class SuiviCourrierComponent implements OnInit {
   suivis: SuiviCourrierdto[] = [];
   loading: boolean = false;
 
-
   constructor(
     private fb: FormBuilder,
     private router: Router,
     private messageService: MessageService,
-    private suiviCourrierService: SuiviCourrierService  
+    private suiviCourrierService: SuiviCourrierService
   ) { }
 
   ngOnInit() {
@@ -70,5 +69,5 @@ export class SuiviCourrierComponent implements OnInit {
       this.messageService.add({ severity: 'warn', summary: 'Attention', detail: 'Veuillez saisir un code barre valide.' });
     }
   }
-  
+
 }
