@@ -86,56 +86,56 @@ export class RapportEcommerceComponent implements OnInit {
     }
  
 
-    // searchExpeditionByCriteres(): void {
-    //     const dateDebut = this.form.get('dateDebut')?.value;
-    //     const dateFin = this.form.get('dateFin')?.value;
+    searchExpeditionByCriteres(): void {
+        const dateDebut = this.form.get('dateDebut')?.value;
+        const dateFin = this.form.get('dateFin')?.value;
     
-    //     if (!dateDebut || !dateFin) {
-    //         this.messageService.add({
-    //             severity: 'warn',
-    //             summary: 'Avertissement',
-    //             detail: 'Veuillez sélectionner une période valide.'
-    //         });
-    //         return;
-    //     }
+        if (!dateDebut || !dateFin) {
+            this.messageService.add({
+                severity: 'warn',
+                summary: 'Avertissement',
+                detail: 'Veuillez sélectionner une période valide.'
+            });
+            return;
+        }
     
-    //     if (new Date(dateDebut) > new Date(dateFin)) {
-    //         this.messageService.add({
-    //             severity: 'error',
-    //             summary: 'Erreur',
-    //             detail: 'La date de début ne peut pas être après la date de fin.'
-    //         });
-    //         return;
-    //     }
+        if (new Date(dateDebut) > new Date(dateFin)) {
+            this.messageService.add({
+                severity: 'error',
+                summary: 'Erreur',
+                detail: 'La date de début ne peut pas être après la date de fin.'
+            });
+            return;
+        }
     
-    //     this.loading = true;
-    //     this.expeditionEcomService.findExpeditionByCriteres(this.form.value).subscribe({
-    //         next: (expeditions) => {
-    //             if (expeditions.length > 0) {
-    //                 this.expeditions = expeditions || [];
-    //                 this.loading = false;
-    //             } else {
-    //                 this.messageService.add({
-    //                     severity: 'info',
-    //                     summary: 'Aucun résultat',
-    //                     detail: 'Aucun colis trouvé pour la période sélectionnée.'
-    //                 });
-    //                 this.expeditions = [];
-    //                 this.montant = 0;
-    //                 this.loading = false;
-    //                 return;
-    //             }
-    //         },
-    //         error: (err) => {
-    //             this.messageService.add({
-    //                 severity: 'error',
-    //                 summary: 'Erreur',
-    //                 detail: 'Une erreur est survenue lors de la récupération des données.'
-    //             });
-    //             this.loading = false;
-    //         }
-    //     });
-    // }
+        this.loading = true;
+        this.expeditionEcomService.findExpeditionByCriteres(this.form.value).subscribe({
+            next: (expeditions) => {
+                if (expeditions.length > 0) {
+                    this.expeditions = expeditions || [];
+                    this.loading = false;
+                } else {
+                    this.messageService.add({
+                        severity: 'info',
+                        summary: 'Aucun résultat',
+                        detail: 'Aucun colis trouvé pour la période sélectionnée.'
+                    });
+                    this.expeditions = [];
+                    this.montant = 0;
+                    this.loading = false;
+                    return;
+                }
+            },
+            error: (err) => {
+                this.messageService.add({
+                    severity: 'error',
+                    summary: 'Erreur',
+                    detail: 'Une erreur est survenue lors de la récupération des données.'
+                });
+                this.loading = false;
+            }
+        });
+    }
     
     resetForm() {
         
