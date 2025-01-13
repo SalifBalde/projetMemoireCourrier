@@ -26,6 +26,7 @@ export class SuiviCourrierComponent implements OnInit {
   }
 
   rechercherParCodeBarre() {
+    this.loading = true;
     if (this.codeBarre.trim() !== '') {
       console.log(`Recherche avec code barre: ${this.codeBarre}`);
       this.suiviCourrierService.getByCodeBarre(this.codeBarre).subscribe(
@@ -35,6 +36,7 @@ export class SuiviCourrierComponent implements OnInit {
           if (this.suivis.length === 0) {
             this.messageService.add({severity:'info', summary: 'Information', detail: 'Aucun suivi trouvé avec ce code barre.'});
           }
+          this.loading = false;
         },
         (error) => {
           console.error(error);
@@ -45,6 +47,5 @@ export class SuiviCourrierComponent implements OnInit {
       this.messageService.add({severity:'warn', summary: 'Attention', detail: 'Veuillez saisir un code barre valide.'});
     }
   }
-
   
 }
