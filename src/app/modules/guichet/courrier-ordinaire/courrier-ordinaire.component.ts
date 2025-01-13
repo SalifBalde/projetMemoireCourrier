@@ -171,8 +171,16 @@ export class CourrierOrdinaireComponent implements OnInit {
                 expediteurId: ['', Validators.required],
                 destinataireId: ['', Validators.required],
                 paysDestinationId: [210, Validators.required],
-                codeBarre: [{ value: '', disabled: true }],
-                valeurDeclare: [{ value: '', disabled: true }],
+                codeBarre: [
+                    { value: '', disabled: false },
+                    [
+                      Validators.required,
+                      Validators.minLength(9),
+                      Validators.maxLength(9),
+                      Validators.pattern(/^\d{9}$/),
+                    ],
+                  ],
+                  valeurDeclare: [{ value: '', disabled: true }],
                 contenu: [''],
                 timbreId: [''],
                 typeId: ['1'],

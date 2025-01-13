@@ -47,7 +47,7 @@
 
     <!-- Détails des produits -->
     <div class="col-12 md:col-6">
-      <div class="card" *ngIf="courrier.typeCourrierId ==1">
+      <div class="card">
         <h3>Détails des Produits</h3>
         <p-table [value]="courrier?.details" [paginator]="true" [rows]="5">
           <ng-template pTemplate="header">

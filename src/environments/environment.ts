@@ -6,6 +6,7 @@ export const environment = {
     api_params: "http://localhost:8081/api/",
     api_stock: "http://localhost:8085/api/",
     api_compta: "http://localhost:8082/api/",
+    api_ecom: "http://localhost:8087/api/",
 
     //api_stock: "http://10.6.4.202:8089/gestionstock-service/api/",
     locale_id: 'fr-FR',

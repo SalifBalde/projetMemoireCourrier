@@ -24,6 +24,7 @@ import { KeyFilterModule } from 'primeng/keyfilter';
 import { CustomCurrencyPipe } from 'src/app/pipes/custom-currency.pipe';
 import { SharedModule } from 'primeng/api';
 import { InputTextareaModule } from 'primeng/inputtextarea';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 // shared module c'est ici qu'on va mettre toutes les composants communs à toutes les parties de l'application
 
@@ -54,6 +55,7 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
         InputGroupModule,
         CalendarModule,
         KeyFilterModule,
+        ConfirmDialogModule,
         SharedModule // Ajoutez SharedModule dans imports
     ],
     exports: [

@@ -36,7 +36,7 @@ ngOnInit(): void {
 }
 
 async imprimerFacture(){
-    this.factureService.generateReceipt(this.courrier);
+    this.pdfService.generatePDF(this.courrier);
 }
 
 

@@ -93,7 +93,6 @@
                                                 <div>{{ selectedOption.libelle }}</div>
                                             </div>
                                         </ng-template>
-
                                     </p-dropdown>
                                 </div>
                                 <div class="col-12 lg:col-6 field">
@@ -150,7 +149,8 @@
                             </div>
                             <div class="col-12 lg:col-6 field">
                                 <span class="p-float-label">
-                                    <input id="float-input" disabled type="text" value="{{client.nom}}" pInputText readonly />
+                                    <input id="float-input" disabled type="text" value="{{client.nom}}" pInputText
+                                        readonly />
                                     <input style="display: none;" formControlName="expediteurId" id="float-input"
                                         type="text" pInputText />
                                     <label for="float-input">Nom complet</label>
@@ -177,8 +177,8 @@
                             </div>
                             <div class="col-12 lg:col-6 field">
                                 <span class="p-float-label">
-                                    <input id="float-input" disabled type="text" value="{{ destinataire.nom}}" pInputText
-                                        readonly />
+                                    <input id="float-input" disabled type="text" value="{{ destinataire.nom}}"
+                                        pInputText readonly />
                                     <input style="display: none;" formControlName="destinataireId" id="float-input"
                                         type="text" pInputText />
                                     <label for="float-input">Nom complet</label>
@@ -186,8 +186,8 @@
                             </div>
                             <div class="col-12 lg:col-6 field">
                                 <span class="p-float-label">
-                                    <input id="float-input" disabled type="text" value="{{ destinataire.telephone}}" pInputText
-                                        readonly />
+                                    <input id="float-input" disabled type="text" value="{{ destinataire.telephone}}"
+                                        pInputText readonly />
                                     <label for="float-input">Téléphone</label>
                                 </span>
                             </div>
@@ -202,9 +202,11 @@
                                 <span class="p-float-label">
                                     <p-inputGroup>
                                         <p-inputGroupAddon>{{label}}</p-inputGroupAddon>
-                                        <input  formControlName="codeBarre" placeholder="code barre" pKeyFilter="num"  pInputText />
-                                      <p-inputGroupAddon>SN</p-inputGroupAddon>
+                                        <input formControlName="codeBarre" placeholder="code barre" maxlength="9" minlength="9" pKeyFilter="num"
+                                            pInputText />
+                                        <p-inputGroupAddon>SN</p-inputGroupAddon>
                                     </p-inputGroup>
+
                                 </span>
                             </div>
                             <div class="col-12 lg:col-6 field">
@@ -227,9 +229,9 @@
 
                         <div class="grid formgrid">
                             <div class="col-12 lg:col-5 field">
-                                <p-dropdown [options]="stocksTimbre$" optionLabel="combinedLibelle" optionValue="id" [filter]="true"
-                                    filterBy="combinedLibelle" formControlName="timbreId" (ngModelChange)="getTarifProduit()" [showClear]="true"
-                                    placeholder="Choisir Timbre">
+                                <p-dropdown [options]="stocksTimbre$" optionLabel="combinedLibelle" optionValue="id"
+                                    [filter]="true" filterBy="combinedLibelle" formControlName="timbreId"
+                                    (ngModelChange)="getTarifProduit()" [showClear]="true" placeholder="Choisir Timbre">
                                     <ng-template pTemplate="selectedItem" let-selectedOption>
                                         <div class="flex align-items-center gap-2">
                                             <div>{{ selectedOption.combinedLibelle }}</div>
@@ -245,7 +247,8 @@
 
                             <div class="col-12 lg:col-4 field">
                                 <span class="p-float-label">
-                                    <input id="float-input" type="number" pInputText formControlName="quantite" min="1" />
+                                    <input id="float-input" type="number" pInputText formControlName="quantite"
+                                        min="1" />
                                     <label for="float-input">Quantité</label>
                                 </span>
                             </div>
@@ -295,12 +298,14 @@
                                 </p-table>
                                 <div class="py-2">
                                     <div class="flex justify-content-between align-items-center mb-2">
-                                        <input id="valeurTimbre" style="display: none;" formControlName="valeurTimbre" type="number">
-                                        <span class="text-900 font-medium">Valeur Timbre:</span><span class="text-900">{{
+                                        <input id="valeurTimbre" style="display: none;" formControlName="valeurTimbre"
+                                            type="number">
+                                        <span class="text-900 font-medium">Valeur Timbre:</span><span
+                                            class="text-900">{{
                                             valeurTimbre | customCurrency
                                             }}</span>
                                     </div>
-                                    </div>
+                                </div>
                             </div>
 
                         </div>
@@ -347,7 +352,8 @@
                             <div class="flex justify-content-between align-items-center mb-2">
                                 <span class="text-900 font-bold">Total</span><span class="text-900 font-medium text-xl">
                                     {{totalMontant | customCurrency}}</span>
-                                    <input id="totalMontant" formControlName="totalMontant" style="display:none;" type="number">
+                                <input id="totalMontant" formControlName="totalMontant" style="display:none;"
+                                    type="number">
                             </div>
                         </div>
 
@@ -376,8 +382,8 @@
                 <div class="col-12 mb-2 lg:col-6 lg:mb-3">
                     <div class="flex align-items-center">
                         <label for="cni" class="font-semibold w-6rem">Téléphone:</label>
-                        <input pInputText  pKeyFilter="num"  id="telephone" (input)="searchClient()" formControlName="telephone"
-                            class="flex-auto" autocomplete="off" />
+                        <input pInputText pKeyFilter="num" id="telephone" (input)="searchClient()"
+                            formControlName="telephone" class="flex-auto" autocomplete="off" />
                     </div>
                 </div>
                 <div class="col-12 mb-2 lg:col-6 lg:mb-3">
@@ -441,7 +447,8 @@
                 <td>{{ dest.nom }} {{dest.prenom}}</td>
                 <td>{{ dest.telephone }}</td>
                 <td>
-                    <p-button icon="pi pi-check" label="Choisir Destinataire" severity="info" (click)="choisirDestinataire(dest)" />
+                    <p-button icon="pi pi-check" label="Choisir Destinataire" severity="info"
+                        (click)="choisirDestinataire(dest)" />
                 </td>
             </tr>
         </ng-template>
@@ -453,8 +460,8 @@
                 <div class="col-12 mb-2 lg:col-6 lg:mb-3">
                     <div class="flex align-items-center">
                         <label for="cni" class="font-semibold w-6rem">Téléphone:</label>
-                        <input pInputText  pKeyFilter="num"  id="telephone" (input)="searchDestinataire()" formControlName="telephone"
-                            class="flex-auto" autocomplete="off" />
+                        <input pInputText pKeyFilter="num" id="telephone" (input)="searchDestinataire()"
+                            formControlName="telephone" class="flex-auto" autocomplete="off" />
                     </div>
                 </div>
                 <div class="col-12 mb-2 lg:col-6 lg:mb-3">

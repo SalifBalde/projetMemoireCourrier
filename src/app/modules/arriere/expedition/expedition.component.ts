@@ -91,7 +91,7 @@ import {StatutCourrierService, Statutdto} from "../../../proxy/statut-courrier";
             (result) => {
                 this.structure$ = result
                 const idRecherche = 16;
-                console.log(this.structure$);// Remplacez par l'ID que vous recherchez
+                console.log(this.structure$);
                 this.structure$ = result.filter((structure: any) => structure.id === idRecherche);
                 console.log(this.structure$);
             },
