@@ -1,73 +1,80 @@
 export interface EcommerceDto {
-    id: number;
-    dateexp: string;
-    datelivraison: string;
-    montantverse: number;
-    numenvoi: string;
-    numversement: string;
-    observation: string;
-    partenaireEcomId: number;
-    taxetransp: number;
-    idbureau: number;
-    bureauDestinationLibelle: string;
-    iduser: number;
-    heurelivraison: string;
-    etatEcomId: number;
-    version: number;
-    adresseClient: string;
-    nomClient: string;
-    payer: boolean;
-    telephoneClient: string;
-    prenomClient: string;
-    livraisonDomicile: boolean;
-    natureEnvoiId: number;
-    taxeLivraison: number;
-    dateRetourner: string;
-    echanger: boolean;
-    envoiechange: string;
-    gabarit: number;
-    produitId: number;
-    versementEffectuer: boolean;
-    produitEcommerces?: ProduitEcommerceDto[];
-    suiviEcoms?: SuiviEcomDto[];
+  id: number;
+  dateexp: string;
+  datelivraison: string;
+  montantverse: number;
+  numenvoi: string;
+  numversement: string;
+  observation: string;
+  partenaireEcomId: number;
+  partenaire_e_com_libelle: string;
+  idbureaupartenaire: number;
+  partenaire_e_com_bureau: string;
+  taxetransp: number;
+  idbureau: number;
+  bureauDestinationLibelle: string;
+  iduser: number;
+  heurelivraison: string;
+  etatEcomId: number;
+  version: number;
+  adresseClient: string;
+  nomClient: string;
+  payer: boolean;
+  telephoneClient: string;
+  prenomClient: string;
+  livraisonDomicile: boolean;
+  natureEnvoiId: number;
+  taxeLivraison: number;
+  dateRetourner: string;
+  echanger: boolean;
+  envoiechange: string;
+  gabarit: number;
+  produitId: number;
+  versementEffectuer: boolean;
+  produitEcommerces?: ProduitEcommerceDto[];
+  suiviEcoms?: SuiviEcomDto[];
 }
 
 
-  export interface EcommerceSearchResultDto {
-    id: number;
-    dateexp: string;
-    datelivraison: string;
-    montantverse: number;
-    numenvoi: string;
-    numversement: string;
-    observation: string;
-    partenaireEcomId: number;
-    taxetransp: number;
-    idbureau: number;
-    bureauDestinationLibelle: string;
-    iduser: number;
-    heurelivraison: string;
-    etatEcomId: number;
-    version: number;
-    adresseClient: string;
-    nomClient: string;
-    payer: boolean;
-    telephoneClient: string;
-    prenomClient: string;
-    livraisonDomicile: boolean;
-    natureEnvoiId: number;
-    taxeLivraison: number;
-    dateRetourner: string;
-    echanger: boolean;
-    envoiechange: string;
-    gabarit: number;
-    produitId: number;
-    versementEffectuer: boolean;
-  }
-
-  export interface SuiviEcomDto{
+export interface EcommerceSearchResultDto {
   id: number;
-  datemaj: string; 
+  dateexp: string;
+  datelivraison: string;
+  montantverse: number;
+  numenvoi: string;
+  numversement: string;
+  observation: string;
+  partenaireEcomId: number;
+  partenaire_e_com_libelle: string;
+  idbureaupartenaire: number;
+  partenaire_e_com_bureau: string;
+  taxetransp: number;
+  idbureau: number;
+  bureauDestinationLibelle: string; 
+
+  iduser: number;
+  heurelivraison: string;
+  etatEcomId: number;
+  version: number;
+  adresseClient: string;
+  nomClient: string;
+  payer: boolean;
+  telephoneClient: string;
+  prenomClient: string;
+  livraisonDomicile: boolean;
+  natureEnvoiId: number;
+  taxeLivraison: number;
+  dateRetourner: string;
+  echanger: boolean;
+  envoiechange: string;
+  gabarit: number;
+  produitId: number;
+  versementEffectuer: boolean;
+}
+
+export interface SuiviEcomDto {
+  id: number;
+  datemaj: string;
   ecommerceId: number;
   bureauId: number;
   userId: number;
@@ -75,9 +82,9 @@ export interface EcommerceDto {
   motif: string;
   version: number;
   motifretourId: number;
-  }
+}
 
-  export interface ProduitEcommerceDto{
+export interface ProduitEcommerceDto {
   id: number;
   version: number;
   ecommerceId: number;
@@ -86,4 +93,4 @@ export interface EcommerceDto {
   model: string;
   prix: number;
   quantite: number;
-  }
+}

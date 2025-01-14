@@ -5,7 +5,9 @@ import { ArriereComponent } from './arriere.component';
 const routes: Routes = [{ path: '', component: ArriereComponent },
    { path: 'reception', loadChildren: () => import('./reception/reception.module').then(m => m.ReceptionModule) },
    { path: 'reception/receptionColis', loadChildren: () => import('./reception/reception-colis/reception-colis.module').then(m => m.ReceptionColisModule) },
-   { path: 'reception/reception-E-commerce', loadChildren: () => import('./reception/reception-E-commerce/reception-E-commerce.module').then(m => m.ReceptionECommerceModule) },
+   { path: 'reception/reception-E-commerce-livraison', loadChildren: () => import('./reception/reception-E-commerce-livraison/reception-E-commerce.module').then(m => m.ReceptionECommerceModule) },
+   { path: 'reception/reception-E-commerce-expedition', loadChildren: () => import('./reception/reception-E-commerce-expedition/reception-E-commerce.module').then(m => m.ReceptionECommerceModule) },
+
 //    { path: 'expedition', loadChildren: () => import('./expedition/expedition.module').then(m => m.ExpeditionModule) },
 //    { path: 'expedition/expeditionColis', loadChildren: () => import('./expedition/expedition-colis/expeditionColis.module').then(m => m.ExpeditionColisModule) },
    { path: 'expedition/expedition-E-commerce', loadChildren: () => import('./expedition/expedition-E-commerce/expedition-E-commerce.module').then(m => m.ExpeditionECommerceModule) },

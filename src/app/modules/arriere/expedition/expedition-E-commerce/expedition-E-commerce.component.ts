@@ -129,7 +129,7 @@ export class ExpeditionECommerceComponent implements OnInit {
 
     getAllEcommerceByStatut() {
         this.loading = true;
-        const id: string = '3';
+        const id: string = '5';
         const bureauId: number = Number(this.sessionService.getAgentAttributes().structureId.toString());
 
         // const bureauId: number = Number(1);
