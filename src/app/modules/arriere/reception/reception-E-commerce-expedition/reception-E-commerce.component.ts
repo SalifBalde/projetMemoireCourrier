@@ -6,7 +6,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { StructureDto, StructureService } from '../../../../proxy/structures';
 import { Table } from 'primeng/table';
-import { EcommerceDto,EcommerceService } from 'src/app/proxy/ecommerce';
+import { EcommerceDto, EcommerceService } from 'src/app/proxy/ecommerce';
 import { ExpeditionEcomService } from 'src/app/proxy/expeditionEcommerce';
 
 @Component({
@@ -14,7 +14,7 @@ import { ExpeditionEcomService } from 'src/app/proxy/expeditionEcommerce';
   templateUrl: './reception-e-commerce.component.html',
   providers: [MessageService],
 })
-export class ReceptionECommerceComponent  implements OnInit {
+export class ReceptionECommerceComponent implements OnInit {
   form: FormGroup;
   isModalOpen = false;
   montant = 0;
@@ -23,7 +23,7 @@ export class ReceptionECommerceComponent  implements OnInit {
   id = "";
   structure$: StructureDto[] = [];
   ecommerce$: EcommerceDto[] = [];
-  ecommerce: EcommerceDto | null = null;  
+  ecommerce: EcommerceDto | null = null;
   openEcommerceDialog: boolean = false;
   selectedEcommerce!: EcommerceDto;
   loading: boolean = false;
@@ -38,7 +38,7 @@ export class ReceptionECommerceComponent  implements OnInit {
     private messageService: MessageService,
     private ecommerceService: EcommerceService,
     private expeditionEcomService: ExpeditionEcomService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.structureService.findAll().subscribe((result) => {
@@ -64,30 +64,30 @@ export class ReceptionECommerceComponent  implements OnInit {
       this.ecommerce$ = result;
     });
   }
-  
+
 
   openDialog(ecommerce: EcommerceDto) {
     this.openEcommerceDialog = true;
-    this.ecommerce = { ...ecommerce };  
+    this.ecommerce = { ...ecommerce };
   }
 
   confirmReception() {
     this.openEcommerceDialog = false;
 
     if (this.ecommerce) {
-      
+
       this.ecommerceService
         .reception(this.ecommerce.id.toString(), this.sessionService.getAgentAttributes().structureId.toString())
-        .subscribe(() => this. getAllEcommerceFromReceptionToExpedition());
+        .subscribe(() => this.getAllEcommerceFromReceptionToExpedition());
 
       this.messageService.add({
         severity: 'success',
         summary: 'Successful',
-        detail: 'envoi Deleted',
+        detail: 'Réception effectuée avec succès',
         life: 3000,
       });
 
-      this.ecommerce = null;  
+      this.ecommerce = null;
     } else {
       this.messageService.add({
         severity: 'warn',

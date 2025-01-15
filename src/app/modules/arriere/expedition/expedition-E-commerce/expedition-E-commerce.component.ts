@@ -70,16 +70,7 @@ export class ExpeditionECommerceComponent implements OnInit {
       );
     }
 
-    // private loadStructures() {
-    //     // Simulating data instead of fetching from a service
-    //     this.structure$ = [
-    //         { id: 1, nom: 'Structure A', adresse: 'Adresse A' },
-    //         { id: 2, nom: 'Structure B', adresse: 'Adresse B' },
-    //         { id: 3, nom: 'Structure C', adresse: 'Adresse C' },
-    //     ];
-    // }
-
-
+   
     buildForm() {
         this.form = this.fb.group({
             bureauDestination: [undefined, Validators.required],
@@ -132,7 +123,6 @@ export class ExpeditionECommerceComponent implements OnInit {
         const id: string = '5';
         const bureauId: number = Number(this.sessionService.getAgentAttributes().structureId.toString());
 
-        // const bureauId: number = Number(1);
 
         if (isNaN(bureauId)) {
             this.loading = false;

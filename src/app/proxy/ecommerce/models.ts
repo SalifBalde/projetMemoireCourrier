@@ -7,9 +7,9 @@ export interface EcommerceDto {
   numversement: string;
   observation: string;
   partenaireEcomId: number;
-  partenaire_e_com_libelle: string;
-  idbureaupartenaire: number;
-  partenaire_e_com_bureau: string;
+  IdbureauPartenaire: number;
+  partenaireBureauLibelle: string;
+  partenaireLibelle: string;
   taxetransp: number;
   idbureau: number;
   bureauDestinationLibelle: string;
@@ -45,13 +45,12 @@ export interface EcommerceSearchResultDto {
   numversement: string;
   observation: string;
   partenaireEcomId: number;
-  partenaire_e_com_libelle: string;
-  idbureaupartenaire: number;
-  partenaire_e_com_bureau: string;
   taxetransp: number;
   idbureau: number;
-  bureauDestinationLibelle: string; 
-
+  IdbureauPartenaire: number;
+  partenaireBureauLibelle: string;
+  partenaireLibelle: string;
+  bureauDestinationLibelle: string;
   iduser: number;
   heurelivraison: string;
   etatEcomId: number;

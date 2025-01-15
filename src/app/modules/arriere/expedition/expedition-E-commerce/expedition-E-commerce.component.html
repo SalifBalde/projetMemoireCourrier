@@ -35,32 +35,29 @@
                     selectionMode="checkbox" [(selection)]="selectedEcommerce">
                     <ng-template pTemplate="header">
                         <tr>
-                            <th>
-                                <p-tableHeaderCheckbox [table]="dt"></p-tableHeaderCheckbox>
-                            </th>
-                            <th>Numéro d'envoi</th>
-                            <th>Nom complet client</th>
-                            <th>Téléphone</th>
-                            <th>Destination</th>
-                            <th>Adresse Client</th>
-                            <th>Date</th>
+                          <th><p-tableHeaderCheckbox></p-tableHeaderCheckbox></th>
+                          <th>Numéro d'envoi</th>
+                          <th>Partenaire</th>
+                          <th>Nom complet client</th>
+                          <th>Téléphone</th>
+                          <th>Bureau Expedition</th>
+                          <th>Bureau Destination</th>
+                          <th>Date</th>
                         </tr>
-                    </ng-template>
-
-                    <ng-template pTemplate="body" let-ecommerce>
+                      </ng-template>
+                      <ng-template pTemplate="body" let-ecommerce>
                         <tr>
-                            <td>
-                                <p-tableCheckbox [value]="ecommerce" />
-                            </td>
-                            <td>{{ ecommerce.numenvoi }}</td>
-                            <td>{{ ecommerce.prenomClient }} {{ ecommerce.nomClient }}</td>
-                            <td>{{ ecommerce.telephoneClient }}</td>
-                            <td>{{ ecommerce.adresseClient }}</td>
-                            <td>{{ ecommerce.date | date: 'short' }}</td>
+                          <td><p-tableCheckbox [value]="ecommerce"></p-tableCheckbox></td>
+                          <td>{{ ecommerce.numenvoi }}</td>
+                          <td>{{ ecommerce.partenaireLibelle}}</td>
+                          <td>{{ ecommerce.prenomClient }} {{ ecommerce.nomClient }}</td>
+                          <td>{{ ecommerce.telephoneClient }}</td>
+                          <td>{{ecommerce.partenaireBureauLibelle}}</td>
+                          <td>{{ecommerce.bureauDestinationLibelle}}</td>
+                          <td>{{ ecommerce.date | date: 'short' }}</td>
                         </tr>
-                    </ng-template>
+                      </ng-template>
                 </p-table>
-
                 <div class="col-12 flex flex-column lg:flex-row justify-content-end align-items-center">
                     <button pButton class="p-element p-button-primary lg:w-auto flex-order-1" type="button"
                         (click)="saveExpedition()" [disabled]="form.invalid || selectedEcommerce.length === 0">
