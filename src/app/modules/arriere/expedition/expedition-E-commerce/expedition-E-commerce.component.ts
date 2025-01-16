@@ -64,6 +64,7 @@ export class ExpeditionECommerceComponent implements OnInit {
         (result) => {
           this.structure$ = result.filter((structure: StructureDto) => +structure.id === 16);
         },
+
         (error) => {
           console.error('Error loading structures', error);
         }

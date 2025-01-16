@@ -59,12 +59,10 @@ export class ReceptionECommerceComponent implements OnInit {
     this.loading = true;
     const structureId = Number(this.sessionService.getAgentAttributes().structureId);
     this.ecommerceService.findEcommerceFromReceptionToExpedition(structureId).subscribe((result) => {
-      console.log(structureId);
       this.loading = false;
       this.ecommerce$ = result;
     });
   }
-
 
   openDialog(ecommerce: EcommerceDto) {
     this.openEcommerceDialog = true;
@@ -73,13 +71,10 @@ export class ReceptionECommerceComponent implements OnInit {
 
   confirmReception() {
     this.openEcommerceDialog = false;
-
     if (this.ecommerce) {
-
       this.ecommerceService
         .reception(this.ecommerce.id.toString(), this.sessionService.getAgentAttributes().structureId.toString())
         .subscribe(() => this.getAllEcommerceFromReceptionToExpedition());
-
       this.messageService.add({
         severity: 'success',
         summary: 'Successful',
@@ -97,8 +92,6 @@ export class ReceptionECommerceComponent implements OnInit {
       });
     }
   }
-
-
 
   saveReception() {
     if (this.form.invalid) {

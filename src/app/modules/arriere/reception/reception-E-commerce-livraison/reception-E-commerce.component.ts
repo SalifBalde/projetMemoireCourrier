@@ -59,7 +59,6 @@ export class ReceptionECommerceComponent  implements OnInit {
     this.loading = true;
     const structureId = Number(this.sessionService.getAgentAttributes().structureId);
     this.ecommerceService.findEcommerceByDestinationReception(structureId).subscribe((result) => {
-      console.log(result);
       this.loading = false;
       this.ecommerce$ = result;
     });

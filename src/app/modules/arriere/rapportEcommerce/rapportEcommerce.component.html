@@ -47,13 +47,12 @@
             <p-toolbar styleClass="mb-4">
                 <ng-template pTemplate="left">
                     <div>
-                        <h3 class="text-primary">Rapport JT3 Ecommerce</h3>
+                        <h3 class="text-primary">Rapport JT3 E-commerce</h3>
                     </div>
                 </ng-template>
                 <ng-template pTemplate="right">
                     <button pButton type="button" icon="pi pi-file-pdf" class="p-button-warning mr-2"
-                        (click)="generatePdf()" [disabled]="loadingExpedition">
-                    </button>
+                        (click)="generatePdf()" [disabled]="loadingExpedition">PDF</button>
                     <button pButton type="button" icon="pi pi-file-excel" (click)="dt.exportCSV()"
                         [disabled]="loadingExpedition">
                     </button>

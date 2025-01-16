@@ -3,14 +3,12 @@
         <div class="grid">
             <div class="col-12 md:col-6">
                 <label for="dateDebut">Du</label>
-                <p-calendar formControlName="debut" id="debut" [showIcon]="true" inputId="icon"
-                    dateFormat="dd/mm/yy">
+                <p-calendar formControlName="debut" id="debut" [showIcon]="true" inputId="icon" dateFormat="dd/mm/yy">
                 </p-calendar>
             </div>
             <div class="col-12 md:col-6">
                 <label for="dateFin">Au</label>
-                <p-calendar formControlName="fin" id="fin" [showIcon]="true" inputId="icon"
-                    dateFormat="dd/mm/yy">
+                <p-calendar formControlName="fin" id="fin" [showIcon]="true" inputId="icon" dateFormat="dd/mm/yy">
                 </p-calendar>
             </div>
             <div class="col-12 md:col-6">
@@ -52,8 +50,7 @@
                 </ng-template>
                 <ng-template pTemplate="right">
                     <button pButton type="button" icon="pi pi-file-pdf" class="p-button-warning mr-2"
-                        (click)="generatePdf()" [disabled]="loadingExpedition">
-                    </button>
+                        (click)="generatePdf()" [disabled]="loadingExpedition">PDF</button>
                     <button pButton type="button" icon="pi pi-file-excel" (click)="dt.exportCSV()"
                         [disabled]="loadingExpedition">
                     </button>

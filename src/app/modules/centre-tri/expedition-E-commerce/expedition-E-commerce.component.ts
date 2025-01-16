@@ -69,6 +69,7 @@ export class ExpeditionECommerceComponent implements OnInit {
         this.structureService.findAll().subscribe(
             (result) => {
                 this.structure$ = result
+                console.log('structure', result)
             },
             (error) => {
                 console.error('Error loading structures', error);
@@ -113,6 +114,7 @@ export class ExpeditionECommerceComponent implements OnInit {
             }
         );
     }
+
     saveExpedition() {
         if (this.form.invalid) {
             this.messageService.add({
