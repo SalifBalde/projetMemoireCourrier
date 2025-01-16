@@ -1,5 +1,4 @@
 import {Fermeturecourrierdto} from "../fermetureCourrier";
-import {Statutdto} from "../statut-courrier";
 
 export  interface FermetureUpdatedto{
     structureDepotId?: number;

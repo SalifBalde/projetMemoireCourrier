@@ -1,7 +1,7 @@
 <div class="card p-fluid">
-    <form [formGroup]="form">
-        <div class="grid">
-            <div class="col-12 md:col-6">
+   <form [formGroup]="form">
+<div class="grid"> 
+           <div class="col-12 md:col-6">
                 <label for="dateDebut">Du</label>
                 <p-calendar formControlName="debut" id="dateDebut" [showIcon]="true" inputId="icon"/>
             </div>
@@ -24,7 +24,7 @@
             <p-button *ngIf="isEmpty()" label="effacer" icon="pi pi-times" severity="danger" [loading]="loadingReset"
                 (onClick)="resetForm()" />
         </div>
-    </form>
+   </form>
 </div>
 <div class="grid">
     <div class="col-12">

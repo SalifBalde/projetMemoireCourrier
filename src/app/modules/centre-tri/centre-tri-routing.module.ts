@@ -11,6 +11,7 @@ const routes: Routes = [{ path: '', component: CentreTriComponent },
     { path: 'reception/reception-E-commerce', loadChildren: () => import('./reception-E-commerce/reception-E-commerce.module').then(m => m.ReceptionECommerceModule) },
     { path: 'details-expeditionEcom/:id', loadChildren: () => import('./detail-expeditionEcom/detail-expeditionEcom.module').then(m => m.DetailExpeditionEcomModule) },
     { path: 'RapportEcommerce', loadChildren: () => import('./rapportEcommerce/rapportEcommerce.module').then(m => m.RapportEcommerceModule) },
+    {path: 'suiviCourrier',  loadChildren: () => import('./suiviCourrier/suiviCourrier.module').then(m => m.SuiviCourrierModule) },
 
     ];
 

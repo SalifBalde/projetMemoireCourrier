@@ -1,19 +1,19 @@
-import { Component, OnInit,ViewChild } from '@angular/core';
-
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {KeycloakProfile} from "keycloak-js";
-import {Table} from "primeng/table";
-import {PdfService} from "../../../proxy/pdf/pdf.service";
-import {ActivatedRoute, Router} from "@angular/router";
-import {MessageService} from "primeng/api";
-import {KeycloakService} from "keycloak-angular";
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { KeycloakProfile } from "keycloak-js";
+import { Table } from "primeng/table";
+import { PdfService } from "../../../proxy/pdf/pdf.service";
+import { ActivatedRoute, Router } from "@angular/router";
+import { MessageService } from "primeng/api";
+import { KeycloakService } from "keycloak-angular";
 import { SessionService } from 'src/app/proxy/auth/Session.service';
-import { ExpeditionEcomDto, ExpeditionEcomService } from 'src/app/proxy/expeditionEcommerce';
+import { ExpeditionEcomDto, ExpeditionEcomService, ExpeditionSearchDto } from 'src/app/proxy/expeditionEcommerce';
+import { StructureDto, StructureService } from 'src/app/proxy/structures';
 
 @Component({
-  selector: 'app-rapportEcommerce',
-  templateUrl: './rapportEcommerce.component.html',
-  providers:[MessageService]
+    selector: 'app-rapportEcommerce',
+    templateUrl: './rapportEcommerce.component.html',
+    providers: [MessageService]
 })
 export class RapportEcommerceComponent implements OnInit {
     form: FormGroup;
@@ -22,10 +22,14 @@ export class RapportEcommerceComponent implements OnInit {
     fullname = "";
     isModalOpen = false;
     montant = 0;
-    expeditions:ExpeditionEcomDto[];
+    expeditions: ExpeditionEcomDto[] = [];
     cols: any[] = [];
+    structure$: StructureDto[] = [];
+    expeditionSearch: ExpeditionSearchDto = {};
     rowsPerPageOptions = [5, 10, 20];
-    id ="";
+    loading: boolean = false;
+    loadingExpedition: boolean = false;
+    loadingReset: boolean = false;
     @ViewChild('dt') dt: Table;
 
     constructor(
@@ -34,45 +38,16 @@ export class RapportEcommerceComponent implements OnInit {
         private sessionService: SessionService,
         private fb: FormBuilder,
         private router: Router,
-        private route : ActivatedRoute,
-        private messageService: MessageService,private readonly keycloak: KeycloakService
-    ) {}
-
-    loadingExpedition: boolean = false;
-    loadingReset: boolean = false;
-    searchExpeditionByCriteres() {
-        this.loadingExpedition = true;
-        setTimeout(() => {
-                this.loadingExpedition = false
-            },
-            1000);
-        let dateDebut=this.form.get('dateDebut').value;
-        let dateFin=this.form.get('dateFin').value;
-       /*  this.expeditionEcomService.findExpeditionByCriteres(dateDebut,dateFin).subscribe(coli=>{this.expeditionByCriteres=coli;
-            this.montant = this.expeditionByCriteres.reduce((sum, item) => sum + parseInt(item.montant), 0);
-        }) */
-    }
-    resetForm(){
-        this.loadingReset = true;
-        setTimeout(() => {
-            this.loadingReset = false
-        },1000);
-        this.form = this.fb.group({
-            dateDebut: [undefined, Validators.required],
-            dateFin: [undefined, Validators.required],
-            prenom:[undefined,Validators.required],
-            nom:[undefined,Validators.required]
-        });
-        this.getAllExpedition();
-    }
-
-    generatePdf(): void{
-       // this.pdfService.generateAgentSalesReport(this.expeditions);
-    }
+        private route: ActivatedRoute,
+        private structureService: StructureService,
+        private messageService: MessageService,
+        private readonly keycloak: KeycloakService
+    ) { }
 
     async ngOnInit(): Promise<void> {
         this.buildForm();
-        this.getAllExpedition();
+        this.loadStructures();
+
         this.isLoggedIn = await this.keycloak.isLoggedIn();
         if (this.isLoggedIn) {
             this.userProfile = await this.keycloak.loadUserProfile();
@@ -81,21 +56,108 @@ export class RapportEcommerceComponent implements OnInit {
     }
 
     buildForm() {
+        const today = new Date(); 
         this.form = this.fb.group({
-            dateDebut: [undefined, Validators.required],
-            dateFin: [undefined, Validators.required],
-            prenom:[undefined,Validators.required],
-            nom:[undefined,Validators.required]
+            debut: [today, Validators.required],
+            fin: [today, Validators.required],
+            numenvoi: [undefined],
+            bureauDestination: [undefined],
+            bureauExpediteur: [undefined]
         });
     }
-    getAllExpedition(){
-        this.expeditionEcomService.getAllByStrucuture(this.sessionService.getAgentAttributes().structureId).subscribe(
+
+    private loadStructures() {
+        this.structureService.findAll().subscribe(
             (result) => {
-                this.expeditions = result;
+                this.structure$ = result;
+            },
+            (error) => {
+                console.error('Error loading structures', error);
             }
         );
     }
-    isEmpty(){
-        return this.form.value.dateFin!=null && this.form.value.dateDebut!=null&& this.form.value.prenom!=null && this.form.value.nom!=null;
+
+    searchExpeditionByCriteres(): void {
+        this.loading=true;
+        const debut = this.form.get('debut')?.value;
+        const fin = this.form.get('fin')?.value;
+
+        if (!debut || !fin) {
+            this.messageService.add({
+                severity: 'warn',
+                summary: 'Avertissement',
+                detail: 'Veuillez sélectionner une période valide.'
+            });
+            return;
+        }
+
+        if (new Date(debut) > new Date(fin)) {
+            this.messageService.add({
+                severity: 'error',
+                summary: 'Erreur',
+                detail: 'La date de début ne peut pas être après la date de fin.'
+            });
+            return;
+        }
+
+        const bureauId = this.sessionService.getAgentAttributes().structureId.toString();
+        
+        const formattedCriteria = {
+            ...this.form.value,
+            debut: new Date(debut).toISOString().split('T')[0],
+            fin: new Date(fin).toISOString().split('T')[0],
+            bureauId: bureauId 
+        };
+
+        this.loading = true;
+        this.expeditionEcomService.findExpeditionByCriteres(formattedCriteria).subscribe({
+            next: (expeditions) => {
+                if (expeditions.length > 0) {
+                    this.expeditions = expeditions || [];
+                } else {
+                    this.messageService.add({
+                        severity: 'info',
+                        summary: 'Aucun résultat',
+                        detail: 'Aucun colis trouvé pour la période sélectionnée.'
+                    });
+                    this.expeditions = [];
+                    this.montant = 0;
+                }
+                this.loading = false;
+            },
+            error: (err) => {
+                this.messageService.add({
+                    severity: 'error',
+                    summary: 'Erreur',
+                    detail: 'Une erreur est survenue lors de la récupération des données.'
+                });
+                this.loading = false;
+            }
+        });
+    }
+
+    resetForm() {
+        this.loadingReset = true;
+        setTimeout(() => {
+            this.loadingReset = false;
+        }, 1000);
+
+        const today = new Date().toISOString().split('T')[0];
+        this.form = this.fb.group({
+            debut: [today, Validators.required],
+            fin: [today, Validators.required],
+            prenom: [undefined, Validators.required],
+            nom: [undefined, Validators.required]
+        });
+
+        this.searchExpeditionByCriteres();
+    }
+
+    generatePdf(): void {
+        // this.pdfService.generateAgentSalesReport(this.expeditions);
+    }
+
+    isEmpty() {
+        return this.form.value.fin != null && this.form.value.debut != null && this.form.value.prenom != null && this.form.value.nom != null;
     }
 }

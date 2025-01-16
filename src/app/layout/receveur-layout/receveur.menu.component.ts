@@ -26,12 +26,12 @@ export class ReceveurMenuComponent implements OnInit {
                 ],
             },
             {
-                label: 'Tracking',
+                label: 'SuiviCourrier',
                 items: [
                     {
-                        label:'Tracking Envoi e-commerce',
+                        label:'suiviCourrier',
                         icon : 'pi pi-fw pi-search',
-                        routerLink:['/receveur/tracking-ecommerce']
+                        routerLink:['/receveur/suiviCourrier']
                     }
                 ]
             },
@@ -48,6 +48,22 @@ export class ReceveurMenuComponent implements OnInit {
                         label: 'C10 Bureau',
                         icon: 'pi pi-fw pi-box',
                         routerLink: [''],
+                    },
+                ],
+            },
+            {
+                label: 'Rapports',
+                icon: 'pi pi-fw pi-briefcase',
+                items: [
+                    {
+                        label: 'Rapport Agent',
+                        icon: 'pi pi-fw pi-file',
+                        routerLink: ['/receveur/rapport'],
+                    },
+                    {
+                        label: 'Rapport par critères',
+                        icon: 'pi pi-fw pi-file',
+                        routerLink: ['/receveur/rapport-criteres'],
                     },
                 ],
             },

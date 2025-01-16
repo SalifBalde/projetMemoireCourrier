@@ -3,13 +3,13 @@
         <div class="grid">
             <div class="col-12 md:col-6">
                 <label for="dateDebut">Du</label>
-                <p-calendar formControlName="dateDebut" id="dateDebut" [showIcon]="true" inputId="icon"
+                <p-calendar formControlName="debut" id="debut" [showIcon]="true" inputId="icon"
                     dateFormat="dd/mm/yy">
                 </p-calendar>
             </div>
             <div class="col-12 md:col-6">
                 <label for="dateFin">Au</label>
-                <p-calendar formControlName="dateFin" id="dateFin" [showIcon]="true" inputId="icon"
+                <p-calendar formControlName="fin" id="fin" [showIcon]="true" inputId="icon"
                     dateFormat="dd/mm/yy">
                 </p-calendar>
             </div>
@@ -17,23 +17,23 @@
                 <label for="numenvoi">Numéro d'expédition</label>
                 <input formControlName="numenvoi" id="numenvoi" pInputText />
             </div>
-            <div class="col-12 md:col-6">
+            <!-- <div class="col-12 md:col-6">
                 <label for="bureauDestination">Bureau Destinataire</label>
-                <p-dropdown optionLabel="libelle" [filter]="true" formControlName="bureauDestination"
+                <p-dropdown optionLabel="libelle" [filter]="true" formControlName="bureauDestination" id=" bureauDestination"
                     [options]="structure$" [showClear]="true" placeholder="Choisir un bureau">
                 </p-dropdown>
             </div>
             <div class="col-12 md:col-6">
                 <label for="bureauExpediteur">Bureau Expéditeur</label>
-                <p-dropdown optionLabel="libelle" [filter]="true" formControlName="bureauExpediteur"
+                <p-dropdown optionLabel="libelle" [filter]="true" formControlName="bureauExpediteur" id=" bureauExpediteur"
                     [options]="structure$" [showClear]="true" placeholder="Choisir un bureau">
                 </p-dropdown>
-            </div>
+            </div> -->
         </div>
         <div class="p-formgrid flex col-12 justify-content-center">
-            <!-- <p-button label="Rechercher" icon="pi pi-search" severity="primary" [loading]="loadingExpedition"
-                (onClick)="searchExpeditionByCriteres()">
-            </p-button> -->
+            <p-button label="Rechercher" icon="pi pi-search" severity="primary" [loading]="loadingExpedition"
+                (onClick)="searchExpeditionByCriteres()" class="mr-2">
+            </p-button>
             <p-button *ngIf="!form.pristine" label="Effacer" icon="pi pi-times" severity="danger"
                 [loading]="loadingReset" (onClick)="resetForm()">
             </p-button>
@@ -87,4 +87,8 @@
             </p-table>
         </div>
     </div>
+</div>
+<p-toast></p-toast>
+<div *ngIf="loading" class="loading-message">
+    <p>Chargement, veuillez patienter...</p>
 </div>
