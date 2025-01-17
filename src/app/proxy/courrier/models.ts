@@ -49,6 +49,7 @@ export class CourrierCreateUpdateDto {
     paysDestinationId?: number;
     paysDestinationLibelle?: string;
     statutCourrierId?: number;
+    statutCourrierLibelle?: string;
     destinataireId?: number;
     destinataireNom?: string;
     destinatairePrenom?: string;

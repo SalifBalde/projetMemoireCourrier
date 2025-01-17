@@ -1,85 +1,113 @@
-import {Component, ViewChild} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {KeycloakProfile} from "keycloak-js";
-import {Table} from "primeng/table";
-import {PdfService} from "../../../proxy/pdf/pdf.service";
-import {ActivatedRoute, Router} from "@angular/router";
-import {MessageService} from "primeng/api";
-import {KeycloakService} from "keycloak-angular";
-import {CourrierDto} from "../../../proxy/courrier";
-import {ColisDto, ColisSearchDto, ColisService} from "../../../proxy/colis";
+import { Component, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { KeycloakProfile } from "keycloak-js";
+import { Table } from "primeng/table";
+import { PdfService } from "../../../proxy/pdf/pdf.service";
+import { ActivatedRoute, Router } from "@angular/router";
+import { MessageService } from "primeng/api";
+import { KeycloakService } from "keycloak-angular";
+import { CourrierDto, CourrierSearchDto, CourrierService } from "../../../proxy/courrier";
+import { StructureDto, StructureService } from 'src/app/proxy/structures';
+import { StatutCourrierService, Statutdto } from 'src/app/proxy/statut-courrier';
+import { TypeCourrierService,TypeCourrierDto } from 'src/app/proxy/type-courriers';
 
 @Component({
-  selector: 'app-rapport-criteres',
-  templateUrl: './rapport-criteres.component.html',
-    providers:[MessageService]
+    selector: 'app-rapport-criteres',
+    templateUrl: './rapport-criteres.component.html',
+    providers: [MessageService]
 })
 export class RapportCriteresComponent {
     form: FormGroup;
     isModalOpen = false;
     montant = 0;
-    colis$ : ColisDto[]=[];
-    colisSearch : ColisSearchDto= {};
-    formDialog : boolean = false;
+    courrier$: CourrierDto[] = [];
+    courrierSearch: CourrierSearchDto = {};
+    formDialog: boolean = false;
     cols: any[] = [];
     rowsPerPageOptions = [5, 10, 20];
-    id ="";
-    @ViewChild('dt') dt: Table;
-
-    constructor(
-        private colisService: ColisService,
-        private pdfService: PdfService,
-        private fb: FormBuilder,
-        private router: Router,
-        private route : ActivatedRoute,
-        private messageService: MessageService,private readonly keycloak: KeycloakService
-    ) {}
-
-    loadingColis: boolean = false;
+    id = "";
+    structure$: StructureDto[] = [];
+    typeCourrier$: TypeCourrierDto[] = [];
+    statutCourrier$: Statutdto[] = [];
+    loadingcourrier: boolean = false;
     loadingReset: boolean = false;
-    colisByCriteres: string;
+    courrierByCriteres: string;
     date: Date;
     fullname: string;
 
-    resetForm(){
+    
+    @ViewChild('dt') dt: Table;
+
+    constructor(
+        private courrierService: CourrierService,
+        private pdfService: PdfService,
+        private fb: FormBuilder,
+        private router: Router,
+        private statutCourrierService: StatutCourrierService,
+        private tyoeCourrierService : TypeCourrierService,
+        private structureService: StructureService,
+        private route: ActivatedRoute,
+        private messageService: MessageService, private readonly keycloak: KeycloakService
+    ) { }
+
+    
+    resetForm() {
         this.loadingReset = true;
         setTimeout(() => {
             this.loadingReset = false
-        },1000);
-       this.buildForm();
+        }, 1000);
+        this.buildForm();
     }
 
-    generatePdf(): void{
-       // this.pdfService.generateAgentSalesReport(this.colis$);
+    generatePdf(): void {
+        // this.pdfService.generateAgentSalesReport(this.courrier$);
     }
 
     async ngOnInit(): Promise<void> {
         this.buildForm();
+        this.setCourrier()
     }
 
     buildForm() {
         this.form = this.fb.group({
-            debut: [this.colisSearch.debut || new Date().toISOString().substring(0, 10), Validators.required],
-            fin: [this.colisSearch.fin || new Date().toISOString().substring(0, 10), Validators.required],
-            prenom:[this.colisSearch.prenom],
-            nom:[this.colisSearch.nom]
+            debut: [this.courrierSearch.debut ? new Date(this.courrierSearch.debut) : new Date(), Validators.required],
+            fin: [this.courrierSearch.fin ? new Date(this.courrierSearch.fin) : new Date(), Validators.required],
+            structureDestinationId: [null],
+            structureDepotId: [null],
+            typeCourrierId: [null],
+            statutCourrierId: [null],
         });
     }
 
+    setCourrier() {
+        this.statutCourrierService.findAll().subscribe(result => {
+            this.statutCourrier$ = result;
+        });
+    
+        this.tyoeCourrierService.findAll().subscribe(result => {
+            this.typeCourrier$ = result;
+        });
 
-    searchColisByCriteres() {
-        this.loadingColis = true;
+        this.structureService.findAll().subscribe(result => {
+            this.structure$ = result;
+        });
+    }
+
+    searchcourrierByCriteres() {
+        this.loadingcourrier = true;
         setTimeout(() => {
-                this.loadingColis = false
-            },
+            this.loadingcourrier = false
+        },
             1000);
-        this.colisService.findColisByCriteres(this.form.value).subscribe(colis=>{
-            this.colis$=colis;
-            this.montant = this.colis$.reduce((sum, item) => sum + parseInt(item.montant), 0);
+        this.courrierService.findCourrierByCriteres(this.form.value).subscribe(courrier => {
+            this.courrier$ = courrier;
+            this.montant = this.courrier$.reduce((sum, item) => sum + Number(item.montant), 10);
         })
     }
 
-    isEmpty(){
-        return this.form.value.dateFin!=null && this.form.value.dateDebut!=null&& this.form.value.prenom!=null && this.form.value.nom!=null;
+    isEmpty() {
+        return !this.form.value.debut && !this.form.value.fin && 
+           !this.form.value.structureDepotId && !this.form.value.structureDestinationId &&
+           !this.form.value.typeCourrierId && !this.form.value.statutCourrierId;
     }
 }

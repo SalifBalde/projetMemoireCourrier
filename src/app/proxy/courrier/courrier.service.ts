@@ -56,6 +56,11 @@ export class CourrierService {
     return this.httpClient.get<CourrierDto>(new_api_host, this.httpOptions);
   }
 
+  findCourrierByCriteres(search: CourrierSearchDto) {
+    const new_api_host = this.routerParam(this.api_host, 'search-by-criteria');
+    return this.httpClient.post<CourrierDto[]>(new_api_host, search, this.httpOptions);
+  }
+
   getOne(id: string) {
     let new_api_host = this.routerParam(this.api_host + '/getByreference', id);
     return this.httpClient.get<CourrierDto>(new_api_host, this.httpOptions);

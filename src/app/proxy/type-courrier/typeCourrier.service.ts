@@ -7,7 +7,7 @@ import {TypeCourrierDto} from "./models";
 @Injectable({
   providedIn: 'root'
 })
-export class Type_CategorieService {
+export class TypeCourrierService {
   private api_host = `${environment.api_host}categorieCourrier`;
   myToken = sessionStorage.getItem("token");
   private httpOptions = {
