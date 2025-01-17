@@ -10,6 +10,7 @@ import { GuichetLayoutComponent } from './layout/guichet-layout/guichet.layout.c
 import { ArriereLayoutComponent } from './layout/arriere-layout/arriere.layout.component';
 import { CtLayoutComponent } from './layout/ct-layout/ct.layout.component';
 import { DrpLayoutComponent } from './layout/drp-layout/drp.layout.component';
+import { DroLayoutComponent } from './layout/dro-layout/dro.layout.component';
 
 @NgModule({
   imports: [
@@ -57,7 +58,11 @@ import { DrpLayoutComponent } from './layout/drp-layout/drp.layout.component';
         loadChildren: () => import('./modules/drp/drp.module').then(m => m.DrpModule),
 
       },
+      {
+        path: 'dro', component: DroLayoutComponent, canActivate: [AuthGuard], data: { roles: ['ROLE_DRO'] },
+        loadChildren: () => import('./modules/dro/dro.module').then(m => m.DroModule),
 
+      },
             { path: 'notfound', component: NotfoundComponent },
             { path: '**', redirectTo: '/notfound' },
         ], { scrollPositionRestoration: 'enabled', anchorScrolling: 'enabled',  })
