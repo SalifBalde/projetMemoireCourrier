@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MessageService, SharedModule } from 'primeng/api';
-import { DroRoutingModule } from './dro.routing.module';
+import { DroRoutingModule } from './dro-routing.module';
 
 @NgModule({
   imports: [
