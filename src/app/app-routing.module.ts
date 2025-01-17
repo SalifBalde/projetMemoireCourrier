@@ -24,32 +24,27 @@ import { DroLayoutComponent } from './layout/dro-layout/dro.layout.component';
         ]
       },
       {
-        path: 'receveur', component: ReceveurLayoutComponent,
-         canActivate: [AuthGuard], data: { roles: ['ROLE_RECEVEUR'] },
+        path: 'receveur', component: ReceveurLayoutComponent, canActivate: [AuthGuard], data: { roles: ['ROLE_RECEVEUR'] },
         loadChildren: () => import('./modules/receveur/receveur.module').then(m => m.ReceveurModule),
 
       },
       {
-        path: 'guichet', component: GuichetLayoutComponent, 
-        // canActivate: [AuthGuard], data: { roles: ['ROLE_GUICHET'] },
+        path: 'guichet', component: GuichetLayoutComponent,   canActivate: [AuthGuard], data: { roles: ['ROLE_GUICHET'] },
         loadChildren: () => import('./modules/guichet/guichet.module').then(m => m.GuichetModule),
 
       },
       {
-        path: 'backoffice', component: BackofficeLayoutComponent, 
-        // canActivate: [AuthGuard], data: { roles: ['ROLE_ADMIN'] },
+        path: 'backoffice', component: BackofficeLayoutComponent,  canActivate: [AuthGuard], data: { roles: ['ROLE_ADMIN'] },
         loadChildren: () => import('./modules/backoffice/backoffice.module').then(m => m.BackofficeModule),
 
       },
       {
-        path: 'arriere', component: ArriereLayoutComponent, 
-        // canActivate: [AuthGuard], data: { roles: ['ROLE_ARRIERE'] },
+        path: 'arriere', component: ArriereLayoutComponent, canActivate: [AuthGuard], data: { roles: ['ROLE_ARRIERE'] },
         loadChildren: () => import('./modules/arriere/arriere.module').then(m => m.ArriereModule),
 
       },
       {
-        path: 'ct', component: CtLayoutComponent,
-        //  canActivate: [AuthGuard], data: { roles: ['ROLE_CT'] },
+        path: 'ct', component: CtLayoutComponent,  canActivate: [AuthGuard], data: { roles: ['ROLE_CT'] },
         loadChildren: () => import('./modules/centre-tri/centre-tri.module').then(m => m.CentreTriModule),
 
       },
