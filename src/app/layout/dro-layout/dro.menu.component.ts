@@ -1,7 +1,7 @@
 import { OnInit } from '@angular/core';
 import { Component } from '@angular/core';
 import { LayoutService } from '../service/app.layout.service';
-import { IndexComponent } from 'src/app/modules/dro/index/index.component'; 
+import { IndexComponent } from 'src/app/modules/dro/index/index.component';
 import { RouterLink } from '@angular/router';
 
 @Component({
@@ -32,16 +32,16 @@ export class DroMenuComponent implements OnInit {
                     {
                         label: 'Rapport Courrier',
                         icon: 'pi pi-fw pi-file',
-                        routerLink: ['/receveur/rapport-courrier'],
+                        routerLink: ['/dro/rapport-courrier'],
                     },
                     {
                         label: 'Rapport E-commerce',
                         icon: 'pi pi-fw pi-file',
-                        routerLink: ['/receveur/rapport-ecom'],
+                        routerLink: ['/dro/rapport-ecom'],
                     },
                 ],
             },
-            
+
         ];
     }
 }
