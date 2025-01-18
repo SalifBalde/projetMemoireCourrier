@@ -124,7 +124,6 @@ export class Cn23Service {
         doc.text('surface ', pageWidth / 4, 150, { align: 'left', });
         doc.text('A', pageWidth / 50, 59, { align: 'right' });
         doc.text(`Bureau: DAKAR PEYTAVIN`, pageHeight / 10, 8, { align: 'left' });
-
         doc.text('LA POSTEE SENEGAL', pageHeight / 2, 3, { align: 'right' });
         doc.text(`Agent: Aliou Balde`, pageWidth / 2, 8, { align: 'center' });
         doc.text("Instruction de l'expéditeur en cas de non-livraison ", pageHeight / 13, 160, { align: 'left' });

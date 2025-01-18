@@ -564,7 +564,7 @@ export class PdfService {
         doc.setFont("helvetica", "italic");
         doc.setTextColor(77, 77, 255);
         const footerText =
-            "Groupe La Poste | Adresse: Avenue Peytavin Dakar, Senegal | Tel: +221 33 839 34 34 | Email: serviceclient@laposte.sn | Site Web: www.laposte.com";
+            "Groupe La Poste | Adresse: Avenue Peytavin Dakar, Senegal | Tel: +221 33 839 34 34 | Email: serviceclient@laposte.sn | Site Web: www.laposte.sn";
         const pageWidth = doc.internal.pageSize.width;
         const textWidth = doc.getTextWidth(footerText);
         const centerX = (pageWidth - textWidth) / 2;
@@ -577,7 +577,7 @@ export class PdfService {
         doc.setFont("helvetica", "italic");
         doc.setTextColor(77, 77, 255);
         const footerText =
-            "Groupe La Poste | Adresse: Avenue Peytavin Dakar, Senegal | Tel: +221 33 839 34 34 | Email: serviceclient@laposte.sn | Site Web: www.laposte.com";
+            "Groupe La Poste | Adresse: Avenue Peytavin Dakar, Senegal | Tel: +221 33 839 34 34 | Email: serviceclient@laposte.sn | Site Web: www.laposte.sn";
         const pageWidth = doc.internal.pageSize.width;
         const textWidth = doc.getTextWidth(footerText);
         const centerX = (pageWidth - textWidth) / 2;
