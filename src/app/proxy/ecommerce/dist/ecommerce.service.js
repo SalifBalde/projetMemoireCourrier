@@ -38,6 +38,10 @@ var EcommerceService = /** @class */ (function () {
         var new_api_host = this.routerParam(this.api_host, 'findEcommerceByDestinationReception', id.toString());
         return this.httpClient.get(new_api_host, this.httpOptions);
     };
+    EcommerceService.prototype.findEcommerceFromReceptionToExpedition = function (id) {
+        var new_api_host = this.routerParam(this.api_host, 'findEcommerceFromReceptionToExpedition', id.toString());
+        return this.httpClient.get(new_api_host, this.httpOptions);
+    };
     EcommerceService.prototype.findEcommerceALivrer = function (id) {
         var new_api_host = this.routerParam(this.api_host, 'findEcommerceALivrer', id.toString());
         return this.httpClient.get(new_api_host, this.httpOptions);
@@ -53,6 +57,10 @@ var EcommerceService = /** @class */ (function () {
     EcommerceService.prototype.findEcommerceExpeditionCt = function () {
         var new_api_host = this.routerParam(this.api_host, 'findEcommerceExpeditionCt');
         return this.httpClient.get(new_api_host, this.httpOptions);
+    };
+    EcommerceService.prototype.findEcommerceByCriteres = function (search) {
+        var new_api_host = this.routerParam(this.api_host, 'rechercheParCritere');
+        return this.httpClient.post(new_api_host, search, this.httpOptions);
     };
     EcommerceService.prototype.reception = function (id, idStructure) {
         var new_api_host = this.routerParam(this.api_host + '/reception', id, idStructure);

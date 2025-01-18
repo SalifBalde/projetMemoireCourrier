@@ -11,24 +11,24 @@
             </div>
             <div class="col-3 md:col-5">
                 <p-dropdown optionLabel="libelle" [filter]="true" filterBy="libelle" optionValue="id"
-                    ormControlName="structureDepotId" optionValue="id" placeholder="Bureau de dépôt"
-                    [options]="structure$" [showClear]="true">
+                    ormControlName="paysOrigineId" optionValue="id" placeholder="Pays d'Origine"
+                    [options]="pays$" [showClear]="true">
                 </p-dropdown>
             </div>
 
             <div class="col-3 md:col-5">
                 <p-dropdown optionLabel="libelle" [filter]="true" filterBy="libelle" optionValue="id"
-                    formControlName="structureDestinationId" optionValue="id" placeholder="Bureau Destinataire"
-                    [options]="structure$" [showClear]="true">
+                    formControlName="paysDestinationId" optionValue="id" placeholder="Pays Destination"
+                    [options]="pays$" [showClear]="true">
                 </p-dropdown>
             </div>
 
             <div class="col-12 md:col-5">
-                <p-dropdown formControlName="typeCourrierId" id="typeCourrierId" [options]="typeCourrier$"
+                <p-dropdown formControlName="typeCourrierId" id="typeCourrierId" [filter]="true" filterBy="libelle" [options]="typeCourrier$"
                     placeholder="choisissez un Type" optionLabel="libelle" optionValue="id"></p-dropdown>
             </div>
             <div class="col-12 md:col-5">
-                <p-dropdown formControlName="statutCourrierId" id="statutCourrierId" [options]="statutCourrier$"
+                <p-dropdown formControlName="statutCourrierId" id="statutCourrierId" [filter]="true" filterBy="libelle" [options]="statutCourrier$"
                     placeholder="choisissez un status" optionLabel="libelle" optionValue="id"></p-dropdown>
             </div>
         </div>

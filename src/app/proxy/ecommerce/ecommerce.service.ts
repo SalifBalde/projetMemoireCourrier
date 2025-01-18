@@ -66,6 +66,10 @@ export class EcommerceService {
     const new_api_host = this.routerParam(this.api_host, 'findEcommerceExpeditionCt');
     return this.httpClient.get<EcommerceSearchResultDto[]>(new_api_host, this.httpOptions);
   }
+  findEcommerceByCriteres(search: EcommerceDto) {
+      const new_api_host = this.routerParam(this.api_host, 'rechercheParCritere');
+      return this.httpClient.post<EcommerceSearchResultDto[]>(new_api_host, search, this.httpOptions);
+    }
 
   reception(id: string, idStructure: string) {
     let new_api_host = this.routerParam(this.api_host+'/reception', id,idStructure);

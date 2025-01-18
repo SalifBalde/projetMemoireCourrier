@@ -17,9 +17,9 @@ const routes: Routes = [
 
     ],
   },
-  { path: 'rapport', loadChildren: () => import('./rapport-agent/rapport-agent.module').then(m => m.RapportAgentModule) },
-  { path: 'rapport-criteres', loadChildren: () => import('./rapport-criteres/rapport-criteres.module').then(m => m.RapportCriteresModule) },
+  { path: 'rapport-courrier', loadChildren: () => import('./rapport-criteres/rapport-criteres.module').then(m => m.RapportCriteresModule) },
   { path: 'courrier-details/:id', loadChildren: () => import('./courrier-details/courrier-details.module').then(m => m.CourrierDetailsModule) },
+  { path: 'rapport-ecom', loadChildren: () => import('./rapport-ecom/rapport-ecom.module').then(m => m.RapportEcomModule) },
 ];
 
 @NgModule({

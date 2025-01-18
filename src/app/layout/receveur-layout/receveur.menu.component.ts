@@ -62,14 +62,14 @@ export class ReceveurMenuComponent implements OnInit {
                 icon: 'pi pi-fw pi-briefcase',
                 items: [
                     {
-                        label: 'Rapport Agent',
+                        label: 'Rapport Courrier',
                         icon: 'pi pi-fw pi-file',
-                        routerLink: ['/receveur/rapport'],
+                        routerLink: ['/receveur/rapport-courrier'],
                     },
                     {
-                        label: 'Rapport par critères',
+                        label: 'Rapport E-commerce',
                         icon: 'pi pi-fw pi-file',
-                        routerLink: ['/receveur/rapport-criteres'],
+                        routerLink: ['/receveur/rapport-ecom'],
                     },
                 ],
             },

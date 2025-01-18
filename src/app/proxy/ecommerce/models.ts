@@ -16,6 +16,7 @@ export interface EcommerceDto {
   iduser: number;
   heurelivraison: string;
   etatEcomId: number;
+  etatEcomLibelle : string;
   version: number;
   adresseClient: string;
   nomClient: string;
@@ -54,6 +55,7 @@ export interface EcommerceSearchResultDto {
   iduser: number;
   heurelivraison: string;
   etatEcomId: number;
+  etatEcomLibelle : string;
   version: number;
   adresseClient: string;
   nomClient: string;
@@ -92,4 +94,13 @@ export interface ProduitEcommerceDto {
   model: string;
   prix: number;
   quantite: number;
+}
+
+
+export interface EcommerceSearchDto {
+  partenaire_e_com_id: number;      
+  idbureau: number;                
+  IdbureauPartenaire: number;       
+  numenvoi: string;                
+  etatEcomId: number;               
 }

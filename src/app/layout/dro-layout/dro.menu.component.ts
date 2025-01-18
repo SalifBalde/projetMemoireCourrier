@@ -30,14 +30,14 @@ export class DroMenuComponent implements OnInit {
                 icon: 'pi pi-fw pi-briefcase',
                 items: [
                     {
-                        label: 'Rapport Agent',
+                        label: 'Rapport Courrier',
                         icon: 'pi pi-fw pi-file',
-                        routerLink: ['/dro/rapport'],
+                        routerLink: ['/receveur/rapport-courrier'],
                     },
                     {
-                        label: 'Rapport par critères',
+                        label: 'Rapport E-commerce',
                         icon: 'pi pi-fw pi-file',
-                        routerLink: ['/dro/rapport-criteres'],
+                        routerLink: ['/receveur/rapport-ecom'],
                     },
                 ],
             },

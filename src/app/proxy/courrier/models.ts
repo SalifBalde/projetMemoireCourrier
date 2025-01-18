@@ -85,5 +85,7 @@ export class CourrierCreateUpdateDto {
     userId?: number;
     statutCourrierId?: number;
     typeCourrierId?: number;
+    paysOrigineId?:number;
+    paysDestinationId?:number;
   }
   
