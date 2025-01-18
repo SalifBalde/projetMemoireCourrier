@@ -46,6 +46,16 @@ export class CtMenuComponent implements OnInit {
                 ],
             },
             {
+                label: 'Suivi Courrier',
+                items: [
+                    {
+                        label:'suiviCourrier',
+                        icon : 'pi pi-fw pi-search',
+                        routerLink:['/ct/suiviCourrier']
+                    }
+                ]
+            },
+            {
                 label: 'Reporting',
                 items: [
                     {

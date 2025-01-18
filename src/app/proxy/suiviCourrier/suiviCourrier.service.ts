@@ -10,9 +10,11 @@ import { SuiviCourrierdto } from './models';
 export class SuiviCourrierService {
   apiName = 'suiviCourrier';
   private api_host: string = environment.api_host + this.apiName;
+  myToken = sessionStorage.getItem("token");
   private httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
+      "Authorization" : "Bearer "+this.myToken
     })
   };
 
@@ -27,13 +29,13 @@ export class SuiviCourrierService {
     return this.httpClient.get<SuiviCourrierdto>(new_api_host, this.httpOptions);
   }
 
-  create(suiviCourrierdto: SuiviCourrierdto) {
-    return this.httpClient.post<SuiviCourrierdto>(this.api_host, suiviCourrierdto, this.httpOptions);
+  create(SuiviCourrierdto: SuiviCourrierdto) {
+    return this.httpClient.post<SuiviCourrierdto>(this.api_host, SuiviCourrierdto, this.httpOptions);
   }
 
-  update(id: string | number, suiviCourrierdto: SuiviCourrierdto) {
+  update(id: string | number, SuiviCourrierdto: SuiviCourrierdto) {
     const new_api_host = this.routerParam(this.api_host, id);
-    return this.httpClient.put<SuiviCourrierdto>(new_api_host, suiviCourrierdto, this.httpOptions);
+    return this.httpClient.put<SuiviCourrierdto>(new_api_host, SuiviCourrierdto, this.httpOptions);
   }
 
   delete(id: string | number) {

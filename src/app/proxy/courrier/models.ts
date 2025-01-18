@@ -41,7 +41,6 @@ export class CourrierCreateUpdateDto {
     userId?: number;
     codeBarre?: string;
     caisseId?: number;
-
     contenu?: string;
     typeCourrierId: number;
     typeCourrierLibelle: string;
@@ -50,6 +49,7 @@ export class CourrierCreateUpdateDto {
     paysDestinationId?: number;
     paysDestinationLibelle?: string;
     statutCourrierId?: number;
+    statutCourrierLibelle?: string;
     destinataireId?: number;
     destinataireNom?: string;
     destinatairePrenom?: string;
@@ -77,4 +77,15 @@ export class CourrierCreateUpdateDto {
      montant?: number;
    }
 
-
+   export interface CourrierSearchDto {
+    debut?: string; 
+    fin?: string;   
+    structureDestinationId?: number;
+    structureDepotId?: number;
+    userId?: number;
+    statutCourrierId?: number;
+    typeCourrierId?: number;
+    paysOrigineId?:number;
+    paysDestinationId?:number;
+  }
+  

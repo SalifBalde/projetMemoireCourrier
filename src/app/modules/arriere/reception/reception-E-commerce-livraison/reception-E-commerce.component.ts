@@ -59,7 +59,6 @@ export class ReceptionECommerceComponent  implements OnInit {
     this.loading = true;
     const structureId = Number(this.sessionService.getAgentAttributes().structureId);
     this.ecommerceService.findEcommerceByDestinationReception(structureId).subscribe((result) => {
-      console.log(result);
       this.loading = false;
       this.ecommerce$ = result;
     });
@@ -83,7 +82,7 @@ export class ReceptionECommerceComponent  implements OnInit {
       this.messageService.add({
         severity: 'success',
         summary: 'Successful',
-        detail: 'envoi Deleted',
+        detail: 'Réception effectuée avec succès',
         life: 3000,
       });
 
@@ -111,7 +110,7 @@ export class ReceptionECommerceComponent  implements OnInit {
         this.messageService.add({
           severity: 'success',
           summary: 'Succès',
-          detail: 'Envoi expédié avec succès',
+          detail: 'Réception effectuée avec succès',
           life: 3000,
         });
       },

@@ -23,7 +23,7 @@ export class ReceptionECommerceComponent implements OnInit {
   id = "";
   structure$: StructureDto[] = [];
   ecommerce$: EcommerceDto[] = [];
-  ecommerce: EcommerceDto | null = null;  // Change to a single object
+  ecommerce: EcommerceDto | null = null;  
   openEcommerceDialog: boolean = false;
   selectedEcommerce!: EcommerceDto;
   loading: boolean = false;
@@ -70,7 +70,7 @@ export class ReceptionECommerceComponent implements OnInit {
 
     if (this.ecommerce) {
       this.ecommerceService
-        .reception(this.ecommerce.id.toString(), this.sessionService.getAgentAttributes().structureId.toString())
+        .reception(this.ecommerce.id.toString(),this.sessionService.getAgentAttributes().structureId)
         .subscribe(() => this.getAllEcommerceReceptionCt());
 
       this.messageService.add({
@@ -92,7 +92,6 @@ export class ReceptionECommerceComponent implements OnInit {
   }
 
 
-
   saveReception() {
     if (this.form.invalid) {
       return;
@@ -104,7 +103,7 @@ export class ReceptionECommerceComponent implements OnInit {
         this.messageService.add({
           severity: 'success',
           summary: 'Succès',
-          detail: 'Envoie ecommerce expédié avec succès',
+          detail: 'Réception effectuée avec succès',
           life: 3000,
         });
       },

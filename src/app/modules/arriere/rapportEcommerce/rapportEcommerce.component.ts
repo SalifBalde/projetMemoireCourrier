@@ -9,6 +9,8 @@ import { KeycloakService } from "keycloak-angular";
 import { SessionService } from 'src/app/proxy/auth/Session.service';
 import { ExpeditionEcomDto, ExpeditionEcomService, ExpeditionSearchDto } from 'src/app/proxy/expeditionEcommerce';
 import { StructureDto, StructureService } from 'src/app/proxy/structures';
+import { PdfExportService } from 'src/app/proxy/pdf-export/pdf-export.service';
+import { UserDto } from 'src/app/proxy/users';
 
 @Component({
     selector: 'app-rapportEcommerce',
@@ -22,12 +24,12 @@ export class RapportEcommerceComponent implements OnInit {
     fullname = "";
     isModalOpen = false;
     montant = 0;
-    expeditions: ExpeditionEcomDto[];
+    user: UserDto = {} ;
+    expeditions: ExpeditionEcomDto[] = [];
     cols: any[] = [];
     structure$: StructureDto[] = [];
     expeditionSearch: ExpeditionSearchDto = {};
     rowsPerPageOptions = [5, 10, 20];
-    id = "";
     loading: boolean = false;
     loadingExpedition: boolean = false;
     loadingReset: boolean = false;
@@ -40,16 +42,16 @@ export class RapportEcommerceComponent implements OnInit {
         private fb: FormBuilder,
         private router: Router,
         private route: ActivatedRoute,
-        private structureService : StructureService,
-        private messageService: MessageService, private readonly keycloak: KeycloakService
+        private pdfExportService : PdfExportService,
+        private structureService: StructureService,
+        private messageService: MessageService,
+        private readonly keycloak: KeycloakService
     ) { }
-
 
     async ngOnInit(): Promise<void> {
         this.buildForm();
         this.loadStructures();
 
-        this.getAllExpedition();
         this.isLoggedIn = await this.keycloak.isLoggedIn();
         if (this.isLoggedIn) {
             this.userProfile = await this.keycloak.loadUserProfile();
@@ -58,108 +60,129 @@ export class RapportEcommerceComponent implements OnInit {
     }
 
     buildForm() {
+        const today = new Date(); 
         this.form = this.fb.group({
-            dateDebut: [undefined, Validators.required],
-            dateFin: [undefined, Validators.required],
-            prenom: [undefined, Validators.required],
-            nom: [undefined, Validators.required]
+            debut: [today, Validators.required],
+            fin: [today, Validators.required],
+            numenvoi: [undefined],
+            bureauDestination: [undefined],
+            bureauExpediteur: [undefined]
         });
-    }
-
-    getAllExpedition() {
-        this.expeditionEcomService.getAllByStrucuture(this.sessionService.getAgentAttributes().structureId.toString()).subscribe(
-            (result) => {
-                this.expeditions = result;
-            }
-        );
     }
 
     private loadStructures() {
         this.structureService.findAll().subscribe(
             (result) => {
-                this.structure$ = result
+                this.structure$ = result;
             },
             (error) => {
                 console.error('Error loading structures', error);
             }
         );
     }
- 
 
-    // searchExpeditionByCriteres(): void {
-    //     const dateDebut = this.form.get('dateDebut')?.value;
-    //     const dateFin = this.form.get('dateFin')?.value;
-    
-    //     if (!dateDebut || !dateFin) {
-    //         this.messageService.add({
-    //             severity: 'warn',
-    //             summary: 'Avertissement',
-    //             detail: 'Veuillez sélectionner une période valide.'
-    //         });
-    //         return;
-    //     }
-    
-    //     if (new Date(dateDebut) > new Date(dateFin)) {
-    //         this.messageService.add({
-    //             severity: 'error',
-    //             summary: 'Erreur',
-    //             detail: 'La date de début ne peut pas être après la date de fin.'
-    //         });
-    //         return;
-    //     }
-    
-    //     this.loading = true;
-    //     this.expeditionEcomService.findExpeditionByCriteres(this.form.value).subscribe({
-    //         next: (expeditions) => {
-    //             if (expeditions.length > 0) {
-    //                 this.expeditions = expeditions || [];
-    //                 this.loading = false;
-    //             } else {
-    //                 this.messageService.add({
-    //                     severity: 'info',
-    //                     summary: 'Aucun résultat',
-    //                     detail: 'Aucun colis trouvé pour la période sélectionnée.'
-    //                 });
-    //                 this.expeditions = [];
-    //                 this.montant = 0;
-    //                 this.loading = false;
-    //                 return;
-    //             }
-    //         },
-    //         error: (err) => {
-    //             this.messageService.add({
-    //                 severity: 'error',
-    //                 summary: 'Erreur',
-    //                 detail: 'Une erreur est survenue lors de la récupération des données.'
-    //             });
-    //             this.loading = false;
-    //         }
-    //     });
-    // }
-    
-    resetForm() {
+    searchExpeditionByCriteres(): void {
+        this.loading=true;
+        const debut = this.form.get('debut')?.value;
+        const fin = this.form.get('fin')?.value;
+
+        if (!debut || !fin) {
+            this.messageService.add({
+                severity: 'warn',
+                summary: 'Avertissement',
+                detail: 'Veuillez sélectionner une période valide.'
+            });
+            return;
+        }
+
+        if (new Date(debut) > new Date(fin)) {
+            this.messageService.add({
+                severity: 'error',
+                summary: 'Erreur',
+                detail: 'La date de début ne peut pas être après la date de fin.'
+            });
+            return;
+        }
+
+        const bureauId = this.sessionService.getAgentAttributes().structureId.toString();
         
+        const formattedCriteria = {
+            ...this.form.value,
+            debut: new Date(debut).toISOString().split('T')[0],
+            fin: new Date(fin).toISOString().split('T')[0],
+            bureauId: bureauId 
+        };
+
+        this.loading = true;
+        this.expeditionEcomService.findExpeditionByCriteres(formattedCriteria).subscribe({
+            next: (expeditions) => {
+                if (expeditions.length > 0) {
+                    this.expeditions = expeditions || [];
+                } else {
+                    this.messageService.add({
+                        severity: 'info',
+                        summary: 'Aucun résultat',
+                        detail: 'Aucun colis trouvé pour la période sélectionnée.'
+                    });
+                    this.expeditions = [];
+                    this.montant = 0;
+                }
+                this.loading = false;
+            },
+            error: (err) => {
+                this.messageService.add({
+                    severity: 'error',
+                    summary: 'Erreur',
+                    detail: 'Une erreur est survenue lors de la récupération des données.'
+                });
+                this.loading = false;
+            }
+        });
+    }
+
+    resetForm() {
         this.loadingReset = true;
         setTimeout(() => {
-            this.loadingReset = false
+            this.loadingReset = false;
         }, 1000);
 
+        const today = new Date().toISOString().split('T')[0];
         this.form = this.fb.group({
-            dateDebut: [undefined, Validators.required],
-            dateFin: [undefined, Validators.required],
+            debut: [today, Validators.required],
+            fin: [today, Validators.required],
             prenom: [undefined, Validators.required],
             nom: [undefined, Validators.required]
         });
 
-        this.getAllExpedition();
+        this.searchExpeditionByCriteres();
     }
 
     generatePdf(): void {
-        // this.pdfService.generateAgentSalesReport(this.expeditions);
+        const columns = [
+            { header: 'Code', dataKey: 'numenvoi' },
+            { header: 'Bureau Dépôt', dataKey: 'bureauExpediteurLibelle' },
+            { header: 'Bureau Destination', dataKey: 'bureauDestinationLibelle' },
+            { header: 'Date', dataKey: 'createdAt' }
+        ];
+    
+        const dateDebut = this.form.get('debut')?.value?.toLocaleDateString('fr-FR') || 'Non spécifié';
+        const dateFin = this.form.get('fin')?.value?.toLocaleDateString('fr-FR') || 'Non spécifié';
+        const dateRange = `Du ${dateDebut} au ${dateFin}`;
+    
+        const bureauRange = this.user.structureLibelle 
+            ? `Bureau : ${this.user.structureLibelle}` 
+            : 'Bureau : Non spécifié';
+    
+        this.pdfExportService.exportPDF(
+            this.expeditions, 
+            'Rapport JT3 Ecommerce', 
+            columns, 
+            dateRange, 
+            bureauRange 
+        );
     }
-
-   
+    
     isEmpty() {
-        return this.form.value.dateFin != null && this.form.value.dateDebut != null && this.form.value.prenom != null && this.form.value.nom != null;
+        return this.form.value.fin != null && this.form.value.debut != null && this.form.value.prenom != null && this.form.value.nom != null;
     }
 }

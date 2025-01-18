@@ -22,6 +22,7 @@ import { ArriereLayoutModule } from './layout/arriere-layout/arriere.layout.modu
 import { DrpLayoutComponent } from './layout/drp-layout/drp.layout.component';
 import { CtLayoutComponent } from './layout/ct-layout/ct.layout.component';
 import { CtLayoutModule } from './layout/ct-layout/ct.layout.module';
+import { DroLayoutModule } from './layout/dro-layout/dro.layout.module';
 import { DrpLayoutModule } from './layout/drp-layout/drp.layout.module';
 import {RapportModule} from "./modules/drp/rapport/rapport.module";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -57,6 +58,7 @@ function initializeKeycloak(keycloak: KeycloakService) {
         ArriereLayoutModule,
         CtLayoutModule,
         DrpLayoutModule,
+        DroLayoutModule,
         RapportModule,
         BrowserAnimationsModule,
         MatButtonModule,

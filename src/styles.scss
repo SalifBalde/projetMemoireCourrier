@@ -13,9 +13,12 @@ $gutter: 1rem; //for primeflex grid system
 @import "assets/demo/styles/flags/flags.css";
 @import "assets/demo/styles/badges.scss";
 @import "assets/demo/styles/code.scss";
+
 .p-menubar .p-menu-separator {
-    border-top: 1px solid #3cb553; /* Couleur et épaisseur de la ligne */
-    margin: 4px 0; /* Espacement autour du séparateur */
+    border-top: 1px solid #3cb553;
+    /* Couleur et épaisseur de la ligne */
+    margin: 4px 0;
+    /* Espacement autour du séparateur */
 }
 
 .loading-message {
@@ -40,25 +43,24 @@ $gutter: 1rem; //for primeflex grid system
     color: white;
     display: inline-block;
     text-align: center;
-  }
-  
-  .status-4CAF50 { background-color: #4CAF50; }
-  .status-2196F3 { background-color: #2196F3; }
-  .status-FF9800 { background-color: #FF9800; }
-  .status-F44336 { background-color: #F44336; }
-  .status-FFC107 { background-color: #FFC107; }
-  .status-009688 { background-color: #009688; }
-  .status-FF5722 { background-color: #FF5722; }
-  .status-00BCD4 { background-color: #00BCD4; }
-  .status-8BC34A { background-color: #8BC34A; }
-  .status-3F51B5 { background-color: #3F51B5; }
-  .status-673AB7 { background-color: #673AB7; }
-  .status-FFEB3B { background-color: #FFEB3B; }
-  .status-000000 { background-color: #000000; }
-  .status-9E9E9E { background-color: #9E9E9E; }
-  .status-795548 { background-color: #795548; }
-  .status-9C27B0 { background-color: #9C27B0; }
-  .status-607D8B { background-color: #607D8B; }
-  .status-CDDC39 { background-color: #CDDC39; }
-  .status-03A9F4 { background-color: #03A9F4; }
-  
+}
+
+.status-rouge {background-color: red;}
+.status-bleu {background-color: blue;}
+.status-vert {background-color: green;}
+.status-jaune {background-color: yellow;}
+.status-orange {background-color: orange;}
+.status-turquoise {background-color: #009688;}
+.status-rouge_orange {background-color: #FF5722;}
+.status-cyan {background-color: #00BCD4;}
+.status-vert_clair {background-color: #8BC34A;}
+.status-bleu_foncé {background-color: #3F51B5;}
+.status-violet {background-color: #673AB7;}
+.status-jaune_clair {background-color: #FFEB3B;}
+.status-noir {background-color: black;}
+.status-gris {background-color: gray;}
+.status-brun { background-color: #795548;}
+.status-violet_clair {background-color: #9C27B0;}
+.status-bleu_gris {background-color: #607D8B;}
+.status-citron_vert {background-color: #CDDC39;}
+.status-bleu_ciel {background-color: #03A9F4;}

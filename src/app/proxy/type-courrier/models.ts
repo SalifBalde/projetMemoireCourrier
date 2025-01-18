@@ -1,5 +1,5 @@
 export interface typeCourrier {
-    id: string;
+    id?: string;
     libelle?: string;
 
 }
