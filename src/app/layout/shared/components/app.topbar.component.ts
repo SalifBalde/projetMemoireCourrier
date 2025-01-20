@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { KeycloakService } from 'keycloak-angular';
 import { KeycloakProfile } from 'keycloak-js';
 import { SessionService } from 'src/app/proxy/auth/Session.service';
+import { environment } from 'src/environments/environment.prod';
 
 @Component({
   selector: 'app-topbar',
@@ -34,14 +35,15 @@ export class AppTopBarComponent implements OnInit {
 
     // Define items based on roles
     this.items = [
-      { label: 'Profil', icon: 'pi pi-refresh', command: () => { this.router.navigate(['/profile']); } },
-      ...(userRoles.includes('ROLE_DCG') ? [{ label: 'DCG', icon: 'pi pi-unlock', command: () => { this.router.navigate(['/dcg']); } }] : []),
-      ...(userRoles.includes('ROLE_DRP') ? [{ label: 'DRP', icon: 'pi pi-unlock', command: () => { this.router.navigate(['/drp']); } }] : []),
-      ...(userRoles.includes('ROLE_RECEVEUR') ? [{ label: 'RECEVEUR', icon: 'pi pi-unlock', command: () => { this.router.navigate(['/receveur']); } }] : []),
-      ...(userRoles.includes('ROLE_GUICHET') ? [{ label: 'GHICHET', icon: 'pi pi-unlock', command: () => { this.router.navigate(['/guichet']); } }] : []),
-      ...(userRoles.includes('ROLE_ARRIERE') ? [{ label: 'ARRIERE', icon: 'pi pi-unlock', command: () => { this.router.navigate(['/arriere']); } }] : []),
-      { separator: true },
-      { label: 'Logout', icon: 'pi pi-sign-out', command: () => { this.keycloak.logout(); } }
+        ...(userRoles.includes('ROLE_DCG') ? [{ label: 'DCG', icon: 'pi pi-unlock', command: () => { this.router.navigate(['/dcg']); } }] : []),
+        ...(userRoles.includes('ROLE_DRP') ? [{ label: 'DRP', icon: 'pi pi-unlock', command: () => { this.router.navigate(['/drp']); } }] : []),
+        ...(userRoles.includes('ROLE_RECEVEUR') ? [{ label: 'RECEVEUR', icon: 'pi pi-unlock', command: () => { this.router.navigate(['/receveur']); } }] : []),
+        ...(userRoles.includes('ROLE_GUICHET') ? [{ label: 'GHICHET', icon: 'pi pi-unlock', command: () => { this.router.navigate(['/guichet']); } }] : []),
+        ...(userRoles.includes('ROLE_ARRIERE') ? [{ label: 'ARRIERE', icon: 'pi pi-unlock', command: () => { this.router.navigate(['/arriere']); } }] : []),
+        { separator: true },
+        { label: 'Déconnexion', icon: 'pi pi-sign-out', command: () => { this.keycloak.logout(environment.keycloak.redirectUri);
+            sessionStorage.clear();
+         } }
     ];
         this.structureLibelle = this.sessionService.getAgentAttributes().structureLibelle;
         const caisseLibelle = this.sessionService.getAgentAttributes()?.caisseLibelle;
