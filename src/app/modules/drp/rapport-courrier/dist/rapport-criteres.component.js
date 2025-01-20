@@ -47,7 +47,7 @@ var core_1 = require("@angular/core");
 var forms_1 = require("@angular/forms");
 var api_1 = require("primeng/api");
 var RapportCriteresComponent = /** @class */ (function () {
-    function RapportCriteresComponent(courrierService, pdfService, fb, router, statutCourrierService, tyoeCourrierService, structureService, paysService, sessionService, route, messageService, keycloak) {
+    function RapportCriteresComponent(courrierService, pdfService, fb, router, statutCourrierService, tyoeCourrierService, structureService, paysService, route, messageService, keycloak) {
         this.courrierService = courrierService;
         this.pdfService = pdfService;
         this.fb = fb;
@@ -56,7 +56,6 @@ var RapportCriteresComponent = /** @class */ (function () {
         this.tyoeCourrierService = tyoeCourrierService;
         this.structureService = structureService;
         this.paysService = paysService;
-        this.sessionService = sessionService;
         this.route = route;
         this.messageService = messageService;
         this.keycloak = keycloak;
@@ -117,11 +116,9 @@ var RapportCriteresComponent = /** @class */ (function () {
         });
         this.structureService.findAll().subscribe(function (result) {
             _this.structure$ = result;
-            // this.structure$  = this.structure$ .filter(structure => structure.id !== this.sessionService.getAgentAttributes().structureId);
         });
         this.paysService.findAll().subscribe(function (result) {
             _this.pays$ = result;
-            console.log('result', result);
         });
     };
     RapportCriteresComponent.prototype.searchcourrierByCriteres = function () {

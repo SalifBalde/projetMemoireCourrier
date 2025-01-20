@@ -10,16 +10,16 @@
                 <p-calendar formControlName="fin" id="dateFin" [showIcon]="true" inputId="icon" />
             </div>
             <div class="col-3 md:col-5">
-                <p-dropdown optionLabel="libelle" [filter]="true" filterBy="libelle" optionValue="id"
-                    ormControlName="paysOrigineId" optionValue="id" placeholder="Pays d'Origine"
-                    [options]="pays$" [showClear]="true">
+                <p-dropdown optionLabel="libelle" [filter]="true" filterBy="libelle"
+                    formControlName="paysOrigineId" id="paysOrigineId" placeholder="Pays d'Origine"
+                    [options]="pays$" [showClear]="true" optionValue="id">
                 </p-dropdown>
             </div>
 
             <div class="col-3 md:col-5">
-                <p-dropdown optionLabel="libelle" [filter]="true" filterBy="libelle" optionValue="id"
-                    formControlName="paysDestinationId" optionValue="id" placeholder="Pays Destination"
-                    [options]="pays$" [showClear]="true">
+                <p-dropdown optionLabel="libelle" [filter]="true" filterBy="libelle" 
+                    formControlName="paysDestinationId" id="paysDestinationId"  placeholder="Pays Destination"
+                    [options]="pays$" [showClear]="true" optionValue="id">
                 </p-dropdown>
             </div>
 

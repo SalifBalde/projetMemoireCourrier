@@ -48,7 +48,6 @@ async cn23() {
   }
 
   try {
-    // Appel du service pour créer le PDF
     await this.cn23Service.createPDF(this.courrier);
     console.log('PDF généré avec succès.');
   } catch (error) {
