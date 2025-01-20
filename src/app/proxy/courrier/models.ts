@@ -6,7 +6,7 @@ export class CourrierCreateUpdateDto {
     poids?: number;
     quantite?: number;
     taxeDouane?: number;
-    taxePresentation?: number;
+    taxePresentation?:number;
     valeurDeclare?: number;
     userId?: number;
     caisseId?: number;
@@ -49,7 +49,7 @@ export class CourrierCreateUpdateDto {
     paysOrigineLibelle?: string;
     paysDestinationId?: number;
     paysDestinationLibelle?: string;
-    statutCourrierId?: number;
+    idstatutCourrier?: number;
     destinataireId?: number;
     destinataireNom?: string;
     destinatairePrenom?: string;

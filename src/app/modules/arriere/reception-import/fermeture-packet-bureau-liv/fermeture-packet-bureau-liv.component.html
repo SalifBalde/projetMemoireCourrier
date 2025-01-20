@@ -1,0 +1,40 @@
+<p-toast></p-toast>
+<div class="grid">
+    <div class="col-12">
+        <div class="card px-6 py-6">
+            <p-badge value="Liste  Fermétures Packets" size="large" severity="info"></p-badge>
+
+            <p-table [value]="Listfermetures" [(selection)]="selectedCourriers" dataKey="id" selectionMode="multiple"
+                     [tableStyle]="{'min-width': '50rem'}">
+
+                <ng-template pTemplate="header">
+                    <tr class="custom-header">
+                        <th style="width: 3rem">
+                            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                        </th>
+                        <th>Structure</th>
+                        <th>Date</th>
+                        <th>Numero Dépeche</th>
+                        <th>Details</th>
+
+                    </tr>
+                </ng-template>
+
+                <ng-template pTemplate="body" let-fermeture>
+                    <tr>
+                        <td style="width: 3rem">
+                            <p-tableCheckbox [value]="fermeture"></p-tableCheckbox>
+                        </td>
+                        <td>{{ libelleStructur }}</td>
+                        <td>{{ fermeture?.date | date: 'dd/MM/yyyy' }}</td>
+                        <td>{{ fermeture.numeroDepeche }}</td>
+                        <td>
+                            <p-button label="Détails" [rounded]="true"  (click)="showDetails(fermeture)" severity="info" />
+                        </td>
+                    </tr>
+                </ng-template>
+
+            </p-table>
+        </div>
+    </div>
+</div>

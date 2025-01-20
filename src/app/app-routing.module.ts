@@ -10,6 +10,8 @@ import { GuichetLayoutComponent } from './layout/guichet-layout/guichet.layout.c
 import { ArriereLayoutComponent } from './layout/arriere-layout/arriere.layout.component';
 import { CtLayoutComponent } from './layout/ct-layout/ct.layout.component';
 import { DrpLayoutComponent } from './layout/drp-layout/drp.layout.component';
+import {MessagerieLayoutComponent} from "./layout/messagerie-layout/messagerie.layout.component";
+import {MessageriePacketLayoutComponent} from "./layout/messageriePacket-layout/messageriePacket.layout.component";
 
 @NgModule({
   imports: [
@@ -47,6 +49,15 @@ import { DrpLayoutComponent } from './layout/drp-layout/drp.layout.component';
         loadChildren: () => import('./modules/centre-tri/centre-tri.module').then(m => m.CentreTriModule),
 
       },
+        {
+            path: 'messagerie', component: MessagerieLayoutComponent, canActivate: [AuthGuard], data: { roles: ['ROLE_MESSAGERIE'] },
+            loadChildren: () => import('./modules/messagerie/messagerie.module').then(m => m.MessagerieModule),
+
+        }, {
+            path: 'messageriePacket', component: MessageriePacketLayoutComponent, canActivate: [AuthGuard], data: { roles: ['ROLE_MESSPAQUET'] },
+            loadChildren: () => import('./modules/massagerie-packet/courrier-importrcep.module').then(m => m.CourrierImportrcepModule),
+
+        },
       {
         path: 'drp', component: DrpLayoutComponent, canActivate: [AuthGuard], data: { roles: ['ROLE_DRP'] },
         loadChildren: () => import('./modules/drp/drp.module').then(m => m.DrpModule),

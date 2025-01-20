@@ -5,6 +5,8 @@ import { ArriereRoutingModule } from './arriere-routing.module';
 import { ArriereComponent } from './arriere.component';
 import { SharedComponentModule } from 'src/app/layout/shared/shared-component.module';
 import {RapportModule} from "../drp/rapport/rapport.module";
+import {SplitButtonModule} from "primeng/splitbutton";
+import {ReactiveFormsModule} from "@angular/forms";
 
 
 @NgModule({
@@ -14,6 +16,8 @@ import {RapportModule} from "../drp/rapport/rapport.module";
   imports: [
     SharedComponentModule,
     ArriereRoutingModule,
+
+
   ]
 })
 export class ArriereModule { }

@@ -13,23 +13,55 @@ export class CtMenuComponent implements OnInit {
 
     ngOnInit() {
         this.model = [
+            // {
+            //     label: 'Ct',
+            //     items: [
+            //         {
+            //             label: 'Expedition',
+            //             icon: 'pi pi-fw pi-send',
+            //             routerLink: ['/ct/expedition'],
+            //         },
+            //         {
+            //             label: 'Reception',
+            //             icon: 'pi pi-fw pi-download',
+            //             routerLink: ['/ct/reception'],
+            //         },
+            //
+            //
+            //
+            //     ],
+            // },
+
+
             {
-                label: 'Ct',
+                label: ' Packet Ordinaire',
                 items: [
                     {
-                        label: 'Expedition',
+                        label: ' Ajouter Packet ',
+                        icon: 'pi pi-fw pi-plus',
+                        routerLink: ['/ct/linepacket'],
+                    },
+
+                ],
+            },
+            // {
+            //     label: ' Reception-Packet',
+            //     items: [
+            //         {
+            //             label: ' réception packet',
+            //             icon: 'pi pi-fw pi-download',
+            //             routerLink: ['/ct/linepacketDeclarer'],
+            //         },
+            //
+            //     ],
+            // },
+            {
+                label: 'Expédition Packet',
+                items: [
+                    {
+                        label: 'expédition  packet ',
                         icon: 'pi pi-fw pi-send',
-                        routerLink: ['/ct/expedition'],
-                    },
-                    {
-                        label: 'Reception',
-                        icon: 'pi pi-fw pi-download',
-                        routerLink: ['/ct/reception'],
-                    },
-                    {
-                        label: 'Reception Code',
-                        icon: 'pi pi-fw pi-qrcode',
-                        routerLink: ['/ct/reception'],
+                        routerLink: ['/ct/linepacketDeclarer'],
                     },
 
                 ],
@@ -44,6 +76,8 @@ export class CtMenuComponent implements OnInit {
                     },
                 ],
             },
+
+
 
         ];
     }

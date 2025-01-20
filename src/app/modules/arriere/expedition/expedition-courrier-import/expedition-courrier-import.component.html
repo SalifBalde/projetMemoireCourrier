@@ -1,0 +1,121 @@
+
+<div class="card p-fluid">
+    <p-toast></p-toast>
+    <p-badge  value="Bureaux Destination" size="large" severity="primary"></p-badge>
+    <div class="p-formgrid grid justify-content-center">
+        <div class="field col-4">
+            <label htmlFor="du">Destination</label>
+            <p-dropdown [options]="listAchemin" optionLabel="libelle" optionValue="structureId" [filter]="true"
+                        filterBy="libelle" [(ngModel)]="selectedStructure"  [showClear]="true"
+                        placeholder="choisissez un bureau" (onChange)="onStructureChange()">
+                <ng-template pTemplate="selectedItem" let-selectedOption>
+                    <div class="flex align-items-center gap-2">
+                        <div>{{ selectedOption.libelle }}</div>
+                    </div>
+                </ng-template>
+                <ng-template let-structure pTemplate="item">
+                    <div class="flex align-items-center gap-2">
+                        <div>{{ structure.libelle }}</div>
+                    </div>
+                </ng-template>
+            </p-dropdown>
+
+        </div>
+
+    </div>
+
+
+</div>
+<div class="grid">
+    <div class="col-12">
+        <div class="card px-6 py-6">
+            <p-badge  value="Liste des courriers à expédier" size="large" severity="primary"></p-badge>
+
+            <p-table [value]="listcourriers" [(selection)]="selectedColis" dataKey="id"
+                     [tableStyle]="{'min-width': '50rem'}">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th style="width: 4rem"><p-tableHeaderCheckbox /></th>
+                        <th>Code</th>
+                        <th>Quantité</th>
+                        <th>montant</th>
+                        <th>Taxe Representation</th>
+                        <th>Taxe Douane</th>
+                        <th>poids</th>
+                        <th>Status</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-courrier>
+                    <tr>
+                        <td>
+                            <p-tableCheckbox [value]="courrier" />
+                        </td>
+                        <td>{{courrier.codeBarre}}</td>
+                        <td>{{courrier.quantite}}</td>
+
+                        <td>{{courrier.montant}}</td>
+                        <td>{{courrier.taxePresentation}}</td>
+                        <td>
+
+                            <input
+
+                                style="background-color: darkgrey"
+                                type="number"
+                                pInputText
+                                id="montants-{{courrier.id}}"
+                                [disabled]="!showMontantField"
+                                [(ngModel)]="courrier.montantTaxeDouane"
+                                placeholder="Entrez le montant"
+                            />
+
+
+                        </td>
+                        <td>{{courrier.poids}}</td>
+                        <td>
+                            <p-badge
+                                [value]="courrier?.statutCourrier?.libelle"
+                                [severity]="getBadgeSeverity(courrier?.statutCourrier?.libelle)">
+                            </p-badge>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+            <div class="col-12 flex flex-column lg:flex-row justify-content-end align-items-center">
+                <button pbutton="" pripple="" class="p-element p-button-primary lg:w-auto flex-order-1  p-button p-component" (click)="openDialog(courrier)"  [disabled]="isExpeditionDisabled()">
+                    <span class="p-button-icon p-button-icon-left pi pi-fw pi-check"></span><span class="p-button-label">Expédition</span>
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+<p-dialog [(visible)]="openCourrierDialog" header="Confirmer" [modal]="true" [style]="{width:'450px'}">
+    <div class="flex align-items-center justify-content-center">
+        <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+        <span *ngIf="courrier">Etes-vous sûr que vous voulez réceptionner <b>{{courrier.code}}</b>?</span>
+    </div>
+    <ng-template pTemplate="footer">
+        <button pButton pRipple icon="pi pi-check" class="p-button-text " label="Oui"
+                (click)="confirmReception()"></button>
+        <button pButton pRipple icon="pi pi-times" class="p-button-text p-button-danger" label="Non"
+                (click)="openCourrierDialog = false"></button>
+
+    </ng-template>
+</p-dialog>
+<p-dialog [(visible)]="openNumExpDialog" header="Saisir Numéro Dépéche" [modal]="true" [style]="{width:'450px'}">
+    <div class="col-12 lg:col-6 field" >
+    <span class="p-float-label">
+        <p-inputGroup>
+            <p-inputGroupAddon>{{this.structure?.code}}</p-inputGroupAddon>
+            <input  [(ngModel)]="numeroDepech"  placeholder="numéro  dépeche" pKeyFilter="num"  pInputText />
+            <p-inputGroupAddon>{{ currentYearLastTwoDigits }}</p-inputGroupAddon>
+        </p-inputGroup>
+    </span>
+
+    </div>
+    <p-button label="Expédier"icon="pi pi-fw pi-download"  (click)="openDialog1(courrier)"    />
+
+</p-dialog>
+
+
