@@ -197,7 +197,8 @@ export class ExpeditionArriereComponent  implements  OnInit{
         );
     }
     generatePdf(): void{
-        //this.factureService .generateAgentSalesReport(this.colis$).then(r => "pdf généré");
+
+        this.factureService .generateReceipt(this.selectedLettre).then(r => "pdf généré");
     }
 
 
