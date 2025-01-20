@@ -6,10 +6,10 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 exports.__esModule = true;
-exports.DroRoutingModule = void 0;
+exports.ReceveurRoutingModule = void 0;
 var core_1 = require("@angular/core");
-var router_1 = require("@angular/router");
 var index_component_1 = require("./index/index.component");
+var router_1 = require("@angular/router");
 var routes = [
     {
         path: '',
@@ -20,24 +20,25 @@ var routes = [
         path: 'index',
         component: index_component_1.IndexComponent,
         children: [
-            { path: '', redirectTo: 'dro', pathMatch: 'full' },
-            { path: 'dro', component: index_component_1.IndexComponent },
+            { path: '', redirectTo: 'receveur', pathMatch: 'full' },
+            { path: 'receveur', component: index_component_1.IndexComponent },
         ]
     },
+    { path: 'suiviCourrier', loadChildren: function () { return Promise.resolve().then(function () { return require('./suiviCourrier/suiviCourrier.module'); }).then(function (m) { return m.SuiviCourrierModule; }); } },
     { path: 'rapport-courrier', loadChildren: function () { return Promise.resolve().then(function () { return require('./rapport-courrier/rapport-criteres.module'); }).then(function (m) { return m.RapportCriteresModule; }); } },
-    { path: 'courrier-details/:id', loadChildren: function () { return Promise.resolve().then(function () { return require('./courrier-details/courrier-details.module'); }).then(function (m) { return m.CourrierDetailsModule; }); } },
     { path: 'rapport-ecom', loadChildren: function () { return Promise.resolve().then(function () { return require('./rapport-ecom/rapport-ecom.module'); }).then(function (m) { return m.RapportEcomModule; }); } },
     { path: 'ecom-details/:id', loadChildren: function () { return Promise.resolve().then(function () { return require('./ecom-details/ecom-details.module'); }).then(function (m) { return m.EcomDetailsModule; }); } },
+    { path: 'courrier-details/:id', loadChildren: function () { return Promise.resolve().then(function () { return require('./courrier-details/courrier-details.module'); }).then(function (m) { return m.CourrierDetailsModule; }); } },
 ];
-var DroRoutingModule = /** @class */ (function () {
-    function DroRoutingModule() {
+var ReceveurRoutingModule = /** @class */ (function () {
+    function ReceveurRoutingModule() {
     }
-    DroRoutingModule = __decorate([
+    ReceveurRoutingModule = __decorate([
         core_1.NgModule({
             imports: [router_1.RouterModule.forChild(routes)],
             exports: [router_1.RouterModule]
         })
-    ], DroRoutingModule);
-    return DroRoutingModule;
+    ], ReceveurRoutingModule);
+    return ReceveurRoutingModule;
 }());
-exports.DroRoutingModule = DroRoutingModule;
+exports.ReceveurRoutingModule = ReceveurRoutingModule;
