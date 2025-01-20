@@ -133,108 +133,33 @@ export class ArriereMenuComponent implements OnInit {
                         routerLink: ['/arriere/reception/fermeturePacketInterieur'],
                     },
                     {
-                        label: ' Colis Interieur',
+                        label: 'Réception à livrer ',
                         icon: 'pi pi-fw pi-download',
-                        routerLink: ['/arriere/reception/fermetureColisOrdinaire'],
+                        routerLink: ['/arriere/reception/reception-E-commerce-livraison'],
                     },
                     {
-                        disabled: true, // Non-cliquable
-                        styleClass: 'menu-separator',
+                        label: 'Réception à expédier',
+                        icon: 'pi pi-fw pi-download',
+                        routerLink: ['/arriere/reception/reception-E-commerce-expedition'],
                     },
-
-
-                ],
+                ]
             },
+            // {
+            //     label: 'E-commerce',
+            //     items: [
 
-
-                ...(this.isNoeudAcheminement
-                    ? [
-                        {
-                            label: 'Expédition Import',
-                            items: [
-                                {
-                                    label: '--- Expédition Import ---',
-                                    styleClass: 'menu-separator',
-                                    items: [
-                                        {
-                                            label: 'Expédition Lettre Import',
-                                            icon: 'pi pi-fw pi-send',
-                                            routerLink: ['/arriere/expedition-courrier-import/expeditionCourrierImport'],
-                                        },
-                                        {
-                                            label: 'Expédition Packet Import',
-                                            icon: 'pi pi-fw pi-send',
-                                            routerLink: ['/arriere/expedition-packet-import/expedition-packet-import'],
-                                        },
-                                        {
-                                            label: 'Expédition Colis Import',
-                                            icon: 'pi pi-fw pi-send',
-                                            routerLink: ['/arriere/expedition-courrier-import/expeditionColisImport'],
-                                        },
-                                    ],
-                                },
-                            ],
-                        },
-                    ]
-                    : []),
-
-
-            {
-                label: 'Reception  Import',
-                items: [
-
-
-                    ...(this.isNoeudAcheminement
-                        ? [
-
-                            {
-                                label: '--- Réception Import ---',
-                                styleClass: 'menu-separator',
-                                items: [
-                                    {
-                                        label: ' Lettre Import',
-                                        icon: 'pi pi-fw pi-download',
-                                        routerLink: ['/arriere/reception/fermetureCourrierImport'],
-                                    }, {
-                                        label: ' Packet Import',
-                                        icon: 'pi pi-fw pi-download',
-                                        routerLink: ['/arriere/reception/fermeturePacketImport'],
-                                    },
-                                    {
-                                        label: ' Colis Import',
-                                        icon: 'pi pi-fw pi-download',
-                                        routerLink: ['/arriere/reception/fermetureColisImport'],
-                                    },
-                                ],
-                            },
-                        ]
-                        : []),
-                ],
-            },
-            {
-                // label: 'Reception Import',
-                items: [
-                    ...(this.isNotNoeudAcheminement
-                        ? [
-                            {
-                                label: 'Lettre Import',
-                                icon: 'pi pi-fw pi-download',
-                                routerLink: ['/arriere/reception-import/fermetureCourrierBureauLiv'],
-                            },{
-                                label: 'Packet Import',
-                                icon: 'pi pi-fw pi-download',
-                                routerLink: ['/arriere/reception-import/fermeturePacketBureauLiv'],
-                            },
-                            {
-                                label: 'Colis Import',
-                                icon: 'pi pi-fw pi-download',
-                                routerLink: ['/arriere/reception-import/fermetureColisBureauLiv'],
-                            },
-                        ]
-                        : []), // Corrigez la syntaxe ici en retirant la virgule et en fermant correctement
-                ],
-            },
-
+            //         {
+            //             // label: 'Reception Courriers',
+            //             // icon: 'pi pi-fw pi-download',
+            //             // routerLink: ['/arriere/reception'],
+            //         },
+            //         {
+            //             // label: 'Reception Colis',
+            //             // icon: 'pi pi-fw pi-download',
+            //             // routerLink: ['/arriere/reception/receptionColis'],
+            //         },
+            //     ]
+            // },
             {
                 label: 'Reporting',
                 items: [

@@ -69,6 +69,7 @@ export class ExpeditionECommerceComponent implements OnInit {
         this.structureService.findAll().subscribe(
             (result) => {
                 this.structure$ = result
+                console.log('structure', result)
             },
             (error) => {
                 console.error('Error loading structures', error);
@@ -76,15 +77,13 @@ export class ExpeditionECommerceComponent implements OnInit {
         );
     }
 
-
     buildForm() {
         this.form = this.fb.group({
             bureauDestination: [undefined, Validators.required],
         });
     }
 
-    
-    
+
     onSelectEcommerce(ecommerce: EcommerceDto) {
         if (this.selectedEcommerce.includes(ecommerce)) {
 
@@ -115,6 +114,7 @@ export class ExpeditionECommerceComponent implements OnInit {
             }
         );
     }
+
     saveExpedition() {
         if (this.form.invalid) {
             this.messageService.add({
@@ -125,7 +125,7 @@ export class ExpeditionECommerceComponent implements OnInit {
             });
             return;
         }
-    
+
         if (!this.selectedStructure) {
             this.messageService.add({
                 severity: 'error',
@@ -135,24 +135,24 @@ export class ExpeditionECommerceComponent implements OnInit {
             });
             return;
         }
-    
+
         const invalidEcommerce = this.selectedEcommerce.find(
             (ecommerce) => String(ecommerce.idbureau).trim() !== String(this.selectedStructure?.id).trim()
         );
-    
+
         if (invalidEcommerce) {
             this.messageService.add({
-                severity: 'warn', 
+                severity: 'warn',
                 summary: 'Attention',
                 detail: 'Vous n\'avez pas choisi la bonne destination pour l\'envoi sélectionné.',
-                life: 3000,  
+                life: 3000,
             });
-            return;  
+            return;
         }
-    
+
         this.form.value.details = this.mapIdsToEcommerce(this.selectedEcommerce);
         this.form.value.bureauExpediteur = this.selectedStructure?.id;
-    
+
         this.expeditionEcomService.save(this.form.value).subscribe(
             (result) => {
                 this.expedition = result;
@@ -175,15 +175,15 @@ export class ExpeditionECommerceComponent implements OnInit {
             }
         );
     }
-    
+
     mapIdsToEcommerce(selectedEcommerce: EcommerceDto[]): ExpeditionEcomDetailsDto[] {
         return selectedEcommerce.map(ecommerce => ({
-            ecommerceId: ecommerce.id, 
+            ecommerceId: ecommerce.id,
             ecommerceNumenvoie: ecommerce.numenvoi,
-            ecommerceNomClient: ecommerce.nomClient, 
-            ecommercePrenomClient: ecommerce.prenomClient, 
-            ecommerceIdbureau: ecommerce.idbureau, 
-            valider: true 
+            ecommerceNomClient: ecommerce.nomClient,
+            ecommercePrenomClient: ecommerce.prenomClient,
+            ecommerceIdbureau: ecommerce.idbureau,
+            valider: true
         }));
     }
 }

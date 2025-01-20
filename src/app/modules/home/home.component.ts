@@ -89,4 +89,8 @@ export class HomeComponent implements OnInit{
             this.router.navigate(['/']);
         }
     }
+      public isDro(): boolean {
+        const userRoles = this.keycloak.getUserRoles();
+        return userRoles.includes('ROLE_DRO');
+      }
 }

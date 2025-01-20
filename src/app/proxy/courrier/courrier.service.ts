@@ -1,5 +1,5 @@
 import { environment } from 'src/environments/environment';
-import type { CourrierCreateUpdateDto, CourrierDto } from './models';
+import type { CourrierCreateUpdateDto, CourrierDto, CourrierSearchDto } from './models';
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import { ClientDto } from '../client';
@@ -12,21 +12,20 @@ import {Statutdto} from "../statut-courrier";
 })
 export class CourrierService {
   apiName = 'courrier';
-  private api_host: string= environment.api_host + this.apiName;
+  private api_host: string = environment.api_host + this.apiName;
   myToken = sessionStorage.getItem("token");
   private httpOptions = {
     headers: new HttpHeaders({
-      'Content-Type':  'application/json',
-      "Authorization" : "Bearer "+this.myToken
+      'Content-Type': 'application/json',
+      // "Authorization": "Bearer " + this.myToken
     })
   }
 
-  constructor(private readonly httpClient : HttpClient) { }
+  constructor(private readonly httpClient: HttpClient) { }
 
-  findAll()
-{
-  return this.httpClient.get<[CourrierDto]>(this.api_host,this.httpOptions);
-}
+  findAll() {
+    return this.httpClient.get<[CourrierDto]>(this.api_host, this.httpOptions);
+  }
 
 getAllDestinataires(clientId:string, destinationId:string) {
     let new_api_host = this.routerParam(this.api_host,'client',clientId,'destination', destinationId);
@@ -50,10 +49,13 @@ update(id:string, item:CourrierDto)
 }
     // Méthode pour mettre à jour plusieurs courriers
 
-    updateCourriers(courriers: CourrierDto[]): Observable<CourrierDto[]> {
-        const url = `${environment.api_host}courrier/update`;
-        return this.httpClient.put<CourrierDto[]>(url, courriers,this.httpOptions);
+
+    findCourrierByAgent(search: CourrierSearchDto) {
+      let new_api_host = this.routerParam(this.api_host, 'searchByAgent');
+      return this.httpClient.post<CourrierDto[]>(new_api_host, search, this.httpOptions);
     }
+
+
     updateCourrier(courriers: CourrierDto[]): Observable<CourrierDto[]> {
         const url = `${environment.api_host}courrier/updatetaxeDouanier`;
         return this.httpClient.put<CourrierDto[]>(url, courriers,this.httpOptions);
@@ -64,25 +66,34 @@ getOneById(id:string)
   return this.httpClient.get<CourrierDto>(new_api_host,this.httpOptions);
 }
 
-getOne(id:string)
-{
-  let new_api_host = this.routerParam(this.api_host+'/getByreference',id);
-  return this.httpClient.get<CourrierDto>(new_api_host,this.httpOptions);
-}
+  updateCourriers(courriers: CourrierDto[]): Observable<CourrierDto[]> {
+    const url = `${environment.api_host}courrier/update`;
+    return this.httpClient.put<CourrierDto[]>(url, courriers, this.httpOptions);
+  }
 
-private routerParam(baseUrl: string, ...params: string[]) {
+
+
+  findCourrierByCriteres(search: CourrierSearchDto) {
+    const new_api_host = this.routerParam(this.api_host, 'search-by-criteria');
+    return this.httpClient.post<CourrierDto[]>(new_api_host, search, this.httpOptions);
+  }
+
+  getOne(id: string) {
+    let new_api_host = this.routerParam(this.api_host + '/getByreference', id);
+    return this.httpClient.get<CourrierDto>(new_api_host, this.httpOptions);
+  }
+
+  private routerParam(baseUrl: string, ...params: string[]) {
     return `${baseUrl}/${params.join('/')}`;
   }
 
-    findCourrierByStrutureDepot(idStrut: string)
-    {
-        return this.httpClient.get<[CourrierDto]>(this.api_host+'/structureDepot/'+idStrut,this.httpOptions);
-    }
+  findCourrierByStrutureDepot(idStrut: string) {
+    return this.httpClient.get<[CourrierDto]>(this.api_host + '/structureDepot/' + idStrut, this.httpOptions);
+  }
 
-    findCourrierByTypeCourrierAndStructureDepotAndIdStut(idType: string,idStructureDepot: string, IdStatut: string)
-    {
-        return this.httpClient.get<[CourrierDto]>(this.api_host+'/by-type/'+idType+'/'+idStructureDepot+ '/'+IdStatut,this.httpOptions);
-    }
+  findCourrierByTypeCourrierAndStructureDepotAndIdStut(idType: string, idStructureDepot: string, IdStatut: string) {
+    return this.httpClient.get<[CourrierDto]>(this.api_host + '/by-type/' + idType + '/' + idStructureDepot + '/' + IdStatut, this.httpOptions);
+  }
 
     findCourrierByStrutureDepotAndStatutId(idStrut: string, idStatutCourrier: string)
     {

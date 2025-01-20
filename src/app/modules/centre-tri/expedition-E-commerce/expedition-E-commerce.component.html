@@ -34,20 +34,23 @@
             <tr>
               <th><p-tableHeaderCheckbox></p-tableHeaderCheckbox></th>
               <th>Numéro d'envoi</th>
+              <th>Partenaire</th>
               <th>Nom complet client</th>
               <th>Téléphone</th>
-              <th>Adresse Client</th>
+              <th>Bureau Expedition</th>
+              <th>Bureau Destination</th>
               <th>Date</th>
             </tr>
           </ng-template>
-
           <ng-template pTemplate="body" let-ecommerce>
             <tr>
               <td><p-tableCheckbox [value]="ecommerce"></p-tableCheckbox></td>
               <td>{{ ecommerce.numenvoi }}</td>
+              <td>{{ ecommerce.partenaireLibelle}}</td>
               <td>{{ ecommerce.prenomClient }} {{ ecommerce.nomClient }}</td>
               <td>{{ ecommerce.telephoneClient }}</td>
-              <td>{{ ecommerce.adresseClient }}</td>
+              <td>{{ecommerce.partenaireBureauLibelle}}</td>
+              <td>{{ecommerce.bureauDestinationLibelle}}</td>
               <td>{{ ecommerce.date | date: 'short' }}</td>
             </tr>
           </ng-template>

@@ -9,6 +9,8 @@ import { KeycloakService } from "keycloak-angular";
 import { SessionService } from 'src/app/proxy/auth/Session.service';
 import { ExpeditionEcomDto, ExpeditionEcomService, ExpeditionSearchDto } from 'src/app/proxy/expeditionEcommerce';
 import { StructureDto, StructureService } from 'src/app/proxy/structures';
+import { PdfExportService } from 'src/app/proxy/pdf-export/pdf-export.service';
+import { UserDto } from 'src/app/proxy/users';
 
 @Component({
     selector: 'app-rapportEcommerce',
@@ -22,6 +24,7 @@ export class RapportEcommerceComponent implements OnInit {
     fullname = "";
     isModalOpen = false;
     montant = 0;
+    user: UserDto = {} ;
     expeditions: ExpeditionEcomDto[] = [];
     cols: any[] = [];
     structure$: StructureDto[] = [];
@@ -39,6 +42,7 @@ export class RapportEcommerceComponent implements OnInit {
         private fb: FormBuilder,
         private router: Router,
         private route: ActivatedRoute,
+        private pdfExportService : PdfExportService,
         private structureService: StructureService,
         private messageService: MessageService,
         private readonly keycloak: KeycloakService
@@ -154,9 +158,30 @@ export class RapportEcommerceComponent implements OnInit {
     }
 
     generatePdf(): void {
-        // this.pdfService.generateAgentSalesReport(this.expeditions);
+        const columns = [
+            { header: 'Code', dataKey: 'numenvoi' },
+            { header: 'Bureau Dépôt', dataKey: 'bureauExpediteurLibelle' },
+            { header: 'Bureau Destination', dataKey: 'bureauDestinationLibelle' },
+            { header: 'Date', dataKey: 'createdAt' }
+        ];
+    
+        const dateDebut = this.form.get('debut')?.value?.toLocaleDateString('fr-FR') || 'Non spécifié';
+        const dateFin = this.form.get('fin')?.value?.toLocaleDateString('fr-FR') || 'Non spécifié';
+        const dateRange = `Du ${dateDebut} au ${dateFin}`;
+    
+        const bureauRange = this.user.structureLibelle 
+            ? `Bureau : ${this.user.structureLibelle}` 
+            : 'Bureau : Non spécifié';
+    
+        this.pdfExportService.exportPDF(
+            this.expeditions, 
+            'Rapport JT3 Ecommerce', 
+            columns, 
+            dateRange, 
+            bureauRange 
+        );
     }
-
+    
     isEmpty() {
         return this.form.value.fin != null && this.form.value.debut != null && this.form.value.prenom != null && this.form.value.nom != null;
     }

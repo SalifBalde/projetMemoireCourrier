@@ -12,6 +12,7 @@ import { CtLayoutComponent } from './layout/ct-layout/ct.layout.component';
 import { DrpLayoutComponent } from './layout/drp-layout/drp.layout.component';
 import {MessagerieLayoutComponent} from "./layout/messagerie-layout/messagerie.layout.component";
 import {MessageriePacketLayoutComponent} from "./layout/messageriePacket-layout/messageriePacket.layout.component";
+import { DroLayoutComponent } from './layout/dro-layout/dro.layout.component';
 
 @NgModule({
   imports: [
@@ -30,12 +31,12 @@ import {MessageriePacketLayoutComponent} from "./layout/messageriePacket-layout/
 
       },
       {
-        path: 'guichet', component: GuichetLayoutComponent, canActivate: [AuthGuard], data: { roles: ['ROLE_GUICHET'] },
+        path: 'guichet', component: GuichetLayoutComponent,   canActivate: [AuthGuard], data: { roles: ['ROLE_GUICHET'] },
         loadChildren: () => import('./modules/guichet/guichet.module').then(m => m.GuichetModule),
 
       },
       {
-        path: 'backoffice', component: BackofficeLayoutComponent, canActivate: [AuthGuard], data: { roles: ['ROLE_ADMIN'] },
+        path: 'backoffice', component: BackofficeLayoutComponent,  canActivate: [AuthGuard], data: { roles: ['ROLE_ADMIN'] },
         loadChildren: () => import('./modules/backoffice/backoffice.module').then(m => m.BackofficeModule),
 
       },
@@ -45,7 +46,7 @@ import {MessageriePacketLayoutComponent} from "./layout/messageriePacket-layout/
 
       },
       {
-        path: 'ct', component: CtLayoutComponent, canActivate: [AuthGuard], data: { roles: ['ROLE_CT'] },
+        path: 'ct', component: CtLayoutComponent,  canActivate: [AuthGuard], data: { roles: ['ROLE_CT'] },
         loadChildren: () => import('./modules/centre-tri/centre-tri.module').then(m => m.CentreTriModule),
 
       },
@@ -63,7 +64,11 @@ import {MessageriePacketLayoutComponent} from "./layout/messageriePacket-layout/
         loadChildren: () => import('./modules/drp/drp.module').then(m => m.DrpModule),
 
       },
+      {
+        path: 'dro', component: DroLayoutComponent, canActivate: [AuthGuard], data: { roles: ['ROLE_DRO'] },
+        loadChildren: () => import('./modules/dro/dro.module').then(m => m.DroModule),
 
+      },
             { path: 'notfound', component: NotfoundComponent },
             { path: '**', redirectTo: '/notfound' },
         ], { scrollPositionRestoration: 'enabled', anchorScrolling: 'enabled',  })
