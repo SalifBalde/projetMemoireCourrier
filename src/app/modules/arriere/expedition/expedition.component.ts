@@ -110,18 +110,7 @@ import {forkJoin} from "rxjs";
 
         this.structureService.findAll().subscribe(
             (result) => {
-<<<<<<< HEAD
-                this.structure$ = result
-                const idRecherche = 16;
-                console.log(this.structure$);
-                this.structure$ = result.filter((structure: any) => structure.id === idRecherche);
-                console.log(this.structure$);
-            },
-            (error) => {
-                console.error("Erreur lors de la récupération des structures :", error);
-=======
                 this.structure$ = result;
->>>>>>> 41368382a714ad24da99e79997690368c64c3021
             }
         );
 
