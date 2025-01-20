@@ -39,6 +39,14 @@ export class HomeComponent implements OnInit{
         const userRoles = this.keycloak.getUserRoles();
         return userRoles.includes('ROLE_CT');
       }
+    public ismessagerie(): boolean {
+        const userRoles = this.keycloak.getUserRoles();
+        return userRoles.includes('ROLE_MESSAGERIE');
+    }
+ public ismessageriePacket(): boolean {
+        const userRoles = this.keycloak.getUserRoles();
+        return userRoles.includes('ROLE_MESSPAQUET');
+    }
 
       public isDrp(): boolean {
         const userRoles = this.keycloak.getUserRoles();

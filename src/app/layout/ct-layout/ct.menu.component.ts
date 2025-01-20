@@ -14,7 +14,7 @@ export class CtMenuComponent implements OnInit {
     ngOnInit() {
         this.model = [
 
-            
+
             {
                 label: 'Ct',
                 items: [
@@ -70,6 +70,8 @@ export class CtMenuComponent implements OnInit {
                     },
                 ],
             },
+
+
 
         ];
     }

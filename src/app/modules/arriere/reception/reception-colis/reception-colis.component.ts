@@ -8,6 +8,13 @@ import {FormBuilder} from "@angular/forms";
 import {ActivatedRoute, Router} from "@angular/router";
 import {StructureDto, StructureService} from "../../../../proxy/structures";
 import {Table} from "primeng/table";
+import {TypeCourrierService, TypeCourrierDto} from "../../../../proxy/type-courrier";
+import {StatutCourrierService, Statutdto} from "../../../../proxy/statut-courrier";
+import {SuiviCourrierService} from "../../../../proxy/suivi-courrier";
+import {Noeuxdto, NouexService } from 'src/app/proxy/noeux';
+import { FermetureCourrierService } from 'src/app/proxy/fermetureCourrier';
+import {Paysdto} from "../../../../proxy/pays";
+import {BureauxDouanierService} from "../../../../proxy/burauex_douaniers";
 
 @Component({
   selector: 'app-reception-colis',
@@ -15,14 +22,34 @@ import {Table} from "primeng/table";
   styleUrl: './reception-colis.component.scss',
     providers: [MessageService],
 })
-export class ReceptionColisComponent implements  OnInit{
-     listeCourrier: [CourrierDto];
-     listeColis: [CourrierDto];
-     openColisDialog: boolean;
-     colis: any={}
+export class ReceptionColisComponent implements  OnInit {
+    listeCourrier: [CourrierDto];
+    listeColis: [CourrierDto];
+    openColisDialog: boolean;
+    colis: any={}
     @ViewChild('dt') dt: Table;
-     structure$: [StructureDto];
-    selectedColis: any;
+    structure$: [StructureDto];
+    selectedLettre: any;
+    TypeCourrier:TypeCourrierDto
+    statutCourrier:Statutdto
+    statutCourriers: Statutdto[];
+    idStatutFermetureCourrier: any;
+    typeCourrier:TypeCourrierDto
+    iduser:any
+    selectedCourriers!: any;
+    suiviCourriers:any={}
+    fermetureId: number;
+    listeLettres: any[]=[];
+    statutCourriersarriere: Statutdto[];
+    selectedStatut: any;
+    Bestnoeux: Noeuxdto;
+    paysOrigineId:Paysdto={}
+    structureDestna: number;
+    showMontantField: boolean = false;
+    montants: number | null = null;
+
+
+
 
 
     constructor( private colisService: ColisService,
@@ -33,7 +60,15 @@ export class ReceptionColisComponent implements  OnInit{
                  private router: Router,
                  private route : ActivatedRoute,
                  private structureService: StructureService,
-                 private messageService: MessageService,) {
+                 private messageService: MessageService,
+                 private  typeCourrierService:TypeCourrierService,
+                 private  suiviCourrier:SuiviCourrierService,
+                 private fermetureCourrierService : FermetureCourrierService,
+                 private  statutCourrierService: StatutCourrierService,
+                 private noeuxService: NouexService,
+                 private bureauxDouanier: BureauxDouanierService,
+    ) {
+
 
 
     }
@@ -51,15 +86,81 @@ export class ReceptionColisComponent implements  OnInit{
     }
 
     ngOnInit(): void {
+
+        this.route.params.subscribe(params => {
+            this.fermetureId = +params['id'];
+            console.log('ID de la fermeture:', this.fermetureId);    });
+
         this.structureService.findAll().subscribe(
             (result) => {
                 this.structure$ = result;
             }
         );
-       this.getAllCourriers()
-        this.getCourriers()
+        this.paysOrigineId.id=210
+        this.structureDestna = Number(this.sessionService.getAgentAttributes().structureId)
+
+        this.statutCourrierService.findAll().subscribe((data)=>{
+            this.statutCourriers=data;
+            console.log(this.statutCourrier)
+            this.statutCourriersarriere= this.statutCourriers.filter(
+                (statut) => [19, 10, 23].includes(statut.id)
+            );
+            console.log( this.statutCourriersarriere)
+            this.idStatutFermetureCourrier =this.statutCourriers = data.filter(statut => statut.id === 21);
+            console.log(this.idStatutFermetureCourrier);  // Afficher les résultats filtrés
+            this.getCourriersByFermetureIdAndStatut(this.fermetureId,this.idStatutFermetureCourrier[0].id,this.paysOrigineId.id,  this.structureDestna)
+        })
+        this.noeuxService.findNoeuxByIdstruct(this.sessionService.getAgentAttributes().structureId.toString()).subscribe(
+            (result) => {
+                this.Bestnoeux = result;
+                console.log(this.Bestnoeux)
+                //  this.getAcheminByIdNoeux()
+            }
+        );
+        this.iduser= this.sessionService.getAgentAttributes()?.id
+        console.log(this.iduser)
+        this.getAllCourriers()
+
+        this.getTypeCourrierById()
+
+
+
 
     }
+    getTypeCourrierById(){
+
+        this.typeCourrierService.getById("2").subscribe(
+            (result) => {
+                this.typeCourrier = result;
+                console.log(this.typeCourrier)
+            }
+        );
+    }
+    onStructureChange(): void {
+        const mystructure= Number (this.sessionService.getAgentAttributes().structureId)
+        if (this.selectedStatut.id==10) {
+            this.bureauxDouanier.isStructureDouaniere(mystructure).subscribe({
+                next: (isDouanier: boolean) => {
+                    this.showMontantField = isDouanier;
+                    if (isDouanier) {
+                        this.montants = null; // Réinitialise le champ montant si douanier
+                    }
+                },
+                error: () => {
+                    this.messageService.add({
+                        severity: 'error',
+                        summary: 'Erreur',
+                        detail: 'Une erreur est survenue lors de la vérification de la structure.',
+                    });
+                },
+            });
+        } else {
+            this.showMontantField = false;
+            this.montants = null; // Réinitialiser si aucune structure n'est sélectionnée
+        }
+    }
+
+
 
 
     getAllCourriers(){
@@ -71,96 +172,105 @@ export class ReceptionColisComponent implements  OnInit{
             }
         );
     }
-
-    getCourriers(){
-        const idType ="2"
-        const idStatu= '1'
-        const idStructureDepo = this.sessionService.getAgentAttributes().structureId.toString()
-
-
-        this.courrierService.findCourrierByTypeCourrierAndStructureDepotAndIdStut(idType, idStructureDepo, idStatu).subscribe(
+    getCourriersByFermetureIdAndStatut(fermetureId:number , statutId:number,paysOrigineId:number,  structureDestna: number){
+        this.fermetureCourrierService.getCourriersByFermetureIdAndStatutAndPaysOrigin(fermetureId, statutId, this.paysOrigineId.id,  this.structureDestna).subscribe(
             (result) => {
-                this.listeColis = result;
-                console.log(this.listeColis)
-            }
-        );
+                this.listeLettres= result
+                console.log(this.listeLettres);
+            });
     }
+
+
     openDialog(courrie: CourrierDto) {
         this.openColisDialog = true;
         this.colis = { ...courrie };
         console.log(courrie)
     }
     isExpeditionDisabled(): boolean {
-        return !this.selectedColis
+        return !this.selectedLettre
 
     }
 
-    // confirmReception() {
-    //     console.log(this.colis)
-    //     const courrieId = this.colis.id.toString();
-    //     console.log(courrieId)
-    //     this.colis.statutCourrier.id = 2
-    //     this.openColisDialog=false
-    //
-    //     this.courrierService.update(courrieId,this.colis).subscribe(
-    //         (result) => {
-    //             this.getCourriers();
-    //             this.messageService.add({
-    //                 severity: 'success',
-    //                 summary: 'Successful',
-    //                 detail: 'Colis Réceptionné avec succés',
-    //                 life: 3000,
-    //             });
-    //         },
-    //         (error) => {
-    //             this.messageService.add({
-    //                 severity: 'danger',
-    //                 summary: 'Error',
-    //                 detail: 'Erreur de Réceptionne',
-    //                 life: 3000,
-    //             });
-    //         }
-    //     );
-    //
-    //
-    // }
+
     confirmReception() {
-        console.log(this.selectedColis);
+        console.log(this.selectedLettre);
 
         this.openColisDialog = false;
 
-        this.selectedColis.forEach((courrier) => {
-            courrier.statutCourrier = { id: 2 }; // Met le statut à 'réceptionné'
-        });
-        console.log(this.selectedColis);
+        this.selectedLettre.forEach((courrier) => {
+            // Mettre à jour le statut du courrier et l'ID de l'utilisateur
+            // Vérifier si l'ID du statut est renseigné
+            if (this.selectedStatut?.id) {
+                courrier.statutCourrier = { id: this.selectedStatut.id };
+                courrier.taxeDouane = courrier.montantTaxeDouane;
 
-        // Appel au service pour mettre à jour l'élément
-        this.courrierService.updateCourriers(this.selectedColis).subscribe(
+            } else {
+                // Attribuer une valeur par défaut (22) si l'ID du statut n'est pas renseigné
+                courrier.taxeDouane = courrier.montantTaxeDouane;
+                courrier.statutCourrier = { id: 10 };
+            }
+            courrier.userId = this.iduser;
+
+            console.log(courrier);
+
+            // Créer un objet SuiviCourrier pour chaque courrier
+            const suiviCourrier = {
+                courrierId: courrier.id,
+                idstatutCourrier: courrier.statutCourrier.id,
+                userId: courrier.userId,
+                structureDepotId: courrier.structureDepotId,
+                structureDestinationId: courrier.structureDestinationId
+            };
+
+            // Sauvegarder les informations de suivi pour chaque courrier
+            this.suiviCourrier.save(suiviCourrier).subscribe(
+                (data) => {
+                    console.log("Suivi courrier sauvegardé : ", data);
+                },
+                (error) => {
+                    console.error("Erreur lors de la sauvegarde du suivi : ", error);
+                }
+            );
+        });
+
+        // Appel au service pour mettre à jour les courriers
+        this.courrierService.updateCourriers(this.selectedLettre).subscribe(
             (result) => {
-                this.getCourriers();
+                this.getCourriersByFermetureIdAndStatut(this.fermetureId,this.idStatutFermetureCourrier[0].id,this.paysOrigineId.id, this.structureDestna)                // Rafraîchir la liste des courriers après la mise à jour
+                this.selectedStatut=[]
+                // Message de succès
                 this.messageService.add({
                     severity: 'success',
-                    summary: 'Successful',
+                    summary: 'Succès',
                     detail: 'Courrier réceptionné avec succès',
                     life: 3000,
                 });
             },
             (error) => {
-                // En cas d'erreur
+                // En cas d'erreur lors de la mise à jour des courriers
+                console.error("Erreur lors de la mise à jour des courriers : ", error);
+
+                // Message d'erreur
                 this.messageService.add({
                     severity: 'danger',
-                    summary: 'Error',
+                    summary: 'Erreur',
                     detail: 'Erreur de réception',
                     life: 3000,
                 });
             }
         );
     }
-    getBadgeSeverity(statutCourrier: string ): string {
-        switch (statutCourrier?.toLowerCase()) {
-            case 'déposé': return 'danger';  // Rouge
-            case 'reçu': return 'success';  // Vert
-            default: return 'info';         // Bleu
+
+    getBadgeSeverity(statutLibelle: string): string {
+        switch (statutLibelle?.toLowerCase()) {
+            case 'reexpédier':
+                return 'danger'; // Rouge pour "reexpédier"
+            case 'reçu bureau':
+                return 'success'; // Vert pour "Reçu bureau"
+            case 'en transit':
+                return 'info'; // Bleu pour "En transit"
+            default:
+                return 'secondary'; // Gris pour les autres statuts
         }
     }
 

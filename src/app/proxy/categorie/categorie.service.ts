@@ -2,6 +2,7 @@ import { environment } from 'src/environments/environment';
 import type { CategorieCreateUpdateDto, CategorieDto } from './models';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import {Observable} from "rxjs";
 
 @Injectable({
   providedIn: 'root',
@@ -38,7 +39,7 @@ update(id:string, item:CategorieCreateUpdateDto)
   return this.httpClient.put<CategorieDto>(new_api_host,item,this.httpOptions);
 }
 
-getOneById(id:string)
+getOneById(id:string):Observable<CategorieDto>
 {
   let new_api_host = this.routerParam(this.api_host,id);
   return this.httpClient.get<CategorieDto>(new_api_host,this.httpOptions);

@@ -8,7 +8,7 @@ export  interface StatutdtoUpdatedto{
 
 
 
-export interface Statutdto {
+export interface    Statutdto {
     id?: number;
     libelle?: string;
 }

@@ -1,0 +1,13 @@
+.field {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    margin-bottom: 5px; /* Espacement entre le label et le champ d'entrée */
+}
+
+input {
+    padding: 5px;
+    font-size: 1rem;
+}

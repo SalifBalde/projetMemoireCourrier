@@ -9,7 +9,7 @@ import {Fermeturedto} from "./models";
 })
 
 export  class FermetureService {
-    private api_host = `${environment.api_host}client`;
+    private api_host = `${environment.api_host}fermeture`;
     myToken = sessionStorage.getItem("token");
     private httpOptions = {
         headers: new HttpHeaders({
@@ -28,5 +28,15 @@ export  class FermetureService {
 
     saveFermeture(fermeture : Fermeturedto): Observable<any> {
         return this.httpClient.post<any>(environment.api_host+'fermeture',fermeture, this.httpOptions);
+    }
+    saveFermetureImport(fermeture : Fermeturedto): Observable<any> {
+        return this.httpClient.post<any>(environment.api_host+'fermeture/saveFermetureImport',fermeture, this.httpOptions);
+    }
+
+    getFermeturesByStructureDestination(structureId: string, idstatutCourrier:number, typeCourrierId:number): Observable<any[]> {
+        return this.httpClient.get<any[]>(this.api_host+'/by-structure-destination/'+structureId+'/'+idstatutCourrier+'/'+typeCourrierId);
+    }
+    getFermeturesByCriteria(structureId: string, idstatutCourrier:number, typeCourrierId:number , paysOrigine: number): Observable<any[]> {
+        return this.httpClient.get<any[]>(this.api_host+'/searchFermetureByCriteria/'+structureId+'/'+idstatutCourrier+'/'+typeCourrierId+'/'+paysOrigine);
     }
 }
