@@ -1,6 +1,5 @@
 export interface PartenaireEComDto {
-    id: number;              
-    codePartenaire: string;   
+    codePartenaire: number ;   
     libelle: string;           
     adresse: string;        
     email: string;            

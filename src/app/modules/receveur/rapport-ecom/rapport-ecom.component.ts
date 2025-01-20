@@ -69,7 +69,7 @@ export class RapportEcomComponent implements OnInit {
         next: (ecommerce) => {
             if (ecommerce.length > 0) {
                 this.ecommerce$ = ecommerce || [];
-                 this.ecommerce$.reduce((sum, item) => sum + Number(item.id), 0); 
+                 this.ecommerce$.reduce((sum, item) => sum + Number(item.id), 10); 
             } else {
                 this.messageService.add({
                     severity: 'info',

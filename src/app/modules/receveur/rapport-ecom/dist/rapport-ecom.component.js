@@ -63,7 +63,7 @@ var RapportEcomComponent = /** @class */ (function () {
             next: function (ecommerce) {
                 if (ecommerce.length > 0) {
                     _this.ecommerce$ = ecommerce || [];
-                    _this.ecommerce$.reduce(function (sum, item) { return sum + Number(item.id); }, 0);
+                    _this.ecommerce$.reduce(function (sum, item) { return sum + Number(item.id); }, 10);
                 }
                 else {
                     _this.messageService.add({

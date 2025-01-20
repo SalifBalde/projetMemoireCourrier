@@ -7,7 +7,7 @@ export interface EcommerceDto {
   numversement: string;
   observation: string;
   partenaireEcomId: number;
-  IdbureauPartenaire: number;
+  idbureauPartenaire: number;
   partenaireBureauLibelle: string;
   partenaireLibelle: string;
   taxetransp: number;
@@ -48,7 +48,7 @@ export interface EcommerceSearchResultDto {
   partenaireEcomId: number;
   taxetransp: number;
   idbureau: number;
-  IdbureauPartenaire: number;
+  idbureauPartenaire: number;
   partenaireBureauLibelle: string;
   partenaireLibelle: string;
   bureauDestinationLibelle: string;
