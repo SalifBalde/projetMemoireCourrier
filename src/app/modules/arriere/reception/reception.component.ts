@@ -92,9 +92,15 @@ import {BureauxDouanierService} from "../../../proxy/burauex_douaniers";
 
     ngOnInit(): void {
 
-        this.route.params.subscribe(params => {
-            this.fermetureId = +params['id'];
-            console.log('ID de la fermeture:', this.fermetureId);    });
+        this.route.params.subscribe((params: { [key: string]: any }) => {
+            this.fermetureId = +params['id']; // Conversion en nombre avec le symbole '+'
+
+            if (!isNaN(this.fermetureId)) {
+                console.log('ID de la fermeture:', this.fermetureId);
+            } else {
+                console.error('L\'ID de la fermeture est invalide ou introuvable.');
+            }
+        });
 
         this.structureService.findAll().subscribe(
             (result) => {

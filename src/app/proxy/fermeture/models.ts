@@ -15,6 +15,7 @@ export  interface FermetureUpdatedto{
 
 
 export interface Fermeturedto {
+    id?:number;
     structureDepotId?: number;
     structureDestinationId?: number;
     numeroDepeche?: string;

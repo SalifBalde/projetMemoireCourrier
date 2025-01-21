@@ -12,7 +12,7 @@ import {FormBuilder} from "@angular/forms";
 import {ActivatedRoute, Router} from "@angular/router";
 import {MessageService} from "primeng/api";
 import {SuiviCourrierService} from "../../../../proxy/suivi-courrier";
-import {FermetureService} from "../../../../proxy/fermeture";
+import {Fermeturedto, FermetureService} from "../../../../proxy/fermeture";
 
 @Component({
   selector: 'app-fermeture-lettre-interieur',
@@ -41,7 +41,7 @@ export class FermetureLettreInterieurComponent  implements  OnInit{
     Listfermetures: any;
     paysOrigine: Paysdto={};
     libelleStructur: string
-    selectedFermeture: any = null;
+    selectedFermeture: Fermeturedto = null;
 
 
 
@@ -146,9 +146,10 @@ export class FermetureLettreInterieurComponent  implements  OnInit{
 
     // Afficher les détails d'une fermeture
     showDetails(fermeture: any): void {
+        console.log(fermeture)
         this.selectedFermeture = fermeture;
         console.log(this.selectedFermeture.id)
-        const id1 = this.selectedFermeture.id
+        const id1= fermeture.id
         this.router.navigate(['arriere/reception/'+id1]);  // Passe l'ID de la fermeture dans l'URL
 
 

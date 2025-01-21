@@ -118,7 +118,7 @@ export class FermeturePacketImportComponent implements OnInit{
             console.log(this.Listfermetures)
             this.Listfermetures.map(fermeture => {
 
-                const idStrure = fermeture?.structureDestinationId.toString()
+                const idStrure = fermeture?.structureDepotId.toString()
                 return this.structureService.getOne(idStrure).subscribe((structure)=>{
                     this.libelleStructur=structure.libelle
                 })
