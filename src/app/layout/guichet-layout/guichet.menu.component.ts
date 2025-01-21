@@ -36,17 +36,6 @@ export class GuichetMenuComponent implements OnInit {
                         routerLink: ['/guichet/courrier-ordinaire'],
                     },
 
-                    {
-                        label: 'Livraison Lettre',
-                        icon: 'pi pi-fw pi-box',
-                        routerLink: ['/guichet/livraison-lettre'],
-                    },
-                    {
-                        label: 'Livraison Paquet',
-                        icon: 'pi pi-fw pi-box',
-                        routerLink: ['/guichet/livraison-paquet'],
-                    },
-
                 ],
             },
             {
@@ -59,6 +48,19 @@ export class GuichetMenuComponent implements OnInit {
                         routerLink: ['/guichet/colis'],
                     },
 
+
+                ],
+            },
+            {
+                label: 'Gestion des Livraisons',
+                icon: 'pi pi-fw pi-briefcase',
+                items: [
+                    {
+                        label: 'Livraison',
+                        icon:"pi pi-fw pi-truck",
+                        routerLink: ['/guichet/livraison'],
+                    },
+
                     {
                         label: 'Envoie E-commerce à livrer',
                         icon: 'pi pi-fw pi-truck',
@@ -66,7 +68,6 @@ export class GuichetMenuComponent implements OnInit {
                     },
                 ],
             },
-
             {
                 label: 'Rapports',
                 icon: 'pi pi-fw pi-briefcase',

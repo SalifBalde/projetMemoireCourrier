@@ -86,18 +86,14 @@ export class ReceptionArriereComponent implements  OnInit{
         );
         this.statutCourrierService.findAll().subscribe((data)=>{
             this.statutCourriers=data;
-            console.log(data)
+
             this.idStatutFermetureCourrier = data.filter(statut => statut.id === 1);
-            console.log(this.idStatutFermetureCourrier);
             this.getCourriersArriere()// Afficher les résultats filtrés
         })
 
 
         this.iduser= this.sessionService.getAgentAttributes()?.id
         console.log(this.iduser)
-
-
-
 
     }
 

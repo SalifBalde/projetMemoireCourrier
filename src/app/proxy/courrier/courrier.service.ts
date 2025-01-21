@@ -52,7 +52,15 @@ update(id:string, item:CourrierDto)
   let new_api_host = this.routerParam(this.api_host,);
   return this.httpClient.put<CourrierDto>(new_api_host+id,item,this.httpOptions);
 }
-    // Méthode pour mettre à jour plusieurs courriers
+
+
+
+livraison(id:string, item:CourrierDto)
+{
+  let new_api_host = this.routerParam(this.api_host,'livraison',id);
+  return this.httpClient.put<CourrierDto>(new_api_host,item,this.httpOptions);
+}
+// Méthode pour mettre à jour plusieurs courriers
 
 
     findCourrierByAgent(search: CourrierSearchDto) {
@@ -88,16 +96,15 @@ getOneById(id:string)
     return this.httpClient.get<CourrierDto>(new_api_host, this.httpOptions);
   }
 
-  private routerParam(baseUrl: string, ...params: string[]) {
-    return `${baseUrl}/${params.join('/')}`;
-  }
+
 
   findCourrierByStrutureDepot(idStrut: string) {
     return this.httpClient.get<[CourrierDto]>(this.api_host + '/structureDepot/' + idStrut, this.httpOptions);
   }
 
-  findCourrierByTypeCourrierAndStructureDepotAndIdStut(idType: string, idStructureDepot: string, IdStatut: string) {
-    return this.httpClient.get<[CourrierDto]>(this.api_host + '/by-type/' + idType + '/' + idStructureDepot + '/' + IdStatut, this.httpOptions);
+  findCourrierByTypeCourrierAndStructureDepotAndIdStut(idType: string, idStructureDepot: string, idStatut: string) {
+    let new_api_host = this.routerParam(this.api_host,'by-type', idType, idStructureDepot, idStatut);
+    return this.httpClient.get<[CourrierDto]>(new_api_host, this.httpOptions);
   }
 
     findCourrierByStrutureDepotAndStatutId(idStrut: string, idStatutCourrier: string)
@@ -137,7 +144,9 @@ getOneById(id:string)
         return this.httpClient.get<CourrierDto[]>(`${this.api_host}/searchCourriersImport`, { params });
     }
 
-
+    private routerParam(baseUrl: string, ...params: string[]) {
+        return `${baseUrl}/${params.join('/')}`;
+      }
 
 
 

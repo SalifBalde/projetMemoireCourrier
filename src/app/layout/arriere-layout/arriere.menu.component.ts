@@ -133,15 +133,21 @@ export class ArriereMenuComponent implements OnInit {
                         routerLink: ['/arriere/reception/fermeturePacketInterieur'],
                     },
                     {
-                        label: 'Réception à livrer ',
+                        label: ' Colis Interieur',
+                        icon: 'pi pi-fw pi-download',
+                        routerLink: ['/arriere/reception/fermetureColisOrdinaire'],
+                    },
+                    {
+                        label: 'Réception E-com à livrer ',
                         icon: 'pi pi-fw pi-download',
                         routerLink: ['/arriere/reception/reception-E-commerce-livraison'],
                     },
                     {
-                        label: 'Réception à expédier',
+                        label: 'Réception E-com à expédier ',
                         icon: 'pi pi-fw pi-download',
                         routerLink: ['/arriere/reception/reception-E-commerce-expedition'],
                     },
+
                 ]
             },
             // {

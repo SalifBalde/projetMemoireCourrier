@@ -285,9 +285,8 @@ export class ExpeditionArriereComponent  implements  OnInit{
 
         try {
             for (let courri of this.selectedLettre) {
-                console.log(typeof (courri.statutCourrier.id ));
 
-                if (courri.statutCourrier.id === 14) { // Utilisez '===' pour une comparaison stricte
+                if (courri.statutCourrierId=== 14) { // Utilisez '===' pour une comparaison stricte
                     this.idStatutFermetureCourrier =2
                 }
             }
@@ -324,9 +323,8 @@ export class ExpeditionArriereComponent  implements  OnInit{
 
             const selectedColisCopy = [...this.selectedLettre];
             for (let courri of selectedColisCopy) {
-                console.log(typeof (courri.statutCourrier.id ));
 
-                if (courri.statutCourrier.id === 14) { // Utilisez '===' pour une comparaison stricte
+                if (courri.statutCourrierId === 14) { // Utilisez '===' pour une comparaison stricte
                     this.idStatutFermetureCourrier =2
                 }
             }// Copie défensive
@@ -338,7 +336,7 @@ export class ExpeditionArriereComponent  implements  OnInit{
                     // Mise à jour des courriers et ajout des suivis
                     selectedColisCopy.forEach((colis) => {
                         const courrieId = colis.id;
-                        colis.statutCourrier.id = this.idStatutFermetureCourrier;
+                        colis.statutCourrierId = this.idStatutFermetureCourrier;
                         colis.structureDestinationId = this.selectedStructure;
                         colis.taxeDouane = colis.montantTaxeDouane;
 
@@ -353,7 +351,7 @@ export class ExpeditionArriereComponent  implements  OnInit{
                                 // Ajout du suivi pour chaque courrier après mise à jour
                                 const suiviCourrier = {
                                     courrierId: colis.id,
-                                    idstatutCourrier: colis.statutCourrier.id,
+                                    idstatutCourrier: colis.statutCourrierId,
                                     userId: this.iduser,
                                     structureDepotId: structureDepotId,
                                     structureDestinationId: this.selectedStructure,
