@@ -216,12 +216,13 @@ export class LivraisonComponent implements OnInit {
 
     savecolis() {
         this.openCourrierDialog=false
-           this.colis.taxeMagasinage= this.selectedColis.taxeMagasinage
-         this.colis.statutCourrierId= 11
-        console.log( this.colis)
+
 
         // Mise à jour du courrier
         if(this.isTaxeValid){
+            this.colis.taxeMagasinage= this.colis.taxeMagasinage
+            this.colis.statutCourrierId= 11
+            console.log( this.colis)
 
         this.courrierService.update( this.colis.id,  this.colis).subscribe(
             () => {
