@@ -90,7 +90,6 @@ export class FermetureColisImportComponent implements  OnInit{
         })
 
         console.log(this.iduser)
-        this.getCourriers()
         this.getTypeCourrierById()
 
     }
@@ -114,7 +113,6 @@ export class FermetureColisImportComponent implements  OnInit{
             this.Listfermetures=data;
             console.log(this.Listfermetures)
             this.Listfermetures.map(fermeture => {
-
                 const idStrure = fermeture?.structureDestinationId.toString()
                 return this.structureService.getOne(idStrure).subscribe((structure)=>{
                     this.libelleStructur=structure.libelle
@@ -126,18 +124,6 @@ export class FermetureColisImportComponent implements  OnInit{
     }
 
 
-
-    getCourriers(){
-        const idType ="2"
-        const idStatu= '20'
-        const idStructureDepo = this.sessionService.getAgentAttributes().structureId.toString()
-        this.courrierService.findCourrierByStrutureDestinationAndStatutIdAndTypeCourrier(idStructureDepo, idStatu,idType).subscribe(
-            (result) => {
-                this.listeColis= result;
-                console.log(this.listeColis)
-            }
-        );
-    }
 
 
 
