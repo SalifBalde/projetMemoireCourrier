@@ -33,6 +33,11 @@ getAllDestinataires(clientId:string, destinationId:string) {
 }
   save(item: CourrierCreateUpdateDto)
 {
+  return this.httpClient.post(this.api_host,item,this.httpOptions);
+}
+
+savePaquet(item: CourrierCreateUpdateDto)
+{
   return this.httpClient.post(this.api_host+'/savecourrier',item,this.httpOptions);
 }
 

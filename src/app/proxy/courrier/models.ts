@@ -57,12 +57,14 @@ export class CourrierCreateUpdateDto {
     destinataireNom?: string;
     destinatairePrenom?: string;
     destinataireTelephone?: string;
+    destinataireAdresse?: string;
     categorieId?: number;
     categorieLibelle?: number;
     expediteurId?: number;
     expediteurNom?: string;
     expediteurPrenom?: string;
     expediteurTelephone?: string;
+    expediteurAdresse?: string;
     recommande?: boolean;
     ar?: boolean;
     express?: boolean;

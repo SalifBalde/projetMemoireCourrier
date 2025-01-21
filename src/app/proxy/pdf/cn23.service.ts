@@ -49,7 +49,7 @@ export class Cn23Service {
 
         doc.text('Reçu de dépot dun colis postal', pageWidth / 1.01, 18, { align: 'right' });
         doc.text(`${data.typeCourrierLibelle}`, pageWidth / 1.03, 7, { align: 'right' });
-        doc.text('Numéro 546146  Date 11/30/23   12:00', pageWidth / 1.01, 3, { align: 'right' });
+        doc.text('Numéro  ', pageWidth / 1.01, 3, { align: 'right' });
         doc.text("     Partie à remplir par l'expediteur", pageWidth / 1.01, 30, { align: 'right' });
         doc.text('DESTINATAIRE', pageWidth / 1.05, 40, { align: 'right' });
         doc.text(`Prenom: ${data.destinatairePrenom}`, pageWidth / 1.09, 50, { align: 'right' });
@@ -111,7 +111,7 @@ export class Cn23Service {
         doc.text('Nom et Adresse,Colis Postal et le Téléphone du destinataire y compis', pageHeight / 13, 50, { align: 'left', });
         doc.text(`${data.destinataireNom}`, pageHeight / 13, 60, { align: 'left', });
         doc.text(`${data.destinatairePrenom}`, pageHeight / 3, 60, { align: 'left', });
-        doc.text('123 GREY ST EAST MELBOURNE VICTORIA 300S AUSTRALIA', pageHeight / 13, 68, { align: 'left', });
+        doc.text(`${data.destinataireAdresse}`, pageHeight / 13, 68, { align: 'left', });
         doc.text(`${data.paysDestinationLibelle}`, pageHeight / 13, 75, { align: 'left', });
         doc.text(`${data.destinataireTelephone}`, pageHeight / 13, 80, { align: 'left', });
         doc.text('3002', pageHeight / 13, 89, { align: 'left', });

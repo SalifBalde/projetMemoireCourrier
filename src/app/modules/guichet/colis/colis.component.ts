@@ -342,10 +342,13 @@ export class ColisComponent implements OnInit {
     }
 
     getCatgories(regimeId: number) {
+        const serviceId = this.form.get("typeId").value
         this.categorieService
-            .getAllByRegimeAndType(regimeId, 2)
+            .getAllByRegimeAndType(regimeId, 2,serviceId)
             .subscribe((result) => {
                 this.categorie$ = result;
+                this.categorie$ = this.categorie$.filter(c => c.entrant === false)
+
             });
     }
     updateServiceState(typeId: string) {
@@ -425,6 +428,17 @@ export class ColisComponent implements OnInit {
     poidsChange(value: number) {
         const paysDestinationId = this.form.get('paysDestinationId')?.value;
 
+        const pays = this.pays$.find(p => p.id === paysDestinationId);
+        const poidsMax = pays.maxKgAutorise;
+        if (poidsMax !== undefined && value > poidsMax) {
+            this.messageService.add({
+                severity: 'error',
+                summary: 'Poids invalide',
+                detail: `Le poids ne doit pas dépasser ${poidsMax} kg.`,
+            });
+            this.totalMontant = 0;
+        return;
+        }
         // Si le poids et le pays de destination sont valides
         if (value > 0 && paysDestinationId > 0) {
             // Appel du service pour obtenir le tarif

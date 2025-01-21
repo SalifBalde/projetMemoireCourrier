@@ -17,33 +17,41 @@ export class CtMenuComponent implements OnInit {
 
             {
                 label: 'Ct',
+
                 items: [
-                    {
-                        label: 'Expedition',
-                        icon: 'pi pi-fw pi-send',
-                        routerLink: ['/ct/expedition'],
-                    },
+
                     {
                         label: 'Expedition Ecommerce',
                         icon: 'pi pi-fw pi-send',
                         routerLink: ['/ct/expedition/expedition-E-commerce'],
                     },
-                    {
-                        label: 'Reception',
-                        icon: 'pi pi-fw pi-download',
-                        routerLink: ['/ct/reception'],
-                    },
+
                     {
                         label: 'Reception Ecommerce',
                         icon: 'pi pi-fw pi-download',
                         routerLink: ['/ct/reception/reception-E-commerce'],
                     },
-                    {
-                        label: 'Reception Code',
-                        icon: 'pi pi-fw pi-qrcode',
-                        routerLink: ['/ct/reception'],
-                    },
+
                 ],
+            },
+            {
+                label: 'Gestion Paquets',
+                items:[
+                    {
+
+                                label: ' Ajouter Packet ',
+                                icon: 'pi pi-fw pi-plus',
+                                routerLink: ['/ct/linepacket'],
+
+                    },
+
+                    {
+                             label: 'expédition  packet ',
+                                icon: 'pi pi-fw pi-send',
+                                routerLink: ['/ct/linepacketDeclarer'],
+                    },
+                ]
+
             },
             {
                 label: 'Suivi Courrier',

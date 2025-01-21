@@ -11,92 +11,117 @@ export class FactureService {
   constructor() {}
 
 
- async generateReceipt(courrier: CourrierDto) {
-    const doc = new jsPDF({
-        orientation: 'portrait',
-        unit: 'mm',
-        format: [80, 150], // Format ticket : largeur 80mm
-    });
+    async  generateReceipt(courrier) {
+        const doc = new jsPDF({
+            orientation: 'portrait',
+            unit: 'mm',
+            format: [210, 297], // Format A4
+        });
 
-    const logoRight = await this.loadImage('assets/layout/images/laposte.jpeg');
+       // const logo = await loadImage('assets/layout/images/logo.png');
+        let currentY = 10; // Position initiale Y
 
-    let currentY = 10; // Position Y initiale
+        // En-tête avec logo et titre
+        // Ligne verticale
 
-    // Logo
-    doc.addImage(logoRight, 'PNG', 25, currentY, 30, 10);
-    currentY += 15;
+      //  doc.addImage(logo, 'PNG', 10, currentY, 30, 15);
+        doc.setFontSize(16);
+        doc.text('Feuille de Route', 105, currentY + 10, { align: 'center' });
+        currentY += 5;
+        doc.setFontSize(12);
+        doc.text('Expédition Envoi Colis', 105, currentY + 15, { align: 'center' });
+        currentY += 25;
 
-    // Titre
-    doc.setFontSize(12);
-    doc.text('Groupe La Poste Sénégal', 10, currentY);
-    currentY += 5;
 
-    doc.setFontSize(10);
-    doc.text(`Structure: ${courrier.structureDepotLibelle || 'N/A'}`, 10, currentY);
-    currentY += 5;
+        doc.line(200, currentY, 200, currentY + 55); // Ligne verticale de 50mm de longueur à la position X=100
+        // Ligne horizontale
+        doc.line(10, currentY, 200, currentY); // Ligne de séparation
 
-    doc.text(`Ticket N°: ${courrier.id || 'N/A'}`, 10, currentY);
-    currentY += 5;
+        doc.line(10, currentY, 10, currentY + 55); // Ligne verticale de 50mm de longueur à la position X=100
+        currentY += 5;
 
-    doc.text('-------------------------------', 10, currentY);
-    currentY += 5;
 
-    // Expéditeur
-    doc.text('Expéditeur:', 10, currentY);
-    currentY += 5;
-    doc.text(`${courrier.expediteurNom || ''} ${courrier.expediteurPrenom || ''}`, 10, currentY);
-    currentY += 5;
-    doc.text(`Tel: ${courrier.expediteurTelephone || 'N/A'}`, 10, currentY);
-    currentY += 5;
+        // Informations générales
+        doc.setFontSize(10);
+        doc.text(`Agent: ${courrier.expediteurNom || 'N/A'}`, 10, currentY);
+        currentY += 5;
+        doc.text(`Bureau Expéditeur: ${courrier.structureDepotLibelle || 'N/A'}`, 10, currentY);
+        currentY += 5;
+        // Ligne horizontale
+        doc.line(10, currentY, 200, currentY); // Ligne de séparation
+        currentY += 5;
 
-    // Destinataire
-    doc.text('Destinataire:', 10, currentY);
-    currentY += 5;
-    doc.text(`${courrier.destinataireNom || ''} ${courrier.destinatairePrenom || ''}`, 10, currentY);
-    currentY += 5;
-    doc.text(`Tel: ${courrier.destinataireTelephone || 'N/A'}`, 10, currentY);
-    currentY += 5;
+        doc.text(`Bureau Destinataire: ${courrier.structureDestinationLibelle || 'N/A'}`, 10, currentY);
+        currentY += 5;
+        doc.text(`Date Expédition: ${courrier.dateExpedition || 'N/A'}`, 10, currentY);
+        currentY += 5;
 
-    doc.text('-------------------------------', 10, currentY);
-    currentY += 5;
+        // Ligne horizontale
+        doc.line(10, currentY, 200, currentY); // Ligne de séparation
+        currentY += 5;
 
-    // Détails du courrier
-    doc.text(`Type: ${courrier.typeCourrierLibelle}`, 10, currentY);
-    currentY += 5;
-    doc.text(`Code Barre: ${courrier.codeBarre || 'N/A'}`, 10, currentY);
-    currentY += 5;
-    doc.text(`Poids: ${courrier.poids || 0} kg`, 10, currentY);
-    currentY += 5;
+        // Table des colis - Entêtes
+        doc.setFontSize(10);
+        doc.text('N°', 15, currentY);
+        doc.text('Code Barre', 30, currentY);
+        doc.text('Poids (g)', 60, currentY);
+        doc.text('Destinataire', 90, currentY);
+        doc.text('Expediteur', 120, currentY);
+        doc.text('Pays', 150, currentY);
+        doc.text('Taxe ', 170, currentY);
+        doc.text('Taxe Douane', 180, currentY);
+        currentY += 5;
 
-    // Montants
-    doc.text('-------------------------------', 10, currentY);
-    currentY += 5;
-    doc.text(`Montant: ${courrier.montant || 0} FCFA`, 10, currentY);
-    currentY += 5;
-    doc.text(`Taxe Douane: ${courrier.taxeDouane || 0} FCFA`, 10, currentY);
-    currentY += 5;
-    doc.text(`Taxe Présentation: ${courrier.taxePresentation || 0} FCFA`, 10, currentY);
-    currentY += 5;
+        // Ligne de séparation
+        doc.line(10, currentY, 200, currentY);
+        currentY += 5;
 
-    doc.text('-------------------------------', 10, currentY);
-    currentY += 5;
-    doc.setFontSize(12);
-    doc.text(`Total: ${courrier.montant || 0} FCFA`, 10, currentY);
-    currentY += 10;
 
-    // Message de fin
-    doc.setFontSize(10);
-    doc.text('Merci pour votre confiance !', 15, currentY);
-    currentY += 5;
 
-    doc.text('-------------------------------', 10, currentY);
-    currentY += 5;
+        // Remplir les détails du colis
+        doc.text(`1`, 15, currentY); // N°
+        doc.text(`${courrier.codeBarre || 'N/A'}`, 30, currentY); // Code Barre
+        doc.text(`${courrier.poids || 0}`, 60, currentY); // Poids
+        doc.text(`${courrier.destinataireNom || 'N/A'}`, 90, currentY); // Nom Destinataire
+        doc.text(`${courrier.expediteurNom || 'N/A'}`, 120, currentY); // Nom Destinataire
+        doc.text(`${courrier.paysOrigineLibelle || 'N/A'}`, 150, currentY); // Pays
+        doc.text(`${courrier.taxePresentation || 0}`, 170, currentY); // Taxe Port
+        doc.text(`${courrier.taxeDouane || 0}`, 180, currentY); // Taxe Douane
+        //currentY += 5;
 
-    // Génération du PDF
-    doc.save(`Ticket_Courrier_${courrier.id || 'N/A'}.pdf`);
-}
+        // Ligne de séparation
+        doc.line(10, currentY, 200, currentY);
+        currentY += 5;
 
-private loadImage(src: string): Promise<string> {
+        // Totaux
+        doc.setFontSize(12);
+        const totalPoids = courrier?.taxePresentation?.reduce((acc, colis) => acc + (colis.poids || 0), 0);
+        const totalTaxeDouane = courrier?.taxePresentation?.reduce((acc, colis) => acc + (colis.taxeDouane || 0), 0);
+        currentY += 8;
+        doc.text(`Totaux:`, 10, currentY);
+        doc.text(`Poids Total: ${totalPoids} g`, 40, currentY);
+        doc.text(`Taxe : ${totalTaxeDouane} FCFA`, 170, currentY);
+
+
+// Ligne de séparation
+        doc.line(10, currentY, 200, currentY);
+        currentY += 5;
+
+
+
+
+
+        // Pied de page
+      //  doc.addImage(logo, 'PNG', 10, 270, 30, 15);
+        doc.setFontSize(10);
+        doc.text('Merci pour votre confiance !', 105, 280, { align: 'center' });
+
+        // Sauvegarder le PDF
+        doc.save(`Feuille_De_Route_${courrier.id || 'N/A'}.pdf`);
+    }
+
+
+    private loadImage(src: string): Promise<string> {
     return new Promise((resolve, reject) => {
       const img = new Image();
       img.crossOrigin = 'Anonymous';
