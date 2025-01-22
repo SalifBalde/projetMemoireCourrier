@@ -13,7 +13,7 @@ export class HomeComponent implements OnInit{
          public router: Router, private keycloak : KeycloakService)
           { }
     ngOnInit(): void {
-        throw new Error('Method not implemented.');
+        this.redirectBasedOnRole();
     }
 
     public isAdmin(): boolean {
@@ -63,6 +63,7 @@ export class HomeComponent implements OnInit{
         const isDrp = userRoles.includes('ROLE_DRP');
         const isCt= userRoles.includes('ROLE_CT');
         const isMessagerie= userRoles.includes('ROLE_MESSAGERIE');
+        const ismessageriePacket= userRoles.includes('ROLE_MESSPAQUET');
 
         if (isAdmin) {
             this.router.navigate(['/backoffice']);
@@ -76,8 +77,8 @@ export class HomeComponent implements OnInit{
         } else if (isGuichet) {
             this.router.navigate(['/guichet']);
         }
-        else if (isCt) {
-            this.router.navigate(['/ct']);
+        else if (ismessageriePacket) {
+            this.router.navigate(['/messageriePacket']);
         }
         else if (isMessagerie) {
             this.router.navigate(['/messagerie']);

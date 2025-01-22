@@ -34,7 +34,7 @@ export class Cn23Service {
         doc.text('BULLETIN EXPEDITION', pageWidth / 2, 14, { align: 'left' });
         doc.text(' CP71', pageHeight / 1, 14, { align: 'center' });
         doc.text('(ancien CP2)', pageWidth / 2, 35, { align: 'left' });
-        doc.text('CP0016011001SN', pageWidth / 2, 40, { align: 'left' });
+        doc.text(' ', pageWidth / 2, 40, { align: 'left' });
         doc.text('Valeur déclarée', pageWidth / 2, 50, { align: 'left' });
         doc.text(`${data.valeurDeclare}`, pageHeight / 1, 50, { align: 'center' });
         doc.text('(Apposer les étiquettes officielles le cas échéant)', pageWidth / 2.3, 75, { align: 'left' });
@@ -74,7 +74,7 @@ export class Cn23Service {
         doc.text('Poids brute ', pageWidth / 2, 145, { align: 'center' });
         doc.text(`Taxe ${data.taxeDouane}`, pageWidth / 1.8, 145, { align: 'left' });
         doc.text("J'ai perçu le colis sur ce ", pageHeight / 1, 160, { align: 'center' });
-        doc.text('5,000 ', pageWidth / 2, 149, { align: 'center' });
+        doc.text(' CFA', pageWidth / 2, 149, { align: 'center' });
         doc.text('Déclaration ', pageWidth / 2.040, 158, { align: 'center' });
         doc.text('Date et signature ', pageWidth / 2.05, 163, { align: 'center' });
         doc.text('Je certifie que cette envoie ne contient   ', pageWidth / 2, 180, { align: 'left' });
@@ -103,7 +103,7 @@ export class Cn23Service {
         doc.setFontSize(9);
         doc.text(`${data.expediteurNom}`, pageWidth / 8, 30, { align: 'right' });
         doc.text(`${data.expediteurPrenom}`, pageWidth / 3, 30, { align: 'center' });
-        doc.text('HOTEL NDIAMBOUR', pageWidth / 6, 35, { align: 'right' });
+        doc.text(`${data.expediteurAdresse}`, pageWidth / 6, 35, { align: 'right' });
         doc.text(`${data.expediteurTelephone}`, pageWidth / 7, 40, { align: 'right' });
         doc.text('13000', pageWidth / 11, 45, { align: 'right' });
         doc.text('A', pageWidth / 50, 59, { align: 'right', });
@@ -123,7 +123,7 @@ export class Cn23Service {
         doc.text('aerien ', pageHeight / 10, 150, { align: 'left', });
         doc.text('surface ', pageWidth / 4, 150, { align: 'left', });
         doc.text('A', pageWidth / 50, 59, { align: 'right' });
-        doc.text(`Bureau: DAKAR PEYTAVIN`, pageHeight / 10, 8, { align: 'left' });
+        doc.text(`Bureau: ${data.structureDepotLibelle}`, pageHeight / 10, 8, { align: 'left' });
         doc.text('LA POSTEE SENEGAL', pageHeight / 2, 3, { align: 'right' });
         doc.text(`Agent: Aliou Balde`, pageWidth / 2, 8, { align: 'center' });
         doc.text("Instruction de l'expéditeur en cas de non-livraison ", pageHeight / 13, 160, { align: 'left' });

@@ -113,7 +113,7 @@ export class FermetureColisImportComponent implements  OnInit{
             this.Listfermetures=data;
             console.log(this.Listfermetures)
             this.Listfermetures.map(fermeture => {
-                const idStrure = fermeture?.structureDestinationId.toString()
+                const idStrure = fermeture?.structureDepotId.toString()
                 return this.structureService.getOne(idStrure).subscribe((structure)=>{
                     this.libelleStructur=structure.libelle
                 })

@@ -96,7 +96,7 @@ export class FermetureCourrierImportComponent implements OnInit{
 
         this.statutCourrierService.findAll().subscribe((data)=>{
             this.statutCourriers=data;
-            console.log(this.statutCourrier)
+
 
             this.idStatutFermetureCourrier =this.statutCourriers = data.filter(statut => statut.id === 21);
             console.log(this.idStatutFermetureCourrier[0].id);
@@ -117,8 +117,7 @@ export class FermetureCourrierImportComponent implements OnInit{
             this.Listfermetures=data;
             console.log(this.Listfermetures)
             this.Listfermetures.map(fermeture => {
-
-                const idStrure = fermeture?.structureDestinationId.toString()
+                const idStrure = fermeture?.structureDepotId.toString()
                 return this.structureService.getOne(idStrure).subscribe((structure)=>{
                     this.libelleStructur=structure.libelle
                 })

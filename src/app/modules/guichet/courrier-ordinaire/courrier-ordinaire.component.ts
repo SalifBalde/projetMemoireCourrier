@@ -172,7 +172,7 @@ export class CourrierOrdinaireComponent implements OnInit {
                 destinataireId: ['', Validators.required],
                 paysDestinationId: [210, Validators.required],
                 codeBarre: [
-                    { value: '', disabled: false },
+                    { value: '', disabled: true },
                     [
                       Validators.required,
                       Validators.minLength(9),
@@ -193,15 +193,15 @@ export class CourrierOrdinaireComponent implements OnInit {
                 statutCourrierId: ['1'],
                 paysOrigineId: [210],
                 caisseId: [
-                    this.sessionService.getAgentAttributes().caisseId,
+                    this.sessionService.getAgentAttributes()?.caisseId,
                     Validators.required,
                 ],
                 structureDepotId: [
-                    this.sessionService.getAgentAttributes().structureId,
+                    this.sessionService.getAgentAttributes()?.structureId,
                     Validators.required,
                 ],
                  journalId: [
-                    this.sessionService.getJournalAttributes().id,
+                    this.sessionService.getJournalAttributes()?.id,
                     Validators.required,
                 ],
                 totalMontant: [0],
@@ -698,6 +698,9 @@ export class CourrierOrdinaireComponent implements OnInit {
                     this.destinataire = result;
                     this.loading = false;
                     this.destinataireDialog = false;
+                    this.form.patchValue({
+                        destinataireId: this.destinataire?.id || '',
+                    });
                     this.messageService.add({
                         severity: 'success',
                         summary: 'Successful',

@@ -18,11 +18,7 @@ export class ReceveurMenuComponent implements OnInit {
             {
                 label: 'Receveur',
                 items: [
-                    {
-                        label: 'Dashboard',
-                        icon: 'pi pi-fw pi-home',
-                        routerLink: [''],
-                    },
+                    { label: 'Choix Module', icon: 'pi pi-fw pi-home', url: 'https://digitalpostv2.sn.post/' }
                 ],
             },
             {

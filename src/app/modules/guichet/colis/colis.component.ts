@@ -187,11 +187,11 @@ export class ColisComponent implements OnInit {
                 statutCourrierId: ['1'],
                 paysOrigineId: [210],
                 caisseId: [
-                    this.sessionService.getAgentAttributes().caisseId,
+                    this.sessionService.getAgentAttributes()?.caisseId,
                     Validators.required,
                 ],
                 journalId: [
-                    this.sessionService.getJournalAttributes().id,
+                    this.sessionService.getJournalAttributes()?.id,
                     Validators.required,
                 ],
 
@@ -612,6 +612,9 @@ export class ColisComponent implements OnInit {
                     this.destinataire = result;
                     this.loading = false;
                     this.destinataireDialog = false;
+                    this.form.patchValue({
+                        destinataireId: this.destinataire?.id || '',
+                    });
                     this.messageService.add({
                         severity: 'success',
                         summary: 'Successful',

@@ -18,11 +18,7 @@ export class GuichetMenuComponent implements OnInit {
             {
                 label: 'GUICHET',
                 items: [
-                    {
-                        label: 'Accueil',
-                        icon: 'pi pi-fw pi-home',
-                        routerLink: [''],
-                    },
+                    { label: 'Choix Module', icon: 'pi pi-fw pi-home', url: 'https://digitalpostv2.sn.post/' }
                 ],
             },
 

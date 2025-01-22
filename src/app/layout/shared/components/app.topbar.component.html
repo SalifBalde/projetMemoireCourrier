@@ -23,10 +23,10 @@
 
     <div #topbarmenu class="layout-topbar-menu flex flex-wrap gap-2" [ngClass]="{'layout-topbar-menu-mobile-active': layoutService.state.profileSidebarVisible}">
 <!--         <i class="pi pi-bell mr-4 p-text-danger" pBadge style="font-size: 2rem" value="2" severity="danger"></i>
- -->        <span class="p-input-icon-right">
+ -->        <!-- <span class="p-input-icon-right">
             <input type="text" pInputText placeholder="Search"/>
             <i class="pi pi-search"></i>
-        </span>
+        </span> -->
         <p-splitButton label="{{fullname}}" icon="pi pi-user" [model]="items" styleClass="p-text-info"></p-splitButton>
 
     </div>
