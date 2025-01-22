@@ -28,6 +28,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatButtonModule} from "@angular/material/button";
 import {MessagerieLayoutModule} from "./layout/messagerie-layout/messagerie.layout.module";
 import {MessageriePacketLayoutModule} from "./layout/messageriePacket-layout/messageriePacket.layout.module";
+import {ResponsableannexeModule} from "./modules/responsable-annexe/Responsableannexe.module";
 
 function initializeKeycloak(keycloak: KeycloakService) {
     return () =>
@@ -62,6 +63,7 @@ function initializeKeycloak(keycloak: KeycloakService) {
         MessageriePacketLayoutModule,
         DrpLayoutModule,
         RapportModule,
+        ResponsableannexeModule,
         BrowserAnimationsModule,
         MatButtonModule,
         BrowserAnimationsModule,

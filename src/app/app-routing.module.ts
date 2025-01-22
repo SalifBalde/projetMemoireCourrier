@@ -12,6 +12,7 @@ import { CtLayoutComponent } from './layout/ct-layout/ct.layout.component';
 import { DrpLayoutComponent } from './layout/drp-layout/drp.layout.component';
 import {MessagerieLayoutComponent} from "./layout/messagerie-layout/messagerie.layout.component";
 import {MessageriePacketLayoutComponent} from "./layout/messageriePacket-layout/messageriePacket.layout.component";
+import {ResponsableAnnexeLayoutComponent} from "./layout/responsable-annexe-layout/responsable-annexe.layout.component";
 
 @NgModule({
   imports: [
@@ -27,6 +28,11 @@ import {MessageriePacketLayoutComponent} from "./layout/messageriePacket-layout/
       {
         path: 'receveur', component: ReceveurLayoutComponent, canActivate: [AuthGuard], data: { roles: ['ROLE_RECEVEUR'] },
         loadChildren: () => import('./modules/receveur/receveur.module').then(m => m.ReceveurModule),
+
+      },
+        {
+        path: 'responsableAnnexe', component: ResponsableAnnexeLayoutComponent, canActivate: [AuthGuard], data: { roles: ['ROLE_RESPONSABLE_ANNEXE'] },
+        loadChildren: () => import('./modules/responsable-annexe/Responsableannexe.module').then(m => m.ResponsableannexeModule),
 
       },
       {

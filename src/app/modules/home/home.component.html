@@ -33,6 +33,19 @@
          </div>
 
      </div>
+     <div class="col-3 lg:col-3 xl:col-3" *ngIf="isResponsableAnnexe()">
+         <div class="card">
+            <a routerLink="/receveur">
+             <div class="col justify-content-between">
+                 <div class="flex align-items-center justify-content-center border-round">
+                     <i class="pi pi-envelope text-6xl mb-5"></i>
+                 </div>
+             </div>
+             <div class="text-900 font-medium text-xl">RESPONSABLE ANNEXE</div>
+            </a>
+         </div>
+
+     </div>
 
 
      <div class="col-3 lg:col-3 xl:col-3" *ngIf="isGuichet()">

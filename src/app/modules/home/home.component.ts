@@ -47,4 +47,9 @@ export class HomeComponent{
         const userRoles = this.keycloak.getUserRoles();
         return userRoles.includes('ROLE_DRP');
       }
+
+      public isResponsableAnnexe(): boolean {
+        const userRoles = this.keycloak.getUserRoles();
+        return userRoles.includes('ROLE_RESPONSABLE_ANNEXE');
+      }
 }
