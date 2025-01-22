@@ -18,11 +18,7 @@ export class GuichetMenuComponent implements OnInit {
             {
                 label: 'GUICHET',
                 items: [
-                    {
-                        label: 'Dashboard',
-                        icon: 'pi pi-fw pi-home',
-                        routerLink: [''],
-                    },
+                    { label: 'Choix Module', icon: 'pi pi-fw pi-home', url: 'https://digitalpostv2.sn.post/' }
                 ],
             },
 
@@ -32,7 +28,7 @@ export class GuichetMenuComponent implements OnInit {
                 items: [
                     {
                         label: 'Nouveau Courrier',
-                        icon: 'pi pi-fw pi-box',
+                        icon: 'pi pi-fw pi-plus-circle',
                         routerLink: ['/guichet/courrier-ordinaire'],
                     },
 
@@ -44,13 +40,14 @@ export class GuichetMenuComponent implements OnInit {
                 items: [
                     {
                         label: 'Nouveau Colis',
-                        icon: 'pi pi-fw pi-box',
+                        icon: 'pi pi-fw pi-plus-circle',
                         routerLink: ['/guichet/colis'],
                     },
 
 
                 ],
-            },{
+            },
+            {
                 label: 'Gestion des Livraisons',
                 icon: 'pi pi-fw pi-briefcase',
                 items: [
@@ -60,37 +57,26 @@ export class GuichetMenuComponent implements OnInit {
                         routerLink: ['/guichet/livraison'],
                     },
 
-
+                    {
+                        label: 'Envoie E-commerce à livrer',
+                        icon: 'pi pi-fw pi-truck',
+                        routerLink: ['/guichet/livraison-ecom'],
+                    },
                 ],
             },
-
             {
                 label: 'Rapports',
                 icon: 'pi pi-fw pi-briefcase',
                 items: [
                     {
-                        label: 'Rapport Agent',
+                        label: 'C 10',
                         icon: 'pi pi-fw pi-file',
                         routerLink: ['/guichet/rapport'],
                     },
-                    {
-                        label: 'Rapport par critères',
-                        icon: 'pi pi-fw pi-file',
-                        routerLink: ['/guichet/rapport-criteres'],
-                    },
+
                 ],
             },
-            {
-                label: 'Versement',
-                icon: 'pi pi-fw pi-briefcase',
-                items: [
-                    {
-                        label: 'Faire un versement',
-                        icon: 'pi pi-fw pi-dollar',
-                        routerLink: ['/guichet/versement'],
-                    },
-                ],
-            },
+
         ];
     }
 }

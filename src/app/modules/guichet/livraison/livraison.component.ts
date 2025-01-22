@@ -215,16 +215,30 @@ export class LivraisonComponent implements OnInit {
 
 
     savecolis() {
-        this.openCourrierDialog=false
 
 
         // Mise à jour du courrier
         if(this.isTaxeValid){
+            this.openCourrierDialog=false
             this.colis.taxeMagasinage= this.colis.taxeMagasinage
-            this.colis.statutCourrierId= 11
-            console.log( this.colis)
+          this.colis.statutCourrierId= 11
 
-        this.courrierService.update( this.colis.id,  this.colis).subscribe(
+          const journalId = this.sessionService.getJournalAttributes()?.id;
+
+
+          if (!journalId) {
+              this.messageService.add({
+                  severity: 'warn',
+                  summary: 'Avertissement',
+                  detail: 'Vous n\'avez pas de caisse ouverte. Veuillez ouvrir une caisse avant de continuer.',
+              });
+              return;
+          }
+          this.colis.journalId = journalId;
+          this.colis.userId = this.sessionService.getAgentAttributes().id;
+
+
+        this.courrierService.livraison( this.colis.id,  this.colis).subscribe(
             () => {
                 this.getCourrierByStructureDepotAndStatutIds()
                 const suiviCourrier = {
@@ -236,15 +250,6 @@ export class LivraisonComponent implements OnInit {
                     date: new Date().toISOString(),
                 };
 
-                this.suiviCourrier.save(suiviCourrier).subscribe(
-                    (data) => {
-                        // console.log("Suivi courrier sauvegardé : ", data);
-
-                    },
-                    (error) => {
-                        console.error("Erreur lors de la sauvegarde du suivi : ", error);
-                    }
-                );
 
                 // Rafraîchir la liste des courriers
                 this.messageService.add({

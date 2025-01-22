@@ -11,7 +11,7 @@ import {FormBuilder} from "@angular/forms";
 import {ActivatedRoute, Router} from "@angular/router";
 import {MessageService} from "primeng/api";
 import {SuiviCourrierService} from "../../../../proxy/suivi-courrier";
-import {FermetureService} from "../../../../proxy/fermeture";
+import {Fermeturedto, FermetureService} from "../../../../proxy/fermeture";
 import {Paysdto} from "../../../../proxy/pays";
 
 @Component({
@@ -34,7 +34,7 @@ export class FermetureColisOrdinaireComponent implements OnInit{
     idStatutFermetureCourrier: any;
     typeCourrier:TypeCourrierDto
     iduser:any
-    selectedCourriers!: any;
+    selectedCourriers!: Fermeturedto;
     suiviCourriers:any={}
     Listfermetures: any;
     paysOrigine: Paysdto={};
@@ -143,10 +143,13 @@ export class FermetureColisOrdinaireComponent implements OnInit{
 
 
     // Afficher les détails d'une fermeture
-    showDetails(fermeture: any): void {
+     // Afficher les détails d'une fermeture
+     showDetails(fermeture: any): void {
+        console.log(fermeture);
+
         this.selectedFermeture = fermeture;
-        console.log(this.selectedFermeture.id)
-        const id1 = this.selectedFermeture.id
+        console.log(fermeture.id)
+        const id1 = fermeture.id
         this.router.navigate(['arriere/reception/receptionColis/'+id1]);  // Passe l'ID de la fermeture dans l'URL
 
 

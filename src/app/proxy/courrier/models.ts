@@ -10,6 +10,7 @@ export class CourrierCreateUpdateDto {
     valeurDeclare?: number;
     userId?: number;
     caisseId?: number;
+    journalId?: number;
     codeBarre?: string;
     contenu?: string;
     typeCourrierId?: number;
@@ -43,25 +44,29 @@ export class CourrierCreateUpdateDto {
     userId?: number;
     codeBarre?: string;
     caisseId?: number;
+    journalId?: number;
     contenu?: string;
-    typeCourrierId: number;
-    typeCourrierLibelle: string;
+    typeCourrierId?: number;
+    typeCourrierLibelle?: string;
     paysOrigineId?: number;
     paysOrigineLibelle?: string;
     paysDestinationId?: number;
     paysDestinationLibelle?: string;
     idstatutCourrier?: number;
+    statutCourrierId?: number;
     statutCourrierLibelle?: string;
     destinataireId?: number;
     destinataireNom?: string;
     destinatairePrenom?: string;
     destinataireTelephone?: string;
+    destinataireAdresse?: string;
     categorieId?: number;
     categorieLibelle?: number;
     expediteurId?: number;
     expediteurNom?: string;
     expediteurPrenom?: string;
     expediteurTelephone?: string;
+    expediteurAdresse?: string;
     recommande?: boolean;
     ar?: boolean;
     express?: boolean;
@@ -79,4 +84,15 @@ export class CourrierCreateUpdateDto {
      montant?: number;
    }
 
+   export interface CourrierSearchDto {
+    debut?: string;
+    fin?: string;
+    structureDestinationId?: number;
+    structureDepotId?: number;
+    userId?: number;
+    statutCourrierId?: number;
+    typeCourrierId?: number;
+    paysOrigineId?:number;
+    paysDestinationId?:number;
+  }
 

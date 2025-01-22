@@ -13,6 +13,8 @@ import { DrpLayoutComponent } from './layout/drp-layout/drp.layout.component';
 import {MessagerieLayoutComponent} from "./layout/messagerie-layout/messagerie.layout.component";
 import {MessageriePacketLayoutComponent} from "./layout/messageriePacket-layout/messageriePacket.layout.component";
 import {ResponsableAnnexeLayoutComponent} from "./layout/responsable-annexe-layout/responsable-annexe.layout.component";
+import { DroLayoutComponent } from './layout/dro-layout/dro.layout.component';
+
 
 @NgModule({
   imports: [
@@ -31,17 +33,17 @@ import {ResponsableAnnexeLayoutComponent} from "./layout/responsable-annexe-layo
 
       },
         {
-        path: 'responsableAnnexe', component: ResponsableAnnexeLayoutComponent, canActivate: [AuthGuard], data: { roles: ['ROLE_RESPONSABLE_ANNEXE'] },
+        path: 'responsableannnexe', component: ResponsableAnnexeLayoutComponent, canActivate: [AuthGuard], data: { roles: ['ROLE_RESPONSABLE_ANNEXE'] },
         loadChildren: () => import('./modules/responsable-annexe/Responsableannexe.module').then(m => m.ResponsableannexeModule),
 
       },
       {
-        path: 'guichet', component: GuichetLayoutComponent, canActivate: [AuthGuard], data: { roles: ['ROLE_GUICHET'] },
+        path: 'guichet', component: GuichetLayoutComponent,   canActivate: [AuthGuard], data: { roles: ['ROLE_GUICHET'] },
         loadChildren: () => import('./modules/guichet/guichet.module').then(m => m.GuichetModule),
 
       },
       {
-        path: 'backoffice', component: BackofficeLayoutComponent, canActivate: [AuthGuard], data: { roles: ['ROLE_ADMIN'] },
+        path: 'backoffice', component: BackofficeLayoutComponent,  canActivate: [AuthGuard], data: { roles: ['ROLE_ADMIN'] },
         loadChildren: () => import('./modules/backoffice/backoffice.module').then(m => m.BackofficeModule),
 
       },
@@ -51,7 +53,7 @@ import {ResponsableAnnexeLayoutComponent} from "./layout/responsable-annexe-layo
 
       },
       {
-        path: 'ct', component: CtLayoutComponent, canActivate: [AuthGuard], data: { roles: ['ROLE_CT'] },
+        path: 'ct', component: CtLayoutComponent,  canActivate: [AuthGuard], data: { roles: ['ROLE_CT'] },
         loadChildren: () => import('./modules/centre-tri/centre-tri.module').then(m => m.CentreTriModule),
 
       },
@@ -69,7 +71,11 @@ import {ResponsableAnnexeLayoutComponent} from "./layout/responsable-annexe-layo
         loadChildren: () => import('./modules/drp/drp.module').then(m => m.DrpModule),
 
       },
+      {
+        path: 'dro', component: DroLayoutComponent, canActivate: [AuthGuard], data: { roles: ['ROLE_DRO'] },
+        loadChildren: () => import('./modules/dro/dro.module').then(m => m.DroModule),
 
+      },
             { path: 'notfound', component: NotfoundComponent },
             { path: '**', redirectTo: '/notfound' },
         ], { scrollPositionRestoration: 'enabled', anchorScrolling: 'enabled',  })

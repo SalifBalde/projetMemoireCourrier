@@ -23,6 +23,12 @@ export class StockService {
   return this.httpClient.get<[StockDto]>(new_api_host,this.httpOptions);
 }
 
+getStocksByCaisseFigurine(caisseId: string)
+{
+    let new_api_host = this.routerParam(this.api_host ,'find-by-caisse-figurine', caisseId);
+  return this.httpClient.get<[StockDto]>(new_api_host,this.httpOptions);
+}
+
 
 getOneById(id:string)
 {

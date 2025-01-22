@@ -39,12 +39,13 @@
                         <th  pSortableColumn="date">Date d'envoi<p-sortIcon field="date"/> </th>
                         <th >Type Courrier</th>
                         <th>Status</th>
+                        <th>Action</th>
 
                         <th></th>
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-colis>
-                    <tr [pSelectableRow]="colis" (click)="openDialog(colis)">
+                    <tr [pSelectableRow]="colis" >
                         <td>{{ colis.codeBarre }}</td>
                         <td>{{ colis.expediteurNom }}{{ colis.expediteurPrenom }}</td>
                         <td>{{ colis.destinataireNom }} {{ colis.destinatairePrenom }}</td>
@@ -68,6 +69,13 @@
                         <td>
                             <span class="p-badge p-component p-badge-{{ colis.statutCourrierLibelle }}">{{ colis.statutCourrierLibelle
                                 }}</span>
+                        </td>
+                        <td>
+                            <p-button
+                            label="Livrer"
+                            severity="warning"
+                            icon="pi pi-fw pi-truck"
+                            (click)="openDialog(colis)"/>
                         </td>
                     </tr>
                 </ng-template>
@@ -94,7 +102,7 @@
     [(visible)]="openNumExpDialog"
     [modal]="true"
     [closable]="true"
-    [header]="'Livraison Clis:' + (colis?.codeBarre || '')">
+    [header]="'Livraison Courrier:' + (colis?.codeBarre || '')">
     <div class="p-fluid">
         <div class="field">
             <label for="taxeMagasinage">Taxe Magasinage</label>

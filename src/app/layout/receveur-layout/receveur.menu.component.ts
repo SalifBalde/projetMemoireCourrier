@@ -2,6 +2,7 @@ import { OnInit } from '@angular/core';
 import { Component } from '@angular/core';
 import { LayoutService } from '../service/app.layout.service';
 import { IndexComponent } from 'src/app/modules/receveur/index/index.component';
+import { RouterLink } from '@angular/router';
 
 @Component({
     selector: 'receveur-menu',
@@ -17,33 +18,48 @@ export class ReceveurMenuComponent implements OnInit {
             {
                 label: 'Receveur',
                 items: [
+                    { label: 'Choix Module', icon: 'pi pi-fw pi-home', url: 'https://digitalpostv2.sn.post/' }
+                ],
+            },
+            {
+                label: 'SuiviCourrier',
+                items: [
                     {
-                        label: 'Dashboard',
-                        icon: 'pi pi-fw pi-home',
+                        label:'suiviCourrier',
+                        icon : 'pi pi-fw pi-search',
+                        routerLink:['/receveur/suiviCourrier']
+                    }
+                ]
+            },
+            {
+                label: 'Gestion des Rapport',
+                icon: 'pi pi-fw pi-briefcase',
+                items: [
+                    {
+                        label: 'C 10',
+                        icon: 'pi pi-fw pi-box',
+                        routerLink: [''],
+                    },
+                    {
+                        label: 'C10 Bureau',
+                        icon: 'pi pi-fw pi-box',
                         routerLink: [''],
                     },
                 ],
             },
-
             {
-                label: 'Gestion des locations',
+                label: 'Rapports',
                 icon: 'pi pi-fw pi-briefcase',
                 items: [
                     {
-                        label: 'Classique',
-                        icon: 'pi pi-fw pi-box',
-                        items: [
-                            {
-                                label: 'Envoi avec Poids',
-                                icon: 'pi pi-fw pi-search',
-                                routerLink: ['/receveur/searchclient'],
-                            },
-                            {
-                                label: 'Envoi avec Produit',
-                                icon: 'pi pi-fw pi-search',
-                                routerLink: ['/receveur/Searchclientproduit'],
-                            },
-                        ],
+                        label: 'Rapport Courrier',
+                        icon: 'pi pi-fw pi-file',
+                        routerLink: ['/receveur/rapport-courrier'],
+                    },
+                    {
+                        label: 'Rapport E-commerce',
+                        icon: 'pi pi-fw pi-file',
+                        routerLink: ['/receveur/rapport-ecom'],
                     },
                 ],
             },

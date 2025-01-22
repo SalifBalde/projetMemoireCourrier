@@ -22,6 +22,7 @@ import { ArriereLayoutModule } from './layout/arriere-layout/arriere.layout.modu
 import { DrpLayoutComponent } from './layout/drp-layout/drp.layout.component';
 import { CtLayoutComponent } from './layout/ct-layout/ct.layout.component';
 import { CtLayoutModule } from './layout/ct-layout/ct.layout.module';
+import { DroLayoutModule } from './layout/dro-layout/dro.layout.module';
 import { DrpLayoutModule } from './layout/drp-layout/drp.layout.module';
 import {RapportModule} from "./modules/drp/rapport/rapport.module";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -29,6 +30,7 @@ import {MatButtonModule} from "@angular/material/button";
 import {MessagerieLayoutModule} from "./layout/messagerie-layout/messagerie.layout.module";
 import {MessageriePacketLayoutModule} from "./layout/messageriePacket-layout/messageriePacket.layout.module";
 import {ResponsableannexeModule} from "./modules/responsable-annexe/Responsableannexe.module";
+import {ResponsableannexeLayoutModule} from "./layout/responsable-annexe-layout/responsableannexe.layout.module";
 
 function initializeKeycloak(keycloak: KeycloakService) {
     return () =>
@@ -62,13 +64,12 @@ function initializeKeycloak(keycloak: KeycloakService) {
         MessagerieLayoutModule,
         MessageriePacketLayoutModule,
         DrpLayoutModule,
+        DroLayoutModule,
         RapportModule,
-        ResponsableannexeModule,
+        ResponsableannexeLayoutModule,
         BrowserAnimationsModule,
         MatButtonModule,
         BrowserAnimationsModule,
-
-
     ],
     providers: [
         {provide: APP_INITIALIZER, useFactory:initializeKeycloak,multi :true, deps:[KeycloakService]},

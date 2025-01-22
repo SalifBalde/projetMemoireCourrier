@@ -271,6 +271,15 @@ import {SuiviCourrierService} from "../../../proxy/suivi-courrier";
     }
 
 
+<<<<<<< HEAD
+    this.form.value.details = this.mapIdsToColis(this.selectedColis);
+    this.form.value.bureauExpediteur = this.sessionService.getAgentAttributes().structureId;
+    this.expeditionService.save(this.form.value).subscribe(
+                (result) => {
+                    //this.getAllColis();
+                    this.expedition = result;
+                    this.router.navigateByUrl('/ct/details-expedition/'+this.expedition.id);
+=======
     // Handle structure change
     // onStructureChange(structureId: number): void {
     //     if (structureId) {
@@ -381,6 +390,7 @@ import {SuiviCourrierService} from "../../../proxy/suivi-courrier";
                             }
                         );
                     });
+>>>>>>> 41368382a714ad24da99e79997690368c64c3021
                     this.messageService.add({
                         severity: 'success',
                         summary: 'Succès',

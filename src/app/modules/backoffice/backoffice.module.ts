@@ -9,8 +9,8 @@ import { SharedComponentModule } from 'src/app/layout/shared/shared-component.mo
   declarations: [],
   imports: [
     BackofficeRoutingModule,
-    SharedComponentModule
-
+    SharedComponentModule,
+    CommonModule
   ]
 })
 export class BackofficeModule { }

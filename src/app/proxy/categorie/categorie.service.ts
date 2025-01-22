@@ -45,9 +45,9 @@ getOneById(id:string):Observable<CategorieDto>
   return this.httpClient.get<CategorieDto>(new_api_host,this.httpOptions);
 }
 
-getAllByRegimeAndType(regimeId:number,typeId: number)
+getAllByRegimeAndType(regimeId:number,typeId: number, serviceId: number)
 {
-  let new_api_host = this.routerParam(this.api_host,'regime',regimeId,'type-courrier',typeId);
+  let new_api_host = this.routerParam(this.api_host,'regime',regimeId,'type-courrier',typeId,'service', serviceId);
   return this.httpClient.get<CategorieDto[]>(new_api_host,this.httpOptions);
 }
 

@@ -23,7 +23,10 @@ const routes: Routes = [
   { path: 'livraison', loadChildren: () => import('./livraison/livraison.module').then(m => m.LivraisonModule) },
   { path: 'courrier-ordinaire', loadChildren: () => import('./courrier-ordinaire/courrier-ordinaire.module').then(m => m.CourrierOrdinaireModule) },
   { path: 'courrier-details/:id', loadChildren: () => import('./courrier-details/courrier-details.module').then(m => m.CourrierDetailsModule) },
-  { path: 'colis', loadChildren: () => import('./colis/colis.module').then(m => m.ColisModule) }
+  { path: 'colis', loadChildren: () => import('./colis/colis.module').then(m => m.ColisModule) },
+  { path: 'livraison-ecom', loadChildren: () => import('./livraison-ecom/livraison-ecom.module').then(m => m.LivraisonEcomModule) },
+  { path: 'livraisonDetails/:id', loadChildren: () => import('./livraison-ecom-details/livraison-details.module').then(m => m.LivraisonDetailsModule) },
+ 
 ];
 
 @NgModule({

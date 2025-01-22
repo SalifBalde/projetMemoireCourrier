@@ -15,35 +15,50 @@ export class ResponsableannexeMenuComponent implements OnInit {
     ngOnInit() {
         this.model = [
             {
-                label: 'Receveur',
+                label: 'Responsable Annexe',
                 items: [
-                    {
-                        label: 'Dashboard',
-                        icon: 'pi pi-fw pi-home',
-                        routerLink: [''],
-                    },
+                   { label: 'Choix Module', icon: 'pi pi-fw pi-home', url: 'https://digitalpostv2.sn.post/' }
                 ],
             },
-
             {
-                label: 'Gestion des locations',
+                label: 'SuiviCourrier',
+                items: [
+                    {
+                        label:'suiviCourrier',
+                        icon : 'pi pi-fw pi-search',
+                        routerLink:['/responsableannnexe/suiviCourrier']
+                    }
+                ]
+            },
+            {
+                label: 'Gestion des Rapport',
                 icon: 'pi pi-fw pi-briefcase',
                 items: [
                     {
-                        label: 'Classique',
+                        label: 'C 10',
                         icon: 'pi pi-fw pi-box',
-                        items: [
-                            {
-                                label: 'Envoi avec Poids',
-                                icon: 'pi pi-fw pi-search',
-                                routerLink: ['/receveur/searchclient'],
-                            },
-                            {
-                                label: 'Envoi avec Produit',
-                                icon: 'pi pi-fw pi-search',
-                                routerLink: ['/receveur/Searchclientproduit'],
-                            },
-                        ],
+                       // routerLink: [''],
+                    },
+                    {
+                        label: 'C10 Bureau',
+                        icon: 'pi pi-fw pi-box',
+                      //  routerLink: [''],
+                    },
+                ],
+            },
+            {
+                label: 'Rapports',
+                icon: 'pi pi-fw pi-briefcase',
+                items: [
+                    {
+                        label: 'Rapport Courrier',
+                        icon: 'pi pi-fw pi-file',
+                        routerLink: ['/responsableannnexe/rapport-courrier'],
+                    },
+                    {
+                        label: 'Rapport E-commerce',
+                        icon: 'pi pi-fw pi-file',
+                        routerLink: ['/responsableannnexe/rapport-ecom'],
                     },
                 ],
             },

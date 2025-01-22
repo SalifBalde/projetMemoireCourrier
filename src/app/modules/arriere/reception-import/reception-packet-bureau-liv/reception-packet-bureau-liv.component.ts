@@ -164,51 +164,26 @@ export class ReceptionPacketBureauLivComponent implements OnInit{
 
 
 
+
     confirmReception() {
         console.log(this.selectedCourriers);
-        this.openCourrierDialog = false;
         this.openColisDialog = false;
-        console.log(this.selectedStatut)
-
         this.selectedCourriers.forEach((courrier) => {
 
-            // Attribuer une valeur par défaut (22) si l'ID du statut n'est pas renseigné
-            courrier.statutCourrier = { id: 10  };
+                // Attribuer une valeur par défaut (22) si l'ID du statut n'est pas renseigné
+                courrier.taxeDouane = courrier.montantTaxeDouane;
+                courrier.statutCourrierId = 10;
 
             courrier.userId = this.iduser;
 
-            console.log(courrier);
-
-            // Créer un objet SuiviCourrier pour chaque courrier
-            const suiviCourrier = {
-                courrierId: courrier.id,
-                idstatutCourrier: courrier.statutCourrier.id,
-                userId: courrier.userId,
-                structureDepotId: courrier.structureDepotId,
-                structureDestinationId: courrier.structureDestinationId
-            };
-
-            // Sauvegarder les informations de suivi pour chaque courrier
-            this.suiviCourrier.save(suiviCourrier).subscribe(
-                (data) => {
-
-                    console.log("Suivi courrier sauvegardé : ", data);
-                },
-                (error) => {
-                    console.error("Erreur lors de la sauvegarde du suivi : ", error);
-                }
-            );
         });
 
         // Appel au service pour mettre à jour les courriers
         this.courrierService.updateCourriers(this.selectedCourriers).subscribe(
             (result) => {
-                // Rafraîchir la liste des courriers après la mise à jour
-                console.log(this.fermetureId)
-                this.selectedStatut=[]
-                this.selectedCourriers = [];
-                this.listeCourriers=[]
                 this.getCourriersByFermetureIdAndStatut(this.fermetureId,this.idStatutFermetureCourrier[0].id)
+                this.selectedStatut=[]
+                // Message de succès
                 this.messageService.add({
                     severity: 'success',
                     summary: 'Succès',
@@ -230,8 +205,6 @@ export class ReceptionPacketBureauLivComponent implements OnInit{
             }
         );
     }
-
-
 
 
     getBadgeSeverity(statutLibelle: string): string {
