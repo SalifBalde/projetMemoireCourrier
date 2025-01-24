@@ -10,7 +10,6 @@ import {IndexComponent} from "../receveur/index/index.component";
 
 @NgModule({
   declarations: [
-      IndexComponent
   ],
   imports: [
     ResponsableannexeRoutingModule,
