@@ -98,9 +98,11 @@ export interface ProduitEcommerceDto {
 
 
 export interface EcommerceSearchDto {
-  partenaire_e_com_id: number;      
-  idbureau: number;                
-  IdbureauPartenaire: number;       
-  numenvoi: string;                
-  etatEcomId: number;               
+  partenaire_e_com_id?: number;
+  idbureau?: number;
+  IdbureauPartenaire?: number;
+  numenvoi?: string;
+  etatEcomId?: number;
+  debut?:string;
+  fin?:string;
 }
