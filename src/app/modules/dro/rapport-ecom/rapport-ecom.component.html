@@ -3,22 +3,19 @@
     <div class="grid flex justify-content-center align-items-center">
       <div class="col-3 md:col-5">
         <p-dropdown optionLabel="libelle" [filter]="true" filterBy="libelle" optionValue="id"
-          formControlName="IdbureauPartenaire" placeholder="Bureau de dépôt" [options]="structure$"
-          [showClear]="true">
+          formControlName="IdbureauPartenaire" placeholder="Bureau de dépôt" [options]="structure$" [showClear]="true">
         </p-dropdown>
       </div>
 
       <div class="col-3 md:col-5">
-        <p-dropdown optionLabel="libelle" [filter]="true" filterBy="libelle" optionValue="id"
-          formControlName="idbureau" placeholder="Bureau Destinataire" [options]="structure$"
-          [showClear]="true">
+        <p-dropdown optionLabel="libelle" [filter]="true" filterBy="libelle" optionValue="id" formControlName="idbureau"
+          placeholder="Bureau Destinataire" [options]="structure$" [showClear]="true">
         </p-dropdown>
       </div>
 
       <div class="col-3 md:col-5">
-        <p-dropdown formControlName="partenaire_e_com_id" [filter]="true" filterBy="libelle"
-          [options]="partenaire$" placeholder="Choisissez un partenaire" optionLabel="libelle"
-          optionValue="id">
+        <p-dropdown formControlName="partenaire_e_com_id" [filter]="true" filterBy="libelle" [options]="partenaire$"
+          placeholder="Choisissez un partenaire" optionLabel="libelle" optionValue="id">
         </p-dropdown>
       </div>
 
@@ -67,8 +64,10 @@
           </ng-template>
 
           <ng-template pTemplate="right">
-            <button pButton type="button" icon="pi pi-file-pdf" class="p-button-warning mr-2" (click)="generatePdf()" [disabled]="loading"></button>
-            <button pButton type="button" icon="pi pi-file-excel" (click)="dt.exportCSV()" [disabled]="loading"></button>
+            <button pButton type="button" icon="pi pi-file-pdf" class="p-button-warning mr-2" (click)="generatePdf()"
+              [disabled]="loading"></button>
+            <button pButton type="button" icon="pi pi-file-excel" (click)="dt.exportCSV()"
+              [disabled]="loading"></button>
           </ng-template>
         </p-toolbar>
 
@@ -96,8 +95,8 @@
               <td>{{ ecommerce.prenomClient }} {{ ecommerce.nomClient }}</td>
               <td>{{ ecommerce.etatEcomLibelle }}</td>
               <td>
-                <a [routerLink]="['/dro/ecom-details/', ecommerce.id]" pButton="" type="button"
-                  icon="pi pi-eye" class="p-element p-button-text p-button p-component p-button-icon-only">
+                <a [routerLink]="['/dro/ecom-details/', ecommerce.id]" pButton="" type="button" icon="pi pi-eye"
+                  class="p-element p-button-text p-button p-component p-button-icon-only">
                   <span class="p-button-icon pi pi-eye" aria-hidden="true"></span>
                 </a>
               </td>

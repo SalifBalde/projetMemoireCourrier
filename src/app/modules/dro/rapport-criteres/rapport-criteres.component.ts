@@ -9,7 +9,7 @@ import { KeycloakService } from "keycloak-angular";
 import { CourrierDto, CourrierSearchDto, CourrierService } from "../../../proxy/courrier";
 import { StructureDto, StructureService } from 'src/app/proxy/structures';
 import { StatutCourrierService, Statutdto } from 'src/app/proxy/statut-courrier';
-import { TypeCourrierService,TypeCourrierDto } from 'src/app/proxy/type-courriers';
+import { TypeCourrierService, TypeCourrierDto } from 'src/app/proxy/type-courriers';
 
 @Component({
     selector: 'app-rapport-criteres',
@@ -35,7 +35,7 @@ export class RapportCriteresComponent {
     date: Date;
     fullname: string;
 
-    
+
     @ViewChild('dt') dt: Table;
 
     constructor(
@@ -44,13 +44,13 @@ export class RapportCriteresComponent {
         private fb: FormBuilder,
         private router: Router,
         private statutCourrierService: StatutCourrierService,
-        private tyoeCourrierService : TypeCourrierService,
+        private tyoeCourrierService: TypeCourrierService,
         private structureService: StructureService,
         private route: ActivatedRoute,
         private messageService: MessageService, private readonly keycloak: KeycloakService
     ) { }
 
-    
+
     resetForm() {
         this.loadingReset = true;
         setTimeout(() => {
@@ -83,7 +83,7 @@ export class RapportCriteresComponent {
         this.statutCourrierService.findAll().subscribe(result => {
             this.statutCourrier$ = result;
         });
-    
+
         this.tyoeCourrierService.findAll().subscribe(result => {
             this.typeCourrier$ = result;
         });
@@ -106,8 +106,8 @@ export class RapportCriteresComponent {
     }
 
     isEmpty() {
-        return !this.form.value.debut && !this.form.value.fin && 
-           !this.form.value.structureDepotId && !this.form.value.structureDestinationId &&
-           !this.form.value.typeCourrierId && !this.form.value.statutCourrierId;
+        return !this.form.value.debut && !this.form.value.fin &&
+            !this.form.value.structureDepotId && !this.form.value.structureDestinationId &&
+            !this.form.value.typeCourrierId && !this.form.value.statutCourrierId;
     }
 }

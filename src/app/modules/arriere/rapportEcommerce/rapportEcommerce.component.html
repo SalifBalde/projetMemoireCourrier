@@ -1,19 +1,19 @@
 <div class="card p-fluid">
     <form [formGroup]="form">
         <div class="grid">
-            <div class="col-12 md:col-6">
+            <div class="col-12 md:col-3">
                 <label for="dateDebut">Du</label>
                 <p-calendar formControlName="debut" id="debut" [showIcon]="true" inputId="icon"
                     dateFormat="dd/mm/yy">
                 </p-calendar>
             </div>
-            <div class="col-12 md:col-6">
+            <div class="col-12 md:col-3">
                 <label for="dateFin">Au</label>
                 <p-calendar formControlName="fin" id="fin" [showIcon]="true" inputId="icon"
                     dateFormat="dd/mm/yy">
                 </p-calendar>
             </div>
-            <div class="col-12 md:col-6">
+            <div class="col-12 md:col-3">
                 <label for="numenvoi">Numéro d'expédition</label>
                 <input formControlName="numenvoi" id="numenvoi" pInputText />
             </div>

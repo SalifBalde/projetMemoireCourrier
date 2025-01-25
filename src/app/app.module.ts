@@ -24,53 +24,53 @@ import { CtLayoutComponent } from './layout/ct-layout/ct.layout.component';
 import { CtLayoutModule } from './layout/ct-layout/ct.layout.module';
 import { DroLayoutModule } from './layout/dro-layout/dro.layout.module';
 import { DrpLayoutModule } from './layout/drp-layout/drp.layout.module';
-import {RapportModule} from "./modules/drp/rapport/rapport.module";
+import { RapportModule } from "./modules/drp/rapport/rapport.module";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {MatButtonModule} from "@angular/material/button";
+import { MatButtonModule } from "@angular/material/button";
 
 function initializeKeycloak(keycloak: KeycloakService) {
-    return () =>
-      keycloak.init({
-        config: {
-            realm :environment.keycloak.realm,
-            clientId : environment.keycloak.clientId,
-            url : environment.keycloak.authority
-        },
-        initOptions: {
-          onLoad: 'check-sso',
-          silentCheckSsoRedirectUri: window.location.origin + '/assets/silent-check-sso.html'
-        }
-      });
-  }
+  return () =>
+    keycloak.init({
+      config: {
+        realm: environment.keycloak.realm,
+        clientId: environment.keycloak.clientId,
+        url: environment.keycloak.authority
+      },
+      initOptions: {
+        onLoad: 'check-sso',
+        silentCheckSsoRedirectUri: window.location.origin + '/assets/silent-check-sso.html'
+      }
+    });
+}
 
 @NgModule({
-    declarations: [
-        AppComponent,
+  declarations: [
+    AppComponent,
 
-    ],
-    imports: [
-        AppRoutingModule,
-        AppLayoutModule,
-        KeycloakAngularModule,
-        GuichetLayoutModule,
-        BackofficeLayoutModule,
-        ReceveurLayoutModule,
-        ArriereLayoutModule,
-        CtLayoutModule,
-        DrpLayoutModule,
-        DroLayoutModule,
-        RapportModule,
-        BrowserAnimationsModule,
-        MatButtonModule,
-        BrowserAnimationsModule,
-    ],
-    providers: [
-        {provide: APP_INITIALIZER, useFactory:initializeKeycloak,multi :true, deps:[KeycloakService]},
-        { provide: LocationStrategy, useClass: HashLocationStrategy },
-        CountryService, CustomerService, EventService, IconService, NodeService,
-        PhotoService, CurrencyPipe, //authInterceptorProviders
+  ],
+  imports: [
+    AppRoutingModule,
+    AppLayoutModule,
+    KeycloakAngularModule,
+    GuichetLayoutModule,
+    BackofficeLayoutModule,
+    ReceveurLayoutModule,
+    ArriereLayoutModule,
+    CtLayoutModule,
+    DrpLayoutModule,
+    DroLayoutModule,
+    RapportModule,
+    BrowserAnimationsModule,
+    MatButtonModule,
+    BrowserAnimationsModule,
+  ],
+  providers: [
+    { provide: APP_INITIALIZER, useFactory: initializeKeycloak, multi: true, deps: [KeycloakService] },
+    { provide: LocationStrategy, useClass: HashLocationStrategy },
+    CountryService, CustomerService, EventService, IconService, NodeService,
+    PhotoService, CurrencyPipe, //authInterceptorProviders
 
-    ],
-    bootstrap: [AppComponent]
+  ],
+  bootstrap: [AppComponent]
 })
 export class AppModule { }

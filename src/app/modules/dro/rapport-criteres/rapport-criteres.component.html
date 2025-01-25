@@ -24,12 +24,14 @@
             </div>
 
             <div class="col-12 md:col-5">
-                <p-dropdown formControlName="typeCourrierId" id="typeCourrierId" [filter]="true" filterBy="libelle" [options]="typeCourrier$"
-                    placeholder="choisissez un Type" optionLabel="libelle" optionValue="id"></p-dropdown>
+                <p-dropdown formControlName="typeCourrierId" id="typeCourrierId" [filter]="true" filterBy="libelle"
+                    [options]="typeCourrier$" placeholder="choisissez un Type" optionLabel="libelle"
+                    optionValue="id"></p-dropdown>
             </div>
             <div class="col-12 md:col-5">
-                <p-dropdown formControlName="statutCourrierId" id="statutCourrierId" [filter]="true" filterBy="libelle" [options]="statutCourrier$"
-                    placeholder="choisissez un status" optionLabel="libelle" optionValue="id"></p-dropdown>
+                <p-dropdown formControlName="statutCourrierId" id="statutCourrierId" [filter]="true" filterBy="libelle"
+                    [options]="statutCourrier$" placeholder="choisissez un status" optionLabel="libelle"
+                    optionValue="id"></p-dropdown>
             </div>
         </div>
         <div class="p-formgrid flex col-6 col-offset-3 justify-content-center">
@@ -102,7 +104,9 @@
                             <td>{{ courrier.createdAt }}</td>
                             <td>
                                 <a [routerLink]="['/dro/courrier-details/', courrier.id]" pButton="" type="button"
-                                    icon="pi pi-download" class="p-element p-button-text p-button p-component p-button-icon-only"><span class="p-button-icon pi pi-download" aria-hidden="true"></span></a>
+                                    icon="pi pi-download"
+                                    class="p-element p-button-text p-button p-component p-button-icon-only"><span
+                                        class="p-button-icon pi pi-download" aria-hidden="true"></span></a>
                             </td>
                         </tr>
                     </ng-template>
