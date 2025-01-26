@@ -1,6 +1,6 @@
 export const environment = {
   production: false,
-  api_host: "http://localhost:8084/api/",
+  api_host: "http://localhost:8087/api/",
   // api_host:"http://10.6.4.202:8089/courrier-service/api/",
   api_params: "http://10.6.4.202:8089/api/",
   api_ecom : "http://localhost:8087/api/",

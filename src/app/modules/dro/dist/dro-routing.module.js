@@ -24,9 +24,10 @@ var routes = [
             { path: 'dro', component: index_component_1.IndexComponent },
         ]
     },
-    { path: 'rapport-courrier', loadChildren: function () { return Promise.resolve().then(function () { return require('./rapport-criteres/rapport-criteres.module'); }).then(function (m) { return m.RapportCriteresModule; }); } },
+    { path: 'rapport-courrier', loadChildren: function () { return Promise.resolve().then(function () { return require('./rapport-courrier/rapport-criteres.module'); }).then(function (m) { return m.RapportCriteresModule; }); } },
     { path: 'courrier-details/:id', loadChildren: function () { return Promise.resolve().then(function () { return require('./courrier-details/courrier-details.module'); }).then(function (m) { return m.CourrierDetailsModule; }); } },
     { path: 'rapport-ecom', loadChildren: function () { return Promise.resolve().then(function () { return require('./rapport-ecom/rapport-ecom.module'); }).then(function (m) { return m.RapportEcomModule; }); } },
+    { path: 'ecom-details/:id', loadChildren: function () { return Promise.resolve().then(function () { return require('./ecom-details/ecom-details.module'); }).then(function (m) { return m.EcomDetailsModule; }); } },
 ];
 var DroRoutingModule = /** @class */ (function () {
     function DroRoutingModule() {

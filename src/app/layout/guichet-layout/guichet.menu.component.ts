@@ -65,11 +65,16 @@ export class GuichetMenuComponent implements OnInit {
                         icon: 'pi pi-fw pi-file',
                         routerLink: ['/guichet/rapport'],
                     },
-                    {
-                        label: 'Rapport par critères',
-                        icon: 'pi pi-fw pi-file',
-                        routerLink: ['/guichet/rapport-criteres'],
-                    },
+                    // {
+                    //     label: 'Rapport par critères',
+                    //     icon: 'pi pi-fw pi-file',
+                    //     routerLink: ['/guichet/rapport-courrier'],
+                    // },
+                    // {
+                    //     label: 'Rapport par critères',
+                    //     icon: 'pi pi-fw pi-file',
+                    //     routerLink: ['/guichet/rapport-ecom'],
+                    // },
                 ],
             },
             {

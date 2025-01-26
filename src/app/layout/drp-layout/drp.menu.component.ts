@@ -1,6 +1,7 @@
 import { OnInit } from '@angular/core';
 import { Component } from '@angular/core';
 import { LayoutService } from '../service/app.layout.service';
+import { RouterLink } from '@angular/router';
 
 @Component({
     selector: 'drp-menu',
@@ -33,10 +34,15 @@ export class DrpMenuComponent implements OnInit {
                 label: 'Reporting',
                 items: [
                     {
-                        label: 'Report Jt',
+                        label: 'Report Jt Courrier',
                         icon: 'pi pi-fw pi-file-pdf',
                         routerLink: ['/drp/rapport'],
                     },
+                    {
+                        label: 'Report Jt E-commerce ',
+                        icon: 'pi pi-fw pi-file-pdf',
+                        routerLink: ['/drp/rapport-ecommerce'],
+                    }
                 ],
             },
 
