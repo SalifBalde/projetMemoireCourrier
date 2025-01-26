@@ -3,121 +3,221 @@ import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import JsBarcode from 'jsbarcode';
 import { CourrierDto } from '../courrier/models';
+import {FermetureService} from "../fermeture";
+import {SessionService} from "../auth/Session.service";
 
 @Injectable({
   providedIn: 'root',
 })
 export class FactureService {
-  constructor() {}
+     user: any;
+  constructor(  private  fermetureService: FermetureService,
+                private sessionService: SessionService,
+  ) {
+      this.user= this.sessionService.getAgentAttributes()
+      console.log(this.user)
+  }
 
-
-    async  generateReceipt(courrier) {
+    async generateReceipt(courriers: any, fermeture: any) {
         const doc = new jsPDF({
-            orientation: 'portrait',
+            orientation: 'landscape',
             unit: 'mm',
             format: [210, 297], // Format A4
         });
 
-       // const logo = await loadImage('assets/layout/images/logo.png');
-        let currentY = 10; // Position initiale Y
+        // Charger l'image du logo en base64
+        try {
+            const logoBase64 = await this.loadImage("assets/layout/images/poste-removebg-preview.png"); // Remplace par l'URL de ton logo
+            // Ajouter le logo en haut à gauche
+            doc.addImage(logoBase64, 'PNG', 5, 5, 40, 30); // Position (10, 10) et taille (30, 20)
+        } catch (error) {
+            console.error('Erreur lors du chargement de l\'image : ', error);
+        }
 
-        // En-tête avec logo et titre
-        // Ligne verticale
+        // Diminuer la taille de la police
+        doc.setFontSize(4); // Réduit la taille de la police à 4 pour le contenu général
+        const date = new Date(fermeture.date);
+        const formattedDate = date.toLocaleString('fr-FR', { // formatage en français
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+        });
+        // Calculer le nombre d'objets
+        const numberOfObjects = courriers.length;
+        let currentY = 10;
+        let currentG = 100;
 
-      //  doc.addImage(logo, 'PNG', 10, currentY, 30, 15);
-        doc.setFontSize(16);
-        doc.text('Feuille de Route', 105, currentY + 10, { align: 'center' });
-        currentY += 5;
-        doc.setFontSize(12);
-        doc.text('Expédition Envoi Colis', 105, currentY + 15, { align: 'center' });
-        currentY += 25;
+        doc.setFontSize(9); // Réduire la taille pour l'en-tête secondaire
+        doc.text(` Le  ${formattedDate}`, 250, currentY, { align: 'center' });
+        currentY += 18;
+
+        // En-tête
+        doc.setFontSize(12); // Taille de police plus grande pour l'en-tête
+        doc.text('Feuille de Route', 148.5, currentY, { align: 'center' });
+        currentY += 8;
+        const dateText = fermeture.date; // Utilisez la variable `fermeture` iciconst dateText = fermeture; // Utilisez la variable `fermeture` ici
+        doc.setFontSize(9); // Réduire la taille pour l'en-tête secondaire
+        doc.text(`Expédition Envoi : ${courriers[0].typeCourrierLibelle}`, 148.5, currentY, { align: 'center' });
+        currentY += 3;
 
 
-        doc.line(200, currentY, 200, currentY + 55); // Ligne verticale de 50mm de longueur à la position X=100
-        // Ligne horizontale
-        doc.line(10, currentY, 200, currentY); // Ligne de séparation
-
-        doc.line(10, currentY, 10, currentY + 55); // Ligne verticale de 50mm de longueur à la position X=100
-        currentY += 5;
-
+        // Ligne de séparation
+        doc.line(10, currentY, 287, currentY);
+        currentY += 6;
 
         // Informations générales
-        doc.setFontSize(10);
-        doc.text(`Agent: ${courrier.expediteurNom || 'N/A'}`, 10, currentY);
-        currentY += 5;
-        doc.text(`Bureau Expéditeur: ${courrier.structureDepotLibelle || 'N/A'}`, 10, currentY);
-        currentY += 5;
-        // Ligne horizontale
-        doc.line(10, currentY, 200, currentY); // Ligne de séparation
-        currentY += 5;
+        doc.setFont("helvetica", "bold");
+        doc.text('Agent: ', 10, currentY); // "Agent" en gras
+        doc.setFont("helvetica", "normal");
+        doc.text(`${this.user.prenom + ' ' + this.user.nom || 'N/A'}`, 30, currentY); // Nom de l'agent en normal
+        currentY += 6;
 
-        doc.text(`Bureau Destinataire: ${courrier.structureDestinationLibelle || 'N/A'}`, 10, currentY);
-        currentY += 5;
-        doc.text(`Date Expédition: ${courrier.dateExpedition || 'N/A'}`, 10, currentY);
-        currentY += 5;
-
-        // Ligne horizontale
-        doc.line(10, currentY, 200, currentY); // Ligne de séparation
-        currentY += 5;
-
-        // Table des colis - Entêtes
-        doc.setFontSize(10);
-        doc.text('N°', 15, currentY);
-        doc.text('Code Barre', 30, currentY);
-        doc.text('Poids (g)', 60, currentY);
-        doc.text('Destinataire', 90, currentY);
-        doc.text('Expediteur', 120, currentY);
-        doc.text('Pays', 150, currentY);
-        doc.text('Taxe ', 170, currentY);
-        doc.text('Taxe Douane', 180, currentY);
-        currentY += 5;
+        doc.setFont("helvetica", "bold");
+        doc.text('Bureau Expéditeur: ', 10, currentY);
+        doc.setFont("helvetica", "normal");
+        doc.text(`${courriers[0].structureDepotLibelle || 'N/A'}`, 50, currentY);
+        currentY += 4;
+        doc.line(currentG + 50, currentY, currentG + 50, currentY + 24); // Ligne verticale après la colonne "Code Barre"
+        currentY += 0;
 
         // Ligne de séparation
-        doc.line(10, currentY, 200, currentY);
-        currentY += 5;
+        doc.line(10, currentY, 287, currentY);
+        currentY += 6;
 
+        // Bureau Destinataire
+        doc.setFont("helvetica", "bold");
+        doc.text('Bureau Destinataire: ', 10, currentY);
+        doc.setFont("helvetica", "normal");
+        doc.text(`${courriers[0].structureDestinationLibelle || 'N/A'}`, 50, currentY);
+        currentY += 6;
 
+        // Date Expédition
+        doc.setFont("helvetica", "bold");
+        doc.text('Date Expédition: ', 10, currentY);
+        doc.setFont("helvetica", "normal");
+        doc.text(`${courriers[0].dateExpedition || 'N/A'}`, 50, currentY);
 
-        // Remplir les détails du colis
-        doc.text(`1`, 15, currentY); // N°
-        doc.text(`${courrier.codeBarre || 'N/A'}`, 30, currentY); // Code Barre
-        doc.text(`${courrier.poids || 0}`, 60, currentY); // Poids
-        doc.text(`${courrier.destinataireNom || 'N/A'}`, 90, currentY); // Nom Destinataire
-        doc.text(`${courrier.expediteurNom || 'N/A'}`, 120, currentY); // Nom Destinataire
-        doc.text(`${courrier.paysOrigineLibelle || 'N/A'}`, 150, currentY); // Pays
-        doc.text(`${courrier.taxePresentation || 0}`, 170, currentY); // Taxe Port
-        doc.text(`${courrier.taxeDouane || 0}`, 180, currentY); // Taxe Douane
-        //currentY += 5;
+        currentY += 6;
+        doc.setFont("helvetica", "bold");
+        doc.text('Nbre d\'objets : ', 10, currentY);
+        doc.setFont("helvetica", "normal");
+        doc.text(`${numberOfObjects}`, 40, currentY); // Affichage du nombre d'objets
+
+        doc.setFont("helvetica", "bold");
+        doc.text('Numero Dépeche: ', 190, currentY);
+        doc.setFont("helvetica", "normal");
+        doc.text(`${fermeture.numeroDepeche}`, 220, currentY); // Affichage du nombre d'objets
+
+        currentY += 6;
+        doc.line(10, currentY, 287, currentY);
+        currentY += 6;
+
+        // Largeur des colonnes
+        const columnWidths = {
+            number: 8, // N° réduit
+            codeBarre: 30, // Code Barre réduit
+            poids: 20, // Poids réduit
+            destinataire: 40, // Destinataire réduit
+            expediteur: 40, // Expéditeur réduit
+            pays: 30, // Pays réduit
+            taxe: 20, // Taxe réduite
+            taxeDouane: 20, // Taxe Douane réduite
+        };
+
+        // Entêtes du tableau en gras
+        doc.setFont("helvetica", "bold");
+        let currentX = 10;
+        doc.text('N°', currentX, currentY);
+        currentX += columnWidths.number;
+        doc.text('Code Barre', currentX, currentY);
+        currentX += columnWidths.codeBarre;
+        doc.text('Poids (g)', currentX, currentY);
+        currentX += columnWidths.poids;
+        doc.text('Destinataire', currentX, currentY);
+        currentX += columnWidths.destinataire;
+        doc.text('Expéditeur', currentX, currentY);
+        currentX += columnWidths.expediteur;
+        doc.text('Pays', currentX, currentY);
+        currentX += columnWidths.pays;
+        doc.text('Taxe', currentX, currentY);
+        currentX += columnWidths.taxe;
+        doc.text('Taxe Douane', currentX, currentY);
+        currentY += 4;
 
         // Ligne de séparation
-        doc.line(10, currentY, 200, currentY);
-        currentY += 5;
+        doc.line(10, currentY, 287, currentY);
+        currentY += 4;
+
+        // Remplir les données du tableau
+        doc.setFont("helvetica", "normal");
+        courriers.forEach((colis, index) => {
+            currentX = 10; // Réinitialiser la position X pour chaque ligne
+            doc.text(`${index + 1}`, currentX, currentY); // N°
+            currentX += columnWidths.number;
+            doc.text(`${colis.codeBarre || 'N/A'}`, currentX, currentY); // Code Barre
+            currentX += columnWidths.codeBarre;
+            doc.text(`${colis.poids || 0}`, currentX, currentY); // Poids
+            currentX += columnWidths.poids;
+            doc.text(`${colis.destinataireNom || 'N/A'}`, currentX, currentY); // Destinataire
+            currentX += columnWidths.destinataire;
+            doc.text(`${colis.expediteurNom || 'N/A'}`, currentX, currentY); // Expéditeur
+            currentX += columnWidths.expediteur;
+            doc.text(`${colis.paysOrigineLibelle || 'N/A'}`, currentX, currentY); // Pays
+            currentX += columnWidths.pays;
+            doc.text(`${colis.taxePresentation || 0}`, currentX, currentY); // Taxe
+            currentX += columnWidths.taxe;
+            doc.text(`${colis.taxeDouane || 0}`, currentX, currentY); // Taxe Douane
+            currentY += 4;
+
+            doc.line(10, currentY, 287, currentY); // Ligne de séparation
+            currentY += 6;
+
+            // Gérer le dépassement de page
+            if (currentY > 190) {
+                doc.addPage();
+                currentY = 10;
+            }
+        });
+
+        // Ajouter les lignes verticales
+        const leftX = 10; // Position X de la ligne verticale gauche
+        const rightX = 287; // Position X de la ligne verticale droite
+        const startY = 39; // Position Y de départ pour la ligne verticale
+        const endY = currentY + 6; // Position Y de fin (juste avant la dernière ligne)
+
+        // Ligne verticale gauche
+        doc.line(leftX, startY, leftX, endY);
+
+        // Ligne verticale droite
+        doc.line(rightX, startY, rightX, endY);
 
         // Totaux
-        doc.setFontSize(12);
-        const totalPoids = courrier?.taxePresentation?.reduce((acc, colis) => acc + (colis.poids || 0), 0);
-        const totalTaxeDouane = courrier?.taxePresentation?.reduce((acc, colis) => acc + (colis.taxeDouane || 0), 0);
-        currentY += 8;
-        doc.text(`Totaux:`, 10, currentY);
+        const totalPoids = courriers.reduce((sum, colis) => sum + (colis.poids || 0), 0);
+        const totalTaxeDouane = courriers.reduce((sum, colis) => sum + (colis.taxeDouane || 0), 0);
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(10);
+        doc.text(`Totaux :`, 10, currentY);
         doc.text(`Poids Total: ${totalPoids} g`, 40, currentY);
-        doc.text(`Taxe : ${totalTaxeDouane} FCFA`, 170, currentY);
+        doc.text(`Taxe Douane: ${totalTaxeDouane} FCFA`, 190, currentY);
+        currentY += 6;
+        doc.line(10, currentY, 287, currentY);
+        currentY += 20;
 
-
-// Ligne de séparation
-        doc.line(10, currentY, 200, currentY);
-        currentY += 5;
-
-
-
-
+        // Ajout des sections Bureau Expéditeur et Bureau Destinataire avec leurs Signatures
+        doc.setFontSize(8); // Réduit la taille pour le bas du document
+        doc.text('Bureau Expéditeur:', 10, currentY); // Bureau Expéditeur
+        doc.text('Bureau Destinataire:', 200, currentY); // Bureau Destinataire (aligné à droite)
+        currentY += 30;
 
         // Pied de page
-      //  doc.addImage(logo, 'PNG', 10, 270, 30, 15);
-        doc.setFontSize(10);
-        doc.text('Merci pour votre confiance !', 105, 280, { align: 'center' });
+        doc.setFontSize(8); // Taille de police pour le pied de page
+        doc.text('Merci pour votre confiance !', 148.5, currentY, { align: 'center' });
 
         // Sauvegarder le PDF
-        doc.save(`Feuille_De_Route_${courrier.id || 'N/A'}.pdf`);
+        doc.save(`Feuille_De_Route_${courriers[0].id || 'N/A'}.pdf`);
     }
 
 

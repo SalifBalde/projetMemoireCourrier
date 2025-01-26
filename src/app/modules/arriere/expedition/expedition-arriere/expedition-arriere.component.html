@@ -33,13 +33,13 @@
 
 
         <div class="card px-6 py-6">
-            <div style="float:right">
-                <button pButton type="button" icon="pi pi-file-pdf" class="p-button-warning mr-2"
-                        (click)="generatePdf()" [disabled]="loadingColis"></button>
+<!--            <div style="float:right">-->
+<!--                <button pButton type="button" icon="pi pi-file-pdf" class="p-button-warning mr-2"-->
+<!--                        (click)="generatePdf()" [disabled]="loadingColis"></button>-->
 
-                <button pButton type="button" icon="pi pi-file-excel" (click)="dt.exportCSV()"
-                        [disabled]="loadingColis" class="p-button-danger"></button>
-            </div>
+<!--                <button pButton type="button" icon="pi pi-file-excel" (click)="dt.exportCSV()"-->
+<!--                        [disabled]="loadingColis" class="p-button-danger"></button>-->
+<!--            </div>-->
 
             <p-badge  value="Liste des Lettres  à expédier" size="large" severity="primary"></p-badge>
 
@@ -88,9 +88,10 @@
 <p-dialog [(visible)]="openCourrierDialog" header="Confirmer" [modal]="true" [style]="{width:'450px'}">
     <div class="flex align-items-center justify-content-center">
         <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
-        <span *ngIf="courrier">Etes-vous sûr que vous voulez réceptionner <b>{{courrier.code}}</b>?</span>
+        <span *ngIf="courrier">Etes-vous sûr que vous voulez Expédier <b>{{courrier.code}}</b>?</span>
     </div>
     <ng-template pTemplate="footer">
+
         <button pButton pRipple icon="pi pi-check" class="p-button-text " label="Oui"
                 (click)="confirmReception()"></button>
         <button pButton pRipple icon="pi pi-times" class="p-button-text p-button-danger" label="Non"

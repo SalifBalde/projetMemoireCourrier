@@ -26,6 +26,10 @@ export  class FermetureService {
         return this.httpClient.get<Fermeturedto[]>(environment.api_host+'pays', this.httpOptions);
     }
 
+    findById(id:number): Observable<Fermeturedto> {
+        return this.httpClient.get<Fermeturedto>(environment.api_host+'fermeture/'+id, this.httpOptions);
+    }
+
     saveFermeture(fermeture : Fermeturedto): Observable<any> {
         return this.httpClient.post<any>(environment.api_host+'fermeture',fermeture, this.httpOptions);
     }
