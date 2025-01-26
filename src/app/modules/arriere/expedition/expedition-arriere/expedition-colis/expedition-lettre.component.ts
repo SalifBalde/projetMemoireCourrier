@@ -62,6 +62,7 @@ export class ExpeditionLettreComponent  implements  OnInit{
     suiviCourriers:any={}
     showMontantField: boolean = false;
     montants: number | null = null;
+    selectedFermeture: any ;
 
     constructor(
         private colisService: ColisService,
@@ -257,10 +258,11 @@ export class ExpeditionLettreComponent  implements  OnInit{
 
 
 
-
     isExpeditionDisabled(): boolean {
-        return !this.selectedStructure
+        return (!this.selectedStructure || this.selectedLettre.length === 0);
     }
+
+
 
 
 
@@ -270,6 +272,21 @@ export class ExpeditionLettreComponent  implements  OnInit{
         this.saveFermetureCourrier();
         this.selectedLettre = []; // Réinitialiser la sélection après l'enregistrement
         this.openCourrierDialog=false;
+
+    }
+
+
+// Afficher les détails d'une fermeture
+    showDetails(): void {
+        // Vérifiez que selectedFermeture est défini avant de l'utiliser
+        if (!this.selectedFermeture || !this.selectedFermeture.id) {
+            console.error("selectedFermeture est indéfini ou invalide.");
+            return;
+        }
+        const id1 = this.selectedFermeture.id
+        this.router.navigate(['arriere/courrier-details/courrierDetailArriere/'+id1]);  // Passe l'ID de la fermeture dans l'URL
+        this.openCourrierDialog=false;
+
 
     }
     saveFermetureCourrier() {
@@ -324,6 +341,8 @@ export class ExpeditionLettreComponent  implements  OnInit{
             // Appel au service pour enregistrer la fermeture
             this.fermetureService.saveFermeture(this.fermetureData).subscribe(
                 (response) => {
+                    this.selectedFermeture = response;
+                    this.showDetails()
                     // Mise à jour des courriers et ajout des suivis
                     selectedColisCopy.forEach((colis) => {
                         const courrieId = colis.id;

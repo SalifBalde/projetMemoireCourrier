@@ -65,6 +65,7 @@ export class ExpeditionArriereComponent  implements  OnInit{
     montants: number | null = null;
     loadingColis: boolean = false;
     loadingReset: boolean = false;
+    selectedFermeture: any ;
 
     constructor(
         private colisService: ColisService,
@@ -196,10 +197,10 @@ export class ExpeditionArriereComponent  implements  OnInit{
             }
         );
     }
-    generatePdf(): void{
-
-        this.factureService .generateReceipt(this.selectedLettre).then(r => "pdf généré");
-    }
+    // generatePdf(): void{
+    //     console.log(this.selectedLettre)
+    //     this.factureService .generateReceipt(this.selectedLettre).then(r => "pdf généré");
+    // }
 
 
     getAcheminByIdNoeux() {
@@ -268,7 +269,7 @@ export class ExpeditionArriereComponent  implements  OnInit{
 
 
     isExpeditionDisabled(): boolean {
-        return !this.selectedStructure
+        return (!this.selectedStructure || this.selectedLettre.length === 0);
     }
 
 
@@ -279,6 +280,7 @@ export class ExpeditionArriereComponent  implements  OnInit{
         this.saveFermetureCourrier();
         this.selectedLettre = []; // Réinitialiser la sélection après l'enregistrement
         this.openCourrierDialog=false;
+        this.showDetails();
 
     }
     saveFermetureCourrier() {
@@ -334,6 +336,9 @@ export class ExpeditionArriereComponent  implements  OnInit{
             this.fermetureService.saveFermeture(this.fermetureData).subscribe(
                 (response) => {
                     // Mise à jour des courriers et ajout des suivis
+                    this.selectedFermeture = response;
+                    this.showDetails();
+                    console.log(    this.selectedFermeture)
                     selectedColisCopy.forEach((colis) => {
                         const courrieId = colis.id;
                         colis.statutCourrierId = this.idStatutFermetureCourrier;
@@ -406,6 +411,19 @@ export class ExpeditionArriereComponent  implements  OnInit{
                 life: 3000,
             });
         }
+    }
+// Afficher les détails d'une fermeture
+    showDetails(): void {
+        // Vérifiez que selectedFermeture est défini avant de l'utiliser
+        if (!this.selectedFermeture || !this.selectedFermeture.id) {
+            console.error("selectedFermeture est indéfini ou invalide.");
+            return;
+        }
+        const id1 = this.selectedFermeture.id
+        this.router.navigate(['arriere/courrier-details/courrierDetailArriere/'+id1]);  // Passe l'ID de la fermeture dans l'URL
+        this.openCourrierDialog=false;
+
+
     }
 
 }

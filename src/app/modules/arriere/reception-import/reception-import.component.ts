@@ -239,6 +239,7 @@ export class ReceptionImportComponent  implements  OnInit{
         this.selectedCourriers.forEach((courrier) => {
             // Mettre à jour le statut du courrier et l'ID de l'utilisateur
             // Vérifier si l'ID du statut est renseigné
+            console.log(this.selectedStatut)
             if (this.selectedStatut?.id) {
                 courrier.statutCourrierId =this.selectedStatut.id ;
                 courrier.taxeDouane = courrier.montantTaxeDouane;
