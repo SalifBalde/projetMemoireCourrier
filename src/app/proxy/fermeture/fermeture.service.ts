@@ -1,5 +1,5 @@
 import {Injectable} from "@angular/core";
-import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {environment} from "../../../environments/environment";
 import {Fermeturedto} from "./models";
@@ -42,5 +42,12 @@ export  class FermetureService {
     }
     getFermeturesByCriteria(structureId: string, idstatutCourrier:number, typeCourrierId:number , paysOrigine: number): Observable<any[]> {
         return this.httpClient.get<any[]>(this.api_host+'/searchFermetureByCriteria/'+structureId+'/'+idstatutCourrier+'/'+typeCourrierId+'/'+paysOrigine);
+    }
+
+    getRapport(formattedDebut: string, formattedFin: string): Observable<Fermeturedto[]> {
+        const params = new HttpParams()
+            .set('startDate', formattedDebut)
+            .set('endDate', formattedFin);
+        return this.httpClient.get<Fermeturedto[]>(this.api_host+'/rapport', { params });
     }
 }

@@ -28,8 +28,8 @@ export  class FermetureCourrierService {
     }
 
     // Méthode pour récupérer les FermetureCourrier par fermetureId
-    getFermetureCourriersByFermetureId(fermetureId: number): Observable<any[]> {
-        return this.httpClient.get<any[]>(this.api_host+'/fermetureCourriers/'+fermetureId);
+    getFermetureCourriersByFermetureId(fermetureId: number): Observable<CourrierDto[]> {
+        return this.httpClient.get<CourrierDto[]>(this.api_host+'/Courriers/'+fermetureId);
     }
     // Méthode pour récupérer les FermetureCourrier par fermetureId et statutId
           getCourriersByFermetureIdAndStatut(fermetureId: number, statutId:number): Observable<any[]> {

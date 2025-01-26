@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { ColisDto, ColisService } from 'src/app/proxy/colis';
@@ -13,6 +13,7 @@ import {FermetureCourrierService} from "../../../proxy/fermetureCourrier";
 import {StatutCourrierService} from "../../../proxy/statut-courrier";
 import {NouexService} from "../../../proxy/noeux";
 import {BureauxDouanierService} from "../../../proxy/burauex_douaniers";
+import {Table} from "primeng/table";
 @Component({
   selector: 'app-livraison',
   templateUrl: './livraison.component.html',
@@ -36,6 +37,7 @@ export class LivraisonComponent implements OnInit {
     isTaxeValid: boolean = false;
     fraisFixes = 0;
     totalpaye:number
+    @ViewChild('dt') dt: Table;
 
   constructor(
       private courrierService:CourrierService,

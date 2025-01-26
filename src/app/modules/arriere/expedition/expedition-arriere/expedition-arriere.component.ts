@@ -269,7 +269,7 @@ export class ExpeditionArriereComponent  implements  OnInit{
 
 
     isExpeditionDisabled(): boolean {
-        return !this.selectedStructure
+        return (!this.selectedStructure || this.selectedLettre.length === 0);
     }
 
 

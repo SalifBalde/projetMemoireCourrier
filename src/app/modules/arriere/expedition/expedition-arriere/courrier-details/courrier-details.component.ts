@@ -51,7 +51,7 @@ ngOnInit(): void {
             console.error('Aucun paramètre ID trouvé dans la route.');
         }
     });
-
+    this.listeCourriers=null
     this.statutCourrierService.findAll().subscribe((data)=>{
         this.statutCourriers=data;
         this.idStatutFermetureCourrier =this.statutCourriers = data.filter(statut => statut.id === 2);

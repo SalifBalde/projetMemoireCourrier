@@ -32,7 +32,7 @@ const routes: Routes = [{ path: '', component: ArriereComponent },
 //    { path: 'expedition', loadChildren: () => import('./expedition/expedition.module').then(m => m.ExpeditionModule) },
 //    { path: 'expedition/expeditionColis', loadChildren: () => import('./expedition/expedition-colis/expeditionColis.module').then(m => m.ExpeditionColisModule) },
    { path: 'expedition/expedition-E-commerce', loadChildren: () => import('./expedition/expedition-E-commerce/expedition-E-commerce.module').then(m => m.ExpeditionECommerceModule) },
-   { path: 'rapport', loadChildren: () => import('../drp/rapport/rapport.module').then(m => m.RapportModule) },
+   { path: 'rapport', loadChildren: () => import('./rapport/rapport.module').then(m => m.RapportArriereModule) },
     {  path: 'reception/fermetureCourrierImport', loadChildren: () => import('./reception-import/fermeture-courrier-import/fermeture-import.module').then(m => m.FermetureImportModule) },
     {  path: 'reception/fermetureColisImport', loadChildren: () => import('./reception-import/fermeture-colis-import/fermetureColis-import.module').then(m => m.FermetureColisImportModule) },
     { path: 'expedition-courrier-import/expeditionCourrierImport', loadChildren: () => import('./expedition/expedition-courrier-import/expeditionCourrierImport.module').then(m => m.ExpeditionCourrierImportModule) },
@@ -54,6 +54,7 @@ const routes: Routes = [{ path: '', component: ArriereComponent },
    { path: 'details-expeditionEcom/:id', loadChildren: () => import('./detail-expeditionEcom/detail-expeditionEcom.module').then(m => m.DetailExpeditionEcomModule) },
    { path: 'RapportEcommerce', loadChildren: () => import('./rapportEcommerce/rapportEcommerce.module').then(m => m.RapportEcommerceModule) },
     { path: 'courrier-details/courrierDetailArriere/:id', loadChildren: () => import('./expedition/expedition-arriere/courrier-details/courrier-details.module').then(m => m.CourrierDetailsArriereModule) },
+    { path: 'courrier-details-rapport/courrierDetailArriere/:id', loadChildren: () => import('./rapport/courrier-details-rapport/courrier-details.module').then(m => m.CourrierDetailsrapportModule) },
 
 
 
