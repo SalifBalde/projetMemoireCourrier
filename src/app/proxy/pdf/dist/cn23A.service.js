@@ -39,40 +39,49 @@ var Cn23AService = /** @class */ (function () {
         var pageWidth = doc.internal.pageSize.width;
         doc.setFont('helvetica', 'bold');
         doc.setFontSize(9);
-        doc.text('CUSTOMS DECLARATION                        CN23', pageHeight / 1, 45, { align: 'left' });
+        doc.text('CUSTOMS DECLARATION                        CN23', pageHeight / 1.1, 45, { align: 'left' });
         var barcodeCanvas = document.createElement('canvas');
-        jsbarcode_1["default"](barcodeCanvas, 'CV000189933SN', {
+        jsbarcode_1["default"](barcodeCanvas, "" + data.codeBarre, {
             format: 'CODE128',
             displayValue: true,
             width: 1,
             height: 25
         });
         var barcodeImage = barcodeCanvas.toDataURL('image/png');
-        doc.addImage(barcodeImage, 'PNG', 190, 63, 80, 30);
-        doc.line(pageWidth - 43, 44, pageWidth - 43, 53);
-        doc.line(pageWidth - 20, 60, pageWidth - 20, 68);
+        doc.addImage(barcodeImage, 'PNG', 196, 63, 80, 30);
+        doc.line(pageWidth - 43, 46, pageWidth - 43, 52);
+        doc.line(pageWidth - 43, 59.2, pageWidth - 43, 65);
     };
     Cn23AService.prototype.addRecipientInfo = function (doc, data) {
         var pageHeight = doc.internal.pageSize.height;
-        doc.text('No. of item (barcode if any)', pageHeight / 1, 50, { align: 'left' });
-        doc.text('DECLARATION EN DOUANE', pageHeight / 1, 58, { align: 'left' });
-        doc.text("N° de l'envoie(code à barres ,s'il existe)", pageHeight / 1, 65, { align: 'left' });
-        doc.text('FROM \nDe', pageHeight / 20, 49, { align: 'right' });
-        doc.text("Name : " + data.expediteurPrenom + " " + data.expediteurNom, pageHeight / 3, 49, { align: 'right' });
-        doc.text("Adresse :  ", pageHeight / 2.3, 57, { align: 'right' });
-        doc.text('Adresse (count)', pageHeight / 5, 63, { align: 'right' });
-        doc.text('PostCode 10500                         City DAKAR', pageHeight / 2.6, 73, { align: 'right' });
+        doc.text('No. of item (barcode if any)', pageHeight / 1.1, 50, { align: 'left' });
+        doc.text('DECLARATION EN DOUANE', pageHeight / 1.1, 58, { align: 'left' });
+        doc.text("N° de l'envoie(code à barres ,s'il existe)", pageHeight / 1.1, 63, { align: 'left' });
+        doc.text("Name : " + data.expediteurPrenom + " " + data.expediteurNom, pageHeight / 19, 49, { align: 'left' });
+        doc.text("Adresse :  ", pageHeight / 19, 57, { align: 'left' });
+        doc.text('Adresse (count)', pageHeight / 19, 63, { align: 'left' });
+        doc.text('PostCode 10500                         City DAKAR', pageHeight / 19, 73, { align: 'left' });
         doc.text("State " + data.paysOrigineLibelle + "                        COUNTRY SN (" + data.paysOrigineLibelle + ")", pageHeight / 2.2, 78, { align: 'right' });
+        doc.setFontSize(6);
+        doc.text("             Sender\u2019s Customs reference\n             (if any) R\u00E9f\u00E9rence en douane\n             de l'exp\u00E9diteur (si elle existe)", pageHeight / 1.4, 49, { align: 'left' });
+        doc.setFontSize(10);
+        doc.text('From', pageHeight / 130, 49, { align: 'left' });
+        doc.setFontSize(9);
+        doc.text('De', pageHeight / 130, 52, { align: 'left' });
     };
     Cn23AService.prototype.addSenderInfo = function (doc, data) {
         var pageHeight = doc.internal.pageSize.height;
-        doc.text("Name : " + data.destinatairePrenom + "  " + data.destinataireNom, pageHeight / 4.1, 83, { align: 'right' });
-        doc.text("Adresse : " + data.destinataireAdresse + " ", pageHeight / 2, 88, { align: 'right' });
-        doc.text('Adresse (count) ', pageHeight / 5.5, 94, { align: 'right' });
+        doc.text("Name : " + data.destinatairePrenom + "  " + data.destinataireNom, pageHeight / 19, 83, { align: 'left' });
+        doc.text("Adresse : " + data.destinataireAdresse + " ", pageHeight / 19, 88, { align: 'left' });
+        doc.text('Adresse (count) ', pageHeight / 19, 94, { align: 'left' });
         doc.text('Impoter reference', pageHeight / 1, 94, { align: 'center' });
         doc.text('Impoter telephone', pageHeight / 1, 103, { align: 'center' });
-        doc.text('PostCode 93117                         City DAKAR ', pageHeight / 2.6, 99, { align: 'right' });
-        doc.text("State " + data.paysDestinationLibelle + "                                           COUNTRY US(" + data.paysDestinationLibelle + ")", pageHeight / 1.7, 103, { align: 'right' });
+        doc.text('PostCode 93117                         City DAKAR ', pageHeight / 19, 99, { align: 'left' });
+        doc.text("State " + data.paysDestinationLibelle + "                                           COUNTRY US(" + data.paysDestinationLibelle + ")", pageHeight / 19, 103, { align: 'left' });
+        doc.setFontSize(10);
+        doc.text('To', pageHeight / 130, 83, { align: 'left' });
+        doc.setFontSize(9);
+        doc.text('A', pageHeight / 130, 88, { align: 'left' });
     };
     // addDetails(doc: jsPDF, data: CourrierDto.details): void {
     //     const pageHeight = doc.internal.pageSize.height;
@@ -90,10 +99,22 @@ var Cn23AService = /** @class */ (function () {
     // }
     Cn23AService.prototype.addDetails = function (doc, data) {
         var pageHeight = doc.internal.pageSize.height;
-        doc.text('Detailed description of contents(1) ', pageHeight / 3, 109, { align: 'right' });
-        doc.text('Quality(2) ', pageHeight / 2, 109, { align: 'right' });
-        doc.text('Net Weight(3) ', pageHeight / 1.5, 109, { align: 'right' });
-        doc.text('Valeur(5) ', pageHeight / 1.2, 109, { align: 'right' });
+        doc.text('Detailed description of contents(1) ', pageHeight / 19, 109, { align: 'left' });
+        doc.setFontSize(7);
+        doc.text('Description détaillée du contenu ', pageHeight / 19, 112, { align: 'left' });
+        doc.setFontSize(9);
+        doc.text('Quatity(2) ', pageHeight / 2.7, 109, { align: 'left' });
+        doc.setFontSize(7);
+        doc.text('Quantité', pageHeight / 2.7, 112, { align: 'left' });
+        doc.setFontSize(9);
+        doc.text('        Net Weight(3) ', pageHeight / 1.4, 109, { align: 'left' });
+        doc.setFontSize(7);
+        doc.text("           Poids Net(in kg)", pageHeight / 1.4, 112, { align: 'left' });
+        doc.setFontSize(9);
+        doc.text(' Valeur(5) ', pageHeight / 1.8, 109, { align: 'left' });
+        doc.setFontSize(7);
+        doc.text('  Valeur', pageHeight / 1.8, 112, { align: 'left' });
+        doc.setFontSize(9);
         doc.text('For commercial items only ', pageHeight / 1, 108, { align: 'left' });
         doc.text('HS tarif numner(7)      Country of Origin of goods(8)', pageHeight / 1, 113, { align: 'left' });
         doc.text("" + data.poids, pageHeight / 1.5, 118, { align: 'left' });
@@ -109,11 +130,74 @@ var Cn23AService = /** @class */ (function () {
         doc.text('Valeur total (5)', yPos, 146, { align: 'left' });
         doc.setFontSize(10);
         doc.text("11300000 XOF", pageHeight / 1.2, 149, { align: 'left' });
-        doc.text("Total value (5)", yPos, 143, { align: 'left' });
+        doc.setFontSize(9);
+        doc.text("Total gross weight (4)", pageHeight / 1.4, 143, { align: 'right' });
         doc.setFontSize(7);
-        doc.text('Valeur total (5)', yPos, 146, { align: 'left' });
+        doc.text(' Poids total (5)', pageHeight / 1.8, 146, { align: 'left' });
         doc.setFontSize(10);
-        doc.text("11300000 XOF", pageHeight / 1.2, 149, { align: 'left' });
+        doc.text("11300000", pageHeight / 1.5, 149, { align: 'left' });
+        doc.setFontSize(9);
+        doc.text("Postal Charges/Fees (9)", pageHeight / 1.06, 143, { align: 'left' });
+        doc.setFontSize(7);
+        doc.text('Frais de port/Frais', pageHeight / 0.9, 143, { align: 'left' });
+        doc.setFontSize(10);
+        doc.text("" + data.taxeDouane, pageHeight / 0.8, 149, { align: 'left' });
+        doc.setFontSize(9);
+        doc.text("Category of item(10)", pageHeight / 19, 153, { align: 'left' });
+        doc.setFontSize(5);
+        doc.text("Categorie de l'envoi", pageHeight / 5, 153, { align: 'left' });
+        doc.setFontSize(8);
+        doc.text('Gift cadeau ', pageHeight / 13, 158, { align: 'left' });
+        doc.text("Documents", pageHeight / 13, 162, { align: 'left' });
+        doc.setFontSize(9);
+        doc.text("Commercial sample (10)", pageHeight / 3.2, 153, { align: 'left' });
+        doc.setFontSize(7);
+        doc.text('  Echantillon commercial', pageHeight / 2.08, 153, { align: 'left' });
+        doc.setFontSize(8);
+        doc.text('Returned goods ', pageHeight / 3.2, 158, { align: 'left' });
+        doc.text("Other", pageHeight / 3.2, 162, { align: 'left' });
+        doc.setFontSize(9);
+        doc.text('              Sales of goods :', pageHeight / 1.7, 153, { align: 'left' });
+        doc.setFontSize(9);
+        doc.text('           Explanation:', pageHeight / 1.7, 162, { align: 'left' });
+        doc.setFontSize(7);
+        doc.text('   Explication:', pageHeight / 1.4, 162, { align: 'left' });
+        doc.setFontSize(7);
+        doc.text("Vente de biens", pageHeight / 1.3, 153, { align: 'left' });
+        doc.setFontSize(9);
+        doc.text("Office of origin/Date of posting", pageHeight / 1.06, 153, { align: 'left' });
+        doc.setFontSize(7);
+        doc.text("                  Bureau d'origine/Date de d\u00E9p\u00F4t", pageHeight / 0.9, 153, { align: 'left' });
+        doc.setFontSize(9);
+        doc.text("12/01/2025", pageHeight / 0.9, 162, { align: 'left' });
+        doc.setFontSize(7);
+        doc.text("I certify that the particulars given in this customs declaration are \ncorrect and that this item does not contain any\ndangerous article or articles prohibited by legislation or\nby postal or customs regulations", pageHeight / 1.06, 167, { align: 'left' });
+        doc.setFontSize(7);
+        doc.text("Date and sender\u2019s signature (15)", pageHeight / 1.06, 180, { align: 'left' });
+        doc.setFontSize(9);
+        doc.text("12/01/2025", pageHeight / 1.06, 184, { align: 'left' });
+        doc.setFontSize(8);
+        doc.text("Comments (11): (e.g.: goods subject to quarantine, sanitary/phytosanitary inspection or other restrictions)", pageHeight / 19, 167, { align: 'left' });
+        doc.setFontSize(7);
+        doc.text("Obserrations: (p. ex. Marchandise soumise \u00E0 la quarantaine/\u00E0 des contr\u00F4les sanitaires, phytosanitaires ou \u00E0 d'autres restrictions)", pageHeight / 19, 171, { align: 'left' });
+        doc.setFontSize(9);
+        doc.text("Licence (12)", pageHeight / 13, 187, { align: 'left' });
+        doc.setFontSize(6);
+        doc.text("Licence", pageHeight / 6, 187, { align: 'left' });
+        doc.setFontSize(8);
+        doc.text('No(s). of licence(s) ', pageHeight / 19, 192, { align: 'left' });
+        doc.setFontSize(9);
+        doc.text("Certificate (13)", pageHeight / 3.2, 187, { align: 'left' });
+        doc.setFontSize(6);
+        doc.text("Certificat", pageHeight / 2.3, 187, { align: 'left' });
+        doc.setFontSize(8);
+        doc.text('No(s). of certificate(s)', pageHeight / 3.4, 192, { align: 'left' });
+        doc.setFontSize(9);
+        doc.text("Invoice (14)", pageHeight / 1.7, 187, { align: 'left' });
+        doc.setFontSize(6);
+        doc.text("Facture", pageHeight / 1.4, 187, { align: 'left' });
+        doc.setFontSize(8);
+        doc.text(' No. of invoice ', pageHeight / 1.8, 192, { align: 'left' });
         var yPosition = 128;
         if (data.details && data.details.length > 0) {
             data.details.forEach(function (detail) {
@@ -127,7 +211,7 @@ var Cn23AService = /** @class */ (function () {
     Cn23AService.prototype.addFooter = function (doc, data) {
         var pageHeight = doc.internal.pageSize.height;
         var pageWidth = doc.internal.pageSize.width;
-        doc.text('Page footer - CN23', pageWidth - 50, pageHeight - 10, { align: 'center' });
+        // doc.text('Page footer - CN23', pageWidth - 50, pageHeight - 10, { align: 'center' });
     };
     Cn23AService.prototype.drawLines = function (doc) {
         var pageHeight = doc.internal.pageSize.height;
@@ -172,12 +256,12 @@ var Cn23AService = /** @class */ (function () {
         doc.rect(10, 160, 5, 4);
         doc.rect(10, 155, 5, 9);
         doc.rect(60, 160, 5, 4);
-        doc.rect(60, 155, 5, 9);
-        doc.rect(60, 150, 5, 9);
-        doc.rect(130, 150, 5, 6);
+        doc.rect(60, 155, 5, 5);
+        doc.rect(60, 150, 5, 5);
+        doc.rect(130, 150, 5, 5);
         doc.rect(60, 184, 5, 5);
-        doc.rect(10, 184, 5, 4);
-        doc.rect(117, 184, 5, 6);
+        doc.rect(10, 184, 5, 5);
+        doc.rect(117, 184, 5, 5);
         doc.line(pageWidth - 237, 200, pageWidth - 237, 185);
         doc.line(pageWidth - 180, 200, pageWidth - 180, 185);
     };
