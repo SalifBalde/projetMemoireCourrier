@@ -123,7 +123,6 @@ export class Cn23AService {
         doc.text(`620343                          SN(${data.paysOrigineLibelle})`, pageHeight / 1, 118, { align: 'left' });
         doc.setFont('helvetica', 'bold');
 
-
         let yPosition = 118;
 
         if (data.details && data.details.length > 0) {
