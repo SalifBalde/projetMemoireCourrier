@@ -102,6 +102,7 @@ export class Cn23AService {
         doc.text('Description détaillée du contenu ', pageHeight / 19, 112, { align: 'left' });
         doc.setFontSize(9);
         doc.text('Quatity(2) ', pageHeight / 2.7, 109, { align: 'left' });
+
         doc.setFontSize(7);
         doc.text('Quantité', pageHeight / 2.7, 112, { align: 'left' });
         doc.setFontSize(9);
@@ -132,6 +133,9 @@ export class Cn23AService {
 
                 yPosition += 10;
             });
+        } else {
+            doc.setFontSize(9);
+            doc.text('No details available.', 10, yPosition);
         }
 
         const hierarchicalValue = '1.2.9';
