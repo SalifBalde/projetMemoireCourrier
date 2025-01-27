@@ -33,10 +33,14 @@ export class FactureService {
         } catch (error) {
             console.error('Erreur lors du chargement de l\'image : ', error);
         }
+        const date = new Date(); // Obtenir l'heure actuelle du système
+        const heure = date.getHours(); // Récupérer l'heure
+        const minutes = date.getMinutes(); // Récupérer les minutes
+        const secondes = date.getSeconds(); // Récupérer les secondes
 
         // Diminuer la taille de la police
         doc.setFontSize(4); // Réduit la taille de la police à 4 pour le contenu général
-        const date = new Date(fermeture.date);
+        const heureFormatee = `${heure}:${minutes < 10 ? '0' + minutes : minutes}:${secondes < 10 ? '0' + secondes : secondes}`;
         const formattedDate = date.toLocaleString('fr-FR', { // formatage en français
             year: 'numeric',
             month: '2-digit',
@@ -58,7 +62,7 @@ export class FactureService {
         doc.setFontSize(12); // Taille de police plus grande pour l'en-tête
         doc.text('Feuille de Route', 148.5, currentY, { align: 'center' });
         currentY += 8;
-        const dateText = fermeture.date; // Utilisez la variable `fermeture` iciconst dateText = fermeture; // Utilisez la variable `fermeture` ici
+        const dateText = heureFormatee; // Utilisez la variable `fermeture` iciconst dateText = fermeture; // Utilisez la variable `fermeture` ici
         doc.setFontSize(9); // Réduire la taille pour l'en-tête secondaire
         doc.text(`Expédition Envoi : ${courriers[0].typeCourrierLibelle}`, 148.5, currentY, { align: 'center' });
         currentY += 3;
@@ -98,7 +102,7 @@ export class FactureService {
         doc.setFont("helvetica", "bold");
         doc.text('Date Expédition: ', 10, currentY);
         doc.setFont("helvetica", "normal");
-        doc.text(`${courriers[0].dateExpedition || 'N/A'}`, 50, currentY);
+        doc.text(`${fermeture.date|| 'N/A'}`, 50, currentY);
 
         currentY += 6;
         doc.setFont("helvetica", "bold");
@@ -155,16 +159,23 @@ export class FactureService {
         doc.setFont("helvetica", "normal");
         courriers.forEach((colis, index) => {
             currentX = 10; // Réinitialiser la position X pour chaque ligne
-            doc.text(`${index + 1}`, currentX, currentY); // N°
+            doc.text(`${index + 1}`, currentX, currentY); // N° (index de l'élément)
             currentX += columnWidths.number;
             doc.text(`${colis.codeBarre || 'N/A'}`, currentX, currentY); // Code Barre
             currentX += columnWidths.codeBarre;
             doc.text(`${colis.poids || 0}`, currentX, currentY); // Poids
             currentX += columnWidths.poids;
-            doc.text(`${colis.destinataireNom || 'N/A'}`, currentX, currentY); // Destinataire
+
+            // Destinataire (Nom et Prénom)
+            const destinataireNomPrenom = `${colis.destinatairePrenom || 'N/A'} ${colis.destinataireNom || 'N/A'}`;
+            doc.text(destinataireNomPrenom, currentX, currentY); // Destinataire
             currentX += columnWidths.destinataire;
-            doc.text(`${colis.expediteurNom || 'N/A'}`, currentX, currentY); // Expéditeur
+
+            // Expéditeur (Nom et Prénom)
+            const expediteurNomPrenom = `${colis.expediteurPrenom || 'N/A'} ${colis.expediteurNom || 'N/A'}`;
+            doc.text(expediteurNomPrenom, currentX, currentY); // Expéditeur
             currentX += columnWidths.expediteur;
+
             doc.text(`${colis.paysOrigineLibelle || 'N/A'}`, currentX, currentY); // Pays
             currentX += columnWidths.pays;
             doc.text(`${colis.taxePresentation || 0}`, currentX, currentY); // Taxe
@@ -181,6 +192,7 @@ export class FactureService {
                 currentY = 10;
             }
         });
+
 
         // Ajouter les lignes verticales
         const leftX = 10; // Position X de la ligne verticale gauche
