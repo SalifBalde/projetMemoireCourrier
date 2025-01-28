@@ -6,6 +6,9 @@ export interface CategorieDto {
   libelle?: string;
   regimeId?: number ;
   typeCourrierId?: number;
+  entrant?: boolean;
+  typeCourrierLibelle?: string;
+
 }
 
 export interface CategorieCreateUpdateDto {
@@ -14,5 +17,7 @@ export interface CategorieCreateUpdateDto {
   regimeId?: number ;
   regimeLibelle?: string ;
   typeCourrierId?: number;
-  typeCourrierLibelle?: string;
+  entrant?: boolean;
+
+
   }

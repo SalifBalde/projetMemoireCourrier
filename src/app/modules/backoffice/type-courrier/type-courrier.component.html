@@ -60,7 +60,7 @@
 
         <p-dialog [(visible)]="typeCourrierDialog" [style]="{width: '450px'}" header="typeCourrier Details" [modal]="true" class="p-fluid">
             <ng-template pTemplate="content">
-                <form [formGroup]="form" (ngSubmit)="savetypeCourrier()">
+                <form [formGroup]="form" (ngSubmit)="saveTypeCourrier()">
                     <div class="field">
                         <label for="libelle">Libelle</label>
                         <input type="text" pInputText id="libelle" formControlName="libelle"   autofocus />
@@ -75,7 +75,7 @@
 
             <ng-template pTemplate="footer">
                 <button pButton pRipple label="Annuler" icon="pi pi-times" class="p-button-text p-button-danger" (click)="hideDialog()"></button>
-                <button pButton pRipple label="Sauvegarder" icon="pi pi-check" class="p-button-text p-button-success" (click)="savetypeCourrier()" [disabled]="form.invalid"></button>
+                <button pButton pRipple label="Sauvegarder" icon="pi pi-check" class="p-button-text p-button-success" (click)="saveTypeCourrier()" [disabled]="form.invalid"></button>
             </ng-template>
         </p-dialog>
 

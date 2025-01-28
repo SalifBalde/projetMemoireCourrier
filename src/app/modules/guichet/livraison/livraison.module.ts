@@ -6,19 +6,25 @@ import { SharedComponentModule } from 'src/app/layout/shared/shared-component.mo
 import { TreeTableModule } from 'primeng/treetable';
 import { MessageService, ConfirmationService} from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import {TableModule} from "primeng/table";
+import {CfaPipe} from "./piptransform";
+
+;
 
 
 
 
 @NgModule({
   declarations: [
-LivraisonComponent    
+LivraisonComponent,
+      CfaPipe
   ],
   imports: [
     SharedComponentModule,
     LivraisonRoutingModule,
     TreeTableModule,
-    ConfirmDialogModule
+    ConfirmDialogModule,
+
   ],
   providers: [MessageService, ConfirmationService],
 })

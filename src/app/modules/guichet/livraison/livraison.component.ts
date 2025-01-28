@@ -1,9 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { ColisDto, ColisService } from 'src/app/proxy/colis';
-import { Router } from '@angular/router';
-
+import {ActivatedRoute, Router} from '@angular/router';
+import {CourrierDto, CourrierService} from "../../../proxy/courrier";
+import {PdfService} from "../../../proxy/pdf/pdf.service";
+import {SessionService} from "../../../proxy/auth/Session.service";
+import {StructureService} from "../../../proxy/structures";
+import {TypeCourrierService} from "../../../proxy/type-courrier";
+import {SuiviCourrierService} from "../../../proxy/suivi-courrier";
+import {FermetureCourrierService} from "../../../proxy/fermetureCourrier";
+import {StatutCourrierService} from "../../../proxy/statut-courrier";
+import {NouexService} from "../../../proxy/noeux";
+import {BureauxDouanierService} from "../../../proxy/burauex_douaniers";
+import {Table} from "primeng/table";
 @Component({
   selector: 'app-livraison',
   templateUrl: './livraison.component.html',
@@ -11,27 +21,45 @@ import { Router } from '@angular/router';
 export class LivraisonComponent implements OnInit {
   form: FormGroup;
   montant = 0;
-  colis$: ColisDto[] = []; 
+  colis$: CourrierDto[] = [];
   loadingColis: boolean = false;
-  selectedColis: ColisDto | null = null; 
-  displayDialog: boolean = false; 
+  selectedColis: any  = {};
+  displayDialog: boolean = false;
   montantTotal: number = 0;
   payer: boolean = false;
 
-  selectedColisForDeletion: Set<ColisDto> = new Set(); 
-  allSelected: boolean = false; 
+  selectedColisForDeletion: Set<ColisDto> = new Set();
+  allSelected: boolean = false;
+    openCourrierDialog: boolean = false;
+    openNumExpDialog: boolean = false;
+    colis: any={}
+     iduser: any;
+    isTaxeValid: boolean = false;
+    fraisFixes = 0;
+    totalpaye:number
+    @ViewChild('dt') dt: Table;
 
   constructor(
-    private colisService: ColisService,
-    private fb: FormBuilder,
-    private router: Router,
-    private messageService: MessageService,
-    private confirmationService: ConfirmationService
+      private courrierService:CourrierService,
+      private pdfService: PdfService,
+      private sessionService: SessionService,
+      private fb: FormBuilder,
+      private router: Router,
+      private route : ActivatedRoute,
+      private structureService: StructureService,
+      private messageService: MessageService,
+      private  typeCourrierService:TypeCourrierService,
+      private  suiviCourrier:SuiviCourrierService,
+      private fermetureCourrierService : FermetureCourrierService,
+      private  statutCourrierService: StatutCourrierService,
+      private noeuxService: NouexService,
+      private bureauxDouanier: BureauxDouanierService,
   ) {}
 
   ngOnInit(): void {
     this.buildForm();
-    this.getAllColis();
+      this.iduser=this.sessionService.getAgentAttributes()?.id
+      this.getCourrierByStructureDepotAndStatutIds()
   }
 
   buildForm() {
@@ -40,119 +68,121 @@ export class LivraisonComponent implements OnInit {
       dateFin: [undefined, Validators.required],
     });
   }
+    getCourrierByStructureDepotAndStatutIds() {
+        const statutIds = '10';
+        const structureDestination= this.sessionService.getAgentAttributes().structureId
+        this.courrierService.findCourrierByStrutureDepotAndStatutId(
+            structureDestination,
+            statutIds).subscribe(
+            (result) => {
+                this.colis$ = result;
+                console.log(result)
+                console.log(this.colis$);
+            },
+            (error) => {
+                console.error('Erreur lors de la récupération des courriers:', error);
+            }
+        );
+    }
 
-  getAllColis() {
-    this.loadingColis = true;
-    this.colisService.findAll().subscribe(
-      (result) => {
-        this.colis$ = result;
-        this.montant = this.colis$.reduce((sum, item) => sum + Number(item.montant || 0), 0);
-        this.loadingColis = false;
-      },
-      (error) => {
-        console.error('Erreur lors de la récupération des colis:', error);
-        this.loadingColis = false;
-      }
-    );
-  }
+    getBadgeSeverity(typeCourrierLibelle: string): string {
+        // Vérifier que la valeur n'est pas undefined ou null avant de la traiter
+        if (!typeCourrierLibelle) {
+            return 'secondary'; // Gris pour une valeur indéfinie
+        }
 
-  voirColis(colis: ColisDto) {
+        // Convertir en minuscules pour assurer que la comparaison est insensible à la casse
+        const type = typeCourrierLibelle.toLowerCase();
+
+        // Utilisation d'un switch sur la version en minuscules
+        switch (type) {
+            case 'paquet':
+                return 'warning';  // Jaune pour "Paquet"
+            case 'lettre':
+                return 'success';  // Vert pour "Lettre"
+            case 'colis':
+                return 'help';     // Bleu pour "Colis"
+            default:
+                return 'danger'; // Gris pour les autres cas
+        }
+    }
+
+
+
+    // getAllColis() {
+  //   this.loadingColis = true;
+  //   this.colisService.findAll().subscribe(
+  //     (result) => {
+  //       this.colis$ = result;
+  //       this.montant = this.colis$.reduce((sum, item) => sum + Number(item.montant || 0), 0);
+  //       this.loadingColis = false;
+  //     },
+  //     (error) => {
+  //       console.error('Erreur lors de la récupération des colis:', error);
+  //       this.loadingColis = false;
+  //     }
+  //   );
+ // }
+
+  voirColis(colis: CourrierDto) {
     this.selectedColis = colis;
-    this.calculerMontantTotal();
-    this.payer = colis.payer; 
-    console.log('payer:', this.payer); 
+    //this.calculerMontantTotal();
+    this.montant = colis.taxeMagasinage;
+    console.log('payer:', this.payer);
     this.displayDialog = true;
   }
 
-  private calculerMontantTotal() {
-    if (this.selectedColis) {
-      const fraisEnlevement = Number(this.selectedColis.fraisEnlevement) || 0;
-      const fraisLivraison = Number(this.selectedColis.fraisLivraison) || 0;
-      const montant = Number(this.selectedColis.montant) || 0;
-      this.montantTotal = fraisEnlevement + fraisLivraison + montant;
-    }
-  }
+    openDialog(colis: CourrierDto) {
 
-  Livrer() {
-    if (this.selectedColis) {
-      this.colisService.livrer(this.selectedColis.id.toString(), this.selectedColis).subscribe(
-        (response) => {
-          console.log('Colis livré avec succès', response);
-          this.displayDialog = false;
-          this.messageService.add({ 
-            severity: 'success', 
-            summary: 'Succès', 
-            detail: 'Le colis a été livré avec succès.' 
-          });
-          setTimeout(() => {
-            location.reload(); 
-          }, 1000); 
-        },
-        (error) => {
-          console.error('Erreur lors de la livraison du colis', error);
-          this.messageService.add({ 
-            severity: 'error', 
-            summary: 'Erreur', 
-            detail: 'Une erreur est survenue lors de la livraison du colis.' 
-          });
-        }
-      );
-    } else {
-      console.error('Aucun colis sélectionné');
-      this.messageService.add({ 
-        severity: 'warn', 
-        summary: 'Avertissement', 
-        detail: 'Aucun colis sélectionné pour la livraison.' 
-      });
+            this.colis = { ...colis };
+        this.openNumExpDialog = true
+        console.log( this.openNumExpDialog)
     }
-  }
+
+    closeModal() {
+        this.openCourrierDialog = false;
+    }
+
+    openDialog1(colis: CourrierDto) {
+        this.openCourrierDialog=true
+        this.colis = { ...colis };
+        this.openNumExpDialog=false
+        this.calculateTotal(colis)
+    }
+
+    calculateTotal(colis:any) {
+        console.log(colis)
+        const taxeMagasinage = this.colis.taxeMagasinage || 0;
+        const taxeDouane = this.colis.taxeDouane || 0;
+        console.log(taxeDouane, taxeMagasinage)
+        this.totalpaye = taxeMagasinage + taxeDouane;
+    }
+
+    confirmReception() {
+        this.savecolis();
+        this.selectedColis = []; // Réinitialiser la sélection après l'enregistrement
+        this.openCourrierDialog=false;
+
+    }
+    validateTaxeMagasinage() {
+        // Vérifie si la taxe magasinage est un nombre valide et supérieur à zéro
+        this.isTaxeValid = this.colis.taxeMagasinage > 0;
+        let totalpaye =this.selectedColis.taxeMagasinage+this.selectedColis.taxeDouane
+    }
+
+
 
   supprimerSelection() {
-    if (this.selectedColisForDeletion.size === 0) {
-      this.messageService.add({
-        severity: 'warn',
-        summary: 'Avertissement',
-        detail: 'Aucun colis sélectionné pour la suppression.',
-      });
-      return;
-    }
-
-    this.confirmationService.confirm({
-      message: 'Êtes-vous sûr de vouloir supprimer ces colis ?',
-      header: 'Confirmation',
-      icon: 'pi pi-exclamation-triangle',
-      accept: () => {
-        this.selectedColisForDeletion.forEach(colis => {
-          this.colisService.delete(colis.id.toString()).subscribe(
-            () => {
-              console.log(`le colis ${colis.code} vient d'etre supprimer avec succes`);
-              this.messageService.add({
-                severity: 'success',
-                summary: 'Succès',
-                detail: `Le colis ${colis.code} a été supprimé.`,
-              });
-              this.getAllColis(); 
-            },
-            (error) => {
-              console.error(`Erreur lors du suppression du colis ${colis.code}`, error);
-              this.messageService.add({
-                severity: 'error',
-                summary: 'Erreur',
-                detail: `Error lors de la supreesion du colis ${colis.code}`,
-              });
-            }
-          );
-        });
-        this.selectedColisForDeletion.clear(); 
-      },
-      reject: () => {
-        this.messageService.add({
-          severity: 'info',
-          summary: 'Annulé',
-          detail: 'Suppression annulée.',
-        });
+      if (this.selectedColisForDeletion.size === 0) {
+          this.messageService.add({
+              severity: 'warn',
+              summary: 'Avertissement',
+              detail: 'Aucun colis sélectionné pour la suppression.',
+          });
+          return;
       }
-    });
+
+
   }
 
   toggleSelection(colis: ColisDto) {
@@ -166,7 +196,7 @@ export class LivraisonComponent implements OnInit {
 
   selectAll(event: any): void {
     if (event.checked) {
-      this.colis$.forEach(colis => this.selectedColisForDeletion.add(colis));
+    //  this.colis$.forEach(colis => this.selectedColisForDeletion.add(colis));
     } else {
       this.selectedColisForDeletion.clear();
     }
@@ -175,12 +205,74 @@ export class LivraisonComponent implements OnInit {
 
   onRowSelect(event: any) {
     const colis = event.data;
-    this.toggleSelection(colis); 
+    this.toggleSelection(colis);
   }
 
   onRowUnselect(event: any) {
     const colis = event.data;
-    this.selectedColisForDeletion.delete(colis); 
+    this.selectedColisForDeletion.delete(colis);
     console.log("Row Unselected: ", colis);
   }
+
+
+
+    savecolis() {
+
+
+        // Mise à jour du courrier
+        if(this.isTaxeValid){
+            this.openCourrierDialog=false
+            this.colis.taxeMagasinage= this.colis.taxeMagasinage
+          this.colis.statutCourrierId= 11
+
+          const journalId = this.sessionService.getJournalAttributes()?.id;
+
+
+          if (!journalId) {
+              this.messageService.add({
+                  severity: 'warn',
+                  summary: 'Avertissement',
+                  detail: 'Vous n\'avez pas de caisse ouverte. Veuillez ouvrir une caisse avant de continuer.',
+              });
+              return;
+          }
+          this.colis.journalId = journalId;
+          this.colis.userId = this.sessionService.getAgentAttributes().id;
+
+
+        this.courrierService.livraison( this.colis.id,  this.colis).subscribe(
+            () => {
+                this.getCourrierByStructureDepotAndStatutIds()
+                const suiviCourrier = {
+                    courrierId:  this.colis.id,
+                    idstatutCourrier:  this.colis.statutCourrierId,
+                    userId: this.iduser,
+                    structureDepotId:  this.colis.structureDepotId,
+                    structureDestinationId:  this.colis.structureDestinationId,
+                    date: new Date().toISOString(),
+                };
+
+
+                // Rafraîchir la liste des courriers
+                this.messageService.add({
+                    severity: 'success',
+                    summary: 'Succès',
+                    detail: 'Colis livré avec succès.',
+                    life: 3000,
+                });
+
+            },
+            (error) => {
+                console.error(`Erreur lors de la mise à jour du colis ${this.colis.id}:`, error);
+                this.messageService.add({
+                    severity: 'error',
+                    summary: 'Erreur',
+                    detail: 'Une erreur s\'est produite lors de la livraison  du colis.',
+                    life: 3000,
+                });
+            }
+
+        );
+        }
+    }
 }

@@ -13,58 +13,55 @@ export class CtMenuComponent implements OnInit {
 
     ngOnInit() {
         this.model = [
-            // {
-            //     label: 'Ct',
-            //     items: [
-            //         {
-            //             label: 'Expedition',
-            //             icon: 'pi pi-fw pi-send',
-            //             routerLink: ['/ct/expedition'],
-            //         },
-            //         {
-            //             label: 'Reception',
-            //             icon: 'pi pi-fw pi-download',
-            //             routerLink: ['/ct/reception'],
-            //         },
-            //
-            //
-            //
-            //     ],
-            // },
 
 
             {
-                label: ' Packet Ordinaire',
+                label: 'Ct',
+
                 items: [
+
                     {
-                        label: ' Ajouter Packet ',
-                        icon: 'pi pi-fw pi-plus',
-                        routerLink: ['/ct/linepacket'],
+                        label: 'Expedition Ecommerce',
+                        icon: 'pi pi-fw pi-send',
+                        routerLink: ['/ct/expedition/expedition-E-commerce'],
+                    },
+
+                    {
+                        label: 'Reception Ecommerce',
+                        icon: 'pi pi-fw pi-download',
+                        routerLink: ['/ct/reception/reception-E-commerce'],
                     },
 
                 ],
             },
-            // {
-            //     label: ' Reception-Packet',
-            //     items: [
-            //         {
-            //             label: ' réception packet',
-            //             icon: 'pi pi-fw pi-download',
-            //             routerLink: ['/ct/linepacketDeclarer'],
-            //         },
-            //
-            //     ],
-            // },
             {
-                label: 'Expédition Packet',
-                items: [
+                label: 'Gestion Paquets',
+                items:[
                     {
-                        label: 'expédition  packet ',
-                        icon: 'pi pi-fw pi-send',
-                        routerLink: ['/ct/linepacketDeclarer'],
+
+                                label: ' Ajouter Packet ',
+                                icon: 'pi pi-fw pi-plus',
+                                routerLink: ['/ct/linepacket'],
+
                     },
 
-                ],
+                    {
+                             label: 'expédition  packet ',
+                                icon: 'pi pi-fw pi-send',
+                                routerLink: ['/ct/linepacketDeclarer'],
+                    },
+                ]
+
+            },
+            {
+                label: 'Suivi Courrier',
+                items: [
+                    {
+                        label:'suiviCourrier',
+                        icon : 'pi pi-fw pi-search',
+                        routerLink:['/ct/suiviCourrier']
+                    }
+                ]
             },
             {
                 label: 'Reporting',
@@ -73,6 +70,11 @@ export class CtMenuComponent implements OnInit {
                         label: 'Report Jt3',
                         icon: 'pi pi-fw pi-file-pdf',
                         routerLink: ['/ct/rapport'],
+                    },
+                    {
+                        label: 'Report Jt3 e-commerce ',
+                        icon: 'pi pi-fw pi-file-pdf',
+                        routerLink: ['/ct/RapportEcommerce'],
                     },
                 ],
             },

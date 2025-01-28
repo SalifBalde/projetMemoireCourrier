@@ -24,11 +24,12 @@ import { KeyFilterModule } from 'primeng/keyfilter';
 import { CustomCurrencyPipe } from 'src/app/pipes/custom-currency.pipe';
 import { SharedModule } from 'primeng/api';
 import { InputTextareaModule } from 'primeng/inputtextarea';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 // shared module c'est ici qu'on va mettre toutes les composants communs à toutes les parties de l'application
 
 @NgModule({
-    declarations: [CustomCurrencyPipe],
+        declarations: [CustomCurrencyPipe],
     imports: [
         CommonModule,
         FormsModule,
@@ -54,6 +55,7 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
         InputGroupModule,
         CalendarModule,
         KeyFilterModule,
+        ConfirmDialogModule,
         SharedModule // Ajoutez SharedModule dans imports
     ],
     exports: [
@@ -82,7 +84,7 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
         KeyFilterModule,
         CustomCurrencyPipe,
         CommonModule,
-        SharedModule
+        SharedModule,
     ],
 })
 export class SharedComponentModule {}

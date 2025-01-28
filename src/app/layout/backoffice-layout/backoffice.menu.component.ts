@@ -1,6 +1,8 @@
 import { OnInit } from '@angular/core';
 import { Component } from '@angular/core';
 import { LayoutService } from '../service/app.layout.service';
+import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
 
 @Component({
     selector: 'backoffice-menu',
@@ -20,21 +22,7 @@ export class BackofficeMenuComponent implements OnInit {
                     { label: 'Dashboard', icon: 'pi pi-fw pi-home', routerLink: [''] }
                 ]
             },
-            {
-                label: 'Rapport Colis',
-                items: [
-                    { label: 'Colis', icon: 'pi pi-fw pi-plus', routerLink: [''] },
-                    { label: 'Mes Colis', icon: 'pi pi-fw pi-box', routerLink: [''] },
-                ]
-            },
-            {
-                label: 'Gestion Colis',
-                items: [
-                    { label: 'Location', icon: 'pi pi-fw pi-plus', routerLink: [''] },
-                    { label: 'Mes Locations', icon: 'pi pi-fw pi-folder', routerLink: [''] },
 
-                ]
-            },
             {
                 label: 'Paramétres',
                 icon: 'pi pi-fw pi-briefcase',
@@ -73,6 +61,11 @@ export class BackofficeMenuComponent implements OnInit {
                                 label: 'TypeCourriers',
                                 icon: 'pi pi-fw pi-angle-right',
                                 routerLink: ['/backoffice/typeCourriers']
+                            },
+                            {
+                                label: 'CategorieCourrier',
+                                icon: 'pi pi-fw pi-angle-right',
+                                routerLink:['/backoffice/categories']
                             },
                             {
                                 label: 'TypeCategories',

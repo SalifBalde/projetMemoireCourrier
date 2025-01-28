@@ -13,10 +13,54 @@ $gutter: 1rem; //for primeflex grid system
 @import "assets/demo/styles/flags/flags.css";
 @import "assets/demo/styles/badges.scss";
 @import "assets/demo/styles/code.scss";
+
 .p-menubar .p-menu-separator {
-    border-top: 1px solid #3cb553; /* Couleur et épaisseur de la ligne */
-    margin: 4px 0; /* Espacement autour du séparateur */
+    border-top: 1px solid #3cb553;
+    /* Couleur et épaisseur de la ligne */
+    margin: 4px 0;
+    /* Espacement autour du séparateur */
+}
+
+.loading-message {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    font-size: 1.5em;
+    z-index: 1000;
 }
 
 
+// .customer-badge {
+//     padding: 0.5em;
+//     border-radius: 4px;
+//     color: white;
+//     display: inline-block;
+//     text-align: center;
+// }
 
+.status-rouge {background-color: red;}
+.status-bleu {background-color: blue;}
+.status-vert {background-color: green;}
+.status-jaune {background-color: yellow;}
+.status-orange {background-color: orange;}
+.status-turquoise {background-color: #009688;}
+.status-rouge_orange {background-color: #FF5722;}
+.status-cyan {background-color: #00BCD4;}
+.status-vert_clair {background-color: #8BC34A;}
+.status-bleu_foncé {background-color: #3F51B5;}
+.status-violet {background-color: #673AB7;}
+.status-jaune_clair {background-color: #FFEB3B;}
+.status-noir {background-color: black;}
+.status-gris {background-color: gray;}
+.status-brun { background-color: #795548;}
+.status-violet_clair {background-color: #9C27B0;}
+.status-bleu_gris {background-color: #607D8B;}
+.status-citron_vert {background-color: #CDDC39;}
+.status-bleu_ciel {background-color: #03A9F4;}

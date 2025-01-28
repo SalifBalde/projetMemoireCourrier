@@ -183,49 +183,27 @@ export class ReceptionPacketComponent implements OnInit{
 
     confirmReception() {
         console.log(this.selectedColis);
-
         this.openColisDialog = false;
-
         this.selectedColis.forEach((courrier) => {
             // Mettre à jour le statut du courrier et l'ID de l'utilisateur
             // Vérifier si l'ID du statut est renseigné
             if (this.selectedStatut?.id) {
-                courrier.statutCourrier = { id: this.selectedStatut.id };
+                courrier.statutCourrierId =this.selectedStatut.id ;
                 courrier.taxeDouane = courrier.montantTaxeDouane;
 
             } else {
                 // Attribuer une valeur par défaut (22) si l'ID du statut n'est pas renseigné
                 courrier.taxeDouane = courrier.montantTaxeDouane;
-                courrier.statutCourrier = { id: 10 };
+                courrier.statutCourrierId = 10;
             }
             courrier.userId = this.iduser;
 
-            console.log(courrier);
-
-            // Créer un objet SuiviCourrier pour chaque courrier
-            const suiviCourrier = {
-                courrierId: courrier.id,
-                idstatutCourrier: courrier.statutCourrier.id,
-                userId: courrier.userId,
-                structureDepotId: courrier.structureDepotId,
-                structureDestinationId: courrier.structureDestinationId
-            };
-
-            // Sauvegarder les informations de suivi pour chaque courrier
-            this.suiviCourrier.save(suiviCourrier).subscribe(
-                (data) => {
-                    console.log("Suivi courrier sauvegardé : ", data);
-                },
-                (error) => {
-                    console.error("Erreur lors de la sauvegarde du suivi : ", error);
-                }
-            );
         });
 
         // Appel au service pour mettre à jour les courriers
         this.courrierService.updateCourriers(this.selectedColis).subscribe(
             (result) => {
-                this.getCourriersByFermetureIdAndStatut(this.fermetureId,this.idStatutFermetureCourrier[0].id,this.paysOrigineId.id,this.structureDestna)                // Rafraîchir la liste des courriers après la mise à jour
+                this.getCourriersByFermetureIdAndStatut(this.fermetureId,this.idStatutFermetureCourrier[0].id,this.paysOrigineId.id, this.structureDestna)                // Rafraîchir la liste des courriers après la mise à jour
                 this.selectedStatut=[]
                 // Message de succès
                 this.messageService.add({
@@ -262,7 +240,6 @@ export class ReceptionPacketComponent implements OnInit{
                 return 'secondary'; // Gris pour les autres statuts
         }
     }
-
 
 
 }

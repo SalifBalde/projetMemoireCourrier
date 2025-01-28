@@ -86,18 +86,14 @@ export class ReceptionArriereComponent implements  OnInit{
         );
         this.statutCourrierService.findAll().subscribe((data)=>{
             this.statutCourriers=data;
-            console.log(data)
+
             this.idStatutFermetureCourrier = data.filter(statut => statut.id === 1);
-            console.log(this.idStatutFermetureCourrier);
             this.getCourriersArriere()// Afficher les résultats filtrés
         })
 
 
         this.iduser= this.sessionService.getAgentAttributes()?.id
         console.log(this.iduser)
-
-
-
 
     }
 
@@ -132,42 +128,25 @@ export class ReceptionArriereComponent implements  OnInit{
 
 
     confirmReception() {
-        console.log(this.selectedColis);
+        console.log(this.selectedCourriers);
 
         this.openColisDialog = false;
 
-        this.selectedCourriers.forEach((courrier) => {
 
-                courrier.statutCourrier = { id:14 };
+        this.selectedCourriers.forEach((courrier) => {
+            // Mettre à jour le statut du courrier et l'ID de l'utilisateur
+            // Vérifier si l'ID du statut est renseigné
+
+            courrier.statutCourrierId = 14;
             courrier.userId = this.iduser;
 
-            console.log(courrier);
-
-            // Créer un objet SuiviCourrier pour chaque courrier
-            const suiviCourrier = {
-                courrierId: courrier.id,
-                idstatutCourrier: courrier.statutCourrier.id,
-                userId: courrier.userId,
-                structureDepotId: courrier.structureDepotId,
-                structureDestinationId: courrier.structureDestinationId
-            };
-
-            // Sauvegarder les informations de suivi pour chaque courrier
-            this.suiviCourrier.save(suiviCourrier).subscribe(
-                (data) => {
-                    console.log("Suivi courrier sauvegardé : ", data);
-                },
-                (error) => {
-                    console.error("Erreur lors de la sauvegarde du suivi : ", error);
-                }
-            );
         });
 
         // Appel au service pour mettre à jour les courriers
         this.courrierService.updateCourriers(this.selectedCourriers).subscribe(
             (result) => {
                 this.getCourriersArriere()
-
+                this.selectedStatut=[]
                 // Message de succès
                 this.messageService.add({
                     severity: 'success',

@@ -10,12 +10,14 @@ export class CourrierCreateUpdateDto {
     valeurDeclare?: number;
     userId?: number;
     caisseId?: number;
+    journalId?: number;
     codeBarre?: string;
     contenu?: string;
     typeCourrierId?: number;
     paysOrigineId?: number;
     paysDestinationId?: number;
     statutCourrierId?: number;
+    statutCourrierLibelle?:string
     destinataireId?: number;
     categorieId?: number;
     expediteurId?: number;
@@ -37,29 +39,38 @@ export class CourrierCreateUpdateDto {
     quantite?: number;
     taxeDouane?: number;
     taxePresentation?: number;
+    taxeMagasinage?: number;
     valeurDeclare?: number;
     userId?: number;
     codeBarre?: string;
     caisseId?: number;
-
+    journalId?: number;
     contenu?: string;
-    typeCourrierId: number;
-    typeCourrierLibelle: string;
+    typeCourrierId?: number;
+    typeCourrierLibelle?: string;
     paysOrigineId?: number;
     paysOrigineLibelle?: string;
     paysDestinationId?: number;
     paysDestinationLibelle?: string;
     idstatutCourrier?: number;
+    statutCourrierId?: number;
+    statutCourrierLibelle?: string;
     destinataireId?: number;
     destinataireNom?: string;
     destinatairePrenom?: string;
     destinataireTelephone?: string;
+    destinataireAdresse?: string;
+    destinataireCodePostal?: string;
+    destinataireCity?: string;
     categorieId?: number;
     categorieLibelle?: number;
     expediteurId?: number;
     expediteurNom?: string;
     expediteurPrenom?: string;
     expediteurTelephone?: string;
+    expediteurAdresse?: string;
+    expediteurCodePostal?: string;
+    expediteurCity?: string;
     recommande?: boolean;
     ar?: boolean;
     express?: boolean;
@@ -77,4 +88,15 @@ export class CourrierCreateUpdateDto {
      montant?: number;
    }
 
+   export interface CourrierSearchDto {
+    debut?: string;
+    fin?: string;
+    structureDestinationId?: number;
+    structureDepotId?: number;
+    userId?: number;
+    statutCourrierId?: number;
+    typeCourrierId?: number;
+    paysOrigineId?:number;
+    paysDestinationId?:number;
+  }
 

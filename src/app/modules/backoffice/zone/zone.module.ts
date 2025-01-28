@@ -13,25 +13,15 @@ import {ButtonDirective, ButtonModule} from "primeng/button";
 import {Ripple, RippleModule} from "primeng/ripple";
 import {InputTextModule} from "primeng/inputtext";
 import {SharedModule} from "../../../layout/shared/shared.module";
+import { SharedComponentModule } from 'src/app/layout/shared/shared-component.module';
 
 @NgModule({
   declarations: [
     ZoneComponent
   ],
     imports: [
-        TagModule,
-        ToastModule,
-        ToolbarModule,
-        TableModule,
-        DialogModule,
-        CommonModule,
-        ZoneRoutingModule,
-        ReactiveFormsModule,
-        InputSwitchModule,
-        ButtonModule,
-        RippleModule,
-        InputTextModule,
-        SharedModule
+       SharedComponentModule,
+       ZoneRoutingModule
     ]
 })
 export class ZoneModule { }

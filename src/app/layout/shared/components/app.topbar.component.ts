@@ -6,59 +6,69 @@ import { Router } from '@angular/router';
 import { KeycloakService } from 'keycloak-angular';
 import { KeycloakProfile } from 'keycloak-js';
 import { SessionService } from 'src/app/proxy/auth/Session.service';
+import { environment } from 'src/environments/environment.prod';
 
 @Component({
-    selector: 'app-topbar',
-    templateUrl: './app.topbar.component.html'
+  selector: 'app-topbar',
+  templateUrl: './app.topbar.component.html'
 })
-export class AppTopBarComponent implements OnInit{
-    public isLoggedIn = false;
-    public userProfile: KeycloakProfile | null = null;
-    fullname = "";
-    structureLibelle = "";
-    caisseLibelle: string;
+export class AppTopBarComponent implements OnInit {
+  public isLoggedIn = false;
+  public userProfile: KeycloakProfile | null = null;
+  fullname = "";
+  structureLibelle = "";
+  caisseLibelle: string;
 
 
 
-    items: MenuItem[] = [];
+  items: MenuItem[] = [];
 
-    @ViewChild('menubutton') menuButton!: ElementRef;
+  @ViewChild('menubutton') menuButton!: ElementRef;
 
-    @ViewChild('topbarmenubutton') topbarMenuButton!: ElementRef;
+  @ViewChild('topbarmenubutton') topbarMenuButton!: ElementRef;
 
-    @ViewChild('topbarmenu') menu!: ElementRef;
+  @ViewChild('topbarmenu') menu!: ElementRef;
 
-    constructor(public layoutService: LayoutService,private readonly keycloak: KeycloakService, private router:Router, private sessionService: SessionService) { }
-    public async ngOnInit() {
-        const userRoles = this.keycloak.getUserRoles();
+  constructor(public layoutService: LayoutService, private readonly keycloak: KeycloakService, private router: Router, private sessionService: SessionService) { }
+  public async ngOnInit() {
+    const userRoles = this.keycloak.getUserRoles();
 
     // Define items based on roles
     this.items = [
-        { label: 'Profil', icon: 'pi pi-refresh', command: () => { this.router.navigate(['/profile']); } },
         ...(userRoles.includes('ROLE_DCG') ? [{ label: 'DCG', icon: 'pi pi-unlock', command: () => { this.router.navigate(['/dcg']); } }] : []),
         ...(userRoles.includes('ROLE_DRP') ? [{ label: 'DRP', icon: 'pi pi-unlock', command: () => { this.router.navigate(['/drp']); } }] : []),
         ...(userRoles.includes('ROLE_RECEVEUR') ? [{ label: 'RECEVEUR', icon: 'pi pi-unlock', command: () => { this.router.navigate(['/receveur']); } }] : []),
+        ...(userRoles.includes('ROLE_GUICHET') ? [{ label: 'GHICHET', icon: 'pi pi-unlock', command: () => { this.router.navigate(['/guichet']); } }] : []),
+        ...(userRoles.includes('ROLE_ARRIERE') ? [{ label: 'ARRIERE', icon: 'pi pi-unlock', command: () => { this.router.navigate(['/arriere']); } }] : []),
+        ...(userRoles.includes('ROLE_RESPONSABLE_ANNEXE') ? [{ label: 'RESPONSABLE ANNEXE', icon: 'pi pi-unlock', command: () => { this.router.navigate(['/responsableannnexe']); } }] : []),
         { separator: true },
-        { label: 'Logout', icon: 'pi pi-sign-out', command: () => { this.keycloak.logout(); } }
+        { label: 'Déconnexion', icon: 'pi pi-sign-out', command: () => { this.keycloak.logout(environment.keycloak.redirectUri);
+            sessionStorage.clear();
+         } }
     ];
         this.structureLibelle = this.sessionService.getAgentAttributes().structureLibelle;
-        this.caisseLibelle = this.sessionService.getAgentAttributes().caisseLibelle;
+        const caisseLibelle = this.sessionService.getAgentAttributes()?.caisseLibelle;
+        const date = this.sessionService.getJournalAttributes()?.date || 'Date inconnue';
+        const soldeOuverture = this.sessionService.getJournalAttributes()?.soldeOuverture || 0;
 
-
-        this.isLoggedIn = await this.keycloak.isLoggedIn();
-
-        if (this.isLoggedIn) {
-          this.userProfile = await this.keycloak.loadUserProfile();
-          this.fullname = this.userProfile.firstName + " " + this.userProfile.lastName;
+        if (caisseLibelle) {
+            this.caisseLibelle = `${caisseLibelle}: ${date} - Num Veil: ${soldeOuverture} CFA`;
         }
-      }
 
+    this.isLoggedIn = await this.keycloak.isLoggedIn();
 
-      public login() {
-        this.keycloak.login();
-      }
-
-      public logout() {
-        this.keycloak.logout();
-      }
+    if (this.isLoggedIn) {
+      this.userProfile = await this.keycloak.loadUserProfile();
+      this.fullname = this.userProfile.firstName + " " + this.userProfile.lastName;
     }
+  }
+
+
+  public login() {
+    this.keycloak.login();
+  }
+
+  public logout() {
+    this.keycloak.logout();
+  }
+}

@@ -1,3 +1,5 @@
+
+
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {MessageService} from "primeng/api";
 import {ColisDto, ColisService} from "../../../../proxy/colis";
@@ -140,7 +142,6 @@ export class ExpeditionColisComponent implements  OnInit{
     }
 
     getCourrierByStructureDepotAndStatutIds() {
-
         const statutIds = 19;
         const structureDestination= Number(this.sessionService.getAgentAttributes().structureId)
         // console.log(structureDestination)// Statut IDs sous forme de nombres
@@ -278,8 +279,7 @@ export class ExpeditionColisComponent implements  OnInit{
         console.log(courrier)
         console.log(this.selectedColis)
 
-    }
-
+     }
 
 
 
@@ -431,4 +431,5 @@ export class ExpeditionColisComponent implements  OnInit{
         }
     }
 
-}
+
+ }

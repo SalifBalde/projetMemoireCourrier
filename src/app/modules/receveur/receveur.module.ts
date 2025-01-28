@@ -6,7 +6,6 @@ import { IndexComponent } from './index/index.component';
 
 @NgModule({
   declarations: [
-    IndexComponent
   ],
   imports: [
     CommonModule,

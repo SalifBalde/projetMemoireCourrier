@@ -130,42 +130,25 @@ export class ReceptionColisComponent  implements  OnInit{
 
 
     confirmReception() {
-        console.log(this.selectedColis);
+        console.log(this.selectedCourriers);
 
         this.openColisDialog = false;
 
-        this.selectedCourriers.forEach((courrier) => {
 
-            courrier.statutCourrier = { id:14 };
+        this.selectedCourriers.forEach((courrier) => {
+            // Mettre à jour le statut du courrier et l'ID de l'utilisateur
+            // Vérifier si l'ID du statut est renseigné
+
+            courrier.statutCourrierId = 14;
             courrier.userId = this.iduser;
 
-            console.log(courrier);
-
-            // Créer un objet SuiviCourrier pour chaque courrier
-            const suiviCourrier = {
-                courrierId: courrier.id,
-                idstatutCourrier: courrier.statutCourrier.id,
-                userId: courrier.userId,
-                structureDepotId: courrier.structureDepotId,
-                structureDestinationId: courrier.structureDestinationId
-            };
-
-            // Sauvegarder les informations de suivi pour chaque courrier
-            this.suiviCourrier.save(suiviCourrier).subscribe(
-                (data) => {
-                    console.log("Suivi courrier sauvegardé : ", data);
-                },
-                (error) => {
-                    console.error("Erreur lors de la sauvegarde du suivi : ", error);
-                }
-            );
         });
 
         // Appel au service pour mettre à jour les courriers
         this.courrierService.updateCourriers(this.selectedCourriers).subscribe(
             (result) => {
                 this.getCourriersArriere()
-
+                this.selectedStatut=[]
                 // Message de succès
                 this.messageService.add({
                     severity: 'success',
@@ -188,7 +171,6 @@ export class ReceptionColisComponent  implements  OnInit{
             }
         );
     }
-
     getBadgeSeverity(statutLibelle: string): string {
         switch (statutLibelle?.toLowerCase()) {
             case 'reexpédier':

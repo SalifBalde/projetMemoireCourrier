@@ -17,13 +17,12 @@
                     [loading]="loadingReset" (onClick)="resetForm()" class="mt-4"></p-button>
             </div>
             <div class="col-4">
-                <p-button label="Rechercher" icon="pi pi-check" severity="secondary" [loading]="loadingColis"
-                    (onClick)="searchColisByPeriod()" class="mt-4" [disabled]="form.invalid"></p-button>
+                <p-button label="Rechercher" icon="pi pi-check" severity="secondary" [loading]="loadingCourrier"
+                    (onClick)="searchCourrierByPeriod()" class="mt-4" [disabled]="form.invalid"></p-button>
             </div>
 
         </div>
     </form>
-
 </div>
 <div class="grid">
     <div class="col-12">
@@ -35,20 +34,20 @@
                         <ul class="list-none p-0 m-0 w-full">
                             <li class="mb-1"><span class="font-medium text-900"> Rapport: {{fullname}}</span></li>
                             <li class="flex justify-content-between mb-1"><span class="text-900">Nombre</span><span
-                                    class="text-900 font-medium text-lg font-bold">{{colis$.length}}</span></li>
+                                    class="text-900 font-medium text-lg font-bold">{{courrier$.length}}</span></li>
                             <li class="flex justify-content-between mb-1"><span class="text-900">Total</span><span
-                                    class="text-900 font-medium text-lg font-bold">{{montant|currency}}</span></li>
+                                    class="text-900 font-medium text-lg font-bold">{{montant|customCurrency}}</span></li>
                         </ul>
                     </div>
                 </ng-template>
                 <ng-template pTemplate="right">
                     <button pButton type="button" icon="pi pi-file-pdf" class="p-button-warning mr-2"
-                        (click)="generatePdf()" [disabled]="loadingColis"></button>
+                        (click)="generatePdf()" [disabled]="loadingcourrier"></button>
                     <button pButton type="button" icon="pi pi-file-excel" (click)="dt.exportCSV()"
-                        [disabled]="loadingColis" class="p-button-danger"></button>
+                        [disabled]="loadingcourrier" class="p-button-danger"></button>
                 </ng-template>
             </p-toolbar>
-            <p-table [value]="colis$" styleClass="p-datatable-gridlines" [tableStyle]="{ 'min-width': '50rem' }"
+            <p-table [value]="courrier$" styleClass="p-datatable-gridlines" [tableStyle]="{ 'min-width': '50rem' }"
                 [paginator]="true" [rows]=5>
                 <ng-template pTemplate="header">
                     <tr>
@@ -61,18 +60,17 @@
                         <th></th>
                     </tr>
                 </ng-template>
-                <ng-template pTemplate="body" let-colis>
+                <ng-template pTemplate="body" let-courrier>
                     <tr>
-                        <td>{{ colis.code }}</td>
-                        <td>{{ colis.nomClient }}</td>
-                        <td>{{ colis.prenomDestinataire }} {{ colis.nomDestinataire }}</td>
-                        <td>{{ colis.bureauDestinationLibelle }}</td>
-                        <td>{{ colis.montant }}</td>
-                        <td>{{ colis.createdAt }}</td>
+                        <td>{{ courrier.codeBarre }}</td>
+                        <td>{{ courrier. expediteurPrenom }} {{courrier.expediteurNom}}</td>
+                        <td>{{ courrier.destinatairePrenom }} {{ courrier.destinataireNom }}</td>
+                        <td>{{ courrier.structureDestinationLibelle }}</td>
+                        <td>{{ courrier.montant }}</td>
+                        <td>{{ courrier.createdAt }}</td>
                         <td>
-                            <a routerLink="/guichet/colisDetails/{{
-                                    colis.id
-                                }}" pButton="" type="button" icon="pi pi-download"
+                            <a [routerLink]="['/guichet/courrier-details/', courrier.id]"
+                                 pButton="" type="button" icon="pi pi-download"
                                 class="p-element p-button-text p-button p-component p-button-icon-only"><span
                                     class="p-button-icon pi pi-download" aria-hidden="true"></span></a>
                         </td>

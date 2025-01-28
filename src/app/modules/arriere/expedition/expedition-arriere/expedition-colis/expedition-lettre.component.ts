@@ -62,6 +62,7 @@ export class ExpeditionLettreComponent  implements  OnInit{
     suiviCourriers:any={}
     showMontantField: boolean = false;
     montants: number | null = null;
+    selectedFermeture: any ;
 
     constructor(
         private colisService: ColisService,
@@ -257,10 +258,11 @@ export class ExpeditionLettreComponent  implements  OnInit{
 
 
 
-
     isExpeditionDisabled(): boolean {
-        return !this.selectedStructure
+        return (!this.selectedStructure || this.selectedLettre.length === 0);
     }
+
+
 
 
 
@@ -272,13 +274,27 @@ export class ExpeditionLettreComponent  implements  OnInit{
         this.openCourrierDialog=false;
 
     }
+
+
+// Afficher les détails d'une fermeture
+    showDetails(): void {
+        // Vérifiez que selectedFermeture est défini avant de l'utiliser
+        if (!this.selectedFermeture || !this.selectedFermeture.id) {
+            console.error("selectedFermeture est indéfini ou invalide.");
+            return;
+        }
+        const id1 = this.selectedFermeture.id
+        this.router.navigate(['arriere/courrier-details/courrierDetailArriere/'+id1]);  // Passe l'ID de la fermeture dans l'URL
+        this.openCourrierDialog=false;
+
+
+    }
     saveFermetureCourrier() {
 
         try {
             for (let courri of this.selectedLettre) {
-                console.log(typeof (courri.statutCourrier.id ));
 
-                if (courri.statutCourrier.id === 14) { // Utilisez '===' pour une comparaison stricte
+                if (courri.statutCourrierId === 14) { // Utilisez '===' pour une comparaison stricte
                     this.idStatutFermetureCourrier =2
                 }
             }
@@ -315,9 +331,8 @@ export class ExpeditionLettreComponent  implements  OnInit{
 
             const selectedColisCopy = [...this.selectedLettre];
             for (let courri of selectedColisCopy) {
-                console.log(typeof (courri.statutCourrier.id ));
 
-                if (courri.statutCourrier.id === 14) { // Utilisez '===' pour une comparaison stricte
+                if (courri.statutCourrierId=== 14) { // Utilisez '===' pour une comparaison stricte
                     this.idStatutFermetureCourrier =2
                 }
             }// Copie défensive
@@ -326,10 +341,12 @@ export class ExpeditionLettreComponent  implements  OnInit{
             // Appel au service pour enregistrer la fermeture
             this.fermetureService.saveFermeture(this.fermetureData).subscribe(
                 (response) => {
+                    this.selectedFermeture = response;
+                    this.showDetails()
                     // Mise à jour des courriers et ajout des suivis
                     selectedColisCopy.forEach((colis) => {
                         const courrieId = colis.id;
-                        colis.statutCourrier.id = this.idStatutFermetureCourrier;
+                        colis.statutCourrierId = this.idStatutFermetureCourrier;
                         colis.structureDestinationId = this.selectedStructure;
                         colis.taxeDouane = colis.montantTaxeDouane;
 
@@ -342,24 +359,7 @@ export class ExpeditionLettreComponent  implements  OnInit{
                                 this.selectedStructure=null
                                 this.numeroDepech = null
                                 // Ajout du suivi pour chaque courrier après mise à jour
-                                const suiviCourrier = {
-                                    courrierId: colis.id,
-                                    idstatutCourrier: colis.statutCourrier.id,
-                                    userId: this.iduser,
-                                    structureDepotId: structureDepotId,
-                                    structureDestinationId: this.selectedStructure,
-                                    date: new Date().toISOString(),
-                                };
 
-                                this.suiviCourrier.save(suiviCourrier).subscribe(
-                                    (data) => {
-                                        // console.log("Suivi courrier sauvegardé : ", data);
-
-                                    },
-                                    (error) => {
-                                        console.error("Erreur lors de la sauvegarde du suivi : ", error);
-                                    }
-                                );
 
                                 // Rafraîchir la liste des courriers
 
