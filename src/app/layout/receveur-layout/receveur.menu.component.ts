@@ -31,28 +31,13 @@ export class ReceveurMenuComponent implements OnInit {
                     }
                 ]
             },
-            {
-                label: 'Gestion des Rapport',
-                icon: 'pi pi-fw pi-briefcase',
-                items: [
-                    {
-                        label: 'C 10',
-                        icon: 'pi pi-fw pi-box',
-                        routerLink: [''],
-                    },
-                    {
-                        label: 'C10 Bureau',
-                        icon: 'pi pi-fw pi-box',
-                        routerLink: [''],
-                    },
-                ],
-            },
+
             {
                 label: 'Rapports',
                 icon: 'pi pi-fw pi-briefcase',
                 items: [
                     {
-                        label: 'Rapport Courrier',
+                        label: 'C 10',
                         icon: 'pi pi-fw pi-file',
                         routerLink: ['/receveur/rapport-courrier'],
                     },
