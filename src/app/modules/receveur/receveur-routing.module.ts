@@ -14,7 +14,7 @@ const routes: Routes = [
     children: [
       { path: '', redirectTo: 'receveur', pathMatch: 'full' },
       { path: 'receveur', component: IndexComponent },
-     
+
 
     ],
   },

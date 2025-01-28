@@ -13,7 +13,8 @@ export class HomeComponent implements OnInit{
          public router: Router, private keycloak : KeycloakService)
           { }
     ngOnInit(): void {
-        this.redirectBasedOnRole();
+        this.redirectBasedOnRole();console.log('HomeComponent initialized');
+console.log('User roles:', this.keycloak.getUserRoles());
     }
 
     public isAdmin(): boolean {

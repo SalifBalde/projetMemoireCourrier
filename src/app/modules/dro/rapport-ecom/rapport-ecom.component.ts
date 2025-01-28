@@ -54,44 +54,42 @@ export class RapportEcomComponent implements OnInit {
     this.ecommerceService.findAll().subscribe(result => this.ecommerce$ = result);
     this.statusEcomService.findAll().subscribe(result => this.status$ = result);
     this.structureService.findAll().subscribe(result => this.structure$ = result);
-    
-  }
 
+  }
 
   searchExpeditionByCriteres(): void {
     this.loading = true;
-  
+
     const formattedCriteria = {
-        ...this.form.value
+      ...this.form.value
     };
-  
+
     this.ecommerceService.findEcommerceByCriteres(formattedCriteria).subscribe({
-        next: (ecommerce) => {
-            if (ecommerce.length > 0) {
-                this.ecommerce$ = ecommerce || [];
-                 this.ecommerce$.reduce((sum, item) => sum + Number(item.id), 0); 
-            } else {
-                this.messageService.add({
-                    severity: 'info',
-                    summary: 'Aucun résultat',
-                    detail: 'Aucun colis trouvé pour la période sélectionnée.'
-                });
-                this.ecommerce$ = [];
-               
-            }
-            this.loading = false;
-        },
-        error: (err) => {
-            this.messageService.add({
-                severity: 'error',
-                summary: 'Erreur',
-                detail: 'Une erreur est survenue lors de la récupération des données.'
-            });
-            this.loading = false;
+      next: (ecommerce) => {
+        if (ecommerce.length > 0) {
+          this.ecommerce$ = ecommerce || [];
+          this.ecommerce$.reduce((sum, item) => sum + Number(item.id), 0);
+        } else {
+          this.messageService.add({
+            severity: 'info',
+            summary: 'Aucun résultat',
+            detail: 'Aucun colis trouvé pour la période sélectionnée.'
+          });
+          this.ecommerce$ = [];
+
         }
+        this.loading = false;
+      },
+      error: (err) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Erreur',
+          detail: 'Une erreur est survenue lors de la récupération des données.'
+        });
+        this.loading = false;
+      }
     });
   }
-  
 
   resetForm() {
     this.loadingReset = true;
@@ -103,6 +101,6 @@ export class RapportEcomComponent implements OnInit {
 
   isEmpty() {
     return !this.form.value.IdbureauPartenaire && !this.form.value.idbureau &&
-           !this.form.value.partenaire_e_com_id && !this.form.value.etatEcomId;
+      !this.form.value.partenaire_e_com_id && !this.form.value.etatEcomId;
   }
 }

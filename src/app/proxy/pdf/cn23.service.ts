@@ -54,7 +54,7 @@ export class Cn23Service {
         doc.text('DESTINATAIRE', pageWidth / 1.05, 40, { align: 'right' });
         doc.text(`Prenom: ${data.destinatairePrenom}`, pageWidth / 1.09, 50, { align: 'right' });
         doc.text(`Nom: ${data.destinataireNom}`, pageWidth / 1.11, 60, { align: 'right' });
-        doc.text('Adresse:', pageWidth / 1.17, 66, { align: 'right' });
+        doc.text(`Adresse: ${data.destinataireAdresse}` , pageWidth / 1.14, 66, { align: 'right' });
         // doc.text('123 GREY ST EAST MELBOURNE', pageWidth / 1.12, 69, { align: 'right' });
         // doc.text('VICTORIA 3002 AUSTRALIA', pageWidth / 1.12, 73, { align: 'right' });
         doc.text(`Poids: ${data.poids} g`, pageWidth / 1.15, 85, { align: 'right' });
@@ -128,7 +128,7 @@ export class Cn23Service {
         doc.text(`Agent: Aliou Balde`, pageWidth / 2, 8, { align: 'center' });
         doc.text("Instruction de l'expéditeur en cas de non-livraison ", pageHeight / 13, 160, { align: 'left' });
         doc.text("Renvoyer à l'expéditeur ", pageHeight / 13, 170, { align: 'left' });
-        doc.text('Remarque:Pour tenir compte des besoins de leur service, les Administrations ont la latitude d utiliser cette formule unique,soit comme partie de la formule-Liasse CP72 ', pageHeight / 29, 209, { align: 'left', });
+        doc.text('Remarque: Pour tenir compte des besoins de leur service, les Administrations ont l\'habitude d\'utiliser cette formule unique, soit comme partie de la formule-Liasse CP72 ', pageHeight / 29, 209, { align: 'left', });
         doc.setLineWidth(0.5);
     }
 
