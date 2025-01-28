@@ -46,7 +46,7 @@ export class ColisComponent implements OnInit {
     modesPaiement: any;
     totalMontant: number = 0;
     taxe: number = 0;
-   // valeurTimbre: number = 0;
+    // valeurTimbre: number = 0;
     fraisRecommande: number = 0;
     fraisAr: number = 0;
     fraisExpress: number = 0;
@@ -54,7 +54,7 @@ export class ColisComponent implements OnInit {
     regime$: RegimeDto[];
     categorie$: CategorieDto[];
     structure$: StructureDto[];
-   // stocksTimbre$: StockDto[];
+    // stocksTimbre$: StockDto[];
     mode$: ModePaiementDto[];
     clientDialog: boolean;
     loading: boolean;
@@ -63,8 +63,9 @@ export class ColisComponent implements OnInit {
     destinataireDialog: boolean;
     selectedQuantite: number;
     numberOfItems: any;
-   // selectedTimbre: any;
+    // selectedTimbre: any;
     label: string = 'CP';
+    contenu: Array<any> = [];
 
     constructor(
         private router: Router,
@@ -80,7 +81,7 @@ export class ColisComponent implements OnInit {
         private fb: FormBuilder,
         private modePaiementService: ModePaiementService,
         private messageService: MessageService
-    ) {}
+    ) { }
 
     ngOnInit(): void {
         this.paysService.findAll().subscribe((result) => {
@@ -176,12 +177,14 @@ export class ColisComponent implements OnInit {
                 ],
                 valeurDeclare: [{ value: '', disabled: true }],
                 contenu: [''],
+                quantite: [0],
+                valeur: [''],
+                poidsNet: [''],
                 timbreId: [''],
                 typeId: ['1'],
-                quantite: ['1'],
                 categorieId: ['', Validators.required],
                 typeCourrierId: ['2'],
-                recommande: [{ value: true}],
+                recommande: [{ value: true }],
                 //ar: [{ value: false, disabled: true }],
                 //express: [{ value: false, disabled: true }],
                 statutCourrierId: ['1'],
@@ -200,10 +203,11 @@ export class ColisComponent implements OnInit {
                     Validators.required,
                 ],
                 totalMontant: [0],
-              //  valeurTimbre: [0],
+                //  valeurTimbre: [0],
+
             },
 
-          //  { validators: this.validateMontant }
+            //  { validators: this.validateMontant }
         );
 
         const journalId = this.form.get('journalId')?.value;
@@ -321,8 +325,8 @@ export class ColisComponent implements OnInit {
     }
 
     calculateTariff() {
-            this.totalMontant = this.montant +this.fraisVd ;
-            this.form.get('totalMontant')?.setValue(this.totalMontant);
+        this.totalMontant = this.montant + this.fraisVd;
+        this.form.get('totalMontant')?.setValue(this.totalMontant);
 
     }
 
@@ -344,7 +348,7 @@ export class ColisComponent implements OnInit {
     getCatgories(regimeId: number) {
         const serviceId = this.form.get("typeId").value
         this.categorieService
-            .getAllByRegimeAndType(regimeId, 2,serviceId)
+            .getAllByRegimeAndType(regimeId, 2, serviceId)
             .subscribe((result) => {
                 this.categorie$ = result;
                 this.categorie$ = this.categorie$.filter(c => c.entrant === false)
@@ -437,7 +441,7 @@ export class ColisComponent implements OnInit {
                 detail: `Le poids ne doit pas dépasser ${poidsMax} kg.`,
             });
             this.totalMontant = 0;
-        return;
+            return;
         }
         // Si le poids et le pays de destination sont valides
         if (value > 0 && paysDestinationId > 0) {
@@ -476,7 +480,7 @@ export class ColisComponent implements OnInit {
         this.form.value.montant = this.totalMontant;
         this.form.value.recommande = true;
         this.form.value.details = this.courrier.details;
-        if(this.form.get('codeBarre')?.value)
+        if (this.form.get('codeBarre')?.value)
             this.form.value.codeBarre = this.label + this.form.get('codeBarre')?.value + 'SN';
 
         this.loading = true;
@@ -637,6 +641,27 @@ export class ColisComponent implements OnInit {
         }
     }
 
+    addDetail() {
+        const contenu = this.form.value; // Récupérer les données du formulaire
+        this.contenu.push(contenu); // Ajouter l'élément au tableau
+        this.form.reset(); // Réinitialiser le formulaire
+      }
+
+      // Méthode pour supprimer un élément
+      removeDetail(index: number) {
+        this.contenu.splice(index, 1); // Supprimer l'élément du tableau
+      }
+
+      // Méthodes pour modifier la quantité
+      incrementQuantity(index: number) {
+        this.contenu[index].quantite++;
+      }
+
+      decrementQuantity(index: number) {
+        if (this.contenu[index].quantite > 0) {
+          this.contenu[index].quantite--;
+        }
+      }
     //Panier Timbre
     // updateMetrics() {
     //     this.numberOfItems = this.courrier.details.length;
@@ -648,7 +673,7 @@ export class ColisComponent implements OnInit {
     //     this.form.updateValueAndValidity();
     // }
 
-    getTarifProduit() {}
+    getTarifProduit() { }
 
     // onQuantiteChange(event: any): void {
     //     this.checkAndAddProduct();
@@ -660,48 +685,48 @@ export class ColisComponent implements OnInit {
     //     }
     // }
 
-   /*  ajouterProduit(): void {
-        const quantite = this.form.value.quantite;
-        const timbreId = this.form.value.timbreId;
-        this.selectedTimbre = this.stocksTimbre$.find((p) => p.id === timbreId);
+    /*  ajouterProduit(): void {
+         const quantite = this.form.value.quantite;
+         const timbreId = this.form.value.timbreId;
+         this.selectedTimbre = this.stocksTimbre$.find((p) => p.id === timbreId);
 
-        if (quantite > this.selectedTimbre.quantite) {
-            console.error('Quantité saisie supérieure au stock disponible.');
-            return;
-        }
-        if (quantite > 0) {
-            this.courrier.details.push({
-                produitId: this.selectedTimbre.id,
-                produitLibelle: this.selectedTimbre.combinedLibelle,
-                quantite: quantite,
-                prix: this.selectedTimbre.produitPrix,
-            });
-            this.updateMetrics();
-            this.resetSelection();
-        }
-    }
-    removeDetail(index: number) {
-        this.courrier.details.splice(index, 1);
-        this.updateMetrics();
-    }
+         if (quantite > this.selectedTimbre.quantite) {
+             console.error('Quantité saisie supérieure au stock disponible.');
+             return;
+         }
+         if (quantite > 0) {
+             this.courrier.details.push({
+                 produitId: this.selectedTimbre.id,
+                 produitLibelle: this.selectedTimbre.combinedLibelle,
+                 quantite: quantite,
+                 prix: this.selectedTimbre.produitPrix,
+             });
+             this.updateMetrics();
+             this.resetSelection();
+         }
+     }
+     removeDetail(index: number) {
+         this.courrier.details.splice(index, 1);
+         this.updateMetrics();
+     }
 
-    incrementQuantity(index: number): void {
-        if (this.courrier.details[index].quantite < 100) {
-            this.courrier.details[index].quantite++;
-            this.updateMetrics();
-        }
-    }
+     incrementQuantity(index: number): void {
+         if (this.courrier.details[index].quantite < 100) {
+             this.courrier.details[index].quantite++;
+             this.updateMetrics();
+         }
+     }
 
-    decrementQuantity(index: number): void {
-        if (this.courrier.details[index].quantite > 1) {
-            this.courrier.details[index].quantite--;
-            this.updateMetrics();
-        }
-    }
+     decrementQuantity(index: number): void {
+         if (this.courrier.details[index].quantite > 1) {
+             this.courrier.details[index].quantite--;
+             this.updateMetrics();
+         }
+     }
 
-    resetSelection(): void {
-        this.form.get('timbreId')?.reset();
-        this.form.get('quantite')?.reset();
-        this.selectedTimbre = null;
-    } */
+     resetSelection(): void {
+         this.form.get('timbreId')?.reset();
+         this.form.get('quantite')?.reset();
+         this.selectedTimbre = null;
+     } */
 }
