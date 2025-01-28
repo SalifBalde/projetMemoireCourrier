@@ -15,6 +15,7 @@ import {SuiviCourrierService} from "../../../../proxy/suivi-courrier";
 import {FermetureService} from "../../../../proxy/fermeture";
 import {FermetureCourrierService} from "../../../../proxy/fermetureCourrier";
 import {HttpClient} from "@angular/common/http";
+import {ConditionService} from "../../../../proxy/conditionReception";
 
 @Component({
   selector: 'app-reception-packet-bureau-liv',
@@ -53,6 +54,10 @@ export class ReceptionPacketBureauLivComponent implements OnInit{
     selectedStatut: any;
     Bestnoeux: Noeuxdto;
     statutCourriers: Statutdto[];
+    listCondition: any []
+
+    selectedCondition : any;
+
 
 
 
@@ -74,7 +79,7 @@ export class ReceptionPacketBureauLivComponent implements OnInit{
         private fermetrureService : FermetureService,
         private fermetureCourrierService : FermetureCourrierService,
         private noeuxService: NouexService,
-        private readonly httpClient : HttpClient
+        private  conditionService: ConditionService,
 
     ) {}
 
@@ -119,11 +124,18 @@ export class ReceptionPacketBureauLivComponent implements OnInit{
 
 
 
-        // this.getCourriers();
+        this.getAllCondition()
         this.getTypeCourrierById()
         console.log(this.fermetureId)
     }
-
+    getAllCondition(){
+        this.conditionService.findAll().subscribe(
+            (result) => {
+                this.listCondition = result;
+                console.log(this.listCondition)
+            }
+        );
+    }
     getTypeCourrierById(){
 
         this.typeCourrierService.getById("3").subscribe(
@@ -172,9 +184,9 @@ export class ReceptionPacketBureauLivComponent implements OnInit{
 
                 // Attribuer une valeur par défaut (22) si l'ID du statut n'est pas renseigné
                 courrier.taxeDouane = courrier.montantTaxeDouane;
+                courrier.conditionId = this.selectedCondition
                 courrier.statutCourrierId = 10;
-
-            courrier.userId = this.iduser;
+                courrier.userId = this.iduser;
 
         });
 
@@ -204,6 +216,7 @@ export class ReceptionPacketBureauLivComponent implements OnInit{
                 });
             }
         );
+        this.selectedCondition= " "
     }
 
 

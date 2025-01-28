@@ -16,6 +16,7 @@ import {FermetureCourrierService} from "../../../../proxy/fermetureCourrier";
 import {Noeuxdto, NouexService} from "../../../../proxy/noeux";
 import {HttpClient, HttpParams} from "@angular/common/http";
 import {environment} from "../../../../../environments/environment";
+import {ConditionService} from "../../../../proxy/conditionReception";
 
 @Component({
   selector: 'app-reception-courrier-bureau',
@@ -54,6 +55,9 @@ export class ReceptionCourrierBureauComponent implements  OnInit{
     selectedStatut: any;
     Bestnoeux: Noeuxdto;
     statutCourriers: Statutdto[];
+    listCondition: any []
+
+    selectedCondition : any;
 
 
 
@@ -75,7 +79,8 @@ export class ReceptionCourrierBureauComponent implements  OnInit{
         private fermetrureService : FermetureService,
         private fermetureCourrierService : FermetureCourrierService,
         private noeuxService: NouexService,
-        private readonly httpClient : HttpClient
+        private  conditionService: ConditionService,
+
 
     ) {}
 
@@ -121,9 +126,18 @@ export class ReceptionCourrierBureauComponent implements  OnInit{
 
 
 
-       // this.getCourriers();
+        this.getAllCondition()
         this.getTypeCourrierById()
         console.log(this.fermetureId)
+    }
+
+    getAllCondition(){
+        this.conditionService.findAll().subscribe(
+            (result) => {
+                this.listCondition = result;
+                console.log(this.listCondition)
+            }
+        );
     }
 
     getTypeCourrierById(){
@@ -174,9 +188,10 @@ export class ReceptionCourrierBureauComponent implements  OnInit{
 
                 // Attribuer une valeur par défaut (22) si l'ID du statut n'est pas renseigné
                 courrier.taxeDouane = courrier.montantTaxeDouane;
-                courrier.statutCourrierId = 10;
+               courrier.conditionId = this.selectedCondition
 
-            courrier.userId = this.iduser;
+            courrier.statutCourrierId = 10;
+                courrier.userId = this.iduser;
 
         });
 
@@ -206,6 +221,8 @@ export class ReceptionCourrierBureauComponent implements  OnInit{
                 });
             }
         );
+        this.selectedCondition= " "
+
     }
 
 

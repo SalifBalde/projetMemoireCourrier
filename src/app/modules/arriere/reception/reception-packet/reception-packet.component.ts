@@ -15,6 +15,7 @@ import {MessageService} from "primeng/api";
 import {SuiviCourrierService} from "../../../../proxy/suivi-courrier";
 import {FermetureCourrierService} from "../../../../proxy/fermetureCourrier";
 import {BureauxDouanierService} from "../../../../proxy/burauex_douaniers";
+import {ConditionService} from "../../../../proxy/conditionReception";
 
 @Component({
   selector: 'app-reception-packet',
@@ -49,6 +50,9 @@ export class ReceptionPacketComponent implements OnInit{
     structureDestna:number
     showMontantField: boolean = false;
     montants: number | null = null;
+    listCondition: any []
+
+    selectedCondition : any;
 
 
 
@@ -69,6 +73,8 @@ export class ReceptionPacketComponent implements OnInit{
                  private  statutCourrierService: StatutCourrierService,
                  private noeuxService: NouexService,
                  private bureauxDouanier: BureauxDouanierService,
+                 private  conditionService: ConditionService,
+
     ) {
 
 
@@ -122,8 +128,17 @@ export class ReceptionPacketComponent implements OnInit{
         console.log(this.iduser)
         this.getAllCourriers()
 
+        this.getAllCondition()
 
+    }
 
+    getAllCondition(){
+        this.conditionService.findAll().subscribe(
+            (result) => {
+                this.listCondition = result;
+                console.log(this.listCondition)
+            }
+        );
     }
     onStructureChange(): void {
         const mystructure= Number (this.sessionService.getAgentAttributes().structureId)
@@ -190,10 +205,13 @@ export class ReceptionPacketComponent implements OnInit{
             if (this.selectedStatut?.id) {
                 courrier.statutCourrierId =this.selectedStatut.id ;
                 courrier.taxeDouane = courrier.montantTaxeDouane;
+                courrier.conditionId = this.selectedCondition
+
 
             } else {
                 // Attribuer une valeur par défaut (22) si l'ID du statut n'est pas renseigné
                 courrier.taxeDouane = courrier.montantTaxeDouane;
+                courrier.conditionId = this.selectedCondition
                 courrier.statutCourrierId = 10;
             }
             courrier.userId = this.iduser;
@@ -226,6 +244,8 @@ export class ReceptionPacketComponent implements OnInit{
                 });
             }
         );
+        this.selectedCondition= " "
+
     }
 
     getBadgeSeverity(statutLibelle: string): string {

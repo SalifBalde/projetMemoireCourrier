@@ -13,6 +13,7 @@ import {FormBuilder} from "@angular/forms";
 import {ActivatedRoute, Router} from "@angular/router";
 import {MessageService} from "primeng/api";
 import {SuiviCourrierService} from "../../../../../proxy/suivi-courrier";
+import {ConditionService} from "../../../../../proxy/conditionReception";
 
 @Component({
   selector: 'app-reception-packet',
@@ -46,7 +47,9 @@ export class ReceptionPacketComponent  implements  OnInit{
     structureDestna: number;
     showMontantField: boolean = false;
     montants: number | null = null;
+    listCondition: any []
 
+    selectedCondition : any;
 
 
 
@@ -63,6 +66,8 @@ export class ReceptionPacketComponent  implements  OnInit{
                  private  typeCourrierService:TypeCourrierService,
                  private  suiviCourrier:SuiviCourrierService,
                  private  statutCourrierService: StatutCourrierService,
+                 private  conditionService: ConditionService,
+
 
     ) {
 
@@ -94,9 +99,18 @@ export class ReceptionPacketComponent  implements  OnInit{
         this.iduser= this.sessionService.getAgentAttributes()?.id
         console.log(this.iduser)
 
+        this.getAllCondition()
 
 
+    }
 
+    getAllCondition(){
+        this.conditionService.findAll().subscribe(
+            (result) => {
+                this.listCondition = result;
+                console.log(this.listCondition)
+            }
+        );
     }
 
 
@@ -124,8 +138,7 @@ export class ReceptionPacketComponent  implements  OnInit{
         console.log(courrie)
     }
     isExpeditionDisabled(): boolean {
-        return !this.selectedCourriers
-
+        return !this.selectedCourriers  || this.selectedCondition.length === 0
     }
 
 
@@ -141,6 +154,7 @@ export class ReceptionPacketComponent  implements  OnInit{
 
             courrier.statutCourrierId = 14;
             courrier.userId = this.iduser;
+            courrier.conditionId= this.selectedCondition
 
         });
 
@@ -170,6 +184,7 @@ export class ReceptionPacketComponent  implements  OnInit{
                 });
             }
         );
+        this.selectedCondition= " "
     }
 
     getBadgeSeverity(statutLibelle: string): string {

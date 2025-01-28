@@ -15,6 +15,7 @@ import {Noeuxdto, NouexService } from 'src/app/proxy/noeux';
 import { FermetureCourrierService } from 'src/app/proxy/fermetureCourrier';
 import {Paysdto} from "../../../../proxy/pays";
 import {BureauxDouanierService} from "../../../../proxy/burauex_douaniers";
+import {ConditionService} from "../../../../proxy/conditionReception";
 
 @Component({
   selector: 'app-reception-colis',
@@ -47,6 +48,9 @@ export class ReceptionColisComponent implements  OnInit {
     structureDestna: number;
     showMontantField: boolean = false;
     montants: number | null = null;
+    listCondition: any []
+
+    selectedCondition : any;
 
 
 
@@ -67,6 +71,8 @@ export class ReceptionColisComponent implements  OnInit {
                  private  statutCourrierService: StatutCourrierService,
                  private noeuxService: NouexService,
                  private bureauxDouanier: BureauxDouanierService,
+                 private  conditionService: ConditionService,
+
     ) {
 
 
@@ -123,9 +129,18 @@ export class ReceptionColisComponent implements  OnInit {
 
         this.getTypeCourrierById()
 
+        this.getAllCondition()
 
 
+    }
 
+    getAllCondition(){
+        this.conditionService.findAll().subscribe(
+            (result) => {
+                this.listCondition = result;
+                console.log(this.listCondition)
+            }
+        );
     }
     getTypeCourrierById(){
 
@@ -204,10 +219,12 @@ export class ReceptionColisComponent implements  OnInit {
             if (this.selectedStatut?.id) {
                 courrier.statutCourrierId =this.selectedStatut.id ;
                 courrier.taxeDouane = courrier.montantTaxeDouane;
+                courrier.conditionId = this.selectedCondition
 
             } else {
                 // Attribuer une valeur par défaut (22) si l'ID du statut n'est pas renseigné
                 courrier.taxeDouane = courrier.montantTaxeDouane;
+                courrier.conditionId = this.selectedCondition
                 courrier.statutCourrierId = 10;
             }
             courrier.userId = this.iduser;
@@ -240,6 +257,7 @@ export class ReceptionColisComponent implements  OnInit {
                 });
             }
         );
+        this.selectedCondition= " "
     }
 
     getBadgeSeverity(statutLibelle: string): string {
