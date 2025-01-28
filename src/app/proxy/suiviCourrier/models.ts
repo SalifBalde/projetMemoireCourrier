@@ -3,7 +3,8 @@ export interface SuiviCourrierdto {
   structureId: number;
   structureLibelle: string;
   userId: number;
-  user: string;
+  userPrenom: string;
+  userNom: string;
   courrierStatutCourrierId: number;
   courrierStatutCourrierLibelle: string;
   courrierStatutCourrierCouleur:string;
