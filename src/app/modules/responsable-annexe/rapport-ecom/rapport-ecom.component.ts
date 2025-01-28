@@ -53,23 +53,23 @@ export class RapportEcomComponent implements OnInit {
     this.partenaireEComService.findAll().subscribe(result => this.partenaire$ = result);
     this.ecommerceService.findAll().subscribe(result => this.ecommerce$ = result);
     this.statusEcomService.findAll().subscribe(result => this.status$ = result);
-    this.structureService.findAll().subscribe(result => this.structure$ = result);
-    
+    this.structureService.getBureaux().subscribe(result => this.structure$ = result);
+
   }
 
 
   searchExpeditionByCriteres(): void {
     this.loading = true;
-  
+
     const formattedCriteria = {
         ...this.form.value
     };
-  
+
     this.ecommerceService.findEcommerceByCriteres(formattedCriteria).subscribe({
         next: (ecommerce) => {
             if (ecommerce.length > 0) {
                 this.ecommerce$ = ecommerce || [];
-                 this.ecommerce$.reduce((sum, item) => sum + Number(item.id), 0); 
+                 this.ecommerce$.reduce((sum, item) => sum + Number(item.id), 0);
             } else {
                 this.messageService.add({
                     severity: 'info',
@@ -77,7 +77,7 @@ export class RapportEcomComponent implements OnInit {
                     detail: 'Aucun colis trouvé pour la période sélectionnée.'
                 });
                 this.ecommerce$ = [];
-               
+
             }
             this.loading = false;
         },
@@ -91,7 +91,7 @@ export class RapportEcomComponent implements OnInit {
         }
     });
   }
-  
+
 
   resetForm() {
     this.loadingReset = true;

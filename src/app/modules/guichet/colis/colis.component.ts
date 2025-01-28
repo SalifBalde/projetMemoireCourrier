@@ -401,6 +401,10 @@ export class ColisComponent implements OnInit {
         formControls['codeBarre'].updateValueAndValidity();
     }
 
+     arrondirVersHaut(valeur: number): number {
+        return Math.ceil(valeur);
+    }
+
     paysChange(value: number) {
         const poids = this.form.get('poids')?.value;
 
@@ -427,10 +431,10 @@ export class ColisComponent implements OnInit {
     }
     poidsChange(value: number) {
         const paysDestinationId = this.form.get('paysDestinationId')?.value;
-
+        const poids = this.arrondirVersHaut(value);
         const pays = this.pays$.find(p => p.id === paysDestinationId);
         const poidsMax = pays.maxKgAutorise;
-        if (poidsMax !== undefined && value > poidsMax) {
+        if (poidsMax !== undefined && poids > poidsMax) {
             this.messageService.add({
                 severity: 'error',
                 summary: 'Poids invalide',
@@ -440,10 +444,10 @@ export class ColisComponent implements OnInit {
         return;
         }
         // Si le poids et le pays de destination sont valides
-        if (value > 0 && paysDestinationId > 0) {
+        if (poids > 0 && paysDestinationId > 0) {
             // Appel du service pour obtenir le tarif
             this.taxeCourrierService
-                .getTarif(paysDestinationId, value)
+                .getTarif(paysDestinationId, poids)
                 .subscribe((result) => {
                     this.montant = result; // Mise à jour du montant
 

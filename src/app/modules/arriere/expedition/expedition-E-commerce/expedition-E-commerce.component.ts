@@ -60,7 +60,7 @@ export class ExpeditionECommerceComponent implements OnInit {
     }
 
     private loadStructures() {
-      this.structureService.findAll().subscribe(
+      this.structureService.getBureaux().subscribe(
         (result) => {
           this.structure$ = result.filter((structure: StructureDto) => +structure.id === 16);
         },
@@ -71,7 +71,7 @@ export class ExpeditionECommerceComponent implements OnInit {
       );
     }
 
-   
+
     buildForm() {
         this.form = this.fb.group({
             bureauDestination: [undefined, Validators.required],
@@ -144,12 +144,12 @@ export class ExpeditionECommerceComponent implements OnInit {
 
     mapIdsToEcommerce(selectedEcommerce: EcommerceDto[]): ExpeditionEcomDetailsDto[] {
         return selectedEcommerce.map(ecommerce => ({
-            ecommerceId: ecommerce.id, 
+            ecommerceId: ecommerce.id,
             ecommerceNumenvoie: ecommerce.numenvoi,
-            ecommerceNomClient: ecommerce.nomClient, 
-            ecommercePrenomClient: ecommerce.prenomClient, 
-            ecommerceIdbureau: ecommerce.idbureau, 
-            valider: true 
+            ecommerceNomClient: ecommerce.nomClient,
+            ecommercePrenomClient: ecommerce.prenomClient,
+            ecommerceIdbureau: ecommerce.idbureau,
+            valider: true
         }));
     }
 

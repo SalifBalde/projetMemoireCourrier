@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { EcommerceDto, EcommerceSearchResultDto } from './models';
+import { EcommerceCreateUpdateDto, EcommerceDto, EcommerceSearchResultDto } from './models';
 @Injectable({
   providedIn: 'root',
 })
@@ -45,16 +45,17 @@ export class EcommerceService {
     const new_api_host = this.routerParam(this.api_host, 'findEcommerceFromReceptionToExpedition', id.toString());
     return this.httpClient.get<EcommerceSearchResultDto[]>(new_api_host, this.httpOptions);
   }
-  
+
   findEcommerceALivrer(id: number) {
     const new_api_host = this.routerParam(this.api_host, 'findEcommerceALivrer', id.toString());
     return this.httpClient.get<EcommerceSearchResultDto[]>(new_api_host, this.httpOptions);
   }
 
-  livrer(id: number): Observable<EcommerceDto> {
-    const url = `${this.api_host}/livrerEnvoieEcommerce/${id}`;
+  livrer(id: number, item: EcommerceCreateUpdateDto): Observable<EcommerceDto> {
 
-    return this.httpClient.put<EcommerceDto>(url, {}, this.httpOptions);
+    const new_api_host = this.routerParam(this.api_host, 'livrer-envoie-ecommerce', id.toString());
+
+    return this.httpClient.put<EcommerceDto>(new_api_host,item, this.httpOptions);
   }
 
   findEcommerceReceptionCt() {

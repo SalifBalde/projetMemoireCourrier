@@ -60,7 +60,7 @@ export class RapportEcommerceComponent implements OnInit {
     }
 
     buildForm() {
-        const today = new Date(); 
+        const today = new Date();
         this.form = this.fb.group({
             debut: [today, Validators.required],
             fin: [today, Validators.required],
@@ -71,7 +71,7 @@ export class RapportEcommerceComponent implements OnInit {
     }
 
     private loadStructures() {
-        this.structureService.findAll().subscribe(
+        this.structureService.getBureaux().subscribe(
             (result) => {
                 this.structure$ = result;
             },
@@ -105,12 +105,12 @@ export class RapportEcommerceComponent implements OnInit {
         }
 
         const bureauId = this.sessionService.getAgentAttributes().structureId.toString();
-        
+
         const formattedCriteria = {
             ...this.form.value,
             debut: new Date(debut).toISOString().split('T')[0],
             fin: new Date(fin).toISOString().split('T')[0],
-            bureauId: bureauId 
+            bureauId: bureauId
         };
 
         this.loading = true;
@@ -164,24 +164,24 @@ export class RapportEcommerceComponent implements OnInit {
             { header: 'Bureau Destination', dataKey: 'bureauDestinationLibelle' },
             { header: 'Date', dataKey: 'createdAt' }
         ];
-    
+
         const dateDebut = this.form.get('debut')?.value?.toLocaleDateString('fr-FR') || 'Non spécifié';
         const dateFin = this.form.get('fin')?.value?.toLocaleDateString('fr-FR') || 'Non spécifié';
         const dateRange = `Du ${dateDebut} au ${dateFin}`;
-    
-        const bureauRange = this.user.structureLibelle 
-            ? `Bureau : ${this.user.structureLibelle}` 
+
+        const bureauRange = this.user.structureLibelle
+            ? `Bureau : ${this.user.structureLibelle}`
             : 'Bureau : Non spécifié';
-    
+
         this.pdfExportService.exportPDF(
-            this.expeditions, 
-            'Rapport JT3 Ecommerce', 
-            columns, 
-            dateRange, 
-            bureauRange 
+            this.expeditions,
+            'Rapport JT3 Ecommerce',
+            columns,
+            dateRange,
+            bureauRange
         );
     }
-    
+
     isEmpty() {
         return this.form.value.fin != null && this.form.value.debut != null && this.form.value.prenom != null && this.form.value.nom != null;
     }

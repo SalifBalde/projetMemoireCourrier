@@ -33,7 +33,7 @@ import {BureauxDouanierService} from "../../../proxy/burauex_douaniers";
     openColisDialog: boolean;
     colis: any={}
     @ViewChild('dt') dt: Table;
-    structure$: [StructureDto];
+    structure$: StructureDto[];
     selectedColis: any;
     TypeCourrier:TypeCourrierDto
     statutCourrier:Statutdto
@@ -102,7 +102,7 @@ import {BureauxDouanierService} from "../../../proxy/burauex_douaniers";
             }
         });
 
-        this.structureService.findAll().subscribe(
+        this.structureService.getBureaux().subscribe(
             (result) => {
                 this.structure$ = result;
             }

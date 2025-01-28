@@ -53,7 +53,7 @@ export class RapportEcomComponent implements OnInit {
     this.partenaireEComService.findAll().subscribe(result => this.partenaire$ = result);
     this.ecommerceService.findAll().subscribe(result => this.ecommerce$ = result);
     this.statusEcomService.findAll().subscribe(result => this.status$ = result);
-    this.structureService.findAll().subscribe(result => this.structure$ = result);
+    this.structureService.getBureaux().subscribe(result => this.structure$ = result);
 
   }
 

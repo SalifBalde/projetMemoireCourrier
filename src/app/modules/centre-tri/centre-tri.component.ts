@@ -54,7 +54,7 @@ export class CentreTriComponent  implements  OnInit{
 
     ngOnInit(): void {
 
-        this.structureService.findAll().subscribe(
+        this.structureService.getBureaux().subscribe(
             (result) => {
                 this.structure$ = result;
             }

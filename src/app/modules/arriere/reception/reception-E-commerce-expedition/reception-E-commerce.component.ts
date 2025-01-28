@@ -41,7 +41,7 @@ export class ReceptionECommerceComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.structureService.findAll().subscribe((result) => {
+    this.structureService.getBureaux().subscribe((result) => {
       this.structure$ = result;
     });
 

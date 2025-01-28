@@ -56,13 +56,8 @@ import { StructureDto, StructureService } from 'src/app/proxy/structures';
         this.isLoggedIn = await this.keycloak.isLoggedIn();
         this.fullname = this.user.prenom + " " + this.user.nom;
         this.buildForm();
-        this.structureService.findAll().subscribe(
-            (result) => {
-                this.structure$ = result;
-            }
-        );
 
-        this.structureService.findAll().subscribe(
+        this.structureService.getBureaux().subscribe(
             (result) => {
                 this.structure$ = result;
             }

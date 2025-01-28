@@ -123,7 +123,7 @@ export class ColisImportExpediComponent implements  OnInit{
         this.iduser=this.sessionService.getAgentAttributes()?.id
         this.mystrutct = this.sessionService.getAgentAttributes().structureId
 
-        this.structureService.findAll().subscribe(
+        this.structureService.getBureaux().subscribe(
             (result) => {
                 this.structure$ = result;
             }

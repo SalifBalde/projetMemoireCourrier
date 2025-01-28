@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { SessionService } from 'src/app/proxy/auth/Session.service';
 import { ModePaiementDto } from 'src/app/proxy/mode-paiements/models';
 import { ModePaiementService } from 'src/app/proxy/mode-paiements';
-import { EcommerceDto, EcommerceService } from 'src/app/proxy/ecommerce';
+import { EcommerceCreateUpdateDto, EcommerceDto, EcommerceService } from 'src/app/proxy/ecommerce';
 
 @Component({
   selector: 'app-livraison-ecom',
@@ -14,7 +14,7 @@ import { EcommerceDto, EcommerceService } from 'src/app/proxy/ecommerce';
 })
 export class LivraisonEcomComponent implements OnInit {
   form: FormGroup;
-  
+
   ecommerce$: EcommerceDto[] = [];
   loadingEcommerce: boolean = false;
   selectedEcommerce: EcommerceDto | null = null;
@@ -28,6 +28,7 @@ export class LivraisonEcomComponent implements OnInit {
   allSelected: boolean = false;
   events1: any[] = [];
   loading: boolean = false;
+  ecommerce:EcommerceCreateUpdateDto= {};
 
   constructor(
     private fb: FormBuilder,
@@ -76,7 +77,7 @@ export class LivraisonEcomComponent implements OnInit {
         this.loading = false;
         if (result && result.length > 0) {
           this.ecommerce$ = result;
-          this.cdr.detectChanges(); 
+          this.cdr.detectChanges();
         } else {
           this.messageService.add({ severity: 'info', summary: 'Pas d\'envois', detail: 'Aucun envoi à livrer.' });
         }
@@ -88,7 +89,7 @@ export class LivraisonEcomComponent implements OnInit {
       }
     );
   }
-  
+
   voirEcommerce(ecommerce: EcommerceDto) {
     this.selectedEcommerce = ecommerce;
     this.calculerMontantTotal()
@@ -110,7 +111,22 @@ export class LivraisonEcomComponent implements OnInit {
       this.selectedEcommerce.payer = true;
     }
 
-    this.ecommerceService.livrer(this.selectedEcommerce.id).subscribe(
+    const journalId = this.sessionService.getJournalAttributes()?.id;
+
+    if (!journalId) {
+        this.messageService.add({
+            severity: 'warn',
+            summary: 'Avertissement',
+            detail: 'Vous n\'avez pas de caisse ouverte. Veuillez ouvrir une caisse avant de continuer.',
+        });
+        return;
+    }
+
+    this.ecommerce.caisseId = Number(this.sessionService.getAgentAttributes().caisseId);
+    this.ecommerce.userId = Number(this.sessionService.getAgentAttributes().id);
+    this.ecommerce.journalId = Number(this.sessionService.getJournalAttributes().id);
+
+    this.ecommerceService.livrer(this.selectedEcommerce.id,this.ecommerce ).subscribe(
       (result: EcommerceDto) => {
         this.displayDialog = false;
         this.messageService.add({
