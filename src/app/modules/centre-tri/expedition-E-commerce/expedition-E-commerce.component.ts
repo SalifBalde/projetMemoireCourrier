@@ -1,12 +1,3 @@
-
-
-
-
-
-
-
-
-
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -50,12 +41,11 @@ export class ExpeditionECommerceComponent implements OnInit {
     ) { }
 
     ngOnInit() {
-        this.initializeForm();
+        this.initializeForm(); 
         this.loadStructures();
         this.getAllEcommerceExpeditionCt()
         this.form.get('bureauDestination')?.valueChanges.subscribe((value) => {
             this.selectedStructure = this.structure$.find((structure) => structure.id === value) || null;
-            console.log('Structure synchronisée:', this.selectedStructure);
         });
     }
 
@@ -69,7 +59,6 @@ export class ExpeditionECommerceComponent implements OnInit {
         this.structureService.findAll().subscribe(
             (result) => {
                 this.structure$ = result
-                console.log('structure', result)
             },
             (error) => {
                 console.error('Error loading structures', error);

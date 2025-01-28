@@ -5,6 +5,7 @@ import { generate } from 'rxjs';
 import { EcommerceDto, EcommerceService } from 'src/app/proxy/ecommerce';
 import { Cn22Service } from 'src/app/proxy/pdf/cn22.service';
 import { Cn23Service } from 'src/app/proxy/pdf/cn23.service';
+import { Cn23AService } from 'src/app/proxy/pdf/cn23A.service';
 import { FactureService } from 'src/app/proxy/pdf/facture.service';
 import { PdfService } from 'src/app/proxy/pdf/pdf.service';
 
@@ -20,7 +21,8 @@ export class EcomDetailsComponent implements OnInit {
     private fb: FormBuilder,
     private router: Router,
     private route : ActivatedRoute,
-    private ecommerceService :EcommerceService
+    private ecommerceService :EcommerceService,
+    private cn23AService : Cn23AService
 ) {}
 
 ngOnInit(): void {
@@ -39,20 +41,20 @@ ngOnInit(): void {
 //     this.pdfService.generatePDF(this.ecommerce$);
 // }
 
-// async cn23() {
-//   if (!this.ecommerce$) {
-//     console.error('Aucun ecommerce$ sélectionné pour générer le PDF.');
-//     return;
-//   }
+async cn23() {
+  if (!this.ecommerce$) {
+    console.error('Aucun ecommerce$ sélectionné pour générer le PDF.');
+    return;
+  }
 
-//   try {
-//     // Appel du service pour créer le PDF
-//     await this.cn23Service.createPDF(this.ecommerce$);
-//     console.log('PDF généré avec succès.');
-//   } catch (error) {
-//     console.error('Erreur lors de la génération du PDF :', error);
-//   }
-// }
+  try {
+    // Appel du service pour créer le PDF
+    await this.cn23AService.createPDF(this.ecommerce$);
+    console.log('PDF généré avec succès.');
+  } catch (error) {
+    console.error('Erreur lors de la génération du PDF :', error);
+  }
+}
 
 
 }

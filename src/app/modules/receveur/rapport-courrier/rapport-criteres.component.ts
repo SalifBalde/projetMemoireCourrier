@@ -11,6 +11,7 @@ import { StructureDto, StructureService } from 'src/app/proxy/structures';
 import { StatutCourrierService, Statutdto } from 'src/app/proxy/statut-courrier';
 import { TypeCourrierService,TypeCourrierDto } from 'src/app/proxy/type-courriers';
 import { Paysdto, PaysService } from 'src/app/proxy/pays';
+import { SessionService } from 'src/app/proxy/auth/Session.service';
 
 @Component({
     selector: 'app-rapport-criteres',
@@ -49,6 +50,7 @@ export class RapportCriteresComponent {
         private tyoeCourrierService : TypeCourrierService,
         private structureService: StructureService,
         private paysService : PaysService,
+        private sessionService : SessionService,
         private route: ActivatedRoute,
         private messageService: MessageService, private readonly keycloak: KeycloakService
     ) { }
@@ -95,10 +97,12 @@ export class RapportCriteresComponent {
 
         this.structureService.findAll().subscribe(result => {
             this.structure$ = result;
+            // this.structure$  = this.structure$ .filter(structure => structure.id !== this.sessionService.getAgentAttributes().structureId);
         });
 
         this.paysService.findAll().subscribe(result =>{
             this.pays$= result;
+            console.log('result',result)
         })
     }
 

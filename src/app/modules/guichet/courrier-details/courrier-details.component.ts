@@ -5,6 +5,7 @@ import { generate } from 'rxjs';
 import { CourrierDto, CourrierService } from 'src/app/proxy/courrier';
 import { Cn22Service } from 'src/app/proxy/pdf/cn22.service';
 import { Cn23Service } from 'src/app/proxy/pdf/cn23.service';
+import { Cn23AService } from 'src/app/proxy/pdf/cn23A.service';
 import { FactureService } from 'src/app/proxy/pdf/facture.service';
 import { PdfService } from 'src/app/proxy/pdf/pdf.service';
 
@@ -19,7 +20,7 @@ export class CourrierDetailsComponent implements OnInit {
     private courrierService: CourrierService,
     private factureService: FactureService,
     private pdfService:PdfService,
-    private cn23Service : Cn23Service,
+    private cn23Service : Cn23AService,
     private fb: FormBuilder,
     private router: Router,
     private route : ActivatedRoute,

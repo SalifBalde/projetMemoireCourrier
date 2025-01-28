@@ -60,6 +60,8 @@ export class CourrierCreateUpdateDto {
     destinatairePrenom?: string;
     destinataireTelephone?: string;
     destinataireAdresse?: string;
+    destinataireCodePostal?: string;
+    destinataireCity?: string;
     categorieId?: number;
     categorieLibelle?: number;
     expediteurId?: number;
@@ -67,6 +69,8 @@ export class CourrierCreateUpdateDto {
     expediteurPrenom?: string;
     expediteurTelephone?: string;
     expediteurAdresse?: string;
+    expediteurCodePostal?: string;
+    expediteurCity?: string;
     recommande?: boolean;
     ar?: boolean;
     express?: boolean;

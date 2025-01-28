@@ -10,6 +10,7 @@ import { CourrierDto, CourrierSearchDto, CourrierService } from "../../../proxy/
 import { StructureDto, StructureService } from 'src/app/proxy/structures';
 import { StatutCourrierService, Statutdto } from 'src/app/proxy/statut-courrier';
 import { TypeCourrierService,TypeCourrierDto } from 'src/app/proxy/type-courriers';
+import { Paysdto, PaysService } from 'src/app/proxy/pays';
 
 @Component({
     selector: 'app-rapport-criteres',
@@ -27,6 +28,7 @@ export class RapportCriteresComponent {
     rowsPerPageOptions = [5, 10, 20];
     id = "";
     structure$: StructureDto[] = [];
+    pays$: Paysdto[] = [];
     typeCourrier$: TypeCourrierDto[] = [];
     statutCourrier$: Statutdto[] = [];
     loadingcourrier: boolean = false;
@@ -46,6 +48,7 @@ export class RapportCriteresComponent {
         private statutCourrierService: StatutCourrierService,
         private tyoeCourrierService : TypeCourrierService,
         private structureService: StructureService,
+        private paysService : PaysService,
         private route: ActivatedRoute,
         private messageService: MessageService, private readonly keycloak: KeycloakService
     ) { }
@@ -76,6 +79,8 @@ export class RapportCriteresComponent {
             structureDepotId: [null],
             typeCourrierId: [null],
             statutCourrierId: [null],
+            paysOrigineId: [null],
+            paysDestinationId:[null]
         });
     }
 
@@ -91,6 +96,10 @@ export class RapportCriteresComponent {
         this.structureService.findAll().subscribe(result => {
             this.structure$ = result;
         });
+
+        this.paysService.findAll().subscribe(result =>{
+            this.pays$= result;
+        })
     }
 
     searchcourrierByCriteres() {
@@ -108,6 +117,7 @@ export class RapportCriteresComponent {
     isEmpty() {
         return !this.form.value.debut && !this.form.value.fin && 
            !this.form.value.structureDepotId && !this.form.value.structureDestinationId &&
-           !this.form.value.typeCourrierId && !this.form.value.statutCourrierId;
+           !this.form.value.typeCourrierId && !this.form.value.statutCourrierId && !this.form.value.paysOrigineId && !this.form.value.paysDestinationId;
     }
 }
+ 
