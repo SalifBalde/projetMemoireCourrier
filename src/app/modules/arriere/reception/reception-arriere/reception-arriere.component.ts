@@ -15,6 +15,8 @@ import {MessageService} from "primeng/api";
 import {SuiviCourrierService} from "../../../../proxy/suivi-courrier";
 import {FermetureCourrierService} from "../../../../proxy/fermetureCourrier";
 import {BureauxDouanierService} from "../../../../proxy/burauex_douaniers";
+import {ConditionService} from "../../../../proxy/conditionReception";
+import {an} from "@fullcalendar/core/internal-common";
 
 @Component({
   selector: 'app-reception-arriere',
@@ -49,6 +51,10 @@ export class ReceptionArriereComponent implements  OnInit{
     showMontantField: boolean = false;
     montants: number | null = null;
 
+    listCondition: any []
+
+    selectedCondition : any;
+
 
 
 
@@ -65,6 +71,7 @@ export class ReceptionArriereComponent implements  OnInit{
                  private  typeCourrierService:TypeCourrierService,
                  private  suiviCourrier:SuiviCourrierService,
                  private  statutCourrierService: StatutCourrierService,
+                 private  conditionService: ConditionService,
 
     ) {
 
@@ -94,10 +101,18 @@ export class ReceptionArriereComponent implements  OnInit{
 
         this.iduser= this.sessionService.getAgentAttributes()?.id
         console.log(this.iduser)
+        this.getAllCondition()
 
     }
 
-
+    getAllCondition(){
+        this.conditionService.findAll().subscribe(
+            (result) => {
+                this.listCondition = result;
+                console.log(this.listCondition)
+            }
+        );
+    }
 
     getCourriersArriere(){
         const typeId= '1'
@@ -122,8 +137,7 @@ export class ReceptionArriereComponent implements  OnInit{
         console.log(courrie)
     }
     isExpeditionDisabled(): boolean {
-        return !this.selectedCourriers
-
+        return !this.selectedCourriers  || this.selectedCondition.length === 0
     }
 
 
@@ -132,13 +146,13 @@ export class ReceptionArriereComponent implements  OnInit{
 
         this.openColisDialog = false;
 
-
         this.selectedCourriers.forEach((courrier) => {
             // Mettre à jour le statut du courrier et l'ID de l'utilisateur
             // Vérifier si l'ID du statut est renseigné
 
             courrier.statutCourrierId = 14;
             courrier.userId = this.iduser;
+            courrier.conditionId = this.selectedCondition
 
         });
 
@@ -168,6 +182,7 @@ export class ReceptionArriereComponent implements  OnInit{
                 });
             }
         );
+        this.selectedCondition= " "
     }
 
     getBadgeSeverity(statutLibelle: string): string {

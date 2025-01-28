@@ -1,5 +1,35 @@
 
 <p-toast />
+<div class="p-formgrid grid justify-content-center">
+    <div class="field col-4">
+        <label htmlFor="du">Etat de Réception </label> <br>
+        <p-dropdown
+            [options]="listCondition"
+            optionLabel="libelle"
+            optionValue="id"
+            [filter]="true"
+            filterBy="libelle"
+            [(ngModel)]="selectedCondition"
+            [showClear]="true"
+            placeholder="Choisissez un bureau"
+            [style]="{ 'width': '200px' }"
+        >
+            <ng-template pTemplate="selectedItem" let-condition>
+                <div class="flex align-items-center gap-2">
+                    <div>{{ condition.libelle }}</div>
+                </div>
+            </ng-template>
+            <ng-template let-condition pTemplate="item">
+                <div class="flex align-items-center gap-2">
+                    <div>{{ condition.libelle }}</div>
+                </div>
+            </ng-template>
+        </p-dropdown>
+
+
+    </div>
+</div>
+
 <div class="grid">
     <div class="col-12">
         <div class="card px-6 py-6">
@@ -60,7 +90,6 @@
     </div>
 
 </div>
-
 
 <p-dialog [(visible)]="openColisDialog" header="Confirmer" [modal]="true" [style]="{width:'450px'}">
     <div class="flex align-items-center justify-content-center">

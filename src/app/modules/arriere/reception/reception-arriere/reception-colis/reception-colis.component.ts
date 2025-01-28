@@ -13,6 +13,7 @@ import {FormBuilder} from "@angular/forms";
 import {ActivatedRoute, Router} from "@angular/router";
 import {MessageService} from "primeng/api";
 import {SuiviCourrierService} from "../../../../../proxy/suivi-courrier";
+import {ConditionService} from "../../../../../proxy/conditionReception";
 
 @Component({
   selector: 'app-reception-colis',
@@ -46,6 +47,9 @@ export class ReceptionColisComponent  implements  OnInit{
     structureDestna: number;
     showMontantField: boolean = false;
     montants: number | null = null;
+    listCondition: any []
+
+    selectedCondition : any;
 
 
 
@@ -63,6 +67,8 @@ export class ReceptionColisComponent  implements  OnInit{
                  private  typeCourrierService:TypeCourrierService,
                  private  suiviCourrier:SuiviCourrierService,
                  private  statutCourrierService: StatutCourrierService,
+                 private  conditionService: ConditionService,
+
 
     ) {
 
@@ -95,11 +101,18 @@ export class ReceptionColisComponent  implements  OnInit{
         console.log(this.iduser)
 
 
-
+        this.getAllCondition()
 
     }
 
-
+    getAllCondition(){
+        this.conditionService.findAll().subscribe(
+            (result) => {
+                this.listCondition = result;
+                console.log(this.listCondition)
+            }
+        );
+    }
 
     getCourriersArriere(){
         const typeId= '2'
@@ -124,7 +137,7 @@ export class ReceptionColisComponent  implements  OnInit{
         console.log(courrie)
     }
     isExpeditionDisabled(): boolean {
-        return !this.selectedCourriers
+        return !this.selectedCourriers  || this.selectedCondition.length === 0
 
     }
 
@@ -141,6 +154,8 @@ export class ReceptionColisComponent  implements  OnInit{
 
             courrier.statutCourrierId = 14;
             courrier.userId = this.iduser;
+            courrier.conditionId= this.selectedCondition
+
 
         });
 
@@ -149,6 +164,7 @@ export class ReceptionColisComponent  implements  OnInit{
             (result) => {
                 this.getCourriersArriere()
                 this.selectedStatut=[]
+
                 // Message de succès
                 this.messageService.add({
                     severity: 'success',
@@ -170,6 +186,7 @@ export class ReceptionColisComponent  implements  OnInit{
                 });
             }
         );
+        this.selectedCondition= " "
     }
     getBadgeSeverity(statutLibelle: string): string {
         switch (statutLibelle?.toLowerCase()) {

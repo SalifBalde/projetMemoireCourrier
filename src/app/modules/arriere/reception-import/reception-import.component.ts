@@ -20,6 +20,7 @@ import {Noeuxdto, NouexService} from "../../../proxy/noeux";
 import {HttpClient, HttpParams} from "@angular/common/http";
 import {environment} from "../../../../environments/environment";
 import {BureauxDouanierService} from "../../../proxy/burauex_douaniers";
+import {ConditionService} from "../../../proxy/conditionReception";
 
 
 @Component({
@@ -82,27 +83,27 @@ export class ReceptionImportComponent  implements  OnInit{
     Bestnoeux: Noeuxdto;
     showMontantField: boolean = false;
     montants: number | null = null;
+    listCondition: any []
+
+    selectedCondition : any;
 
 
 
 
     constructor(
-        private colisService: ColisService,
         private courrierService:CourrierService,
-        private pdfService: PdfService,
         private sessionService: SessionService,
-        private fb: FormBuilder,
-        private router: Router,
+
         private route : ActivatedRoute,
         private structureService: StructureService,
         private messageService: MessageService,
         private  statutCourrierService: StatutCourrierService,
         private  typeCourrierService:TypeCourrierService,
-        private  suiviCourrier:SuiviCourrierService,
-        private fermetrureService : FermetureService,
         private fermetureCourrierService : FermetureCourrierService,
         private noeuxService: NouexService,
         private bureauxDouanier: BureauxDouanierService,
+        private  conditionService: ConditionService,
+
 
 
     ) {}
@@ -154,8 +155,17 @@ export class ReceptionImportComponent  implements  OnInit{
 
         this.getCourriersByStructure();
         this.getTypeCourrierById()
+        this.getAllCondition()
 
         console.log(this.fermetureId)
+    }
+    getAllCondition(){
+        this.conditionService.findAll().subscribe(
+            (result) => {
+                this.listCondition = result;
+                console.log(this.listCondition)
+            }
+        );
     }
 
     getCourriersByFermetureIdAndStatut(fermetureId:number , statutId:number){
@@ -242,11 +252,13 @@ export class ReceptionImportComponent  implements  OnInit{
             console.log(this.selectedStatut)
             if (this.selectedStatut?.id) {
                 courrier.statutCourrierId =this.selectedStatut.id ;
+                courrier.conditionId = this.selectedCondition
                 courrier.taxeDouane = courrier.montantTaxeDouane;
 
             } else {
                 // Attribuer une valeur par défaut (22) si l'ID du statut n'est pas renseigné
                 courrier.taxeDouane = courrier.montantTaxeDouane;
+                courrier.conditionId = this.selectedCondition
                 courrier.statutCourrierId = 10;
             }
             courrier.userId = this.iduser;
@@ -279,6 +291,8 @@ export class ReceptionImportComponent  implements  OnInit{
                 });
             }
         );
+        this.selectedCondition=''
+
     }
 
 

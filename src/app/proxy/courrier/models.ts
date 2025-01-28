@@ -74,7 +74,8 @@ export class CourrierCreateUpdateDto {
     recommande?: boolean;
     ar?: boolean;
     express?: boolean;
-    details?: CourrierDetailsDto[] ;
+    conditionId?: number;
+      details?: CourrierDetailsDto[] ;
   }
 
 

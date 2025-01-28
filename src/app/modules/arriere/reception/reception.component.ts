@@ -21,6 +21,7 @@ import {Noeuxdto, NouexService} from "../../../proxy/noeux";
 import {Paysdto} from "../../../proxy/pays";
 import {FermetureCourrierService} from "../../../proxy/fermetureCourrier";
 import {BureauxDouanierService} from "../../../proxy/burauex_douaniers";
+import {ConditionService} from "../../../proxy/conditionReception";
 
 @Component({
     selector: 'app-reception',
@@ -52,6 +53,9 @@ import {BureauxDouanierService} from "../../../proxy/burauex_douaniers";
     structureDestna: number;
     showMontantField: boolean = false;
     montants: number | null = null;
+    listCondition: any []
+
+    selectedCondition : any;
 
 
 
@@ -72,6 +76,8 @@ import {BureauxDouanierService} from "../../../proxy/burauex_douaniers";
                  private  statutCourrierService: StatutCourrierService,
                  private noeuxService: NouexService,
                  private bureauxDouanier: BureauxDouanierService,
+                 private  conditionService: ConditionService,
+
     ) {
 
 
@@ -131,9 +137,18 @@ import {BureauxDouanierService} from "../../../proxy/burauex_douaniers";
         this.iduser= this.sessionService.getAgentAttributes()?.id
         console.log(this.iduser)
         this.getAllCourriers()
+        this.getAllCondition()
 
 
+    }
 
+    getAllCondition(){
+        this.conditionService.findAll().subscribe(
+            (result) => {
+                this.listCondition = result;
+                console.log(this.listCondition)
+            }
+        );
     }
     onStructureChange(): void {
         const mystructure= Number (this.sessionService.getAgentAttributes().structureId)
@@ -201,10 +216,13 @@ import {BureauxDouanierService} from "../../../proxy/burauex_douaniers";
             if (this.selectedStatut?.id) {
                 courrier.statutCourrierId =this.selectedStatut.id ;
                 courrier.taxeDouane = courrier.montantTaxeDouane;
+                courrier.conditionId = this.selectedCondition
+
 
             } else {
                 // Attribuer une valeur par défaut (22) si l'ID du statut n'est pas renseigné
                 courrier.taxeDouane = courrier.montantTaxeDouane;
+                courrier.conditionId = this.selectedCondition
                 courrier.statutCourrierId = 10;
             }
             courrier.userId = this.iduser;
@@ -237,6 +255,7 @@ import {BureauxDouanierService} from "../../../proxy/burauex_douaniers";
                 });
             }
         );
+        this.selectedCondition= " "
     }
     getBadgeSeverity(statutLibelle: string): string {
         switch (statutLibelle?.toLowerCase()) {
