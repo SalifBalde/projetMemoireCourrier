@@ -15,7 +15,7 @@ const routes: Routes = [{ path: '', component: ArriereComponent },
     { path: 'expedition/expeditionColis-arriere', loadChildren: () => import('./expedition/expedition-arriere/expedition-colis/expeditionColis-arriere.module').then(m => m.ExpeditionColisArriereModule) },
 
     { path: 'reception-import/receptionCourrierImport/:id', loadChildren: () => import('./reception-import/reception-import.module').then(m => m.ReceptionImportModule) },
-   { path: 'reception-import/receptionColisImport/:id', loadChildren: () => import('./reception-import/reception-colis-import/receptionColis-import.module').then(m => m.ReceptionColisImportModule) },
+    { path: 'reception-import/receptionColisImport/:id', loadChildren: () => import('./reception-import/reception-colis-import/receptionColis-import.module').then(m => m.ReceptionColisImportModule) },
     { path: 'reception-import/receptionCourrierBureau/:id', loadChildren: () => import('./reception-import/reception-courrier-bureau/reception-courrier-bureau.module').then(m => m.ReceptionCourrierBureauModule) },
     { path: 'reception-import/receptionPacketBureau/:id', loadChildren: () => import('./reception-import/reception-packet-bureau-liv/reception-packet.module').then(m => m.ReceptionPacketModule) },
     { path: 'reception-import/receptionColisBureau/:id', loadChildren: () => import('./reception-import/reception-colis-bureau/reception-colis-bureau.module').then(m => m.ReceptionColisBureauModule) },
@@ -24,15 +24,15 @@ const routes: Routes = [{ path: '', component: ArriereComponent },
 
     { path: 'expedition', loadChildren: () => import('./expedition/expedition.module').then(m => m.ExpeditionModule) },
     { path: 'expedition/expeditionpacket', loadChildren: () => import('./expedition/expedition-packet/expeditionPacket.module').then(m => m.ExpeditionPacketModule) },
-   { path: 'reception', loadChildren: () => import('./reception/reception.module').then(m => m.ReceptionModule) },
-   { path: 'reception/receptionColis', loadChildren: () => import('./reception/reception-colis/reception-colis.module').then(m => m.ReceptionColisModule) },
-   { path: 'reception/reception-E-commerce-livraison', loadChildren: () => import('./reception/reception-E-commerce-livraison/reception-E-commerce.module').then(m => m.ReceptionECommerceModule) },
-   { path: 'reception/reception-E-commerce-expedition', loadChildren: () => import('./reception/reception-E-commerce-expedition/reception-E-commerce.module').then(m => m.ReceptionECommerceModule) },
+    { path: 'reception', loadChildren: () => import('./reception/reception.module').then(m => m.ReceptionModule) },
+    { path: 'reception/receptionColis', loadChildren: () => import('./reception/reception-colis/reception-colis.module').then(m => m.ReceptionColisModule) },
+    { path: 'reception/reception-E-commerce-livraison', loadChildren: () => import('./reception/reception-E-commerce-livraison/reception-E-commerce.module').then(m => m.ReceptionECommerceModule) },
+    { path: 'reception/reception-E-commerce-expedition', loadChildren: () => import('./reception/reception-E-commerce-expedition/reception-E-commerce.module').then(m => m.ReceptionECommerceModule) },
 
 //    { path: 'expedition', loadChildren: () => import('./expedition/expedition.module').then(m => m.ExpeditionModule) },
-   { path: 'expedition/expeditionColis', loadChildren: () => import('./expedition/expedition-colis/expeditionColis.module').then(m => m.ExpeditionColisModule) },
-   { path: 'expedition/expedition-E-commerce', loadChildren: () => import('./expedition/expedition-E-commerce/expedition-E-commerce.module').then(m => m.ExpeditionECommerceModule) },
-   { path: 'rapport', loadChildren: () => import('./rapport/rapport.module').then(m => m.RapportModule) },
+    { path: 'expedition/expeditionColis', loadChildren: () => import('./expedition/expedition-colis/expeditionColis.module').then(m => m.ExpeditionColisModule) },
+    { path: 'expedition/expedition-E-commerce', loadChildren: () => import('./expedition/expedition-E-commerce/expedition-E-commerce.module').then(m => m.ExpeditionECommerceModule) },
+    { path: 'rapport', loadChildren: () => import('./rapport/rapport.module').then(m => m.RapportArriereModule) },
     {  path: 'reception/fermetureCourrierImport', loadChildren: () => import('./reception-import/fermeture-courrier-import/fermeture-import.module').then(m => m.FermetureImportModule) },
     {  path: 'reception/fermetureColisImport', loadChildren: () => import('./reception-import/fermeture-colis-import/fermetureColis-import.module').then(m => m.FermetureColisImportModule) },
     { path: 'expedition-courrier-import/expeditionCourrierImport', loadChildren: () => import('./expedition/expedition-courrier-import/expeditionCourrierImport.module').then(m => m.ExpeditionCourrierImportModule) },
@@ -42,7 +42,7 @@ const routes: Routes = [{ path: '', component: ArriereComponent },
     {  path: 'reception-import/fermeturePacketBureauLiv', loadChildren: () => import('./reception-import/fermeture-packet-bureau-liv/fermeture-packet-BureauLiv.module').then(m => m.FermeturePacketBureauLivModule) },
     {  path: 'reception-import/fermetureColisBureauLiv', loadChildren: () => import('./reception-import/fermeture-colis-bureau-liv/fermeture-colis-BureauLiv.module').then(m => m.FermetureColisBureauLivModule) },
     {  path: 'reception/fermeturePacketImport', loadChildren: () => import('./reception-import/fermeture-packet-import/fermeture-packet-import.module').then(m => m.FermeturePacketImportModule) },
-                         //routes courrier interieur
+    //routes courrier interieur
     {  path: 'reception/fermetureColisOrdinaire', loadChildren: () => import('./reception/fermeture-colis-ordinaire/fermetureColis-ordinaire.module').then(m => m.FermetureColisOrdinaireModule) },
     {  path: 'reception/fermetureLettreInterieur', loadChildren: () => import('./reception/fermeture-lettre-interieur/fermeturelettre-interieur.module').then(m => m.FermeturelettreInterieurModule) },
     {  path: 'reception/fermeturePacketInterieur', loadChildren: () => import('./reception/fermeture-packet-interieur/fermeturePacket-interieur.module').then(m => m.FermeturePacketInterieurModule) },
@@ -51,19 +51,19 @@ const routes: Routes = [{ path: '', component: ArriereComponent },
     { path: 'reception/reception-packet/:id', loadChildren: () => import('./reception/reception-packet/reception-packet.module').then(m => m.ReceptionPacketModule) },
 
 //    { path: 'details-expedition/:id', loadChildren: () => import('./details-expedition/details-expedition.module').then(m => m.DetailsExpeditionModule) },
-   { path: 'details-expeditionEcom/:id', loadChildren: () => import('./detail-expeditionEcom/detail-expeditionEcom.module').then(m => m.DetailExpeditionEcomModule) },
-   { path: 'RapportEcommerce', loadChildren: () => import('./rapportEcommerce/rapportEcommerce.module').then(m => m.RapportEcommerceModule) },
+    { path: 'details-expeditionEcom/:id', loadChildren: () => import('./detail-expeditionEcom/detail-expeditionEcom.module').then(m => m.DetailExpeditionEcomModule) },
+    { path: 'RapportEcommerce', loadChildren: () => import('./rapportEcommerce/rapportEcommerce.module').then(m => m.RapportEcommerceModule) },
     { path: 'courrier-details/courrierDetailArriere/:id', loadChildren: () => import('./expedition/expedition-arriere/courrier-details/courrier-details.module').then(m => m.CourrierDetailsArriereModule) },
 
-   // { path: 'courrier-details-rapport/courrierDetailArriere/:id', loadChildren: () => import('./rapport/courrier-details-rapport/courrier-details.module').then(m => m.CourrierDetailsrapportModule) },
+    { path: 'courrier-details-rapport/courrierDetailArriere/:id', loadChildren: () => import('./rapport/courrier-details-rapport/courrier-details.module').then(m => m.CourrierDetailsrapportModule) },
 
 
 
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes
-      )],
-  exports: [RouterModule]
+    imports: [RouterModule.forChild(routes
+    )],
+    exports: [RouterModule]
 })
 export class ArriereRoutingModule { }
