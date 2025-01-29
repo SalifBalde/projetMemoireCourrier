@@ -395,7 +395,7 @@ export class PdfService {
             (doc as any).autoTable({
                 head: [tableColumn],
                 body: tableRows,
-                startY: 68,
+                startY: 85,
                 theme: "striped",
                 headStyles: { fillColor: [77, 77, 255] },
                 styles: { fontSize: 9, halign: "center" },
@@ -412,7 +412,7 @@ export class PdfService {
             const totalBoxWidth = 30;
             const totalBoxHeight = 9;
             const totalBoxX = 195 - totalBoxWidth;
-            const totalBoxY = finalY + 26;
+            const totalBoxY = finalY + 18;
 
             doc.setDrawColor(77, 77, 255);
             doc.setFillColor(77, 77, 255);
@@ -456,7 +456,7 @@ export class PdfService {
             (doc as any).autoTable({
                 head: [tableColumn],
                 body: tableRows,
-                startY: 224,
+                startY: 232,
                 theme: "striped",
                 headStyles: { fillColor: [77, 77, 255] },
                 styles: { fontSize: 9, halign: "center" },
@@ -478,7 +478,7 @@ export class PdfService {
             const totalBoxWidth = 30;
             const totalBoxHeight = 9;
             const totalBoxX = 195 - totalBoxWidth;
-            const totalBoxY = finalY + 26;
+            const totalBoxY = finalY + 18;
 
             doc.setDrawColor(77, 77, 255);
             doc.setFillColor(77, 77, 255);
