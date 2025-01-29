@@ -20,7 +20,7 @@ import {SuiviCourrierService} from "../../proxy/suivi-courrier";
 })
 export class CourrierImportRcepComponent  implements OnInit{
     Bestnoeux: Noeuxdto;
-    structure$: [StructureDto];
+    structure$: StructureDto[];
     listcolis: [CourrierDto];
     listnoeux: Noeuxdto[];
     listAchemin: any[]=[];
@@ -70,7 +70,7 @@ export class CourrierImportRcepComponent  implements OnInit{
             }
         );
 
-        this.structureService.findAll().subscribe(
+        this.structureService.getBureaux().subscribe(
             (result) => {
                 this.structure$ = result;
             }
@@ -184,24 +184,10 @@ export class CourrierImportRcepComponent  implements OnInit{
 
             console.log(courrier);
 
-            // Créer un objet SuiviCourrier pour chaque courrier
-            const suiviCourrier = {
-                courrierId: courrier.id,
-                idstatutCourrier: courrier.statutCourrier.id,
-                userId: courrier.userId,
-                structureDepotId: courrier.structureDepotId,
-                structureDestinationId: courrier.structureDestinationId
-            };
+
 
             // Sauvegarder les informations de suivi pour chaque courrier
-            this.suiviCourrier.save(suiviCourrier).subscribe(
-                (data) => {
-                    console.log("Suivi courrier sauvegardé : ", data);
-                },
-                (error) => {
-                    console.error("Erreur lors de la sauvegarde du suivi : ", error);
-                }
-            );
+
         });
         // Appel au service pour mettre à jour les courriers
         this.courrierService.updateCourriers(this.selectedCourriers).subscribe(

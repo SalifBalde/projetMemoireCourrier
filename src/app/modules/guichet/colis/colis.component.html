@@ -26,124 +26,129 @@
                                 <div class="col-12 md:col-3">
                                     <div class="flex justify-content-between align-items-center mb-2">
                                         <span class="text-900 font-medium">Total:</span><span class="text-900">{{
-                                            totalMontant
-                                            }} CFA</span>
+                                            totalMontant }} CFA</span>
                                     </div>
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </div>
-                    <div class="col-12 lg:col-12">
-                        <div class="card">
-                            <div class="grid formgrid">
-                                <div class="col-12 field">
-                                    <span class="text-900 text-xl block font-medium mb-1">
-                                        Informations Courrier
-                                    </span>
-                                </div>
-                                <div class="col-12 lg:col-6  field">
-                                    <p-dropdown [options]="regime$" optionLabel="libelle" optionValue="id"
-                                        [filter]="true" filterBy="libelle" formControlName="regimeId"
-                                        (ngModelChange)="choixRegime()" [showClear]="true" placeholder="choisir régime">
-                                        <ng-template pTemplate="selectedItem" let-selectedOption>
-                                            <div class="flex align-items-center gap-2">
-                                                <div>{{ selectedOption.libelle }}</div>
+                <div class="col-12 lg:col-12">
+                    <div class="card">
+                        <div class="grid formgrid">
+                            <div class="col-12 field">
+                                <span class="text-900 text-xl block font-medium mb-1">
+                                    Informations Courrier
+                                </span>
+                            </div>
+                            <div class="col-12 lg:col-6 field">
+                                <p-dropdown [options]="regime$" optionLabel="libelle" optionValue="id" [filter]="true"
+                                    filterBy="libelle" formControlName="regimeId" (ngModelChange)="choixRegime()"
+                                    [showClear]="true" placeholder="choisir régime">
+                                    <ng-template pTemplate="selectedItem" let-selectedOption>
+                                        <div class="flex align-items-center gap-2">
+                                            <div>
+                                                {{ selectedOption.libelle }}
                                             </div>
-                                        </ng-template>
-                                        <ng-template let-structure pTemplate="item">
-                                            <div class="flex align-items-center gap-2">
-                                                <div>{{ structure.libelle }}</div>
+                                        </div>
+                                    </ng-template>
+                                    <ng-template let-structure pTemplate="item">
+                                        <div class="flex align-items-center gap-2">
+                                            <div>{{ structure.libelle }}</div>
+                                        </div>
+                                    </ng-template>
+                                </p-dropdown>
+                            </div>
+                            <div class="col-12 lg:col-6 field">
+                                <p-dropdown [options]="pays$" optionLabel="libelle" optionValue="id" [filter]="true"
+                                    filterBy="libelle" formControlName="paysDestinationId" [showClear]="true"
+                                    placeholder="choisir pays">
+                                    <ng-template pTemplate="selectedItem" let-selectedOption>
+                                        <div class="flex align-items-center gap-2">
+                                            <div>
+                                                {{ selectedOption.libelle }}
                                             </div>
-                                        </ng-template>
-                                    </p-dropdown>
-                                </div>
-                                <div class="col-12 lg:col-6 field">
-                                    <p-dropdown [options]="pays$" optionLabel="libelle" optionValue="id" [filter]="true"
-                                        filterBy="libelle" formControlName="paysDestinationId" [showClear]="true"
-                                        placeholder="choisir pays">
-                                        <ng-template pTemplate="selectedItem" let-selectedOption>
-                                            <div class="flex align-items-center gap-2">
-                                                <div>{{ selectedOption.libelle }}</div>
+                                        </div>
+                                    </ng-template>
+                                    <ng-template let-structure pTemplate="item">
+                                        <div class="flex align-items-center gap-2">
+                                            <div>{{ structure.libelle }}</div>
+                                        </div>
+                                    </ng-template>
+                                </p-dropdown>
+                            </div>
+                            <div class="col-12 lg:col-6 field">
+                                <p-dropdown [options]="categorie$" optionLabel="libelle" optionValue="id"
+                                    [filter]="true" filterBy="libelle" formControlName="categorieId" [showClear]="true"
+                                    placeholder="choisir Catégorie">
+                                    <ng-template pTemplate="selectedItem" let-selectedOption>
+                                        <div class="flex align-items-center gap-2">
+                                            <div>
+                                                {{ selectedOption.libelle }}
                                             </div>
-                                        </ng-template>
-                                        <ng-template let-structure pTemplate="item">
-                                            <div class="flex align-items-center gap-2">
-                                                <div>{{ structure.libelle }}</div>
-                                            </div>
-                                        </ng-template>
-                                    </p-dropdown>
-                                </div>
-                                <div class="col-12 lg:col-6 field">
-                                    <p-dropdown [options]="categorie$" optionLabel="libelle" optionValue="id"
-                                        [filter]="true" filterBy="libelle" formControlName="categorieId"
-                                        [showClear]="true" placeholder="choisir Catégorie">
-                                        <ng-template pTemplate="selectedItem" let-selectedOption>
-                                            <div class="flex align-items-center gap-2">
-                                                <div>{{ selectedOption.libelle }}</div>
-                                            </div>
-                                        </ng-template>
-
-                                    </p-dropdown>
-                                </div>
-                                <div class="col-12 lg:col-6 field">
-                                    <span class="p-float-label">
-                                        <input type="number" pInputText formControlName="poids" />
-                                        <label for="float-input">Poids(Kg)</label>
-                                    </span>
-                                </div>
+                                        </div>
+                                    </ng-template>
+                                </p-dropdown>
+                            </div>
+                            <div class="col-12 lg:col-6 field">
+                                <span class="p-float-label">
+                                    <input type="number" pInputText formControlName="poids" />
+                                    <label for="float-input">Poids(Kg)</label>
+                                </span>
                             </div>
                         </div>
                     </div>
+                </div>
 
                 <div class="col-12 lg:col-6 md:px-1">
                     <div class="card">
                         <div class="grid formgrid">
                             <div class="col-12 field">
-                                <span class="text-900 text-xl block font-medium mb-3"> <p-button
-                                     label="Ajouter Expéditeur"   icon="pi pi-user-plus" severity="success" (click)="openClient()" /></span>
+                                <span class="text-900 text-xl block font-medium mb-3">
+                                    <p-button label="Ajouter Expéditeur" icon="pi pi-user-plus" severity="success"
+                                        (click)="openClient()" /></span>
                             </div>
                             <div class="col-12 lg:col-6 field">
                                 <span class="p-float-label">
-                                    <input id="float-input" disabled type="text" value="{{client.nom}}" pInputText readonly />
-                                    <input style="display: none;" formControlName="expediteurId" id="float-input"
+                                    <input id="float-input" disabled type="text" value="{{ client.nom }}" pInputText
+                                        readonly />
+                                    <input style="display: none" formControlName="expediteurId" id="float-input"
                                         type="text" pInputText />
                                     <label for="float-input">Nom complet</label>
                                 </span>
                             </div>
                             <div class="col-12 lg:col-6 field">
                                 <span class="p-float-label">
-                                    <input id="float-input"  disabled type="text" value="{{client.telephone}}" pInputText
-                                        readonly />
+                                    <input id="float-input" disabled type="text" value="{{ client.telephone }}"
+                                        pInputText readonly />
                                     <label for="float-input">Cni</label>
                                 </span>
                             </div>
                         </div>
                     </div>
-
                 </div>
 
                 <div class="col-12 lg:col-6 md:px-1">
                     <div class="card">
                         <div class="grid formgrid">
                             <div class="col-12 field">
-                                <span class="text-900 text-xl block font-medium mb-3"> <p-button
-                                        icon="pi pi-user-plus" label="Ajouter Destinataire" severity="success" (click)="openDestinataire()" /></span>
+                                <span class="text-900 text-xl block font-medium mb-3">
+                                    <p-button icon="pi pi-user-plus" label="Ajouter Destinataire" severity="success"
+                                        (click)="openDestinataire()" /></span>
                             </div>
                             <div class="col-12 lg:col-6 field">
                                 <span class="p-float-label">
-                                    <input id="float-input" disabled type="text" value="{{ destinataire.nom}}" pInputText
-                                        readonly />
-                                    <input style="display: none;" formControlName="destinataireId" id="float-input"
+                                    <input id="float-input" disabled type="text" value="{{ destinataire.nom }}"
+                                        pInputText readonly />
+                                    <input style="display: none" formControlName="destinataireId" id="float-input"
                                         type="text" pInputText />
                                     <label for="float-input">Nom complet</label>
                                 </span>
                             </div>
                             <div class="col-12 lg:col-6 field">
                                 <span class="p-float-label">
-                                    <input id="float-input" disabled type="text" value="{{ destinataire.telephone}}" pInputText
-                                        readonly />
+                                    <input id="float-input" disabled type="text" value="{{ destinataire.telephone }}"
+                                        pInputText readonly />
                                     <label for="float-input">Téléphone</label>
                                 </span>
                             </div>
@@ -157,9 +162,12 @@
                             <div class="col-12 lg:col-6 field">
                                 <span class="p-float-label">
                                     <p-inputGroup>
-                                        <p-inputGroupAddon>{{label}}</p-inputGroupAddon>
-                                        <input  formControlName="codeBarre" placeholder="code barre" maxlength="9" minlength="9" pKeyFilter="num"  pInputText />
-                                      <p-inputGroupAddon>SN</p-inputGroupAddon>
+                                        <p-inputGroupAddon>{{
+                                            label
+                                            }}</p-inputGroupAddon>
+                                        <input formControlName="codeBarre" placeholder="code barre" maxlength="9"
+                                            minlength="9" pKeyFilter="num" pInputText />
+                                        <p-inputGroupAddon>SN</p-inputGroupAddon>
                                     </p-inputGroup>
                                 </span>
                             </div>
@@ -170,76 +178,63 @@
                                     <label for="float-input">Valeur Déclaré</label>
                                 </span>
                             </div>
-                            <div class="col-12 lg:col-6 mt-2 field">
-                                <span class="p-float-label">
-                                    <textarea id="contenu" pInputTextarea formControlName="contenu" rows="3"
-                                        cols="20"></textarea>
-                                    <label for="float-input">Contenu</label>
-                                </span>
-                            </div>
-
                         </div>
 
-                      <!--   <div class="grid formgrid">
-                            <div class="col-12 lg:col-6 field">
-                                <p-dropdown [options]="stocksTimbre$" optionLabel="combinedLibelle" optionValue="id" [filter]="true"
-                                    filterBy="combinedLibelle" formControlName="timbreId" (ngModelChange)="getTarifProduit()" [showClear]="true"
-                                    placeholder="Choisir Timbre">
-                                    <ng-template pTemplate="selectedItem" let-selectedOption>
-                                        <div class="flex align-items-center gap-2">
-                                            <div>{{ selectedOption.combinedLibelle }}</div>
-                                        </div>
-                                    </ng-template>
-                                    <ng-template let-structure pTemplate="item">
-                                        <div class="flex align-items-center gap-2">
-                                            <div>{{ structure.combinedLibelle }}</div>
-                                        </div>
-                                    </ng-template>
-                                </p-dropdown>
-                            </div>
-
-                            <div class="col-12 lg:col-4 field">
+                        <span class="text-900 text-xl block font-medium mb-3">Contenu</span>
+                        <div class="grid formgrid">
+                            <div class="col-12 lg:col-3 mt-2 field">
                                 <span class="p-float-label">
-                                    <input id="float-input" type="number" pInputText formControlName="quantite" />
-                                    <label for="float-input">Quantité</label>
+                                    <input id="contenu" pInputText formControlName="contenu" type="text" />
+                                    <label for="contenu">Description</label>
                                 </span>
                             </div>
 
-                            <div class="col-12 lg:col-2 field">
-                                <p-button icon="pi pi-plus" severity="info" (click)="ajouterProduit()" />
+                            <div class="col-12 lg:col-2 mt-2 field">
+                                <span class="p-float-label">
+                                    <input id="quantite" type="number" pInputText formControlName="quantite" />
+                                    <label for="quantite">Quantité</label>
+                                </span>
                             </div>
 
+                            <div class="col-12 lg:col-2 mt-2 field">
+                                <span class="p-float-label">
+                                    <input id="valeur" pInputText formControlName="valeur" />
+                                    <label for="valeur">Valeur</label>
+                                </span>
+                            </div>
 
+                            <div class="col-12 lg:col-2 mt-2 field">
+                                <span class="p-float-label">
+                                    <input id="poidsNet" pInputText formControlName="poidsNet" />
+                                    <label for="poidsNet">Poids Colis</label>
+                                </span>
+                            </div>
+
+                            <div class="col-12 lg:col-3 mt-2 field">
+                                <p-button icon="pi pi-plus" severity="info" (click)="addDetail()" />
+                            </div>
                             <div class="col-12 lg:col-12 field">
-                                <p-table [value]="courrier.details">
+                                <p-table [value]="contenu">
                                     <ng-template pTemplate="header">
                                         <tr>
-                                            <th>Produit</th>
+                                            <th>Description</th>
                                             <th>Qté</th>
-                                            <th>Prix</th>
-                                            <th>Total</th>
-                                            <th></th>
+                                            <th>Valeur</th>
+                                            <th>Poids colis</th>
+                                            <th>Actions</th>
                                         </tr>
                                     </ng-template>
                                     <ng-template pTemplate="body" let-detail let-i="rowIndex">
                                         <tr>
-                                            <td>{{ detail.produitLibelle}}</td>
+                                            <td>{{ detail.contenu }}</td>
                                             <td>
                                                 <div style="display: flex; align-items: center;">
-
-                                                    <button pButton type="button" label="-"
-                                                        style="font-size: 0.8rem; padding: 0.2rem 0.5rem;"
-                                                        (click)="decrementQuantity(i)"></button>
                                                     <p-badge size="large" value="{{ detail.quantite }}"
                                                         severity="success"></p-badge>
-
-                                                    <button pButton type="button" severity="danger" label="+"
-                                                        style="font-size: 0.8rem; padding: 0.2rem 0.5rem; margin-left: 5px;"
-                                                        (click)="incrementQuantity(i)"></button>
                                                 </div>
                                             </td>
-                                            <td>{{ detail.prix }}</td>
-                                            <td>{{ detail.quantite * detail.prix }}</td>
+                                            <td>{{ detail.valeur }}</td>
+                                            <td>{{ detail.poidsNet }}</td>
                                             <td>
                                                 <button pButton pRipple type="button" (click)="removeDetail(i)"
                                                     icon="pi pi-times"
@@ -248,21 +243,19 @@
                                         </tr>
                                     </ng-template>
                                 </p-table>
+
                                 <div class="py-2">
                                     <div class="flex justify-content-between align-items-center mb-2">
-                                        <input id="valeurTimbre" style="display: none;" formControlName="valeurTimbre" type="number">
-                                        <span class="text-900 font-medium">Valeur Timbre:</span><span class="text-900">{{
-                                            valeurTimbre | customCurrency
-                                            }}</span>
+                                        <input id="valeurTimbre" style="display: none" formControlName="valeurTimbre"
+                                            type="number" />
+                                        <!-- <span class="text-900 font-medium">Valeur Timbre:</span><span
+                                            class="text-900"></span> -->
                                     </div>
-                                    </div>
+                                </div>
                             </div>
-
-                        </div> -->
-
+                        </div>
                     </div>
                 </div>
-
 
                 <div class="col-12 md:col-5">
                     <div class="card">
@@ -285,25 +278,32 @@
                             </div>
                             <div class="flex justify-content-between align-items-center mb-2">
                                 <span class="text-900 font-medium">Recommandé</span><span
-                                    class="text-primary font-bold">{{fraisRecommande | customCurrency}}</span>
+                                    class="text-primary font-bold">{{
+                                    fraisRecommande | customCurrency
+                                    }}</span>
                             </div>
 
                             <div class="flex justify-content-between align-items-center mb-2">
-                                <span class="text-900 font-medium">AR</span><span
-                                    class="text-primary font-bold">{{fraisAr | customCurrency}}</span>
+                                <span class="text-900 font-medium">AR</span><span class="text-primary font-bold">{{
+                                    fraisAr | customCurrency
+                                    }}</span>
                             </div>
                             <div class="flex justify-content-between align-items-center mb-2">
-                                <span class="text-900 font-medium">Express</span><span
-                                    class="text-primary font-bold">{{fraisExpress | customCurrency}}</span>
+                                <span class="text-900 font-medium">Express</span><span class="text-primary font-bold">{{
+                                    fraisExpress | customCurrency
+                                    }}</span>
                             </div>
                             <div class="flex justify-content-between align-items-center mb-2">
                                 <span class="text-900 font-medium">Valeur Déclaré</span><span
-                                    class="text-primary font-bold">{{fraisVd | customCurrency}}</span>
+                                    class="text-primary font-bold">{{
+                                    fraisVd | customCurrency
+                                    }}</span>
                             </div>
                             <div class="flex justify-content-between align-items-center mb-2">
                                 <span class="text-900 font-bold">Total</span><span class="text-900 font-medium text-xl">
-                                    {{totalMontant | customCurrency}}</span>
-                                    <input id="totalMontant" formControlName="totalMontant" style="display:none;" type="number">
+                                    {{ totalMontant | customCurrency }}</span>
+                                <input id="totalMontant" formControlName="totalMontant" style="display: none"
+                                    type="number" />
                             </div>
                         </div>
 
@@ -314,7 +314,6 @@
                                 <span class="p-button-icon p-button-icon-left pi pi-fw pi-check"></span><span
                                     class="p-button-label">Sauvegarder</span>
                             </button>
-
                         </div>
                     </div>
                 </div>
@@ -325,24 +324,23 @@
 
 <p-dialog [(visible)]="clientDialog" [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" [style]="{ width: '50vw' }"
     [draggable]="false" [resizable]="false" header="Ajouter" [modal]="true" class="p-fluid">
-
     <form [formGroup]="formClient" (ngSubmit)="saveClient()">
         <div class="row">
             <div class="grid formgrid">
                 <div class="col-12 mb-2 lg:col-6 lg:mb-3">
                     <div class="flex align-items-center">
                         <label for="telephone" class="font-semibold w-6rem">Téléphone:</label>
-                        <input pInputText  pKeyFilter="num"  id="telephone" (input)="searchClient()" formControlName="telephone"
-                            class="flex-auto" autocomplete="off" />
+                        <input pInputText pKeyFilter="num" id="telephone" (input)="searchClient()"
+                            formControlName="telephone" class="flex-auto" autocomplete="off" />
                     </div>
                 </div>
                 <div class="col-12 mb-2 lg:col-6 lg:mb-3">
                     <div class="flex align-items-center">
                         <label for="codePostal" class="font-semibold w-6rem">code Postal:</label>
-                        <input pInputText id="codePostal" formControlName="codePostal" class="flex-auto" autocomplete="off" />
+                        <input pInputText id="codePostal" formControlName="codePostal" class="flex-auto"
+                            autocomplete="off" />
                     </div>
                 </div>
-
 
                 <div class="col-12 mb-2 lg:col-6 lg:mb-3">
                     <div class="flex align-items-center">
@@ -369,7 +367,6 @@
                         <input pInputText id="email" formControlName="email" class="flex-auto" autocomplete="off" />
                     </div>
                 </div>
-
             </div>
         </div>
 
@@ -379,7 +376,6 @@
         </div>
     </form>
 </p-dialog>
-
 
 <p-dialog [(visible)]="destinataireDialog" [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
     [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false" header="Ajouter" [modal]="true" class="p-fluid">
@@ -394,32 +390,33 @@
         </ng-template>
         <ng-template pTemplate="body" let-dest>
             <tr>
-                <td>{{ dest.nom }} {{dest.prenom}}</td>
+                <td>{{ dest.nom }} {{ dest.prenom }}</td>
                 <td>{{ dest.telephone }}</td>
                 <td>
-                    <p-button icon="pi pi-check" label="Choisir Destinataire" severity="info" (click)="choisirDestinataire(dest)" />
+                    <p-button icon="pi pi-check" label="Choisir Destinataire" severity="info"
+                        (click)="choisirDestinataire(dest)" />
                 </td>
             </tr>
         </ng-template>
     </p-table>
-    <hr>
+    <hr />
     <form [formGroup]="formDestinataire" (ngSubmit)="saveDestinataire()">
         <div class="row">
             <div class="grid formgrid">
                 <div class="col-12 mb-2 lg:col-6 lg:mb-3">
                     <div class="flex align-items-center">
                         <label for="cni" class="font-semibold w-6rem">Téléphone:</label>
-                        <input pInputText  pKeyFilter="num"  id="telephone" (input)="searchDestinataire()" formControlName="telephone"
-                            class="flex-auto" autocomplete="off" />
+                        <input pInputText pKeyFilter="num" id="telephone" (input)="searchDestinataire()"
+                            formControlName="telephone" class="flex-auto" autocomplete="off" />
                     </div>
                 </div>
                 <div class="col-12 mb-2 lg:col-6 lg:mb-3">
                     <div class="flex align-items-center">
                         <label for="codePostal" class="font-semibold w-6rem">code Postal:</label>
-                        <input pInputText id="codePostal" formControlName="codePostal" class="flex-auto" autocomplete="off" />
+                        <input pInputText id="codePostal" formControlName="codePostal" class="flex-auto"
+                            autocomplete="off" />
                     </div>
                 </div>
-
 
                 <div class="col-12 mb-2 lg:col-6 lg:mb-3">
                     <div class="flex align-items-center">
@@ -446,7 +443,6 @@
                         <input pInputText id="email" formControlName="email" class="flex-auto" autocomplete="off" />
                     </div>
                 </div>
-
             </div>
         </div>
 

@@ -94,7 +94,7 @@ export class RapportCriteresComponent {
             this.typeCourrier$ = result;
         });
 
-        this.structureService.findAll().subscribe(result => {
+        this.structureService.getBureaux().subscribe(result => {
             this.structure$ = result;
             // this.structure$  = this.structure$ .filter(structure => structure.id !== this.sessionService.getAgentAttributes().structureId);
         });

@@ -26,7 +26,7 @@ export class FermetureColisOrdinaireComponent implements OnInit{
     openColisDialog: boolean;
     colis: any={}
     @ViewChild('dt') dt: Table;
-    structure$: [StructureDto];
+    structure$: StructureDto[];
     selectedColis: any;
     TypeCourrier:TypeCourrierDto
     statutCourrier:Statutdto
@@ -74,7 +74,7 @@ export class FermetureColisOrdinaireComponent implements OnInit{
     // }
 
     ngOnInit(): void {
-        this.structureService.findAll().subscribe(
+        this.structureService.getBureaux().subscribe(
             (result) => {
                 this.structure$ = result;
             }

@@ -121,7 +121,7 @@ export class LinePacketDeclarerComponent  implements    OnInit{
             }
         );
 
-        this.structureService.findAll().subscribe(
+        this.structureService.getBureaux().subscribe(
             (result) => {
                 this.structure$ = result;
                 console.log(this.structure$)
@@ -341,26 +341,6 @@ export class LinePacketDeclarerComponent  implements    OnInit{
                                 this.getAllCourrier();
                                 this.selectedColis=null
 
-
-                                // Ajout du suivi pour chaque courrier après mise à jour
-                                const suiviCourrier = {
-                                    courrierId: colis.id,
-                                    idstatutCourrier: colis.statutCourrier.id,
-                                    userId: this.iduser,
-                                    structureDepotId: structureDepotId,
-                                    structureDestinationId: this.selectedStructure,
-                                    date: new Date().toISOString(),
-                                };
-
-                                this.suiviCourrier.save(suiviCourrier).subscribe(
-                                    (data) => {
-                                        // console.log("Suivi courrier sauvegardé : ", data);
-
-                                    },
-                                    (error) => {
-                                        console.error("Erreur lors de la sauvegarde du suivi : ", error);
-                                    }
-                                );
 
                                 // Rafraîchir la liste des courriers
 

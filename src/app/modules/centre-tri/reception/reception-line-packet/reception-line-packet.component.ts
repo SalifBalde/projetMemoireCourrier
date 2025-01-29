@@ -5,7 +5,12 @@ import {RegimeService} from "../../../../proxy/regime";
 import {Paysdto, PaysService} from "../../../../proxy/pays";
 import {CategorieDto, CategorieService} from "../../../../proxy/categorie";
 import {SessionService} from "../../../../proxy/auth/Session.service";
-import {type CourrierCreateUpdateDto, CourrierDetailsDto, CourrierService} from "../../../../proxy/courrier";
+import {
+    type CourrierCreateUpdateDto,
+    CourrierDetailsDto,
+    CourrierDto,
+    CourrierService
+} from "../../../../proxy/courrier";
 import {TarifServiceService} from "../../../../proxy/TarifService";
 import {TarifCourrierService} from "../../../../proxy/tarif-courrier";
 import {StockService} from "../../../../proxy/stock";
@@ -35,7 +40,7 @@ export class ReceptionLinePacketComponent implements  OnInit {
     loading: boolean;
     clients: ClientDto[] = [];
     form: FormGroup;
-    courrier: Object;
+    courrier: CourrierDto;
     label: string = "PO";
     paysDestinationId: any;
     categorieId: any;
@@ -258,7 +263,15 @@ export class ReceptionLinePacketComponent implements  OnInit {
             }
         );
     }
+    getPaysLibelle(paysId: number): string {
+        const pays = this.pays$.find(p => p.id === paysId);
+        return pays ? pays.libelle : '';
+    }
 
+    getCategorieLibelle(categorieId: string): string {
+        const categorie = this.categorie$.find(c => c.id === categorieId);
+        return categorie ? categorie.libelle : '';
+    }
 
     resetCourrierData(): void {
         this.poids = null;

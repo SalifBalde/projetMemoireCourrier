@@ -110,8 +110,8 @@ export class PdfEcomService {
         doc.text(`Destinataire: ${data.prenomClient || ""} ${data.nomClient || ""}`, rightTextStartX, rightYPosition, { align: "right" });
         rightYPosition += lineHeight;
 
-        doc.text(`Téléphone Destinataire: ${data.telephoneClient || ""}`, rightTextStartX, rightYPosition, { align: "right" });
-        rightYPosition += lineHeight;
+      /*   doc.text(`Téléphone Destinataire: ${data.telephoneClient || ""}`, rightTextStartX, rightYPosition, { align: "right" });
+        rightYPosition += lineHeight; */
 
         doc.text(`Adresse client : ${data.adresseClient || ""}`, rightTextStartX, rightYPosition, { align: "right" });
         rightYPosition += lineHeight;
@@ -145,8 +145,8 @@ export class PdfEcomService {
         doc.text(`Destinataire: ${data.prenomClient || ""} ${data.nomClient || ""}`, rightTextStartX, rightYPosition, { align: "right" });
         rightYPosition += lineSpacing;
 
-        doc.text(`Téléphone Destinataire: ${data.telephoneClient || ""}`, rightTextStartX, rightYPosition, { align: "right" });
-        rightYPosition += lineSpacing;
+        // doc.text(`Téléphone Destinataire: ${data.telephoneClient || ""}`, rightTextStartX, rightYPosition, { align: "right" });
+        // rightYPosition += lineSpacing;
 
         doc.text(`Adresse client : ${data.adresseClient || ""}`, rightTextStartX, rightYPosition, { align: "right" });
         rightYPosition += lineSpacing;
@@ -423,12 +423,12 @@ export class PdfEcomService {
             doc.setTextColor(0, 0, 0);
 
 
-            doc.text(`Options de paiement :  ${"NEAN"}`, 14, finalY + 15);
+           /*  doc.text(`Options de paiement :  ${"NEAN"}`, 14, finalY + 15);
             doc.text(
                 `Méthode de paiement : ${"NEAN "}`,
                 14,
                 finalY + 20
-            );
+            ); */
         }
     }
 
@@ -488,12 +488,12 @@ export class PdfEcomService {
             doc.setFontSize(9);
             doc.setTextColor(0, 0, 0);
 
-            doc.text(`Options de paiement :  ${"NEAN"}`, 14, finalY + 15);
-            doc.text(
-                `Méthode de paiement : ${"NEAN"}`,
-                14,
-                finalY + 20
-            );
+            // doc.text(`Options de paiement :  ${"NEAN"}`, 14, finalY + 15);
+            // doc.text(
+            //     `Méthode de paiement : ${"NEAN"}`,
+            //     14,
+            //     finalY + 20
+            // );
 
             doc.setLineWidth(0.2);
             doc.setDrawColor(0, 0, 0);

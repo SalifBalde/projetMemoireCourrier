@@ -17,7 +17,6 @@ export interface EcommerceDto {
   heurelivraison: string;
   etatEcomId: number;
   etatEcomLibelle : string;
-  version: number;
   adresseClient: string;
   nomClient: string;
   payer: boolean;
@@ -56,7 +55,6 @@ export interface EcommerceSearchResultDto {
   heurelivraison: string;
   etatEcomId: number;
   etatEcomLibelle : string;
-  version: number;
   adresseClient: string;
   nomClient: string;
   payer: boolean;

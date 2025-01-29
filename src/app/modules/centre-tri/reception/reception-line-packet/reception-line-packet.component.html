@@ -141,9 +141,9 @@
     </div>
 
 
-    <div class="col-3 lg:col-offset-3 field " style="float:right">
-        <p-button (click)="saveColis()"  label="Enregistrer" severity="info" />
-    </div>
+<!--    <div class="col-3 lg:col-offset-3 field " style="float:right">-->
+<!--        <p-button (click)="saveColis()"  [disabled]=" !paysDestinationId  || !poids || !codebarre  " label="Enregistrer" severity="info" />-->
+<!--    </div>-->
 
 </div>
 
@@ -207,24 +207,6 @@
 <p-dialog [(visible)]="destinataireDialog" [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
           [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false" header="Ajouter" [modal]="true" class="p-fluid">
     <h4>Destinataire du pays:</h4>
-<!--    <p-table [value]="clients" [paginator]="true" [rows]="5" [tableStyle]="" [rowsPerPageOptions]="[5, 10, 20]">-->
-<!--        <ng-template pTemplate="header">-->
-<!--            <tr>-->
-<!--                <th>Nom</th>-->
-<!--                <th>Telephone</th>-->
-<!--                <th></th>-->
-<!--            </tr>-->
-<!--        </ng-template>-->
-<!--        <ng-template pTemplate="body" let-dest>-->
-<!--            <tr>-->
-<!--                <td>{{ dest.nom }} {{dest.prenom}}</td>-->
-<!--                <td>{{ dest.telephone }}</td>-->
-<!--                <td>-->
-<!--                    <p-button icon="pi pi-check" label="Choisir Destinataire" severity="info" (click)="choisirDestinataire(dest)" />-->
-<!--                </td>-->
-<!--            </tr>-->
-<!--        </ng-template>-->
-<!--    </p-table>-->
     <hr>
     <form [formGroup]="formDestinataire" (ngSubmit)="saveDestinataire()">
         <div class="row">
@@ -281,4 +263,37 @@
         </div>
     </form>
 </p-dialog>
+
+<!-- Section Prévisualisation -->
+<div class="col-6">
+    <div class="card">
+        <h3>Résumé des Données Saisies</h3>
+        <div class="grid">
+            <div class="col-12 lg:col-6">
+                <p><strong>Expéditeur:</strong> {{ client.nom }} {{ client.prenom }}</p>
+                <p><strong>CNI Expéditeur:</strong> {{ client.cni }}</p>
+            </div>
+            <div class="col-12 lg:col-6">
+                <p><strong>Destinataire:</strong> {{ destinataire.nom }} {{ destinataire.prenom }}</p>
+                <p><strong>CNI Destinataire:</strong> {{ destinataire.cni }}</p>
+            </div>
+            <div class="col-12">
+                <p><strong>Pays d'origine :</strong> {{ getPaysLibelle(paysDestinationId) }}</p>
+                <p><strong>Catégorie:</strong> {{ getCategorieLibelle(categorieId) }}</p>
+                <p><strong>Poids:</strong> {{ poids }} g</p>
+                <p><strong>Code barre:</strong> {{ codebarre }}</p>
+            </div>
+            <!-- Bouton Enregistrer -->
+            <div class="col-6 lg:col-offset-6 field" style="float:right">
+                <p-button (click)="saveColis()" [disabled]="!paysDestinationId || !poids || !codebarre" label="Enregistrer" severity="info" />
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+
+
+
 

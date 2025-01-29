@@ -23,7 +23,7 @@ export class ReceptionECommerceComponent  implements OnInit {
   id = "";
   structure$: StructureDto[] = [];
   ecommerce$: EcommerceDto[] = [];
-  ecommerce: EcommerceDto | null = null;  
+  ecommerce: EcommerceDto | null = null;
   openEcommerceDialog: boolean = false;
   selectedEcommerce!: EcommerceDto;
   loading: boolean = false;
@@ -41,7 +41,7 @@ export class ReceptionECommerceComponent  implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.structureService.findAll().subscribe((result) => {
+    this.structureService.getBureaux().subscribe((result) => {
       this.structure$ = result;
     });
 
@@ -63,18 +63,18 @@ export class ReceptionECommerceComponent  implements OnInit {
       this.ecommerce$ = result;
     });
   }
-  
+
 
   openDialog(ecommerce: EcommerceDto) {
     this.openEcommerceDialog = true;
-    this.ecommerce = { ...ecommerce };  
+    this.ecommerce = { ...ecommerce };
   }
 
   confirmReception() {
     this.openEcommerceDialog = false;
 
     if (this.ecommerce) {
-      
+
       this.ecommerceService
         .reception(this.ecommerce.id.toString(), this.sessionService.getAgentAttributes().structureId.toString())
         .subscribe(() => this.getAllEcommerceByDestinationReception());
@@ -86,7 +86,7 @@ export class ReceptionECommerceComponent  implements OnInit {
         life: 3000,
       });
 
-      this.ecommerce = null;  
+      this.ecommerce = null;
     } else {
       this.messageService.add({
         severity: 'warn',

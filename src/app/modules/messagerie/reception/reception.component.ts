@@ -20,7 +20,7 @@ import {SuiviCourrierService} from "../../../proxy/suivi-courrier";
 })
 export class ReceptionComponent  implements  OnInit{
    Bestnoeux: Noeuxdto;
-   structure$: [StructureDto];
+   structure$: StructureDto[];
    listcolis: [CourrierDto];
    listnoeux: Noeuxdto[];
    listAchemin: any[]=[];
@@ -70,7 +70,7 @@ export class ReceptionComponent  implements  OnInit{
         }
     );
 
-    this.structureService.findAll().subscribe(
+    this.structureService.getBureaux().subscribe(
         (result) => {
           this.structure$ = result;
         }

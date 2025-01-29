@@ -15,6 +15,7 @@
               <th>Bureau Expedition</th>
               <th>Bureau Destination</th>
               <th>Date</th>
+              <th></th>
             </tr>
           </ng-template>
           <ng-template pTemplate="body" let-ecommerce>
@@ -25,6 +26,7 @@
               <td>{{ ecommerce.telephoneClient }}</td>
               <td>{{ecommerce.partenaireBureauLibelle}}</td>
               <td>{{ecommerce.bureauDestinationLibelle}}</td>
+              <td>{{ecommerce.dateexp| date:"dd/MM/yyyy"}}</td>
               <td>
                 <div class="col-10 flex flex-column lg:flex-row justify-content-end align-items-center">
                   <div style="cursor: pointer;">

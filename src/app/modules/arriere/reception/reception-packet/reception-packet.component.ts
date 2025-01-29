@@ -31,7 +31,7 @@ export class ReceptionPacketComponent implements OnInit{
     openColisDialog: boolean;
     colis: any={}
     @ViewChild('dt') dt: Table;
-    structure$: [StructureDto];
+    structure$: StructureDto[];
     selectedColis: any;
     TypeCourrier:TypeCourrierDto
     statutCourrier:Statutdto
@@ -99,7 +99,7 @@ export class ReceptionPacketComponent implements OnInit{
             this.fermetureId = +params['id'];
             console.log('ID de la fermeture:', this.fermetureId);    });
 
-        this.structureService.findAll().subscribe(
+        this.structureService.getBureaux().subscribe(
             (result) => {
                 this.structure$ = result;
             }

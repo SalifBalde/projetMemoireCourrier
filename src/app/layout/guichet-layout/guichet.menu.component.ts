@@ -73,7 +73,11 @@ export class GuichetMenuComponent implements OnInit {
                         icon: 'pi pi-fw pi-file',
                         routerLink: ['/guichet/rapport'],
                     },
-
+                    {
+                        label: 'Rapport',
+                        icon: 'pi pi-fw pi-file',
+                        routerLink: ['/guichet/rapport-courrier'],
+                    },
                 ],
             },
 

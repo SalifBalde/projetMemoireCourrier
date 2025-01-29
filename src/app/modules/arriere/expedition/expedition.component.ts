@@ -108,7 +108,7 @@ import {forkJoin} from "rxjs";
             }
         );
 
-        this.structureService.findAll().subscribe(
+        this.structureService.getBureaux().subscribe(
             (result) => {
                 this.structure$ = result;
             }

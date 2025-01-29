@@ -41,7 +41,7 @@ export class ExpeditionECommerceComponent implements OnInit {
     ) { }
 
     ngOnInit() {
-        this.initializeForm(); 
+        this.initializeForm();
         this.loadStructures();
         this.getAllEcommerceExpeditionCt()
         this.form.get('bureauDestination')?.valueChanges.subscribe((value) => {
@@ -56,7 +56,7 @@ export class ExpeditionECommerceComponent implements OnInit {
     }
 
     private loadStructures() {
-        this.structureService.findAll().subscribe(
+        this.structureService.getBureaux().subscribe(
             (result) => {
                 this.structure$ = result
             },

@@ -37,7 +37,7 @@ export class RapportCriteresComponent {
     date: Date;
     fullname: string;
 
-    
+
     @ViewChild('dt') dt: Table;
 
     constructor(
@@ -53,7 +53,7 @@ export class RapportCriteresComponent {
         private messageService: MessageService, private readonly keycloak: KeycloakService
     ) { }
 
-    
+
     resetForm() {
         this.loadingReset = true;
         setTimeout(() => {
@@ -88,12 +88,12 @@ export class RapportCriteresComponent {
         this.statutCourrierService.findAll().subscribe(result => {
             this.statutCourrier$ = result;
         });
-    
+
         this.tyoeCourrierService.findAll().subscribe(result => {
             this.typeCourrier$ = result;
         });
 
-        this.structureService.findAll().subscribe(result => {
+        this.structureService.getBureaux().subscribe(result => {
             this.structure$ = result;
         });
 
@@ -115,9 +115,8 @@ export class RapportCriteresComponent {
     }
 
     isEmpty() {
-        return !this.form.value.debut && !this.form.value.fin && 
+        return !this.form.value.debut && !this.form.value.fin &&
            !this.form.value.structureDepotId && !this.form.value.structureDestinationId &&
            !this.form.value.typeCourrierId && !this.form.value.statutCourrierId && !this.form.value.paysOrigineId && !this.form.value.paysDestinationId;
     }
 }
- 
