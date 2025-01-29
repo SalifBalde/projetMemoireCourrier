@@ -55,7 +55,6 @@ var Cn23AService = /** @class */ (function () {
     Cn23AService.prototype.addRecipientInfo = function (doc, data) {
         var pageHeight = doc.internal.pageSize.height;
         doc.text('No. of item (barcode if any)', pageHeight / 1.1, 50, { align: 'left' });
-        doc.text('DECLARATION EN DOUANE', pageHeight / 1.1, 58, { align: 'left' });
         doc.text("N° de l'envoie(code à barres ,s'il existe)", pageHeight / 1.1, 63, { align: 'left' });
         doc.text("Name : " + data.expediteurPrenom + " " + data.expediteurNom, pageHeight / 19, 49, { align: 'left' });
         doc.text("Adresse :  ", pageHeight / 19, 57, { align: 'left' });
@@ -64,10 +63,15 @@ var Cn23AService = /** @class */ (function () {
         doc.text("State " + data.paysOrigineLibelle + "                        COUNTRY SN (" + data.paysOrigineLibelle + ")", pageHeight / 2.2, 78, { align: 'right' });
         doc.setFontSize(6);
         doc.text("             Sender\u2019s Customs reference\n             (if any) R\u00E9f\u00E9rence en douane\n             de l'exp\u00E9diteur (si elle existe)", pageHeight / 1.4, 49, { align: 'left' });
+        doc.setFontSize(13);
+        doc.text('DECLARATION EN DOUANE', pageHeight / 1.1, 58, { align: 'left' });
         doc.setFontSize(10);
         doc.text('From', pageHeight / 290, 49, { align: 'left' });
         doc.setFontSize(9);
         doc.text('De', pageHeight / 290, 52, { align: 'left' });
+        doc.setFontSize(7);
+        doc.text("Peut être ouvert d'office", pageHeight / 0.8, 63, { align: 'left' });
+        doc.text("May be opened officially", pageHeight / 0.8, 50, { align: 'left' });
     };
     Cn23AService.prototype.addSenderInfo = function (doc, data) {
         var pageHeight = doc.internal.pageSize.height;
@@ -93,9 +97,9 @@ var Cn23AService = /** @class */ (function () {
         doc.setFontSize(7);
         doc.text('Quantité', pageHeight / 2.7, 112, { align: 'left' });
         doc.setFontSize(9);
-        doc.text('        Net Weight(3) ', pageHeight / 1.4, 109, { align: 'left' });
+        doc.text('         Net Weight(3) ', pageHeight / 1.4, 109, { align: 'left' });
         doc.setFontSize(7);
-        doc.text("           Poids Net(in kg)", pageHeight / 1.4, 112, { align: 'left' });
+        doc.text("            Poids Net(in kg)", pageHeight / 1.4, 112, { align: 'left' });
         doc.setFontSize(9);
         doc.text(' Valeur(5) ', pageHeight / 1.8, 109, { align: 'left' });
         doc.setFontSize(7);

@@ -38,8 +38,9 @@ export class Cn23AService {
         const pageWidth = doc.internal.pageSize.width;
 
         doc.setFont('helvetica', 'bold');
-        doc.setFontSize(9);
+        doc.setFontSize(13);
         doc.text('CUSTOMS DECLARATION                        CN23', pageHeight / 1.1, 45, { align: 'left' });
+        doc.setFontSize(9)
 
         const barcodeCanvas = document.createElement('canvas');
         JsBarcode(barcodeCanvas, `${data.codeBarre}`, {
@@ -51,16 +52,18 @@ export class Cn23AService {
 
         const barcodeImage = barcodeCanvas.toDataURL('image/png');
         doc.addImage(barcodeImage, 'PNG', 196, 63, 80, 30);
-        doc.line(pageWidth - 43, 46, pageWidth - 43, 52);
-        doc.line(pageWidth - 43, 59.2, pageWidth - 43, 65);
+        doc.line(pageWidth - 38, 46, pageWidth - 38, 52);
+        doc.line(pageWidth - 38, 59.2, pageWidth - 38, 65);
     }
 
     addRecipientInfo(doc: jsPDF, data: CourrierDto): void {
         const pageHeight = doc.internal.pageSize.height;
 
         doc.text('No. of item (barcode if any)', pageHeight / 1.1, 50, { align: 'left' });
-        doc.text('DECLARATION EN DOUANE', pageHeight / 1.1, 58, { align: 'left' });
+
         doc.text("N° de l'envoie(code à barres ,s'il existe)", pageHeight / 1.1, 63, { align: 'left' });
+
+
         doc.text(`Name : ${data.expediteurPrenom} ${data.expediteurNom}`, pageHeight / 19, 49, { align: 'left' });
         doc.text(`Adresse :  `, pageHeight / 19, 57, { align: 'left' });
         doc.text('Adresse (count)', pageHeight / 19, 63, { align: 'left' });
@@ -70,11 +73,16 @@ export class Cn23AService {
         doc.text(`             Sender’s Customs reference
              (if any) Référence en douane
              de l'expéditeur (si elle existe)`, pageHeight / 1.4, 49, { align: 'left' });
-        doc.setFontSize(10)
+        doc.setFontSize(13);
+        doc.text('DECLARATION EN DOUANE', pageHeight / 1.1, 58, { align: 'left' });
+        doc.setFontSize(10);
         doc.text('From', pageHeight / 290, 49, { align: 'left' });
         doc.setFontSize(9)
         doc.text('De', pageHeight / 290, 52, { align: 'left' });
+        doc.setFontSize(7)
 
+        doc.text("Peut être ouvert d'office", pageHeight / 0.8, 63, { align: 'left' });
+        doc.text("May be opened officially", pageHeight / 0.8, 50, { align: 'left' });
     }
 
     addSenderInfo(doc: jsPDF, data: CourrierDto): void {
@@ -106,9 +114,9 @@ export class Cn23AService {
         doc.setFontSize(7);
         doc.text('Quantité', pageHeight / 2.7, 112, { align: 'left' });
         doc.setFontSize(9);
-        doc.text('        Net Weight(3) ', pageHeight / 1.4 , 109, { align: 'left' });
+        doc.text('         Net Weight(3) ', pageHeight / 1.4 , 109, { align: 'left' });
         doc.setFontSize(7);
-        doc.text(`           Poids Net(in kg)`, pageHeight / 1.4, 112, { align: 'left' });
+        doc.text(`            Poids Net(in kg)`, pageHeight / 1.4, 112, { align: 'left' });
         doc.setFontSize(9);
         doc.text(' Valeur(5) ', pageHeight / 1.8, 109, { align: 'left' });
         doc.setFontSize(7);
@@ -178,9 +186,11 @@ export class Cn23AService {
         doc.setFontSize(5)
         doc.text(`Categorie de l'envoi`, pageHeight / 5, 153, { align: 'left' });
         doc.setFontSize(8);
-        doc.text('Gift cadeau ', pageHeight / 13, 158, { align: 'left' });
+        doc.text('Gift ', pageHeight / 13, 158, { align: 'left' });
         doc.text(`Documents`, pageHeight / 13, 162, { align: 'left' });
 
+        doc.setFontSize(5);
+        doc.text('cadeau', pageHeight / 9, 158, { align: 'left' });
         doc.setFontSize(9);
         doc.text(`Commercial sample (10)`, pageHeight / 3.2, 153, { align: 'left' });
         doc.setFontSize(5)
