@@ -59,26 +59,11 @@
                         <td>{{courrier.codeBarre}}</td>
                         <td>{{courrier.quantite}}</td>
                         <td>{{courrier.montant}}</td>
-<!--                        <td>-->
-
-<!--                            <input-->
-
-<!--                                style="background-color: darkgrey"-->
-<!--                                type="number"-->
-<!--                                pInputText-->
-<!--                                id="montants-{{courrier.id}}"-->
-<!--                                [disabled]="!showMontantField"-->
-<!--                                [(ngModel)]="courrier.montantTaxeDouane"-->
-<!--                                placeholder="Entrez le montant"-->
-<!--                            />-->
-
-
-<!--                        </td>-->
                         <td>{{courrier.poids}}</td>
                         <td>
                             <p-badge
-                                [value]="courrier?.statutCourrier?.libelle"
-                                [severity]="getBadgeSeverity(courrier?.statutCourrier?.libelle)">
+                                [value]="courrier?.statutCourrierLibelle"
+                                [severity]="getBadgeSeverity(courrier?.statutCourrierLibelle)">
                             </p-badge>
                         </td>
                     </tr>

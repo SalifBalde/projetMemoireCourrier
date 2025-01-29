@@ -46,6 +46,8 @@ export class ReceptionLinePacketComponent implements  OnInit {
     destinateurId: any;
      categori: CategorieDto;
 
+    errorMessage: string = '';
+
 
 
     constructor(
@@ -133,6 +135,13 @@ export class ReceptionLinePacketComponent implements  OnInit {
             this.codebarre = generatedCode; // Définit la valeur générée
         }
     }
+    validateCodeBarre(): void {
+        if (this.codebarre.length < 9) {
+            this.errorMessage = "Le code-barre doit contenir exactement 13 chiffres.";
+        } else {
+            this.errorMessage = "";
+        }
+    }
 
 
     getCatgories() {
@@ -172,6 +181,7 @@ export class ReceptionLinePacketComponent implements  OnInit {
         );
 
     }
+
     geCategorieById(categorId:string) {
         this.categorieService.getOneById(categorId).subscribe(
             (result) => {
@@ -186,8 +196,8 @@ export class ReceptionLinePacketComponent implements  OnInit {
         this.categorieService.getOneById(this.categorieId).subscribe(
             (result) => {
                 this.categori = result;
-                console.log(typeof(this.categori.typeCourrierId));
-
+                this.expediteurId= this.client?.id
+                this.destinateurId= this.destinataire?.id
                 // Création d'un objet avec les données à envoyer
                 const courrierData: CourrierCreateUpdateDto = {
                     poids: this.poids,
@@ -240,6 +250,7 @@ export class ReceptionLinePacketComponent implements  OnInit {
                         this.loading = false;
                     }
                 );
+
             },
             (error) => {
                 // Gérer les erreurs lors de la récupération de la catégorie
@@ -256,6 +267,8 @@ export class ReceptionLinePacketComponent implements  OnInit {
         this.codebarre = '';
         this.paysDestinationId=null
         this.categorieId=null
+        this.label
+
 
     }
 
@@ -281,7 +294,11 @@ export class ReceptionLinePacketComponent implements  OnInit {
             this.clientService
                 .update(this.client.id, this.formClient.value)
                 .subscribe(
-                    (client) => {
+                    (resultat) => {
+                        this.client= resultat
+                        this.formClient.patchValue({
+                            expediteurId: this.client?.id || '',
+                        });
                         this.clientDialog = false;
                         this.messageService.add({
                             severity: 'success',
@@ -307,9 +324,9 @@ export class ReceptionLinePacketComponent implements  OnInit {
             this.clientService.save(this.formClient.value).subscribe(
                 (result) => {
                     this.client = result;
-                   // this.client = { ...result };
-                   this.expediteurId= this.client?.id
-
+                    this.formClient.patchValue({
+                        expediteurId: this.client?.id || '',
+                    });
                     this.loading = false;
                     this.clientDialog = false;
                     this.messageService.add({
@@ -345,7 +362,12 @@ export class ReceptionLinePacketComponent implements  OnInit {
             this.clientService
                 .update(this.destinataire.id, this.formDestinataire.value)
                 .subscribe(
-                    () => {
+                    (resultat) => {
+                        this.destinataire= resultat
+                        this.destinataire = { ...resultat };
+                        this.formDestinataire.patchValue({
+                            destinataireId: this.destinataire?.id || '',
+                        });
                         this.destinataireDialog = false;
                         this.messageService.add({
                             severity: 'success',
@@ -371,7 +393,9 @@ export class ReceptionLinePacketComponent implements  OnInit {
             this.clientService.save(this.formDestinataire.value).subscribe(
                 (result) => {
                     this.destinataire = result;
-                    this.destinateurId = this.destinataire.id
+                    this.formDestinataire.patchValue({
+                        destinataireId: this.destinataire?.id || '',
+                    });
                     console.log(this.destinateurId)
                     this.loading = false;
                     this.destinataireDialog = false;
@@ -405,9 +429,11 @@ export class ReceptionLinePacketComponent implements  OnInit {
             this.clientService.searchClient(keyword).subscribe(
                 (client) => {
                     this.destinataire = { ...client };
-                    this.form.patchValue({
-                        destinataireId: this.destinataire?.id || ''
+                    console.log(this.destinataire)
+                    this.formDestinataire.patchValue({
+                        destinataireId:this.destinataire?.id || ''
                     });
+
                     this.loading = false;
                     this.buildFormDestinataire();
                     this.destinataireDialog = true;
@@ -434,7 +460,8 @@ export class ReceptionLinePacketComponent implements  OnInit {
             this.clientService.searchClient(keyword).subscribe(
                 (client) => {
                     this.client = { ...client };
-                    this.form.patchValue({
+                    console.log(client)
+                    this.formClient.patchValue({
                         expediteurId: this.client?.id || ''
                     });
                     this.loading = false;
