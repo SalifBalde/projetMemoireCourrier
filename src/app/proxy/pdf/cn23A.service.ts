@@ -183,8 +183,8 @@ export class Cn23AService {
 
         doc.setFontSize(9);
         doc.text(`Commercial sample (10)`, pageHeight / 3.2, 153, { align: 'left' });
-        doc.setFontSize(7)
-        doc.text('  Echantillon commercial', pageHeight / 2.08, 153, { align: 'left' });
+        doc.setFontSize(5)
+        doc.text('     Echantillon commercial', pageHeight / 2.08, 153, { align: 'left' });
         doc.setFontSize(8);
         doc.text('Returned goods ', pageHeight / 3.2, 158, { align: 'left' });
         doc.text(`Other`, pageHeight / 3.2, 162, { align: 'left' });
@@ -194,7 +194,7 @@ export class Cn23AService {
         doc.text('           Explanation:', pageHeight / 1.7, 162, { align: 'left' });
         doc.setFontSize(7)
         doc.text('   Explication:', pageHeight / 1.4, 162, { align: 'left' });
-        doc.setFontSize(7)
+        doc.setFontSize(5)
         doc.text(`Vente de biens`, pageHeight / 1.3, 153, { align: 'left' });
 
 
