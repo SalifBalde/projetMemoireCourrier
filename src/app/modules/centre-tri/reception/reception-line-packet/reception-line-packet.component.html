@@ -1,125 +1,154 @@
 
 <div class="p-fluid grid">
     <p-toast></p-toast>
-<div class="col-12 lg:col-6">
-    <div class="card">
-        <div class="grid formgrid align-items-center">
-            <!-- Titre de la section -->
-            <div class="col-12 field">
+
+    <div class="col-12 lg:col-6 md:px-1">
+        <div class="card">
+            <div class="grid formgrid">
+                <div class="col-12 field">
+                                <span class="text-900 text-xl block font-medium mb-3"> <p-button
+                                    icon="pi pi-user-plus" label="Ajouter Expéditeur" severity="success" (click)="openClient()" /></span>
+                </div>
+                <div class="col-12 lg:col-6 field">
+                                <span class="p-float-label">
+                                    <input id="float-input" disabled type="text" value="{{client.nom}}   {{client.prenom}}" pInputText
+                                           readonly />
+                                    <input style="display: none;" formControlName="expediteurId" id="float-input"
+                                           type="text" pInputText />
+                                    <label for="float-input">Nom complet</label>
+                                </span>
+                </div>
+                <div class="col-12 lg:col-6 field">
+                                <span class="p-float-label">
+                                    <input id="float-input" disabled type="text" value="{{client.cni}}" pInputText
+                                           readonly />
+                                    <label for="float-input">Cni</label>
+                                </span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="col-12 lg:col-6 md:px-1">
+        <div class="card">
+            <div class="grid formgrid">
+                <div class="col-12 field">
+                                <span class="text-100 text-xl block font-medium mb-3"><p-button
+                                    icon="pi pi-user-plus" label="Ajouter Destinataire" severity="success" (click)="openDestinataire()" /></span>
+                </div>
+                <div class="col-12 lg:col-6 field">
+                                <span class="p-float-label">
+                                    <input id="float-input" disabled type="text" value="{{ destinataire.nom}}  {{ destinataire.prenom}}"
+                                           pInputText readonly />
+                                    <input style="display: none;" formControlName="destinataireId" id="float-input"
+                                           type="text" pInputText />
+                                    <label for="float-input">Nom complet</label>
+                                </span>
+                </div>
+                <div class="col-12 lg:col-6 field">
+                                <span class="p-float-label">
+                                    <input id="float-input" disabled type="text" value="{{ destinataire.cni}}"
+                                           pInputText readonly />
+                                    <label for="float-input">Cin</label>
+                                </span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="col-12 lg:col-8 ">
+        <div class="card">
+            <div class="grid formgrid align-items-center">
+                <!-- Titre de la section -->
+                <div class="col-12 field">
                 <span class="text-900 text-xl block font-medium mb-1">
                     Informations Packet
                 </span>
-            </div>
+                </div>
 
-            <!-- Dropdown Pays -->
-            <div class="col-12 lg:col-6 field">
-                <p-dropdown
-                    [options]="pays$"
-                    optionLabel="libelle"
-                    optionValue="id"
-                    [filter]="true"
-                    filterBy="libelle"
-                    [(ngModel)]="paysDestinationId"
+                <!-- Dropdown Pays -->
+                <div class="col-12 lg:col-6 field">
+                    <p-dropdown
+                        [options]="pays$"
+                        optionLabel="libelle"
+                        optionValue="id"
+                        [filter]="true"
+                        filterBy="libelle"
+                        [(ngModel)]="paysDestinationId"
 
-                    [showClear]="true"
-                    placeholder="Choisir Pays">
-                    <ng-template pTemplate="selectedItem" let-selectedOption>
-                        <div class="flex align-items-center gap-2">
-                            <div>{{ selectedOption.libelle }}</div>
-                        </div>
-                    </ng-template>
-                    <ng-template let-structure pTemplate="item">
-                        <div class="flex align-items-center gap-2">
-                            <div>{{ structure.libelle }}</div>
-                        </div>
-                    </ng-template>
-                </p-dropdown>
-            </div>
+                        [showClear]="true"
+                        placeholder="Choisir Pays">
+                        <ng-template pTemplate="selectedItem" let-selectedOption>
+                            <div class="flex align-items-center gap-2">
+                                <div>{{ selectedOption.libelle }}</div>
+                            </div>
+                        </ng-template>
+                        <ng-template let-structure pTemplate="item">
+                            <div class="flex align-items-center gap-2">
+                                <div>{{ structure.libelle }}</div>
+                            </div>
+                        </ng-template>
+                    </p-dropdown>
+                </div>
 
-            <!-- Dropdown Catégorie -->
-            <div class="col-12 lg:col-6 field">
-                <p-dropdown
-                    [options]="categorie$"
-                    optionLabel="libelle"
-                    optionValue="id"
-                    [filter]="true"
-                    filterBy="libelle"
+                <!-- Dropdown Catégorie -->
+                <div class="col-12 lg:col-6 field">
+                    <p-dropdown
+                        [options]="categorie$"
+                        optionLabel="libelle"
+                        optionValue="id"
+                        [filter]="true"
+                        filterBy="libelle"
 
-                    [(ngModel)]="categorieId"
-                    [showClear]="true"
-                    placeholder="Choisir Catégorie">
-                    <ng-template pTemplate="selectedItem" let-selectedOption>
-                        <div class="flex align-items-center gap-2">
-                            <div>{{ selectedOption.libelle }}</div>
-                        </div>
-                    </ng-template>
-                </p-dropdown>
-            </div>
-            <!-- Espace ajouté entre "Catégorie" et "Poids" -->
-            <div class="col-12 mt-6"></div>
+                        [(ngModel)]="categorieId"
+                        [showClear]="true"
+                        placeholder="Choisir Catégorie">
+                        <ng-template pTemplate="selectedItem" let-selectedOption>
+                            <div class="flex align-items-center gap-2">
+                                <div>{{ selectedOption.libelle }}</div>
+                            </div>
+                        </ng-template>
+                    </p-dropdown>
+                </div>
+                <!-- Espace ajouté entre "Catégorie" et "Poids" -->
+                <div class="col-12 mt-6"></div>
 
-            <!-- Champ Poids -->
-            <div class="col-12 lg:col-6 field">
+                <!-- Champ Poids -->
+                <div class="col-12 lg:col-6 field">
                 <span class="p-float-label">
                     <input type="number" pInputText  [(ngModel)]="poids" />
                     <label for="poids">Poids (g)</label>
                 </span>
-            </div>
-            <div class="col-12 lg:col-6 field">
-                <span class="p-float-label">
-                                    <p-inputGroup>
-                                        <p-inputGroupAddon>{{label}}</p-inputGroupAddon>
-                                        <input  placeholder="code barre" [(ngModel)]="codebarre" pKeyFilter="num"  pInputText />
-                                      <p-inputGroupAddon>SN</p-inputGroupAddon>
-                                    </p-inputGroup>
-                                </span>
-            </div>
-
-        </div>
-    </div>
-</div>
-
-
-
-<div class="col-12 lg:col-6">
-        <div class="card">
-            <div class="grid formgrid align-items-center">
-                <!-- Expéditeur Section -->
-                <div class="col-12 lg:col-6 field">
-                <span class="text-900 text-xl block font-medium mb-3">
-                    Ajouter Expéditeur
-                    <p-button icon="pi pi-user-plus" severity="success" (click)="openClient()"></p-button>
-                </span>
-                    <span class="p-float-label">
-                    <input id="expediteur-input" [(ngModel)]="expediteurId" type="text"  pInputText />
-                    <label for="expediteur-input">Téléphone Expéditeur</label>
-                </span>
+                </div>
+                <div class="col-12 mb-2 lg:col-6 lg:mb-3">
+                 <span class="p-float-label">
+                    <p-inputGroup>
+                      <input [(ngModel)]="label" pInputText class="custom-label-input small-label" />
+                      <input id="codebarre" placeholder="Code barre" [(ngModel)]="codebarre"
+                             pInputText pKeyFilter="num" maxlength="9" minlength="9"
+                             (input)="validateCodeBarre()" class="p-inputtext"
+                             #codebarreInput="ngModel" required />
+                        <p-inputGroupAddon>SN</p-inputGroupAddon>
+                    </p-inputGroup>
+              </span>
+                    <small class="p-error" *ngIf="codebarreInput.invalid && codebarreInput.touched">
+                        Le code-barre doit contenir exactement 13 chiffres.
+                    </small>
                 </div>
 
-                <!-- Destinataire Section -->
-                <div class="col-12 lg:col-6 field">
-                <span class="text-900 text-xl block font-medium mb-3">
-                    Ajouter Destinataire
-                    <p-button icon="pi pi-user-plus" severity="success" (click)="openDestinataire()"></p-button>
-                </span>
-                    <span class="p-float-label">
-                    <input id="destinateur-input"   [(ngModel)]="destinateurId" type="text"  pInputText />
-                    <label for="destinateur-input">Téléphone Destinataire</label>
-                </span>
-                </div>
             </div>
         </div>
     </div>
-</div>
-    <div class="col-12 lg:col-3 field">
-        <p-button (click)="saveColis()"  label="Enregistrer" severity="success" />
+
+
+    <div class="col-3 lg:col-offset-3 field " style="float:right">
+        <p-button (click)="saveColis()"  label="Enregistrer" severity="info" />
     </div>
 
+</div>
 
 
-
-<p-dialog [(visible)]="clientDialog" [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" [style]="{ width: '50vw' }"
-          [draggable]="false" [resizable]="false" header="Ajouter" [modal]="true" class="p-fluid">
+<p-dialog [(visible)]="clientDialog" [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false" header="Ajouter" [modal]="true" class="p-fluid">
 
     <form [formGroup]="formClient" (ngSubmit)="saveClient()">
         <div class="row">
@@ -127,7 +156,7 @@
                 <div class="col-12 mb-2 lg:col-6 lg:mb-3">
                     <div class="flex align-items-center">
                         <label for="cni" class="font-semibold w-6rem">Téléphone:</label>
-                        <input pInputText  pKeyFilter="num"  id="telephone"    formControlName="telephone"
+                        <input pInputText  pKeyFilter="num"  id="telephone"   (input)="searchClient()" formControlName="telephone"
                                class="flex-auto" autocomplete="off" />
                     </div>
                 </div>
@@ -203,7 +232,7 @@
                 <div class="col-12 mb-2 lg:col-6 lg:mb-3">
                     <div class="flex align-items-center">
                         <label for="cni" class="font-semibold w-6rem">Téléphone:</label>
-                        <input pInputText  pKeyFilter="num"  id="telephone"  formControlName="telephone"
+                        <input pInputText  pKeyFilter="num"  id="telephone" (input)="searchDestinataire()" formControlName="telephone"
                                class="flex-auto" autocomplete="off" />
 <!--                        (input)="searchDestinataire()"-->
                     </div>
