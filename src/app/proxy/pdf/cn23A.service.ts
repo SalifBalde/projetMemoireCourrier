@@ -116,21 +116,29 @@ export class Cn23AService {
         doc.setFontSize(9);
         doc.text('For commercial items only ', pageHeight / 1, 108, { align: 'left' });
         doc.text('HS tarif numner(7)      Country of Origin of goods(8)', pageHeight / 1, 113, { align: 'left' });
-        doc.text(`${data.poids}`, pageHeight / 1.2, 118, { align: 'left' });
-        doc.text(`${data.valeurDeclare}`, pageHeight / 1.6, 118, { align: 'left' });
+        // doc.text(`${data.poids}`, pageHeight / 1.2, 118, { align: 'left' });
         // doc.text(`${data.valeurDeclare}`, pageHeight / 1.6, 118, { align: 'left' });
 
         doc.text(`620343                          SN(${data.paysOrigineLibelle})`, pageHeight / 1, 118, { align: 'left' });
         doc.setFont('helvetica', 'bold');
 
         let yPosition = 118;
-
+        let montant = 0;
+        let totalWeight = 0;
+        let weight = 0;
+        let totalValue = 0 ;
         if (data.details && data.details.length > 0) {
             data.details.forEach((detail) => {
-                doc.text(detail.produitLibelle || '', 1.2, yPosition);
-                doc.text(detail.quantite?.toString() || '1', 1.2, yPosition);
+                doc.text(detail.produitLibelle || 'test', 36, yPosition);
+                doc.text(detail.quantite?.toString() || '', 95, yPosition);
+                montant = detail.quantite * detail.prix;
+                doc.text(  `${montant}` || '', 134, yPosition);
+                weight = data.poids;
+                doc.text(data.poids?.toString() || '2g', 174, yPosition);
 
-                yPosition += 10;
+                totalValue += montant;
+                totalWeight += weight;
+                yPosition += 6;
             });
         } else {
             doc.setFontSize(9);
@@ -142,18 +150,18 @@ export class Cn23AService {
         const positionFactor = parseInt(parts[0]) + parseInt(parts[1]) / 6.2 + parseInt(parts[2]) / 1000;
 
         const yPos = pageHeight / positionFactor;
-        doc.text(`Total value (5)`, yPos, 143, { align: 'left' });
+        doc.text(`Total gross weight (4)`, yPos, 143, { align: 'left' });
         doc.setFontSize(7);
-        doc.text('Valeur total (5)', yPos, 146, { align: 'left' });
+        doc.text('Poids total (5)', yPos, 146, { align: 'left' });
         doc.setFontSize(10);
-        doc.text(`11300000 XOF`, pageHeight / 1.2, 149, { align: 'left' });
+        doc.text(`${totalWeight} g`, pageHeight / 1.1, 149, { align: 'right' });
 
         doc.setFontSize(9);
-        doc.text(`Total gross weight (4)`, pageHeight / 1.4, 143, { align: 'right' });
+        doc.text(`Total value (5)`, pageHeight / 1.4, 143, { align: 'right' });
         doc.setFontSize(7);
-        doc.text(' Poids total (5)', pageHeight / 1.8, 146, { align: 'left' });
+        doc.text(' Valeur total (5)', pageHeight / 1.8, 146, { align: 'left' });
         doc.setFontSize(10);
-        doc.text(`11300000`, pageHeight / 1.5, 149, { align: 'left' });
+        doc.text(`${totalValue} XOF`, pageHeight / 1.5, 149, { align: 'left' });
 
 
         doc.setFontSize(9);

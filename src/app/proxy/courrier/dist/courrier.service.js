@@ -30,6 +30,9 @@ var CourrierService = /** @class */ (function () {
         return this.httpClient.get(new_api_host, this.httpOptions);
     };
     CourrierService.prototype.save = function (item) {
+        return this.httpClient.post(this.api_host, item, this.httpOptions);
+    };
+    CourrierService.prototype.savePaquet = function (item) {
         return this.httpClient.post(this.api_host + '/savecourrier', item, this.httpOptions);
     };
     CourrierService.prototype["delete"] = function (id) {
@@ -39,6 +42,10 @@ var CourrierService = /** @class */ (function () {
     CourrierService.prototype.update = function (id, item) {
         var new_api_host = this.routerParam(this.api_host);
         return this.httpClient.put(new_api_host + id, item, this.httpOptions);
+    };
+    CourrierService.prototype.livraison = function (id, item) {
+        var new_api_host = this.routerParam(this.api_host, 'livraison', id);
+        return this.httpClient.put(new_api_host, item, this.httpOptions);
     };
     // Méthode pour mettre à jour plusieurs courriers
     CourrierService.prototype.findCourrierByAgent = function (search) {
@@ -53,10 +60,10 @@ var CourrierService = /** @class */ (function () {
         var new_api_host = this.routerParam(this.api_host, id);
         return this.httpClient.get(new_api_host, this.httpOptions);
     };
-    // getOneById(id: string) {
-    //   let new_api_host = this.routerParam(this.api_host, id);
-    //   return this.httpClient.get<CourrierDto>(new_api_host, this.httpOptions);
-    // }
+    CourrierService.prototype.updateCourriers = function (courriers) {
+        var url = environment_1.environment.api_host + "courrier/update";
+        return this.httpClient.put(url, courriers, this.httpOptions);
+    };
     CourrierService.prototype.findCourrierByCriteres = function (search) {
         var new_api_host = this.routerParam(this.api_host, 'search-by-criteria');
         return this.httpClient.post(new_api_host, search, this.httpOptions);
@@ -65,18 +72,12 @@ var CourrierService = /** @class */ (function () {
         var new_api_host = this.routerParam(this.api_host + '/getByreference', id);
         return this.httpClient.get(new_api_host, this.httpOptions);
     };
-    CourrierService.prototype.routerParam = function (baseUrl) {
-        var params = [];
-        for (var _i = 1; _i < arguments.length; _i++) {
-            params[_i - 1] = arguments[_i];
-        }
-        return baseUrl + "/" + params.join('/');
-    };
     CourrierService.prototype.findCourrierByStrutureDepot = function (idStrut) {
         return this.httpClient.get(this.api_host + '/structureDepot/' + idStrut, this.httpOptions);
     };
-    CourrierService.prototype.findCourrierByTypeCourrierAndStructureDepotAndIdStut = function (idType, idStructureDepot, IdStatut) {
-        return this.httpClient.get(this.api_host + '/by-type/' + idType + '/' + idStructureDepot + '/' + IdStatut, this.httpOptions);
+    CourrierService.prototype.findCourrierByTypeCourrierAndStructureDepotAndIdStut = function (idType, idStructureDepot, idStatut) {
+        var new_api_host = this.routerParam(this.api_host, 'by-type', idType, idStructureDepot, idStatut);
+        return this.httpClient.get(new_api_host, this.httpOptions);
     };
     CourrierService.prototype.findCourrierByStrutureDepotAndStatutId = function (idStrut, idStatutCourrier) {
         return this.httpClient.get(this.api_host + '/byStructureDestinationAndStatut/' + idStrut + '/' + idStatutCourrier, this.httpOptions);
@@ -108,6 +109,13 @@ var CourrierService = /** @class */ (function () {
             idStatutCourrier: idStatutCourrier
         };
         return this.httpClient.get(this.api_host + "/searchCourriersImport", { params: params });
+    };
+    CourrierService.prototype.routerParam = function (baseUrl) {
+        var params = [];
+        for (var _i = 1; _i < arguments.length; _i++) {
+            params[_i - 1] = arguments[_i];
+        }
+        return baseUrl + "/" + params.join('/');
     };
     CourrierService = __decorate([
         core_1.Injectable({

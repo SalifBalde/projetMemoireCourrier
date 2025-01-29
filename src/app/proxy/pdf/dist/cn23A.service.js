@@ -65,9 +65,9 @@ var Cn23AService = /** @class */ (function () {
         doc.setFontSize(6);
         doc.text("             Sender\u2019s Customs reference\n             (if any) R\u00E9f\u00E9rence en douane\n             de l'exp\u00E9diteur (si elle existe)", pageHeight / 1.4, 49, { align: 'left' });
         doc.setFontSize(10);
-        doc.text('From', pageHeight / 130, 49, { align: 'left' });
+        doc.text('From', pageHeight / 290, 49, { align: 'left' });
         doc.setFontSize(9);
-        doc.text('De', pageHeight / 130, 52, { align: 'left' });
+        doc.text('De', pageHeight / 290, 52, { align: 'left' });
     };
     Cn23AService.prototype.addSenderInfo = function (doc, data) {
         var pageHeight = doc.internal.pageSize.height;
@@ -79,24 +79,10 @@ var Cn23AService = /** @class */ (function () {
         doc.text('PostCode 93117                         City DAKAR ', pageHeight / 19, 99, { align: 'left' });
         doc.text("State " + data.paysDestinationLibelle + "                                           COUNTRY US(" + data.paysDestinationLibelle + ")", pageHeight / 19, 103, { align: 'left' });
         doc.setFontSize(10);
-        doc.text('To', pageHeight / 130, 83, { align: 'left' });
+        doc.text('To', pageHeight / 290, 83, { align: 'left' });
         doc.setFontSize(9);
-        doc.text('A', pageHeight / 130, 88, { align: 'left' });
+        doc.text('A', pageHeight / 290, 88, { align: 'left' });
     };
-    // addDetails(doc: jsPDF, data: CourrierDto.details): void {
-    //     const pageHeight = doc.internal.pageSize.height;
-    //     doc.text('Detailed description of contents(1) ', pageHeight / 3, 109, { align: 'right' });
-    //     doc.text('Quality(2) ', pageHeight / 2, 109, { align: 'right' });
-    //     doc.text('Net Weight(3) ', pageHeight / 1.5, 109, { align: 'right' });
-    //     doc.text('Valeur(5) ', pageHeight / 1.2, 109, { align: 'right' });
-    //     doc.text('For commercial items only ', pageHeight / 1, 108, { align: 'left' });
-    //     doc.text('HS tarif numner(7)      Country of Origin of goods(8)', pageHeight / 1, 113, { align: 'left' });
-    //     doc.text(`${data.details}`, pageHeight / 7, 118, { align: 'left' });
-    //     doc.text('1', pageHeight / 2, 118, { align: 'left' });
-    //     doc.text('3.500', pageHeight / 1.5, 118, { align: 'left' });
-    //     doc.text('620343                          SN(Sénégal)', pageHeight / 1, 118, { align: 'left' });
-    //     doc.text('1', pageHeight / 2, 118, { align: 'left' });
-    // }
     Cn23AService.prototype.addDetails = function (doc, data) {
         var pageHeight = doc.internal.pageSize.height;
         doc.text('Detailed description of contents(1) ', pageHeight / 19, 109, { align: 'left' });
@@ -117,25 +103,48 @@ var Cn23AService = /** @class */ (function () {
         doc.setFontSize(9);
         doc.text('For commercial items only ', pageHeight / 1, 108, { align: 'left' });
         doc.text('HS tarif numner(7)      Country of Origin of goods(8)', pageHeight / 1, 113, { align: 'left' });
-        doc.text("" + data.poids, pageHeight / 1.5, 118, { align: 'left' });
-        doc.text("" + data.valeurDeclare, pageHeight / 2.5, 118, { align: 'left' });
+        // doc.text(`${data.poids}`, pageHeight / 1.2, 118, { align: 'left' });
+        // doc.text(`${data.valeurDeclare}`, pageHeight / 1.6, 118, { align: 'left' });
         doc.text("620343                          SN(" + data.paysOrigineLibelle + ")", pageHeight / 1, 118, { align: 'left' });
         doc.setFont('helvetica', 'bold');
+        var yPosition = 118;
+        var montant = 0;
+        var totalWeight = 0;
+        var weight = 0;
+        var totalValue = 0;
+        if (data.details && data.details.length > 0) {
+            data.details.forEach(function (detail) {
+                var _a, _b;
+                doc.text(detail.produitLibelle || 'test', 36, yPosition);
+                doc.text(((_a = detail.quantite) === null || _a === void 0 ? void 0 : _a.toString()) || '', 95, yPosition);
+                montant = detail.quantite * detail.prix;
+                doc.text("" + montant || '', 134, yPosition);
+                weight = data.poids;
+                doc.text(((_b = data.poids) === null || _b === void 0 ? void 0 : _b.toString()) || '2g', 174, yPosition);
+                totalValue += montant;
+                totalWeight += weight;
+                yPosition += 6;
+            });
+        }
+        else {
+            doc.setFontSize(9);
+            doc.text('No details available.', 10, yPosition);
+        }
         var hierarchicalValue = '1.2.9';
         var parts = hierarchicalValue.split('.');
         var positionFactor = parseInt(parts[0]) + parseInt(parts[1]) / 6.2 + parseInt(parts[2]) / 1000;
         var yPos = pageHeight / positionFactor;
-        doc.text("Total value (5)", yPos, 143, { align: 'left' });
+        doc.text("Total gross weight (4)", yPos, 143, { align: 'left' });
         doc.setFontSize(7);
-        doc.text('Valeur total (5)', yPos, 146, { align: 'left' });
+        doc.text('Poids total (5)', yPos, 146, { align: 'left' });
         doc.setFontSize(10);
-        doc.text("11300000 XOF", pageHeight / 1.2, 149, { align: 'left' });
+        doc.text(totalWeight + " g", pageHeight / 1.1, 149, { align: 'right' });
         doc.setFontSize(9);
-        doc.text("Total gross weight (4)", pageHeight / 1.4, 143, { align: 'right' });
+        doc.text("Total value (5)", pageHeight / 1.4, 143, { align: 'right' });
         doc.setFontSize(7);
-        doc.text(' Poids total (5)', pageHeight / 1.8, 146, { align: 'left' });
+        doc.text(' Valeur total (5)', pageHeight / 1.8, 146, { align: 'left' });
         doc.setFontSize(10);
-        doc.text("11300000", pageHeight / 1.5, 149, { align: 'left' });
+        doc.text(totalValue + " XOF", pageHeight / 1.5, 149, { align: 'left' });
         doc.setFontSize(9);
         doc.text("Postal Charges/Fees (9)", pageHeight / 1.06, 143, { align: 'left' });
         doc.setFontSize(7);
@@ -198,15 +207,6 @@ var Cn23AService = /** @class */ (function () {
         doc.text("Facture", pageHeight / 1.4, 187, { align: 'left' });
         doc.setFontSize(8);
         doc.text(' No. of invoice ', pageHeight / 1.8, 192, { align: 'left' });
-        var yPosition = 128;
-        if (data.details && data.details.length > 0) {
-            data.details.forEach(function (detail) {
-                var _a;
-                doc.text(detail.produitLibelle || '', 10, yPosition);
-                doc.text(((_a = detail.quantite) === null || _a === void 0 ? void 0 : _a.toString()) || '1', 80, yPosition);
-                yPosition += 10;
-            });
-        }
     };
     Cn23AService.prototype.addFooter = function (doc, data) {
         var pageHeight = doc.internal.pageSize.height;
