@@ -59,15 +59,18 @@ export class Cn23AService {
     addRecipientInfo(doc: jsPDF, data: CourrierDto): void {
         const pageHeight = doc.internal.pageSize.height;
 
+        doc.setFontSize(9)
+
         doc.text('No. of item (barcode if any)', pageHeight / 1.1, 50, { align: 'left' });
 
         doc.text("N° de l'envoie(code à barres ,s'il existe)", pageHeight / 1.1, 63, { align: 'left' });
 
+        doc.setFontSize(7)
 
         doc.text(`Name : ${data.expediteurPrenom} ${data.expediteurNom}`, pageHeight / 19, 49, { align: 'left' });
-        doc.text(`Adresse :  `, pageHeight / 19, 57, { align: 'left' });
-        doc.text('Adresse (count)', pageHeight / 19, 63, { align: 'left' });
-        doc.text('PostCode 10500                         City DAKAR', pageHeight / 19, 73, { align: 'left' });
+        doc.text(`Address : ${data.expediteurAdresse}  `, pageHeight / 19, 57, { align: 'left' });
+        doc.text('Address (cont.)', pageHeight / 19, 63, { align: 'left' });
+        doc.text(`PostCode ${data.expediteurCodePostal}                         City ${data.expediteurCity}`, pageHeight / 19, 73, { align: 'left' });
         doc.text(`State ${data.paysOrigineLibelle}                        COUNTRY SN (${data.paysOrigineLibelle})`, pageHeight / 2.2, 78, { align: 'right' });
         doc.setFontSize(6)
         doc.text(`             Sender’s Customs reference
@@ -90,10 +93,10 @@ export class Cn23AService {
 
         doc.text(`Name : ${data.destinatairePrenom}  ${data.destinataireNom}`, pageHeight / 19, 83, { align: 'left' });
         doc.text(`Adresse : ${data.destinataireAdresse} `, pageHeight / 19, 88, { align: 'left' });
-        doc.text('Adresse (count) ', pageHeight / 19, 94, { align: 'left' });
+        doc.text('Adresse (cont.) ', pageHeight / 19, 94, { align: 'left' });
         doc.text('Impoter reference', pageHeight / 1, 94, { align: 'center' });
         doc.text('Impoter telephone', pageHeight / 1, 103, { align: 'center' });
-        doc.text('PostCode 93117                         City DAKAR ', pageHeight / 19, 99, { align: 'left' });
+        doc.text(`PostCode ${data.destinataireCodePostal}                          City ${data.destinataireCity} `, pageHeight / 19, 99, { align: 'left' });
         doc.text(`State ${data.paysDestinationLibelle}                                           COUNTRY US(${data.paysDestinationLibelle})`, pageHeight / 19, 103, { align: 'left' });
         doc.setFontSize(10)
         doc.text('To', pageHeight / 290, 83, { align: 'left' });
@@ -114,7 +117,7 @@ export class Cn23AService {
         doc.setFontSize(7);
         doc.text('Quantité', pageHeight / 2.7, 112, { align: 'left' });
         doc.setFontSize(9);
-        doc.text('         Net Weight(3) ', pageHeight / 1.4 , 109, { align: 'left' });
+        doc.text('         Net Weight(3) ', pageHeight / 1.4, 109, { align: 'left' });
         doc.setFontSize(7);
         doc.text(`            Poids Net(in kg)`, pageHeight / 1.4, 112, { align: 'left' });
         doc.setFontSize(9);
@@ -134,13 +137,13 @@ export class Cn23AService {
         let montant = 0;
         let totalWeight = 0;
         let weight = 0;
-        let totalValue = 0 ;
+        let totalValue = 0;
         if (data.details && data.details.length > 0) {
             data.details.forEach((detail) => {
                 doc.text(detail.produitLibelle || 'test', 36, yPosition);
                 doc.text(detail.quantite?.toString() || '', 95, yPosition);
                 montant = detail.quantite * detail.prix;
-                doc.text(  `${montant}` || '', 134, yPosition);
+                doc.text(`${montant}` || '', 134, yPosition);
                 weight = data.poids;
                 doc.text(data.poids?.toString() || '2g', 174, yPosition);
 
@@ -165,7 +168,7 @@ export class Cn23AService {
         doc.text(`${totalWeight} g`, pageHeight / 1.1, 149, { align: 'right' });
 
         doc.setFontSize(9);
-        doc.text(`Total value (5)`, pageHeight / 1.4, 143, { align: 'right' });
+        doc.text(`       Total value (5)`, pageHeight / 1.9, 143, { align: 'left' });
         doc.setFontSize(7);
         doc.text(' Valeur total (5)', pageHeight / 1.8, 146, { align: 'left' });
         doc.setFontSize(10);
@@ -175,7 +178,7 @@ export class Cn23AService {
         doc.setFontSize(9);
         doc.text(`Postal Charges/Fees (9)`, pageHeight / 1.06, 143, { align: 'left' });
         doc.setFontSize(7);
-        doc.text('Frais de port/Frais', pageHeight / 0.9, 143, { align: 'left' });
+        doc.text('  Frais de port/Frais', pageHeight / 0.9, 143, { align: 'left' });
         doc.setFontSize(10);
         doc.text(`${data.taxeDouane}`, pageHeight / 0.8, 149, { align: 'left' });
 
@@ -199,11 +202,11 @@ export class Cn23AService {
         doc.text('Returned goods ', pageHeight / 3.2, 158, { align: 'left' });
         doc.text(`Other`, pageHeight / 3.2, 162, { align: 'left' });
         doc.setFontSize(9);
-        doc.text('              Sales of goods :', pageHeight / 1.7, 153, { align: 'left' });
+        doc.text('              Sales of goods', pageHeight / 1.7, 153, { align: 'left' });
         doc.setFontSize(9);
         doc.text('           Explanation:', pageHeight / 1.7, 162, { align: 'left' });
         doc.setFontSize(7)
-        doc.text('   Explication:', pageHeight / 1.4, 162, { align: 'left' });
+        doc.text('     Explication:', pageHeight / 1.4, 162, { align: 'left' });
         doc.setFontSize(5)
         doc.text(`Vente de biens`, pageHeight / 1.3, 153, { align: 'left' });
 
@@ -213,7 +216,16 @@ export class Cn23AService {
         doc.setFontSize(7)
         doc.text(`                  Bureau d'origine/Date de dépôt`, pageHeight / 0.9, 153, { align: 'left' });
         doc.setFontSize(9)
-        doc.text(`12/01/2025`, pageHeight / 0.9, 162, { align: 'left' });
+        const createdAt = new Date(data.createdAt);
+
+        const day = String(createdAt.getDate()).padStart(2, '0');
+        const month = String(createdAt.getMonth() + 1).padStart(2, '0');
+        const year = createdAt.getFullYear();
+
+        const formattedDate = `${day}/${month}/${year}`;
+
+        doc.text(formattedDate, pageHeight / 0.9, 162, { align: 'left' });
+
         doc.setFontSize(7)
         doc.text(`I certify that the particulars given in this customs declaration are \ncorrect and that this item does not contain any
 dangerous article or articles prohibited by legislation or

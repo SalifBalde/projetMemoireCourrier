@@ -72,10 +72,12 @@ export class CourrierCreateUpdateDto {
     expediteurCodePostal?: string;
     expediteurCity?: string;
     recommande?: boolean;
+    createdAt?: string;
     ar?: boolean;
     express?: boolean;
     details?: CourrierDetailsDto[] ;
   }
+
 
 
   export class CourrierDetailsDto {
