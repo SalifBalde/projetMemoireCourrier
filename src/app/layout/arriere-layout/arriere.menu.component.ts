@@ -240,7 +240,7 @@ export class ArriereMenuComponent implements OnInit {
                 label: 'Reporting',
                 items: [
                     {
-                        label: 'Report Jt',
+                        label: 'Report ',
                         icon: 'pi pi-fw pi-file-pdf',
                         routerLink: ['/arriere/rapport'],
                     },

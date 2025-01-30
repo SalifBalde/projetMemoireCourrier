@@ -1,26 +1,60 @@
 <div class="card p-fluid">
-    <form [formGroup]="form">
-        <div class="grid">
-            <div class="col-12 md:col-6">
-                <label for="dateDebut">Du</label>
-                <p-calendar formControlName="dateDebut" id="dateDebut" [showIcon]="true" inputId="icon"/>
+    <form  (ngSubmit)="searchfermeture()">
+        <div class="grid justify-content-center align-items-center">
+            <!-- Date début -->
+            <div class="col-3 md:col-5">
+                <label for="datedebut" class="block">Du</label>
+                <p-calendar
+                    [(ngModel)]="datedebut"
+                    name="datedebut"
+                    id="datedebut"
+                    [showIcon]="true"
+                    inputId="icon"
+                    dateFormat="dd/mm/yy"
+                    placeholder="Sélectionnez une date">
+                </p-calendar>
             </div>
-            <div class="col-12 md:col-6">
-                <label for="dateFin">Au</label>
-                <p-calendar formControlName="dateFin" id="dateFin" [showIcon]="true" inputId="icon"/>
-            </div>
-            <div class="col-12 md:col-6">
-                <label for="prenom">Numero</label>
-                <input formControlName="prenom" id="prenom" pInputText/>
-            </div>
-            <div class="col-12 md:col-6">
-                <label for="nom">Bureau</label>
-                <input formControlName="nom" id="nom" pInputText/>
+
+            <!-- Date fin -->
+            <div class="col-3 md:col-5">
+                <label for="datefin" class="block">Au</label>
+                <p-calendar
+                    [(ngModel)]="datefin"
+                    name="datefin"
+                    id="datefin"
+                    [showIcon]="true"
+                    inputId="icon"
+                    dateFormat="dd/mm/yy"
+                    placeholder="Sélectionnez une date">
+                </p-calendar>
             </div>
         </div>
-        <div class="p-formgrid flex col-6 col-offset-3 justify-content-center">
-        <p-button label="Rechercher" icon="pi pi-check" severity="primary" [loading]="loadingExpedition" (onClick)="searchExpeditionByCriteres()"/>
-        <p-button *ngIf="isEmpty()" label="effacer" icon="pi pi-times" severity="danger" [loading]="loadingReset" (onClick)="resetForm()"/>
+
+        <!-- Boutons d'action -->
+        <div class="p-formgrid grid justify-content-center mt-4">
+            <!-- Bouton Réinitialiser -->
+            <div class="col-4">
+                <p-button
+                    *ngIf="isEmpty()"
+                    label="Réinitialiser"
+                    icon="pi pi-refresh"
+                    severity="danger"
+                    [loading]="loadingReset"
+                    (onClick)="resetForm()"
+                    class="mt-4">
+                </p-button>
+            </div>
+
+            <!-- Bouton Rechercher -->
+            <div class="col-4">
+                <p-button
+                    label="Rechercher"
+                    icon="pi pi-check"
+                    severity="secondary"
+                    type="submit"
+                    class="mt-4">
+                </p-button>
+            </div>
         </div>
     </form>
 </div>
@@ -28,45 +62,69 @@
     <div class="col-12">
         <div class="card px-4 py-4">
             <p-toast></p-toast>
-            <p-toolbar styleClass="mb-4">
-                <ng-template pTemplate="left">
-                    <div class="my-2">
-                        <ul class="list-none p-0 m-0 w-full">
-                            <li class="mb-1"><span class="font-medium text-900"> Rapport JT3:</span></li>
 
-                        </ul>
+
+            <!--               -->
+            <div  *ngIf="!attente" style="display: flex; justify-content: center; align-items: center; height: 10vh;">
+                <h5 class="spinner">Veuillez patienter....</h5>
+                <p-progressSpinner class="spinner"
+                                   [style]="{ 'width': '80px', 'height': '80px' }">
+
+                </p-progressSpinner>
+            </div>
+
+
+            <p-table #dt [value]="fermetures"  dataKey="id" selectionMode="multiple"   [rows]="10"
+                     [rowsPerPageOptions]="[10, 25, 50]"
+                     [paginator]="true"
+                     [showCurrentPageReport]="true"
+                     [globalFilterFields]="['destination','dateFerméture','numero']"
+                     [tableStyle]="{'min-width': '50rem'} " currentPageReportTemplate="Affichage des {first} aux {last}èmes des  {totalRecords} entrées">
+                <ng-template pTemplate="caption">
+                    <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+                        <h2 class="m-0">Liste des Fermetures   </h2>
+
+                        <span class="p-input-icon-right " style="float:right">
+                        <input
+                            pInputText
+                            type="text"
+                            (input)="dt.filterGlobal($event.target.value, 'contains')"
+                            placeholder="Rechercher...."
+                        />
+                            <i class="pi pi-search"></i>
+                        </span>
+
                     </div>
                 </ng-template>
-                <ng-template pTemplate="right">
-                    <button pButton type="button" icon="pi pi-file-pdf" class="p-button-warning mr-2" (click)="generatePdf()" [disabled]="loadingExpedition"></button>
-                    <button pButton type="button" icon="pi pi-file-excel" (click)="dt.exportCSV()" [disabled]="loadingExpedition"></button>
-                </ng-template>
-            </p-toolbar>
-            <p-table #dt [value]="expeditions" styleClass="p-datatable-gridlines" [tableStyle]="{ 'min-width': '50rem' }"  [paginator]="true" [rows]=5 [globalFilterFields]="['code','prenomDestinataire','nomDestinataire','montant','createdAt']">
+
                 <ng-template pTemplate="header">
+
                     <tr>
-                        <th>Code</th>
-                        <th>Bureau Depot</th>
-                        <th>Bureau Destination</th>
-                        <th>Date</th>
+                        <th  pSortableColumn="destination" >Destination<p-sortIcon field="destination" /></th>
+                        <th pSortableColumn="dateFerméture">Date Ferméture<p-sortIcon field="dateFerméture" /></th>
+                        <th pSortableColumn=" numero">Numéro Dépéche<p-sortIcon field="numero"/> </th>
+                        <th>Action</th>
+
                         <th></th>
                     </tr>
                 </ng-template>
-                <ng-template pTemplate="body" let-expedition>
-                    <tr>
-                        <td>{{ expedition.numero }}</td>
-                        <td>{{ expedition.bureauExpediteurLibelle }}</td>
-                        <td>{{ expedition.bureauDestinationLibelle }}</td>
-                        <td>{{ expedition.createdAt }}</td>
+
+                <ng-template pTemplate="body" let-fermeture>
+                    <tr [pSelectableRow]="fermeture" >
+                        <td>{{ fermeture.structureDestinationLibelle }}</td>
+                        <td>{{ fermeture.date }}</td>
+                        <td>{{ fermeture.numeroDepeche }}</td>
                         <td>
-                            <a routerLink="/arriere/details-expedition/{{
-                                    expedition.id
-                                }}" pButton="" type="button" icon="pi pi-download"
-                                class="p-element p-button-text p-button p-component p-button-icon-only"><span
-                                    class="p-button-icon pi pi-download" aria-hidden="true"></span></a>
+                            <p-button
+                                label="Details"
+                                severity="info"
+                                [rounded]="true"
+                                icon="pi pi-chevron-right"
+                                (click)="showDetails(fermeture)"/>
                         </td>
                     </tr>
                 </ng-template>
+
             </p-table>
         </div>
     </div>

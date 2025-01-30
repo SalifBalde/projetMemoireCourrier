@@ -121,19 +121,21 @@
                 </span>
                 </div>
                 <div class="col-12 mb-2 lg:col-6 lg:mb-3">
-                 <span class="p-float-label">
-                    <p-inputGroup>
-                      <input [(ngModel)]="label" pInputText class="custom-label-input small-label" />
-                      <input id="codebarre" placeholder="Code barre" [(ngModel)]="codebarre"
-                             pInputText pKeyFilter="num" maxlength="9" minlength="9"
-                             (input)="validateCodeBarre()" class="p-inputtext"
-                             #codebarreInput="ngModel" required />
-                        <p-inputGroupAddon>SN</p-inputGroupAddon>
-                    </p-inputGroup>
-              </span>
-                    <small class="p-error" *ngIf="codebarreInput.invalid && codebarreInput.touched">
-                        Le code-barre doit contenir exactement 13 chiffres.
-                    </small>
+                    <span class="p-float-label">
+                        <p-inputGroup>
+                              <input id="codebarre" placeholder="Code barre" [(ngModel)]="codebarre"
+                                     pInputText pKeyFilter="alphanum" maxlength="13" minlength="13"
+                                     (input)="validateCodeBarre()" class="p-inputtext"
+                                     #codebarreInput="ngModel" required />
+                                <small class="p-error" *ngIf="codebarreInput.invalid && codebarreInput.touched">
+                                    Le code-barre doit contenir exactement 13 caractères (chiffres et lettres).
+                                </small>
+                        </p-inputGroup>
+                       </span>
+
+                    <button pButton type="button" (click)="generateCodeBarre()" class="p-button p-button-secondary mt-2">
+                        Générer un Code-Barre
+                    </button>
                 </div>
 
             </div>

@@ -1,17 +1,17 @@
-import {Component, ViewChild} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormGroup,FormBuilder, Validators } from '@angular/forms';
+import { MessageService } from 'primeng/api';
+import { Table } from 'primeng/table';
+import {ColisDto, ColisSearchDto, ColisService, CreateUpdateColisDto } from 'src/app/proxy/colis';
+import { ActivatedRoute, Params, Router } from '@angular/router';
+import { PdfService } from 'src/app/proxy/pdf/pdf.service';
 import {KeycloakProfile} from "keycloak-js";
-import {Table} from "primeng/table";
-import {PdfService} from "../../../proxy/pdf/pdf.service";
-import {ActivatedRoute, Router} from "@angular/router";
-import {MessageService} from "primeng/api";
 import {KeycloakService} from "keycloak-angular";
-import { ExpeditionDto, ExpeditionService } from 'src/app/proxy/expeditions';
 import { SessionService } from 'src/app/proxy/auth/Session.service';
-import {UserDto} from "../../../proxy/users";
+import { UserDto } from 'src/app/proxy/users';
+import { StructureDto, StructureService } from 'src/app/proxy/structures';
 import {CourrierDto, CourrierSearchDto, CourrierService} from "../../../proxy/courrier";
-import {ColisDto} from "../../../proxy/colis";
-import {StructureDto, StructureService} from "../../../proxy/structures";
 import {StatutCourrierService, Statutdto} from "../../../proxy/statut-courrier";
 import {TypeCourrierDto, TypeCourrierService} from "../../../proxy/type-courrier";
 import {Paysdto, PaysService} from "../../../proxy/pays";
@@ -19,12 +19,11 @@ import {Fermeturedto, FermetureService} from "../../../proxy/fermeture";
 import {ProgressSpinner} from "primeng/progressspinner";
 
 @Component({
-  selector: 'app-rapport',
+    selector: 'app-rapport',
   templateUrl: './rapport.component.html',
-  styleUrl: './rapport.component.scss',
-    providers:[MessageService, ProgressSpinner]
-})
-export class RapportComponent {
+    providers: [MessageService, ProgressSpinner],
+  })
+  export class RapportComponent implements OnInit {
     form: FormGroup;
     public isLoggedIn = false;
     public userProfile: KeycloakProfile | null = null;
@@ -41,14 +40,14 @@ export class RapportComponent {
     rowsPerPageOptions = [5, 10, 20];
     id ="";
     @ViewChild('dt') dt: Table;
-    statutCourrier$: Statutdto[];
-    typeCourrier$: [TypeCourrierDto];
-    pays$: Paysdto[];
+     statutCourrier$: Statutdto[];
+     typeCourrier$: [TypeCourrierDto];
+     pays$: Paysdto[];
     loadingcourrier: boolean = false;
-    courrier$: CourrierDto[];
-    fermetures: Fermeturedto[]=[];
-    selectedFermeture: any;
-    attente: boolean=true
+     courrier$: CourrierDto[];
+     fermetures: Fermeturedto[]=[];
+     selectedFermeture: any;
+     attente: boolean=true
     loadingReset: boolean = false;
     datedebut: any ;
     datefin: any;
@@ -86,10 +85,10 @@ export class RapportComponent {
     resetForm(){
         this.loadingReset = true;
         setTimeout(() => {
-            this.loadingReset = false
+                this.loadingReset = false
             this.datedebut =null;
             this.datefin =null;
-        },1000);
+            },1000);
         this.buildForm();
 
     }
@@ -138,23 +137,23 @@ export class RapportComponent {
     searchfermeture() {
         setTimeout(() => {
             console.log(this.datedebut , this.datefin ,this.structureId)
-            // Formater les dates au format yyyy-MM-dd
-            const formattedDebut = this.datedebut.toISOString().split('T')[0];
-            const formattedFin = this.datefin.toISOString().split('T')[0];
+        // Formater les dates au format yyyy-MM-dd
+         const formattedDebut = this.datedebut.toISOString().split('T')[0];
+         const formattedFin = this.datefin.toISOString().split('T')[0];
 
-            console.log (typeof formattedDebut, formattedFin);
+        console.log (typeof formattedDebut, formattedFin);
 
-            // Appeler le service avec les dates formatées
+        // Appeler le service avec les dates formatées
             this.attente=false
-            this.fermetureService.getRapport(formattedDebut, formattedFin , this.structureId,this.userId).subscribe(fermeture => {
-                this.fermetures = fermeture;
-                if(this.fermetures.length > 0){
-                    this.attente=true
-                }
+        this.fermetureService.getRapport(formattedDebut, formattedFin , this.structureId,this.userId).subscribe(fermeture => {
+            this.fermetures = fermeture;
+            if(this.fermetures.length > 0){
+                this.attente=true
+            }
 
 
-                console.log(this.fermetures);
-            });
+            console.log(this.fermetures);
+        });
         }, 1000);
     }
 
@@ -173,7 +172,7 @@ export class RapportComponent {
 
     generatePdf(): void{
         //this.pdfService.generateAgentSalesReport(this.colis$).then(r => "pdf généré");
-    }
+  }
 
     isEmpty(){
         return this.form.value.debut!=null && this.form.value.fin!=null;

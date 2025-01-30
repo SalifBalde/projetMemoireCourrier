@@ -38,29 +38,12 @@ export class MessageriePacketMenuComponent implements OnInit {
                 label: 'Reporting',
                 items: [
                     {
-                        label: 'Report Jt3',
+                        label: 'Report ',
                         icon: 'pi pi-fw pi-file-pdf',
-                        routerLink: ['/messagerie/rapport'],
+                        routerLink: ['/messageriePacket/RapportMassageriePacket'],
                     },
                 ],
             },
-
-            // {
-            //     label: 'Colis-Imports',
-            //     items: [
-            //         {
-            //             label: 'Expédition Colis-Import',
-            //             icon: 'pi pi-fw pi-file-pdf',
-            //             routerLink: ['/messagerie/colis-import-exp'],
-            //         },
-            //         {
-            //             label: 'Reception Colis-Import',
-            //             icon: 'pi pi-fw pi-file-pdf',
-            //             routerLink: ['/messagerie/colis-import'],
-            //         },
-            //     ],
-            // },
-
 
         ];
     }
