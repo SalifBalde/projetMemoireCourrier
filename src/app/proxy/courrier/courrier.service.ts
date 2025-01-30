@@ -96,6 +96,10 @@ getOneById(id:string)
     return this.httpClient.get<CourrierDto>(new_api_host, this.httpOptions);
   }
 
+  annulerCourrier(id:string){
+    const url = `${this.api_host}/annulerCourrier/${id}`;
+    return this.httpClient.put<CourrierDto[]>(url, this.httpOptions);
+   }
 
 
   findCourrierByStrutureDepot(idStrut: string) {
