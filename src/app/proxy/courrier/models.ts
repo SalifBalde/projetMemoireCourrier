@@ -70,6 +70,8 @@ export class CourrierCreateUpdateDto {
     expediteurTelephone?: string;
     expediteurAdresse?: string;
     expediteurCodePostal?: string;
+    createdAt?:string;
+    updatedAt?:string;
     expediteurCity?: string;
     recommande?: boolean;
     ar?: boolean;

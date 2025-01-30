@@ -22,6 +22,7 @@
             <p><strong>Type Courrier:</strong> {{ courrier?.typeCourrierLibelle }}</p>
             <p><strong>Catégorie:</strong> {{ courrier?.categorieLibelle }}</p>
             <p><strong>Poids:</strong> {{ courrier?.poids }} Kg</p>
+            <p><strong>Date:</strong> {{ courrier?.createdAt| date:'dd/MM/yyyy' }}</p>
           </div>
           <div class="col-6">
             <p><strong>Expéditeur:</strong> {{ courrier?.expediteurNom }} {{ courrier?.expediteurPrenom }} / {{ courrier?.expediteurTelephone }}</p>

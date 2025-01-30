@@ -62,7 +62,7 @@ export class MessagerieMenuComponent implements OnInit {
                     },
                 ],
             },
-            {
+           /*  {
                 label: 'Reporting',
                 items: [
                     {
@@ -72,7 +72,7 @@ export class MessagerieMenuComponent implements OnInit {
                     },
                 ],
             },
-
+ */
 
         ];
     }
