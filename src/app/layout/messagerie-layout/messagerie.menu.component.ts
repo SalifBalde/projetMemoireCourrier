@@ -66,7 +66,7 @@ export class MessagerieMenuComponent implements OnInit {
                 label: 'Reporting',
                 items: [
                     {
-                        label: 'Report Jt3',
+                        label: 'Report',
                         icon: 'pi pi-fw pi-file-pdf',
                         routerLink: ['/messagerie/rapport'],
                     },

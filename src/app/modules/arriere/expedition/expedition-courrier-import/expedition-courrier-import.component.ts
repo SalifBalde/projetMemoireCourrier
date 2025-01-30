@@ -352,6 +352,7 @@ export class ExpeditionCourrierImportComponent  implements  OnInit{
             // Appel au service pour enregistrer la fermeture
             this.fermetureService.saveFermetureImport(this.fermetureData).subscribe(
                 (response) => {
+                    this.selectedFermeture = response;
                     this.showDetails()
                     // Mise à jour des courriers et ajout des suivis
                     selectedColisCopy.forEach((colis) => {

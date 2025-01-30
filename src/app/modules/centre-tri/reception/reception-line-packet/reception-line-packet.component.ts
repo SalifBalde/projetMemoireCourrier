@@ -41,7 +41,7 @@ export class ReceptionLinePacketComponent implements  OnInit {
     clients: ClientDto[] = [];
     form: FormGroup;
     courrier: CourrierDto;
-    label: string = "PO";
+    label: string
     paysDestinationId: any;
     categorieId: any;
     poids: number;
@@ -50,9 +50,7 @@ export class ReceptionLinePacketComponent implements  OnInit {
     typeCourrierId:any
     destinateurId: any;
      categori: CategorieDto;
-
-    errorMessage: string = '';
-
+    private generatedCodeBarre: string = ''; // Stocke le code généré temporairement
 
 
     constructor(
@@ -140,12 +138,29 @@ export class ReceptionLinePacketComponent implements  OnInit {
             this.codebarre = generatedCode; // Définit la valeur générée
         }
     }
-    validateCodeBarre(): void {
-        if (this.codebarre.length < 9) {
-            this.errorMessage = "Le code-barre doit contenir exactement 13 chiffres.";
-        } else {
-            this.errorMessage = "";
+    validateCodeBarre() {
+        if (this.codebarre.length !== 13)
+            this.codebarre = this.codebarre.toUpperCase();
+            console.error("Le code-barre doit contenir exactement 13 caractères.");
+
+    }
+    generateCodeBarre() {
+
+            this.generatedCodeBarre =this.generateCustomCodeBarre();
+            this.codebarre = this.generatedCodeBarre
+    }
+
+    private generateCustomCodeBarre(): string {
+        const numbers = '0123456789';
+        let result = 'PO'; // Fixe les deux premières lettres à "PO"
+
+        // Générer 9 chiffres aléatoires
+        for (let i = 0; i < 9; i++) {
+            result += numbers.charAt(Math.floor(Math.random() * numbers.length));
         }
+
+        result += 'SN'; // Fixe les deux dernières lettres à "SN"
+        return result;
     }
 
 
@@ -210,7 +225,7 @@ export class ReceptionLinePacketComponent implements  OnInit {
                     destinataireId: this.destinateurId,
                     paysDestinationId: 210,
                     taxePresentation:1000,
-                    codeBarre: this.label + this.codebarre + 'SN',  // Utilisation du code barre correctement
+                    codeBarre: this.codebarre , // Utilisation du code barre correctement
                     valeurDeclare: null,
                     contenu: '',
                     quantite: 1,

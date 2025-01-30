@@ -326,6 +326,7 @@ export class LinePacketDeclarerComponent  implements    OnInit{
             // Appel au service pour enregistrer la fermeture
             this.fermetureService.saveFermeture(this.fermetureData).subscribe(
                 (response) => {
+                          this.selectedFermeture = response;
                           this.showDetails()
                     // Mise à jour des courriers et ajout des suivis
                     selectedColisCopy.forEach((colis) => {
@@ -336,7 +337,6 @@ export class LinePacketDeclarerComponent  implements    OnInit{
                         colis.taxeDouane = colis.montantTaxeDouane;  // Ici, le montant est récupéré du modèle de données déjà lié
 
                         console.log(courrieId, colis);
-
                         // Mise à jour du courrier
                         this.courrierService.updateCourrier(colis).subscribe(
                             () => {
@@ -392,11 +392,28 @@ export class LinePacketDeclarerComponent  implements    OnInit{
             console.error("selectedFermeture est indéfini ou invalide.");
             return;
         }
-        const id1 = this.selectedFermeture.id
-        this.router.navigate(['arriere/courrier-details/courrierDetailArriere/'+id1]);  // Passe l'ID de la fermeture dans l'URL
-        this.openCourrierDialog=false;
 
+        const id1 = this.selectedFermeture.id;
+        console.log('ID de la fermeture:', id1); // Affiche l'ID dans la console
 
+        // Crée la route dynamique
+        const route = ['ct/courrier-details-packet/courrierDetailPacketArriere', id1].join('/');
+        console.log('Route générée:', route); // Affiche la route générée dans la console
+
+        // Navigue vers la route générée
+        this.router.navigate([route])
+            .then(success => {
+                if (success) {
+                    console.log('Navigation réussie vers:', route);
+                } else {
+                    console.error('Erreur lors de la navigation vers:', route);
+                }
+            })
+            .catch(error => {
+                console.error('Erreur lors de la navigation:', error);
+            });
+
+        this.openCourrierDialog = false;
     }
 
 
