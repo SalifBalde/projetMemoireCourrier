@@ -64,6 +64,7 @@ import {forkJoin} from "rxjs";
     suiviCourriers:any={}
     showMontantField: boolean = false;
     montants: number | null = null;
+    selectedFermeture: any ;
 
     constructor(
         private colisService: ColisService,
@@ -357,6 +358,7 @@ import {forkJoin} from "rxjs";
             // Appel au service pour enregistrer la fermeture
             this.fermetureService.saveFermetureImport(this.fermetureData).subscribe(
                 (response) => {
+                    this.showDetails()
                     // Mise à jour des courriers et ajout des suivis
                     selectedColisCopy.forEach((colis) => {
                         const courrieId = colis.id;
@@ -367,7 +369,7 @@ import {forkJoin} from "rxjs";
                         console.log(courrieId, colis);
 
                         // Mise à jour du courrier
-                        this.courrierService.update(courrieId, colis).subscribe(
+                        this.courrierService.updateCourrier(colis).subscribe(
                             () => {
                                 this.getCourrierByStructureDepotAndStatutIds()
                                 this.selectedStructure=null
@@ -433,6 +435,17 @@ import {forkJoin} from "rxjs";
     }
 
 
+    showDetails(): void {
+        // Vérifiez que selectedFermeture est défini avant de l'utiliser
+        if (!this.selectedFermeture || !this.selectedFermeture.id) {
+            console.error("selectedFermeture est indéfini ou invalide.");
+            return;
+        }
+        const id1 = this.selectedFermeture.id
+        this.router.navigate(['arriere/courrier-details/courrierDetailArriere/'+id1]);  // Passe l'ID de la fermeture dans l'URL
+        this.openCourrierDialog=false;
 
+
+    }
 
 }

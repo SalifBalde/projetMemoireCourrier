@@ -69,6 +69,7 @@ export class LinePacketDeclarerComponent  implements    OnInit{
     idStatutFermetureCourrier: any;
     iduser: any;
     suiviCourriers:any={}
+    selectedFermeture: any ;
 
 
 
@@ -325,6 +326,7 @@ export class LinePacketDeclarerComponent  implements    OnInit{
             // Appel au service pour enregistrer la fermeture
             this.fermetureService.saveFermeture(this.fermetureData).subscribe(
                 (response) => {
+                          this.showDetails()
                     // Mise à jour des courriers et ajout des suivis
                     selectedColisCopy.forEach((colis) => {
                         const courrieId = colis.id;
@@ -336,7 +338,7 @@ export class LinePacketDeclarerComponent  implements    OnInit{
                         console.log(courrieId, colis);
 
                         // Mise à jour du courrier
-                        this.courrierService.update(courrieId, colis).subscribe(
+                        this.courrierService.updateCourrier(colis).subscribe(
                             () => {
                                 this.getAllCourrier();
                                 this.selectedColis=null
@@ -384,7 +386,18 @@ export class LinePacketDeclarerComponent  implements    OnInit{
 
 
 
+    showDetails(): void {
+        // Vérifiez que selectedFermeture est défini avant de l'utiliser
+        if (!this.selectedFermeture || !this.selectedFermeture.id) {
+            console.error("selectedFermeture est indéfini ou invalide.");
+            return;
+        }
+        const id1 = this.selectedFermeture.id
+        this.router.navigate(['arriere/courrier-details/courrierDetailArriere/'+id1]);  // Passe l'ID de la fermeture dans l'URL
+        this.openCourrierDialog=false;
 
+
+    }
 
 
 }
