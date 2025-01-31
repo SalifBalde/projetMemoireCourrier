@@ -5,7 +5,12 @@ import {RegimeService} from "../../../../proxy/regime";
 import {Paysdto, PaysService} from "../../../../proxy/pays";
 import {CategorieDto, CategorieService} from "../../../../proxy/categorie";
 import {SessionService} from "../../../../proxy/auth/Session.service";
-import {type CourrierCreateUpdateDto, CourrierDetailsDto, CourrierService} from "../../../../proxy/courrier";
+import {
+    type CourrierCreateUpdateDto,
+    CourrierDetailsDto,
+    CourrierDto,
+    CourrierService
+} from "../../../../proxy/courrier";
 import {TarifServiceService} from "../../../../proxy/TarifService";
 import {TarifCourrierService} from "../../../../proxy/tarif-courrier";
 import {StockService} from "../../../../proxy/stock";
@@ -35,8 +40,8 @@ export class ReceptionLinePacketComponent implements  OnInit {
     loading: boolean;
     clients: ClientDto[] = [];
     form: FormGroup;
-    courrier: Object;
-    label: string = "PO";
+    courrier: CourrierDto;
+    label: string
     paysDestinationId: any;
     categorieId: any;
     poids: number;
@@ -45,9 +50,7 @@ export class ReceptionLinePacketComponent implements  OnInit {
     typeCourrierId:any
     destinateurId: any;
      categori: CategorieDto;
-
-    errorMessage: string = '';
-
+    private generatedCodeBarre: string = ''; // Stocke le code généré temporairement
 
 
     constructor(
@@ -135,12 +138,29 @@ export class ReceptionLinePacketComponent implements  OnInit {
             this.codebarre = generatedCode; // Définit la valeur générée
         }
     }
-    validateCodeBarre(): void {
-        if (this.codebarre.length < 9) {
-            this.errorMessage = "Le code-barre doit contenir exactement 13 chiffres.";
-        } else {
-            this.errorMessage = "";
+    validateCodeBarre() {
+        if (this.codebarre.length !== 13)
+            this.codebarre = this.codebarre.toUpperCase();
+            console.error("Le code-barre doit contenir exactement 13 caractères.");
+
+    }
+    generateCodeBarre() {
+
+            this.generatedCodeBarre =this.generateCustomCodeBarre();
+            this.codebarre = this.generatedCodeBarre
+    }
+
+    private generateCustomCodeBarre(): string {
+        const numbers = '0123456789';
+        let result = 'PO'; // Fixe les deux premières lettres à "PO"
+
+        // Générer 9 chiffres aléatoires
+        for (let i = 0; i < 9; i++) {
+            result += numbers.charAt(Math.floor(Math.random() * numbers.length));
         }
+
+        result += 'SN'; // Fixe les deux dernières lettres à "SN"
+        return result;
     }
 
 
@@ -205,7 +225,7 @@ export class ReceptionLinePacketComponent implements  OnInit {
                     destinataireId: this.destinateurId,
                     paysDestinationId: 210,
                     taxePresentation:1000,
-                    codeBarre: this.label + this.codebarre + 'SN',  // Utilisation du code barre correctement
+                    codeBarre: this.codebarre , // Utilisation du code barre correctement
                     valeurDeclare: null,
                     contenu: '',
                     quantite: 1,
@@ -258,7 +278,15 @@ export class ReceptionLinePacketComponent implements  OnInit {
             }
         );
     }
+    getPaysLibelle(paysId: number): string {
+        const pays = this.pays$.find(p => p.id === paysId);
+        return pays ? pays.libelle : '';
+    }
 
+    getCategorieLibelle(categorieId: string): string {
+        const categorie = this.categorie$.find(c => c.id === categorieId);
+        return categorie ? categorie.libelle : '';
+    }
 
     resetCourrierData(): void {
         this.poids = null;

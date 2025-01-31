@@ -143,7 +143,7 @@ import {SuiviCourrierService} from "../../../proxy/suivi-courrier";
             this.statutCourrier=data;
             console.log(this.statutCourrier)
 
-            this.idStatutFermetureCourrier =this.statutCourrier = data.filter(statut => statut.id === 20);
+            this.idStatutFermetureCourrier =this.statutCourrier = data.filter(statut => statut.id === 21);
             console.log(this.idStatutFermetureCourrier);  // Afficher les résultats filtrés
         })
 
@@ -347,29 +347,6 @@ getAllNoeux(){
                             () => {
                                 this.getCourriers()
 
-                                // Ajout du suivi pour chaque courrier après mise à jour
-                                const suiviCourrier = {
-                                    courrierId: colis.id,
-                                    idstatutCourrier: colis.statutCourrier.id,
-                                    userId: this.iduser,
-                                    structureDepotId: structureDepotId,
-                                    structureDestinationId: this.selectedStructure,
-                                    date: new Date().toISOString(),
-                                };
-
-                                this.suiviCourrier.save(suiviCourrier).subscribe(
-                                    (data) => {
-                                        // console.log("Suivi courrier sauvegardé : ", data);
-                                        this.numeroDepeche=null;
-                                        this.montants=null
-
-                                    },
-                                    (error) => {
-                                        console.error("Erreur lors de la sauvegarde du suivi : ", error);
-                                    }
-                                );
-
-                                // Rafraîchir la liste des courriers
 
 
                             },

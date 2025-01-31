@@ -75,6 +75,7 @@ export class ColisImportExpediComponent implements  OnInit{
     iduser: any;
     suiviCourriers:any={}
     numeroDepeche: any;
+    selectedFermeture: any ;
 
     constructor(
         private colisService: ColisService,
@@ -345,6 +346,8 @@ export class ColisImportExpediComponent implements  OnInit{
             // Appel au service pour enregistrer la fermeture
             this.fermetureService.saveFermeture(this.fermetureData).subscribe(
                 (response) => {
+                    this.selectedFermeture = response;
+                    this.showDetails()
                     // Mise à jour des courriers et ajout des suivis
                     selectedColisCopy.forEach((colis) => {
                         const courrieId = colis.id;
@@ -422,5 +425,19 @@ export class ColisImportExpediComponent implements  OnInit{
             });
         }
     }
+
+    showDetails(): void {
+        // Vérifiez que selectedFermeture est défini avant de l'utiliser
+        if (!this.selectedFermeture || !this.selectedFermeture.id) {
+            console.error("selectedFermeture est indéfini ou invalide.");
+            return;
+        }
+        const id1 = this.selectedFermeture.id
+        this.router.navigate(['arriere/courrier-details/courrierDetailArriere/'+id1]);  // Passe l'ID de la fermeture dans l'URL
+        this.openCourrierDialog=false;
+
+
+    }
+
 
 }
