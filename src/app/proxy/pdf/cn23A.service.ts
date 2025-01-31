@@ -138,14 +138,14 @@ export class Cn23AService {
         let totalWeight = 0;
         let weight = 0;
         let totalValue = 0;
-        if (data.details && data.details.length > 0) {
-            data.details.forEach((detail) => {
-                doc.text(detail.produitLibelle || 'test', 36, yPosition);
-                doc.text(detail.quantite?.toString() || '', 95, yPosition);
-                montant = detail.quantite * detail.prix;
+        if (data.contenus && data.contenus.length > 0) {
+            data.contenus.forEach((contenu) => {
+                doc.text(contenu.description || 'test', 36, yPosition);
+                doc.text(contenu.quantite?.toString() || '', 95, yPosition);
+                montant = contenu.quantite * contenu.valeur;
                 doc.text(`${montant}` || '', 134, yPosition);
-                weight = data.poids;
-                doc.text(data.poids?.toString() || '2g', 174, yPosition);
+                weight = contenu.poids;
+                doc.text(contenu.poids?.toString() || '2g', 174, yPosition);
 
                 totalValue += montant;
                 totalWeight += weight;
@@ -258,15 +258,12 @@ by postal or customs regulations`, pageHeight / 1.06, 167, { align: 'left' });
         doc.text(`Facture`, pageHeight / 1.4, 187, { align: 'left' });
         doc.setFontSize(8);
         doc.text(' No. of invoice ', pageHeight / 1.8, 192, { align: 'left' });
-
-
     }
 
 
     addFooter(doc: jsPDF, data: CourrierDto): void {
         const pageHeight = doc.internal.pageSize.height;
         const pageWidth = doc.internal.pageSize.width;
-
         // doc.text('Page footer - CN23', pageWidth - 50, pageHeight - 10, { align: 'center' });
     }
 

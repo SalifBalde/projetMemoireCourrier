@@ -76,10 +76,17 @@ export class CourrierCreateUpdateDto {
     ar?: boolean;
     express?: boolean;
     details?: CourrierDetailsDto[] ;
+    contenus?: CourrierContenuDto [];
   }
 
 
-
+  export class CourrierContenuDto{
+    id?: string;
+    description?:string;
+    poids?:number;
+    quantite?:number;
+    valeur?:number;
+  }
   export class CourrierDetailsDto {
      id?: string;
      produitId?: string;

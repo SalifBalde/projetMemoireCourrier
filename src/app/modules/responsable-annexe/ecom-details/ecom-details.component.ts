@@ -4,7 +4,6 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { generate } from 'rxjs';
 import { EcommerceDto, EcommerceService } from 'src/app/proxy/ecommerce';
 import { Cn22Service } from 'src/app/proxy/pdf/cn22.service';
-import { Cn23Service } from 'src/app/proxy/pdf/cn23.service';
 import { FactureService } from 'src/app/proxy/pdf/facture.service';
 import { PdfService } from 'src/app/proxy/pdf/pdf.service';
 
