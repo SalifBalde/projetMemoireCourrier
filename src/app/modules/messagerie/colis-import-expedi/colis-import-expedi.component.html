@@ -29,21 +29,34 @@
 <div class="grid" >
     <div class="col-12">
         <div class="card px-6 py-6">
-            <p-badge  value="Liste des colis à expédier" size="large" severity="primary"></p-badge>
 
-            <p-table [value]="listeCourriers" [(selection)]="selectedColis" dataKey="id" selectionMode="multiple"
-                     [tableStyle]="{'min-width': '50rem'}">
+            <p-table #dt [value]="listeCourriers" [(selection)]="selectedColis" dataKey="id" [rows]="10" selectionMode="multiple"
+                     [rowsPerPageOptions]="[10, 25, 50]"
+                     [paginator]="true"
+                     [showCurrentPageReport]="true"
+                     [globalFilterFields]="['codeBarre','quantite','quantite','montant',' taxe','poids','status']"
+                     [tableStyle]="{'min-width': '50rem'}"
+                     currentPageReportTemplate="Affichage des {first} aux {last}èmes des {totalRecords} entrées">
+                <ng-template pTemplate="caption">
+                    <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+                        <p-badge  value="Liste des colis à expédier" size="large" severity="primary"></p-badge>
+
+                        <span class="p-input-icon-right" style="float:right">
+                <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')" placeholder="Rechercher...." />
+                <i class="pi pi-search"></i>
+            </span>
+                    </div>
+                </ng-template>
                 <ng-template pTemplate="header">
                     <tr>
-                        <th style="width: 4rem">
-                            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
-                        </th>
-                        <th>Code</th>
-                        <th>Quantité</th>
-                        <th>montant</th>
-                        <th>Taxe Douane</th>
-                        <th>poids</th>
-                        <th>Status</th>
+                        <th style="width: 4rem"><p-tableHeaderCheckbox /></th>
+                        <th pSortableColumn="codeBarre">Code<p-sortIcon field="codeBarre" /></th>
+                        <th pSortableColumn="quantite">Quantité<p-sortIcon field="quantite" /></th>
+                        <th pSortableColumn="montant">Montant<p-sortIcon field="montant" /></th>
+                        <th pSortableColumn="taxe" >Taxe Douane<p-sortIcon field="taxe" /> </th>
+                        <th pSortableColumn="poids">Poids<p-sortIcon field="poids" /></th>
+                        <th pSortableColumn="status">Status<p-sortIcon field="status" /></th>
+
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-colis>
@@ -69,8 +82,8 @@
                         <td>{{colis.poids}}</td>
                         <td>
                             <p-badge
-                                [value]="colis?.statutCourrier?.libelle"
-                                [severity]="getBadgeSeverity(colis?.statutCourrier?.libelle)">
+                                [value]="colis?.statutCourrierLibelle"
+                                [severity]="getBadgeSeverity(colis?.statutCourrierLibelle)">
                             </p-badge>
                         </td>
                     </tr>
@@ -89,7 +102,7 @@
 <p-dialog [(visible)]="openCourrierDialog" header="Confirmer" [modal]="true" [style]="{width:'450px'}">
     <div class="flex align-items-center justify-content-center">
         <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
-        <span *ngIf="colis">Etes-vous sûr que vous voulez réceptionner <b>{{colis.code}}</b>?</span>
+        <span *ngIf="colis">Etes-vous sûr que vous voulez expédier <b>{{colis.code}}</b>?</span>
     </div>
     <ng-template pTemplate="footer">
         <button pButton pRipple icon="pi pi-check" class="p-button-text " label="Oui"

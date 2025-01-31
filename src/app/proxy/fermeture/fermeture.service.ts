@@ -40,8 +40,8 @@ export  class FermetureService {
     getFermeturesByStructureDestination(structureId: string, idstatutCourrier:number, typeCourrierId:number): Observable<any[]> {
         return this.httpClient.get<any[]>(this.api_host+'/by-structure-destination/'+structureId+'/'+idstatutCourrier+'/'+typeCourrierId);
     }
-    getFermeturesByCriteria(structureId: string, idstatutCourrier:number, typeCourrierId:number , paysOrigine: number): Observable<any[]> {
-        return this.httpClient.get<any[]>(this.api_host+'/searchFermetureByCriteria/'+structureId+'/'+idstatutCourrier+'/'+typeCourrierId+'/'+paysOrigine);
+    getFermeturesByCriteria(structureId: string, idstatutCourrier:number, typeCourrierId:number ): Observable<any[]> {
+        return this.httpClient.get<any[]>(this.api_host+'/searchFermetureByCriteria/'+structureId+'/'+idstatutCourrier+'/'+typeCourrierId);
     }
 
     getRapport(formattedDebut: string, formattedFin: string , structureId: number,userId: number ): Observable<Fermeturedto[]> {

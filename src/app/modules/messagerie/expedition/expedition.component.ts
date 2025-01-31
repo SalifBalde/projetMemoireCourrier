@@ -121,7 +121,7 @@ import {SuiviCourrierService} from "../../../proxy/suivi-courrier";
         );
 
 
-        this.getCourriers();
+       // this.getCourriers();
 
         this.buildForm();
         this.getAllNoeux()
@@ -167,18 +167,18 @@ import {SuiviCourrierService} from "../../../proxy/suivi-courrier";
     }
 
 
-    getCourriers(){
-        const idStatu= '18'
-        const idStructureDepo = this.sessionService.getAgentAttributes().structureId.toString()
-
-
-        this.courrierService.findCourrierByStrutureDepotAndStatutId( idStructureDepo, idStatu).subscribe(
-            (result) => {
-                this.listeCourriers= result;
-                console.log(this.listeCourriers)
-            }
-        );
-    }
+    // getCourriers(){
+    //     const idStatu= '18'
+    //     const idStructureDepo = this.sessionService.getAgentAttributes().structureId.toString()
+    //
+    //
+    //     this.courrierService.findCourrierByStrutureDepotAndStatutId( idStructureDepo, idStatu).subscribe(
+    //         (result) => {
+    //             this.listeCourriers= result;
+    //             console.log(this.listeCourriers)
+    //         }
+    //     );
+    // }
     getBadgeSeverity(statutCourrier: string ): string {
         switch (statutCourrier?.toLowerCase()) {
            // case 'déposé': return 'danger';  // Rouge
@@ -345,7 +345,7 @@ getAllNoeux(){
                         // Mise à jour du courrier
                         this.courrierService.update(courrieId, colis).subscribe(
                             () => {
-                                this.getCourriers()
+                            //    this.getCourriers()
 
 
 

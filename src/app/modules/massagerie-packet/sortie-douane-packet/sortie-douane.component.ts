@@ -1,4 +1,5 @@
 import {Component, OnInit} from '@angular/core';
+import {MessageService} from "primeng/api";
 import {Noeuxdto, NouexService} from "../../../proxy/noeux";
 import {StructureDto, StructureService} from "../../../proxy/structures";
 import {CourrierDto, CourrierService} from "../../../proxy/courrier";
@@ -8,17 +9,17 @@ import {PdfService} from "../../../proxy/pdf/pdf.service";
 import {SessionService} from "../../../proxy/auth/Session.service";
 import {FormBuilder} from "@angular/forms";
 import {ActivatedRoute, Router} from "@angular/router";
-import {MessageService} from "primeng/api";
 import {AcheminementService} from "../../../proxy/acheminement";
 import {SuiviCourrierService} from "../../../proxy/suivi-courrier";
 
 @Component({
-  selector: 'app-colis-import',
-  templateUrl: './colis-import.component.html',
-  styleUrl: './colis-import.component.scss',
-    providers: [MessageService],
+  selector: 'app-sortie-douane',
+
+  templateUrl: './sortie-douane.component.html',
+  styleUrl: './sortie-douane.component.scss',
+      providers: [MessageService],
 })
-export class ColisImportComponent  implements  OnInit{
+export class SortieDouaneComponent  implements  OnInit{
 
     Bestnoeux: Noeuxdto;
     structure$: StructureDto[];
@@ -90,13 +91,13 @@ export class ColisImportComponent  implements  OnInit{
 
     getAllColis(){
 
-        const  idstatut="5"
-        const  idtype="2"
+        const  idstatut="6"
+        const  idtype="3"
         const idstructure= this.sessionService.getAgentAttributes().structureId.toString()
         console.log(idstructure)
 
 
-        this.courrierService.findCourrierByStrutureDepotAndStatutId( idstructure, idstatut).subscribe(
+        this.courrierService.findCourrierByStrutureDestinationAndStatutIdAndTypeCourrier( idstructure, idstatut,idtype).subscribe(
             (result) => {
                 this.listcolis = result;
                 console.log(this.listcolis)
@@ -110,24 +111,10 @@ export class ColisImportComponent  implements  OnInit{
 
     }
 
-
-    // getCourriers(){
-    //   const idStatu= '14'
-    //   const idStructureDepo = this.sessionService.getAgentAttributes().structureId.toString()
-    //
-    //
-    //   this.courrierService.findCourrierByStrutureDepotAndStatutId( idStructureDepo, idStatu).subscribe(
-    //       (result) => {
-    //         this.listeCourriers= result;
-    //         console.log(this.listeCourriers)
-    //       }
-    //   );
-    // }
-
     getBadgeSeverity(statutCourrier: string ): string {
         switch (statutCourrier?.toLowerCase()) {
             // case 'déposé': return 'danger';  // Rouge
-            case 'Fermé Messagerie': return 'success';  // Vert
+            case 'Mise en Douane': return 'success';  // Vert
             default: return 'info';         // Bleu
         }
     }
@@ -184,13 +171,16 @@ export class ColisImportComponent  implements  OnInit{
         // Met à jour le statut des courriers sélectionnés
         this.selectedCourriers.forEach((courrier) => {
             // Mettre à jour le statut du courrier et l'ID de l'utilisateur
-            courrier.statutCourrierId =  6;  // Assurez-vous que l'ID du statut existe
+            courrier.statutCourrierId =7;  // Assurez-vous que l'ID du statut existe
             courrier.userId = this.iduser;
+            courrier.taxePresentation=1000;
+
 
             console.log(courrier);
 
-        })
+        });
         // Appel au service pour mettre à jour les courriers
+        console.log(this.selectedCourriers)
         this.courrierService.updateCourriers(this.selectedCourriers).subscribe(
             (result) => {
                 // Recharger la liste des courriers après la mise à jour réussie
@@ -200,7 +190,7 @@ export class ColisImportComponent  implements  OnInit{
                 this.messageService.add({
                     severity: 'success',
                     summary: 'Succès',
-                    detail: 'Courrier mis à la douane avec succès',
+                    detail: 'Courrier sortie avec succès',
                     life: 3000,
                 });
             },

@@ -147,7 +147,7 @@ export class CourrierImportExpediComponent  implements  OnInit{
 
     getAllCourrier() {
 
-        const idstatut = "5"
+        const idstatut = "7"
 
         this.courrierService.findCourrierByStrutureDepotAndStatutId(this.sessionService.getAgentAttributes().structureId.toString(), idstatut).subscribe(
             (result) => {
@@ -167,19 +167,6 @@ export class CourrierImportExpediComponent  implements  OnInit{
 
     }
 
-
-    // getCourriers() {
-    //     const idStatu = '16'
-    //     const idStructureDepo = this.sessionService.getAgentAttributes().structureId.toString()
-    //
-    //
-    //     this.courrierService.findCourrierByStrutureDepotAndStatutId(idStructureDepo, idStatu).subscribe(
-    //         (result) => {
-    //             this.listeCourriers = result;
-    //             console.log(this.listeCourriers)
-    //         }
-    //     );
-    // }
 
     getBadgeSeverity(statutCourrier: string): string {
         switch (statutCourrier?.toLowerCase()) {
@@ -349,41 +336,17 @@ export class CourrierImportExpediComponent  implements  OnInit{
                     // Mise à jour des courriers et ajout des suivis
                     selectedColisCopy.forEach((colis) => {
                         const courrieId = colis.id;
-                        colis.statutCourrier = this.idStatutFermetureCourrier[0];
-                        colis.structureDestinationId = this.selectedStructure;
+                        colis.statutCourrierId = this.idStatutFermetureCourrier[0]?.id;
+                        colis.structureDestinationId = this.selectedStructure.id;
                         // Ajout du montantTaxeDouane dans l'objet colis
-                        colis.taxeDouane = colis.montantTaxeDouane;  // Ici, le montant est récupéré du modèle de données déjà lié
-
-                        console.log(courrieId, colis);
+                        colis.taxeDouane = colis.montantTaxeDouane;
+                        console.log(colis);
 
                         // Mise à jour du courrier
-                        this.courrierService.update(courrieId, colis).subscribe(
+                        this.courrierService.updateCourrier(selectedColisCopy).subscribe(
                             () => {
                                 this.getAllCourrier();
                                 this.selectedColis=null
-
-
-                                // Ajout du suivi pour chaque courrier après mise à jour
-                                const suiviCourrier = {
-                                    courrierId: colis.id,
-                                    idstatutCourrier: colis.statutCourrier.id,
-                                    userId: this.iduser,
-                                    structureDepotId: structureDepotId,
-                                    structureDestinationId: this.selectedStructure,
-                                    date: new Date().toISOString(),
-                                };
-
-                                this.suiviCourrier.save(suiviCourrier).subscribe(
-                                    (data) => {
-                                        // console.log("Suivi courrier sauvegardé : ", data);
-
-                                    },
-                                    (error) => {
-                                        console.error("Erreur lors de la sauvegarde du suivi : ", error);
-                                    }
-                                );
-
-                                // Rafraîchir la liste des courriers
 
 
                             },
@@ -429,7 +392,7 @@ export class CourrierImportExpediComponent  implements  OnInit{
             return;
         }
         const id1 = this.selectedFermeture.id
-        this.router.navigate(['arriere/courrier-details/courrierDetailArriere/'+id1]);  // Passe l'ID de la fermeture dans l'URL
+        this.router.navigate(['messageriePacket/courrier-details-packet/courrierDetailMessagPacketArriere/'+id1]);  // Passe l'ID de la fermeture dans l'URL
         this.openCourrierDialog=false;
 
 

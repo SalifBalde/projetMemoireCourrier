@@ -114,7 +114,7 @@ export class ReceptionColisComponent implements  OnInit {
             console.log( this.statutCourriersarriere)
             this.idStatutFermetureCourrier =this.statutCourriers = data.filter(statut => statut.id === 21);
             console.log(this.idStatutFermetureCourrier);  // Afficher les résultats filtrés
-            this.getCourriersByFermetureIdAndStatut(this.fermetureId,this.idStatutFermetureCourrier[0].id,this.paysOrigineId.id,  this.structureDestna)
+            this.getCourriersByFermetureIdAndStatut(this.fermetureId,this.idStatutFermetureCourrier[0].id, this.structureDestna)
         })
         this.noeuxService.findNoeuxByIdstruct(this.sessionService.getAgentAttributes().structureId.toString()).subscribe(
             (result) => {
@@ -187,8 +187,8 @@ export class ReceptionColisComponent implements  OnInit {
             }
         );
     }
-    getCourriersByFermetureIdAndStatut(fermetureId:number , statutId:number,paysOrigineId:number,  structureDestna: number){
-        this.fermetureCourrierService.getCourriersByFermetureIdAndStatutAndPaysOrigin(fermetureId, statutId, this.paysOrigineId.id,  this.structureDestna).subscribe(
+    getCourriersByFermetureIdAndStatut(fermetureId:number , statutId:number,  structureDestna: number){
+        this.fermetureCourrierService.getCourriersByFermetureIdAndStatutAndPaysOrigin(fermetureId, statutId,   this.structureDestna).subscribe(
             (result) => {
                 this.listeLettres= result
                 console.log(this.listeLettres);
@@ -234,7 +234,7 @@ export class ReceptionColisComponent implements  OnInit {
         // Appel au service pour mettre à jour les courriers
         this.courrierService.updateCourriers(this.selectedLettre).subscribe(
             (result) => {
-                this.getCourriersByFermetureIdAndStatut(this.fermetureId,this.idStatutFermetureCourrier[0].id,this.paysOrigineId.id, this.structureDestna)                // Rafraîchir la liste des courriers après la mise à jour
+                this.getCourriersByFermetureIdAndStatut(this.fermetureId,this.idStatutFermetureCourrier[0].id, this.structureDestna)                // Rafraîchir la liste des courriers après la mise à jour
                 this.selectedStatut=[]
                 // Message de succès
                 this.messageService.add({

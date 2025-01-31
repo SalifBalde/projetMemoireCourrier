@@ -271,7 +271,7 @@
     <div class="card">
         <h3>Résumé des Données Saisies</h3>
         <div class="grid">
-            <div class="col-12 lg:col-6">
+            <div class="col-8 lg:col-6">
                 <p><strong>Expéditeur:</strong> {{ client.nom }} {{ client.prenom }}</p>
                 <p><strong>CNI Expéditeur:</strong> {{ client.cni }}</p>
             </div>
@@ -279,9 +279,11 @@
                 <p><strong>Destinataire:</strong> {{ destinataire.nom }} {{ destinataire.prenom }}</p>
                 <p><strong>CNI Destinataire:</strong> {{ destinataire.cni }}</p>
             </div>
-            <div class="col-12">
+            <div class="col-12 lg:col-6">
                 <p><strong>Pays d'origine :</strong> {{ getPaysLibelle(paysDestinationId) }}</p>
                 <p><strong>Catégorie:</strong> {{ getCategorieLibelle(categorieId) }}</p>
+            </div>
+            <div class="col-12 lg:col-6">
                 <p><strong>Poids:</strong> {{ poids }} g</p>
                 <p><strong>Code barre:</strong> {{ codebarre }}</p>
             </div>

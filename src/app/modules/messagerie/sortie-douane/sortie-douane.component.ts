@@ -91,13 +91,13 @@ export class SortieDouaneComponent  implements  OnInit{
 
     getAllColis(){
 
-        const  idstatut="7"
+        const  idstatut="6"
         const  idtype="2"
         const idstructure= this.sessionService.getAgentAttributes().structureId.toString()
         console.log(idstructure)
 
 
-        this.courrierService.findCourrierByTypeCourrierAndStructureDepotAndIdStut( idtype,idstructure, idstatut).subscribe(
+        this.courrierService.findCourrierByStrutureDepotAndStatutId( idstructure, idstatut).subscribe(
             (result) => {
                 this.listcolis = result;
                 console.log(this.listcolis)
@@ -185,31 +185,13 @@ export class SortieDouaneComponent  implements  OnInit{
         // Met à jour le statut des courriers sélectionnés
         this.selectedCourriers.forEach((courrier) => {
             // Mettre à jour le statut du courrier et l'ID de l'utilisateur
-            courrier.statutCourrier = { id: 18};  // Assurez-vous que l'ID du statut existe
+            courrier.statutCourrierId =7;  // Assurez-vous que l'ID du statut existe
             courrier.userId = this.iduser;
             courrier.taxePresentation=1000;
 
 
             console.log(courrier);
 
-            // Créer un objet SuiviCourrier pour chaque courrier
-            const suiviCourrier = {
-                courrierId: courrier.id,
-                idstatutCourrier: courrier.statutCourrier.id,
-                userId: courrier.userId,
-                structureDepotId: courrier.structureDepotId,
-                structureDestinationId: courrier.structureDestinationId
-            };
-
-            // Sauvegarder les informations de suivi pour chaque courrier
-            this.suiviCourrier.save(suiviCourrier).subscribe(
-                (data) => {
-                    console.log("Suivi courrier sauvegardé : ", data);
-                },
-                (error) => {
-                    console.error("Erreur lors de la sauvegarde du suivi : ", error);
-                }
-            );
         });
         // Appel au service pour mettre à jour les courriers
         console.log(this.selectedCourriers)
@@ -222,7 +204,7 @@ export class SortieDouaneComponent  implements  OnInit{
                 this.messageService.add({
                     severity: 'success',
                     summary: 'Succès',
-                    detail: 'Courrier réceptionné avec succès',
+                    detail: 'Courrier bien sortie à la douane avec succès',
                     life: 3000,
                 });
             },
