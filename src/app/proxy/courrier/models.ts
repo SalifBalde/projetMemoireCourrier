@@ -81,6 +81,13 @@ export class CourrierCreateUpdateDto {
   }
 
 
+  export class CourrierContenuDto{
+    id?: string;
+    description?:string;
+    poids?:number;
+    quantite?:number;
+    valeur?:number;
+  }
   export class CourrierDetailsDto {
      id?: string;
      produitId?: string;

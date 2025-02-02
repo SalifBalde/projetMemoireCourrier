@@ -44,7 +44,7 @@ export  class FermetureService {
         return this.httpClient.get<any[]>(this.api_host+'/searchFermetureByCriteria/'+structureId+'/'+idstatutCourrier+'/'+typeCourrierId+'/'+paysOrigine);
     }
 
-    getRapport(formattedDebut: string, formattedFin: string , structureId: number,userId: number ): Observable<Fermeturedto[]> {
+    getRapport(formattedDebut: string, formattedFin: string , structureId: number, userId: number ): Observable<Fermeturedto[]> {
         const params = new HttpParams()
             .set('startDate', formattedDebut)
             .set('endDate', formattedFin)

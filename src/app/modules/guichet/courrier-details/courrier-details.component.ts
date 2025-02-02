@@ -20,7 +20,9 @@ export class CourrierDetailsComponent implements OnInit {
     private courrierService: CourrierService,
     private factureService: FactureService,
     private pdfService:PdfService,
-    private cn23Service : Cn23AService,
+    private cn23AService : Cn23AService,
+    private cn23Service : Cn23Service,
+    private cn22Service : Cn22Service,
     private fb: FormBuilder,
     private router: Router,
     private route : ActivatedRoute,
@@ -50,12 +52,43 @@ async cn23() {
 
   try {
     // Appel du service pour créer le PDF
-    await this.cn23Service.createPDF(this.courrier);
+    await this.cn23AService.createPDF(this.courrier);
     console.log('PDF généré avec succès.');
   } catch (error) {
     console.error('Erreur lors de la génération du PDF :', error);
   }
 }
+
+async cp71() {
+    if (!this.courrier) {
+      console.error('Aucun courrier sélectionné pour générer le PDF.');
+      return;
+    }
+
+    try {
+      // Appel du service pour créer le PDF
+      await this.cn23Service.createPDF(this.courrier);
+      console.log('PDF généré avec succès.');
+    } catch (error) {
+      console.error('Erreur lors de la génération du PDF :', error);
+    }
+  }
+
+  async cn22() {
+    if (!this.courrier) {
+      console.error('Aucun courrier sélectionné pour générer le PDF.');
+      return;
+    }
+
+    try {
+      // Appel du service pour créer le PDF
+      await this.cn22Service.createPDF(this.courrier);
+      console.log('PDF généré avec succès.');
+    } catch (error) {
+      console.error('Erreur lors de la génération du PDF :', error);
+    }
+  }
+
 
 
 }

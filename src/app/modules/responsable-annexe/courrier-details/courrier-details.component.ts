@@ -4,7 +4,7 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { generate } from 'rxjs';
 import { CourrierDto, CourrierService } from 'src/app/proxy/courrier';
 import { Cn22Service } from 'src/app/proxy/pdf/cn22.service';
-import { Cn23Service } from 'src/app/proxy/pdf/cn23.service';
+import { Cn23AService } from 'src/app/proxy/pdf/cn23A.service';
 import { FactureService } from 'src/app/proxy/pdf/facture.service';
 import { PdfService } from 'src/app/proxy/pdf/pdf.service';
 
@@ -19,7 +19,7 @@ export class CourrierDetailsComponent implements OnInit {
     private courrierService: CourrierService,
     private factureService: FactureService,
     private pdfService:PdfService,
-    private cn23Service : Cn23Service,
+    private cn23AService : Cn23AService,
     private fb: FormBuilder,
     private router: Router,
     private route : ActivatedRoute,
@@ -48,8 +48,7 @@ async cn23() {
   }
 
   try {
-    // Appel du service pour créer le PDF
-    await this.cn23Service.createPDF(this.courrier);
+    await this.cn23AService.createPDF(this.courrier);
     console.log('PDF généré avec succès.');
   } catch (error) {
     console.error('Erreur lors de la génération du PDF :', error);
