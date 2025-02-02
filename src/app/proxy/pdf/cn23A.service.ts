@@ -128,10 +128,16 @@ export class Cn23AService {
         const rowHeight = 5; // Hauteur de chaque ligne du tableau
         const colWidth = 40; // Largeur de chaque colonne du tableau
 
+        let sumCol3 = 0;
+        let sumCol2 = 0;
 
         // Dessiner les lignes du tableau
         result.forEach((detail, index) => {
             const y = startY + (index * rowHeight);
+
+            sumCol3 += Number(detail.col3) || 0;
+             sumCol2 += Number(detail.col2) || 0;
+
             doc.text(detail.description || '', startX, y);
             doc.text(detail.col1.toString(), startX + colWidth +22, y);
             doc.text(detail.col3.toString(), startX + 3 * colWidth, y);
@@ -176,14 +182,14 @@ export class Cn23AService {
         doc.setFontSize(7);
         doc.text('Poids total (4)', yPos, 146, { align: 'left' });
         doc.setFontSize(10);
-        doc.text(`${totalWeight} g`, pageHeight / 1.1, 149, { align: 'right' });
+        doc.text(`${sumCol2} g`, pageHeight / 1.1, 149, { align: 'right' });
 
         doc.setFontSize(9);
         doc.text(`Total value (5)`, pageHeight / 1.4, 143, { align: 'right' });
         doc.setFontSize(7);
         doc.text(' Valeur total (5)', pageHeight / 1.8, 146, { align: 'left' });
         doc.setFontSize(10);
-        doc.text(`${totalValue} XOF`, pageHeight / 1.5, 149, { align: 'left' });
+        doc.text(`${sumCol3} XOF`, pageHeight / 1.5, 149, { align: 'left' });
 
 
         // doc.setFontSize(9);

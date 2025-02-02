@@ -78,6 +78,21 @@ export class Cn22Service {
     }
 
     private addDetails(doc: jsPDF, pageWidth: number, data: CourrierDto): void {
+
+        const items = data.contenu.split(';').filter(item => item); // Filtrer pour supprimer les chaînes vides
+
+        // Étape 2: Transformer chaque entrée en objet
+        const result = items.map(item => {
+            const [description, quantite, valeur, poids] = item.split(':'); // Diviser par :
+            return {
+                description, // "DOCS" ou "CHAUSS"
+                col1: Number(quantite), // Convertir en nombre
+                col2: Number(valeur),
+                col3: Number(poids),
+            };
+        });
+
+
         let yPosition = 142;
         let montant = 5.00;
         let weight = 0;
@@ -85,11 +100,11 @@ export class Cn22Service {
         let totalValue = 0;
         if (data) {
             doc.text('', pageWidth / 5.7, yPosition, { align: 'center' });
-            if (data.contenus && data.contenus.length > 0) {
-                data.contenus.forEach((contenu) => {
-                    let itemMontant = contenu.quantite * contenu.valeur;
-                    let weight = contenu.poids || 0;
-                    let quantity = contenu.quantite || 0;
+            if (result && result.length > 0) {
+                result.forEach((contenu) => {
+                    let itemMontant = contenu.col2;
+                    let weight = contenu.col3 || 0;
+                    let quantity = contenu.col1 || 0;
                     let description = contenu.description || "null";
                     doc.text(`${description}`, pageWidth / 5.3, yPosition, { align: 'center', });
                     doc.text(`${quantity}`, pageWidth / 17, yPosition, { align: 'center', });
