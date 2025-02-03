@@ -56,16 +56,18 @@ exports.__esModule = true;
 exports.CourrierDetailsComponent = void 0;
 var core_1 = require("@angular/core");
 var CourrierDetailsComponent = /** @class */ (function () {
-    function CourrierDetailsComponent(courrierService, factureService, pdfService, cn23Service, fb, router, sessionService, route) {
+    function CourrierDetailsComponent(courrierService, factureService, pdfService, cn23AService, cn23Service, cn22Service, sessionService, fb, router, route) {
         this.courrierService = courrierService;
         this.factureService = factureService;
         this.pdfService = pdfService;
+        this.cn23AService = cn23AService;
         this.cn23Service = cn23Service;
+        this.cn22Service = cn22Service;
+        this.sessionService = sessionService;
         this.fb = fb;
         this.router = router;
-        this.sessionService = sessionService;
         this.route = route;
-        this.courrier = null;
+        this.courrier = {};
     }
     CourrierDetailsComponent.prototype.ngOnInit = function () {
         var _this = this;
@@ -74,6 +76,10 @@ var CourrierDetailsComponent = /** @class */ (function () {
             _this.courrierService.getOneById(id).subscribe(function (courrier) {
                 _this.courrier = __assign({}, courrier);
             });
+            var agent = _this.sessionService.getAgentAttributes();
+            if (agent) {
+                _this.fullname = (agent.prenom + " " + agent.nom).normalize();
+            }
         });
     };
     CourrierDetailsComponent.prototype.imprimerFacture = function () {
@@ -84,9 +90,38 @@ var CourrierDetailsComponent = /** @class */ (function () {
             });
         });
     };
+    CourrierDetailsComponent.prototype.cn23 = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var error_1;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        if (!this.courrier) {
+                            console.error('Aucun courrier sélectionné pour générer le PDF.');
+                            return [2 /*return*/];
+                        }
+                        _a.label = 1;
+                    case 1:
+                        _a.trys.push([1, 3, , 4]);
+                        // Appel du service pour créer le PDF
+                        return [4 /*yield*/, this.cn23AService.createPDF(this.courrier)];
+                    case 2:
+                        // Appel du service pour créer le PDF
+                        _a.sent();
+                        console.log('PDF généré avec succès.');
+                        return [3 /*break*/, 4];
+                    case 3:
+                        error_1 = _a.sent();
+                        console.error('Erreur lors de la génération du PDF :', error_1);
+                        return [3 /*break*/, 4];
+                    case 4: return [2 /*return*/];
+                }
+            });
+        });
+    };
     CourrierDetailsComponent.prototype.cp71 = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var agent, fullname, error_1;
+            var agent, fullname, error_2;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -107,8 +142,37 @@ var CourrierDetailsComponent = /** @class */ (function () {
                         console.log('PDF généré avec succès.');
                         return [3 /*break*/, 4];
                     case 3:
-                        error_1 = _a.sent();
-                        console.error('Erreur lors de la génération du PDF :', error_1);
+                        error_2 = _a.sent();
+                        console.error('Erreur lors de la génération du PDF :', error_2);
+                        return [3 /*break*/, 4];
+                    case 4: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    CourrierDetailsComponent.prototype.cn22 = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var error_3;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        if (!this.courrier) {
+                            console.error('Aucun courrier sélectionné pour générer le PDF.');
+                            return [2 /*return*/];
+                        }
+                        _a.label = 1;
+                    case 1:
+                        _a.trys.push([1, 3, , 4]);
+                        // Appel du service pour créer le PDF
+                        return [4 /*yield*/, this.cn22Service.createPDF(this.courrier)];
+                    case 2:
+                        // Appel du service pour créer le PDF
+                        _a.sent();
+                        console.log('PDF généré avec succès.');
+                        return [3 /*break*/, 4];
+                    case 3:
+                        error_3 = _a.sent();
+                        console.error('Erreur lors de la génération du PDF :', error_3);
                         return [3 /*break*/, 4];
                     case 4: return [2 /*return*/];
                 }
