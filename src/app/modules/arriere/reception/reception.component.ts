@@ -125,7 +125,7 @@ import {ConditionService} from "../../../proxy/conditionReception";
             console.log( this.statutCourriersarriere)
             this.idStatutFermetureCourrier =this.statutCourriers = data.filter(statut => statut.id === 21);
             console.log(this.idStatutFermetureCourrier);  // Afficher les résultats filtrés
-            this.getCourriersByFermetureIdAndStatut(this.fermetureId,this.idStatutFermetureCourrier[0].id,this.paysOrigineId.id, this.structureDestna)
+            this.getCourriersByFermetureIdAndStatut(this.fermetureId,this.idStatutFermetureCourrier[0].id, this.structureDestna)
         })
         this.noeuxService.findNoeuxByIdstruct(this.sessionService.getAgentAttributes().structureId.toString()).subscribe(
             (result) => {
@@ -186,8 +186,8 @@ import {ConditionService} from "../../../proxy/conditionReception";
             }
         );
     }
-    getCourriersByFermetureIdAndStatut(fermetureId:number , statutId:number,paysOrigineId:number, structureDestna:number){
-        this.fermetureCourrierService.getCourriersByFermetureIdAndStatutAndPaysOrigin(fermetureId, statutId, this.paysOrigineId.id, this.structureDestna).subscribe(
+    getCourriersByFermetureIdAndStatut(fermetureId:number , statutId:number, structureDestna:number){
+        this.fermetureCourrierService.getCourriersByFermetureIdAndStatutAndPaysOrigin(fermetureId, statutId, this.structureDestna).subscribe(
             (result) => {
                 this.listeColiss= result
                 console.log(this.listeColiss);
@@ -211,14 +211,10 @@ import {ConditionService} from "../../../proxy/conditionReception";
         console.log(this.selectedColis);
         this.openColisDialog = false;
         this.selectedColis.forEach((courrier) => {
-            // Mettre à jour le statut du courrier et l'ID de l'utilisateur
-            // Vérifier si l'ID du statut est renseigné
             if (this.selectedStatut?.id) {
                 courrier.statutCourrierId =this.selectedStatut.id ;
                 courrier.taxeDouane = courrier.montantTaxeDouane;
                 courrier.conditionId = this.selectedCondition
-
-
             } else {
                 // Attribuer une valeur par défaut (22) si l'ID du statut n'est pas renseigné
                 courrier.taxeDouane = courrier.montantTaxeDouane;
@@ -228,19 +224,20 @@ import {ConditionService} from "../../../proxy/conditionReception";
             courrier.userId = this.iduser;
 
         });
-
+        console.log(this.selectedColis)
         // Appel au service pour mettre à jour les courriers
         this.courrierService.updateCourriers(this.selectedColis).subscribe(
             (result) => {
-                this.getCourriersByFermetureIdAndStatut(this.fermetureId,this.idStatutFermetureCourrier[0].id,this.paysOrigineId.id, this.structureDestna)                // Rafraîchir la liste des courriers après la mise à jour
-                this.selectedStatut=[]
-                // Message de succès
+
                 this.messageService.add({
                     severity: 'success',
                     summary: 'Succès',
                     detail: 'Courrier réceptionné avec succès',
                     life: 3000,
                 });
+                this.getCourriersByFermetureIdAndStatut(this.fermetureId,this.idStatutFermetureCourrier[0].id, this.structureDestna)                // Rafraîchir la liste des courriers après la mise à jour
+                this.selectedStatut=[]
+                // Message de succès
             },
             (error) => {
                 // En cas d'erreur lors de la mise à jour des courriers

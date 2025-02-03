@@ -95,7 +95,7 @@ export class FermeturePacketInterieurComponent implements  OnInit{
         const typeCourrierId = 3
 
         console.log(idStatutCourrier)
-        this.fermetrureService.getFermeturesByCriteria(idstructureDest,idStatutCourrier,typeCourrierId,this.paysOrigine.id).subscribe((data)=>{
+        this.fermetrureService.getFermeturesByCriteria(idstructureDest,idStatutCourrier,typeCourrierId).subscribe((data)=>{
             this.Listfermetures=data;
             console.log(this.Listfermetures)
             this.Listfermetures.map(fermeture => {

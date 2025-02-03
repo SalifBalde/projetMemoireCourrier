@@ -36,7 +36,7 @@ export  class FermetureCourrierService {
         return this.httpClient.get<any[]>(this.api_host+'/'+fermetureId+'/courriers/'+statutId);
     }
 
-    getCourriersByFermetureIdAndStatutAndPaysOrigin(fermetureId: number, statutId:number,paysOrigineId:number,structureDestna:number): Observable<any[]> {
-        return this.httpClient.get<any[]>(this.api_host+'/'+fermetureId+'/courriersByFermeture/'+statutId+'/'+paysOrigineId+'/'+structureDestna);
+    getCourriersByFermetureIdAndStatutAndPaysOrigin(fermetureId: number, statutId:number,structureDestna:number): Observable<any[]> {
+        return this.httpClient.get<any[]>(this.api_host+'/'+fermetureId+'/courriersByFermeture/'+statutId+'/'+structureDestna);
     }
 }

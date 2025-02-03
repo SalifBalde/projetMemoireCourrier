@@ -16,16 +16,16 @@ export class MessagerieMenuComponent implements OnInit {
             {
                 label: 'DK Messagerie',
                 items: [
-                    {
-                        label: 'Expedition',
-                        icon: 'pi pi-fw pi-send',
-                        routerLink: ['/messagerie/expedition'],
-                    },
-                    {
-                        label: 'Reception',
-                        icon: 'pi pi-fw pi-download',
-                        routerLink: ['/messagerie/reception'],
-                    },
+                    // {
+                    //     label: 'Expedition',
+                    //     icon: 'pi pi-fw pi-send',
+                    //     routerLink: ['/messagerie/expedition'],
+                    // },
+                    // {
+                    //     label: 'Reception',
+                    //     icon: 'pi pi-fw pi-download',
+                    //     routerLink: ['/messagerie/reception'],
+                    // },
                     // {
                     //     label: 'Reception Code',
                     //     icon: 'pi pi-fw pi-qrcode',
@@ -37,11 +37,11 @@ export class MessagerieMenuComponent implements OnInit {
 
 
             {
-                label: 'Colis-Imports',
+                //label: 'Colis-Imports',
                 items: [
                     {
                         label: 'Expédition Colis-Import',
-                        icon: 'pi pi-fw pi-file-pdf',
+                        icon: 'pi pi-fw pi-send',
                         routerLink: ['/messagerie/colis-import-exp'],
                     },
 
@@ -51,13 +51,13 @@ export class MessagerieMenuComponent implements OnInit {
                 label: 'Reception Colis',
                 items: [
                     {
-                        label: 'Reception Ligne Colis',
-                        icon: 'pi pi-fw pi-file-pdf',
+                        label: 'Mise en Douane',
+                        icon: "pi pi-arrow-right",
                         routerLink: ['/messagerie/colis-import'],
                     },
                     {
                         label: 'Sortie Douane',
-                        icon: 'pi pi-fw pi-file-pdf',
+                        icon: 'pi pi-arrow-left',
                         routerLink: ['/messagerie/sortieDouane'],
                     },
                 ],

@@ -2,20 +2,37 @@
 <div class="grid">
     <div class="col-12">
         <div class="card px-6 py-6">
-            <p-badge value="Liste  Fermétures Colis Interieur" size="large" severity="info"></p-badge>
 
-            <p-table [value]="Listfermetures" [(selection)]="selectedCourriers" dataKey="id" selectionMode="multiple"
-                     [tableStyle]="{'min-width': '50rem'}">
+            <p-table #dt [value]="Listfermetures" [(selection)]="selectedCourriers" dataKey="id" selectionMode="multiple"  [rows]="10"
+                     [rowsPerPageOptions]="[10, 25, 50]"
+                     [paginator]="true"
+                     [showCurrentPageReport]="true"
+                     [globalFilterFields]="['structure','date','numerodepeche','telephone','bureauDepot','date']"
+                     [tableStyle]="{'min-width': '50rem'} " currentPageReportTemplate="Affichage des {first} aux {last}èmes des  {totalRecords} entrées">
+                <ng-template pTemplate="caption">
+                    <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+                        <p-badge value="Liste  Fermétures Colis " size="large" severity="info"></p-badge>
 
+                        <span class="p-input-icon-right " style="float:right">
+                        <input
+                            pInputText
+                            type="text"
+                            (input)="dt.filterGlobal($event.target.value, 'contains')"
+                            placeholder="Rechercher...."
+                        />
+                            <i class="pi pi-search"></i>
+                        </span>
+                    </div>
+                </ng-template>
                 <ng-template pTemplate="header">
                     <tr class="custom-header">
                         <th style="width: 3rem">
                             <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                         </th>
-                        <th>Structure</th>
-                        <th>Date</th>
-                        <th>Numero Dépeche</th>
-                        <th>Details</th>
+                        <th pSortableColumn="structure">Structure<p-sortIcon field="structure" /> </th>
+                        <th pSortableColumn="date">Date<p-sortIcon field="date" /></th>
+                        <th pSortableColumn="numerodepeche">Numero Dépeche<p-sortIcon field="numerodepeche" /></th>
+                        <th pSortableColumn="structure">Details<p-sortIcon field="structure" /></th>
 
                     </tr>
                 </ng-template>

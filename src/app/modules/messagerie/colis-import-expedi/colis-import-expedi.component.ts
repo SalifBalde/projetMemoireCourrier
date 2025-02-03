@@ -74,7 +74,7 @@ export class ColisImportExpediComponent implements  OnInit{
     idStatutFermetureCourrier: any;
     iduser: any;
     suiviCourriers:any={}
-    numeroDepeche: any;
+   // numeroDepeche: any;
     selectedFermeture: any ;
 
     constructor(
@@ -167,9 +167,8 @@ export class ColisImportExpediComponent implements  OnInit{
 
     getAllColis(){
 
-        const  idstatut="18"
+        const  idstatut="7"
         const  idtype="2"
-
         this.courrierService.findCourrierByTypeCourrierAndStructureDepotAndIdStut( idtype,this.sessionService.getAgentAttributes().structureId.toString(), idstatut).subscribe(
             (result) => {
                 this.listcolis = result;
@@ -180,7 +179,7 @@ export class ColisImportExpediComponent implements  OnInit{
 
 
     getCourriers(){
-        const idStatu= '18'
+        const idStatu= '7'
         const idStructureDepo = this.sessionService.getAgentAttributes().structureId.toString()
 
 
@@ -311,8 +310,8 @@ export class ColisImportExpediComponent implements  OnInit{
     saveFermetureCourrier() {
         try {
             const structureDepotId = Number(this.sessionService.getAgentAttributes().structureId);
-            this.numeroDepeche = `${this.structure.code}${this.numeroDepech}${this.currentYearLastTwoDigits}`;
-            console.log(this.numeroDepech);
+            const numeroDepeche = `${this.structure.code}${this.numeroDepech}${this.currentYearLastTwoDigits}`;
+            console.log(numeroDepeche);
             console.log(this.selectedStructure);
 
             // Vérification des colis sélectionnés
@@ -330,7 +329,7 @@ export class ColisImportExpediComponent implements  OnInit{
             this.fermetureData = {
                 structureDepotId: structureDepotId,
                 structureDestinationId: this.selectedStructure,
-                numeroDepeche: this.numeroDepech,
+                numeroDepeche: numeroDepeche,
                 date: new Date().toISOString(),
                 userId: this.iduser, // ID de l'utilisateur connecté
                 statutCourrierId: this.idStatutFermetureCourrier[0]?.id,
@@ -360,34 +359,10 @@ export class ColisImportExpediComponent implements  OnInit{
                         console.log(courrieId, colis);
 
                         // Mise à jour du courrier
-                        this.courrierService.update(courrieId, colis).subscribe(
-                            () => {
-                                this.getCourriers()
-
-                                // Ajout du suivi pour chaque courrier après mise à jour
-                                const suiviCourrier = {
-                                    courrierId: colis.id,
-                                    idstatutCourrier: colis.statutCourrier.id,
-                                    userId: this.iduser,
-                                    structureDepotId: structureDepotId,
-                                    structureDestinationId: this.selectedStructure,
-                                    date: new Date().toISOString(),
-                                };
-
-                                this.suiviCourrier.save(suiviCourrier).subscribe(
-                                    (data) => {
-                                        // console.log("Suivi courrier sauvegardé : ", data);
-                                        this.numeroDepeche=null;
-                                        this.montants=null
-
-                                    },
-                                    (error) => {
-                                        console.error("Erreur lors de la sauvegarde du suivi : ", error);
-                                    }
-                                );
-
-                                // Rafraîchir la liste des courriers
-
+                        this.courrierService.updateCourrier(selectedColisCopy).subscribe(
+                            (reponse) => {
+                                this.selectedFermeture=reponse
+                                this.showDetails()
 
                             },
                             (error) => {
@@ -433,7 +408,7 @@ export class ColisImportExpediComponent implements  OnInit{
             return;
         }
         const id1 = this.selectedFermeture.id
-        this.router.navigate(['arriere/courrier-details/courrierDetailArriere/'+id1]);  // Passe l'ID de la fermeture dans l'URL
+        this.router.navigate(['messagerie/courrier-details-ligneColi/courrierDetailMessagLignColiArriere/'+id1]);  // Passe l'ID de la fermeture dans l'URL
         this.openCourrierDialog=false;
 
 

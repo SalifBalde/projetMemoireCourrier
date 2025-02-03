@@ -10,7 +10,9 @@ const routes: Routes = [{ path: '', component: MessagerieComponent },
    { path: 'colis-import', loadChildren: () => import('./colis-import/colisImport.module').then(m => m.ColisImportModule) },
    { path: 'colis-import-exp', loadChildren: () => import('./colis-import-expedi/colisImportExp.module').then(m => m.ColisImportExpModule) },
    { path: 'sortieDouane', loadChildren: () => import('./sortie-douane/sortieDouane.module').then(m => m.SortieDouaneModule) },
-    ];
+    { path: 'courrier-details-ligneColi/courrierDetailMessagLignColiArriere/:id', loadChildren: () => import('./courrier-details-MessagerieLigneColi/courrier-details.module').then(m => m.CourrierDetailsMessagLigneColiModule) },
+
+];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],

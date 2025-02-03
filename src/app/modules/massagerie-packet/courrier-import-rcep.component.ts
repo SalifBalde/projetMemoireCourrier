@@ -105,23 +105,11 @@ export class CourrierImportRcepComponent  implements OnInit{
     }
 
 
-    // getCourriers(){
-    //   const idStatu= '14'
-    //   const idStructureDepo = this.sessionService.getAgentAttributes().structureId.toString()
-    //
-    //
-    //   this.courrierService.findCourrierByStrutureDepotAndStatutId( idStructureDepo, idStatu).subscribe(
-    //       (result) => {
-    //         this.listeCourriers= result;
-    //         console.log(this.listeCourriers)
-    //       }
-    //   );
-    // }
 
     getBadgeSeverity(statutCourrier: string ): string {
         switch (statutCourrier?.toLowerCase()) {
             // case 'déposé': return 'danger';  // Rouge
-            case 'Fermé Messagerie': return 'success';  // Vert
+            case 'Expédition intérieure de lettre ou colis': return 'success';  // Vert
             default: return 'info';         // Bleu
         }
     }
@@ -179,7 +167,7 @@ export class CourrierImportRcepComponent  implements OnInit{
         console.log(this.selectedCourriers)
         this.selectedCourriers.forEach((courrier) => {
             // Mettre à jour le statut du courrier et l'ID de l'utilisateur
-            courrier.statutCourrier = { id: 5 };  // Assurez-vous que l'ID du statut existe
+            courrier.statutCourrierId = 6 ;  // Assurez-vous que l'ID du statut existe
             courrier.userId = this.iduser;
 
             console.log(courrier);
@@ -189,17 +177,19 @@ export class CourrierImportRcepComponent  implements OnInit{
             // Sauvegarder les informations de suivi pour chaque courrier
 
         });
+        console.log(this.selectedCourriers);
         // Appel au service pour mettre à jour les courriers
         this.courrierService.updateCourriers(this.selectedCourriers).subscribe(
             (result) => {
                 // Recharger la liste des courriers après la mise à jour réussie
                 this.getAllColis();
+                console.log(this.selectedCourriers);
 
                 // Affiche un message de succès
                 this.messageService.add({
                     severity: 'success',
                     summary: 'Succès',
-                    detail: 'Courrier réceptionné avec succès',
+                    detail: 'Courrier mis à la douane avec succès',
                     life: 3000,
                 });
             },

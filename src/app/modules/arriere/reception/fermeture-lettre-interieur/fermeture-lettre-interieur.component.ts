@@ -90,7 +90,7 @@ export class FermetureLettreInterieurComponent  implements  OnInit{
             console.log(this.idStatutFermetureCourrier[0].id);
             this.getFermetureByStructure()
         })
-        this.paysOrigine.id = 210
+
         console.log(this.iduser)
         this.getCourriers()
         this.getTypeCourrierById()
@@ -113,7 +113,7 @@ export class FermetureLettreInterieurComponent  implements  OnInit{
         const typeCourrierId = 1
 
         console.log(idStatutCourrier)
-        this.fermetrureService.getFermeturesByCriteria(idstructureDest,idStatutCourrier,typeCourrierId,this.paysOrigine.id).subscribe((data)=>{
+        this.fermetrureService.getFermeturesByCriteria(idstructureDest,idStatutCourrier,typeCourrierId).subscribe((data)=>{
             this.Listfermetures=data;
             console.log(this.Listfermetures)
             this.Listfermetures.map(fermeture => {
