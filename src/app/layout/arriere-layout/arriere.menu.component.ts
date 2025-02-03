@@ -187,41 +187,7 @@ export class ArriereMenuComponent implements OnInit {
                     },
                 ]
                 : []),
-
-
-        // {
-        //     label: 'Reception  Import',
-        //     items: [
-        //
-        //
-        //         ...(this.isNoeudAcheminement
-        //             ? [
-        //
-        //                 {
-        //                     label: '--- Réception Import ---',
-        //                     styleClass: 'menu-separator',
-        //                     items: [
-        //                         {
-        //                             label: ' Lettre Import',
-        //                             icon: 'pi pi-fw pi-download',
-        //                             routerLink: ['/arriere/reception/fermetureCourrierImport'],
-        //                         }, {
-        //                             label: ' Packet Import',
-        //                             icon: 'pi pi-fw pi-download',
-        //                             routerLink: ['/arriere/reception/fermeturePacketImport'],
-        //                         },
-        //                         {
-        //                             label: ' Colis Import',
-        //                             icon: 'pi pi-fw pi-download',
-        //                             routerLink: ['/arriere/reception/fermetureColisImport'],
-        //                         },
-        //                     ],
-        //                 },
-        //             ]
-        //             : []),
-        //     ],
-        // },
-            //
+      /*
             ,{
             // label: 'Reception Import',
             items: [
@@ -244,7 +210,7 @@ export class ArriereMenuComponent implements OnInit {
                     ]
                     : []), // Corrigez la syntaxe ici en retirant la virgule et en fermant correctement
             ],
-        },
+        }, */
             {
                 label: 'Reporting',
                 items: [
