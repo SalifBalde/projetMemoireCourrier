@@ -182,7 +182,7 @@ export class Cn23AService {
         doc.setFontSize(7);
         doc.text('Poids total (4)', yPos, 146, { align: 'left' });
         doc.setFontSize(10);
-        doc.text(`${sumCol2} g`, pageHeight / 1.1, 149, { align: 'right' });
+        doc.text(`${sumCol2} Kg`, pageHeight / 1.1, 149, { align: 'right' });
 
         doc.setFontSize(9);
         doc.text(`Total value (5)`, pageHeight / 1.4, 143, { align: 'right' });
@@ -205,7 +205,7 @@ export class Cn23AService {
         doc.setFontSize(7);
         doc.text('Frais de port/Frais', pageHeight / 0.9, 143, { align: 'left' });
         doc.setFontSize(10);
-        doc.text(`${data.taxeDouane}`, pageHeight / 0.8, 149, { align: 'left' });
+        doc.text(``, pageHeight / 0.8, 149, { align: 'left' });
 
         // Category of item
         doc.setFontSize(9);

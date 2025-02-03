@@ -25,7 +25,11 @@
             <p><strong>Structure Destination:</strong> {{ courrier?.structureDestinationLibelle }}</p>
             <p><strong>Type Courrier:</strong> {{ courrier?.typeCourrierLibelle }}</p>
             <p><strong>Catégorie:</strong> {{ courrier?.categorieLibelle }}</p>
-            <p><strong>Poids:</strong> {{ courrier?.poids }} Kg</p>
+            <p><strong>Poids:</strong>
+                {{ courrier?.poids }}
+                <span *ngIf="courrier?.typeCourrierId === 1; else kgUnit">g</span>
+                <ng-template #kgUnit>Kg</ng-template>
+              </p>
             <p><strong>Date:</strong> {{ courrier?.createdAt| date:'dd/MM/yyyy' }}</p>
           </div>
           <div class="col-6">
