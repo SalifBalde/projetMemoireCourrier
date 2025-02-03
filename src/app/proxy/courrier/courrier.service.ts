@@ -35,6 +35,10 @@ getAllDestinataires(clientId:string, destinationId:string) {
 {
   return this.httpClient.post(this.api_host,item,this.httpOptions);
 }
+saveReceptionCourrier(item: CourrierCreateUpdateDto)
+{
+  return this.httpClient.post(this.api_host+'/saverReception',item,this.httpOptions);
+}
 
 savePaquet(item: CourrierCreateUpdateDto)
 {
@@ -52,7 +56,9 @@ update(id:string, item:CourrierDto)
   let new_api_host = this.routerParam(this.api_host,);
   return this.httpClient.put<CourrierDto>(new_api_host+id,item,this.httpOptions);
 }
-
+getByCodeBarre(codeBarre: string): Observable<any> {
+        return this.httpClient.get<any>(`${this.api_host}/findByCodeBarre/${codeBarre}`);
+    }
 
 
 livraison(id:string, item:CourrierDto)
