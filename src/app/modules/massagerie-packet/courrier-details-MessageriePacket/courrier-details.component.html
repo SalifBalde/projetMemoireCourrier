@@ -37,6 +37,10 @@
             <!--            <button pButton type="button" icon="pi pi-print" (click)="imprimerFacture()" class="p-button-danger mr-2"></button>-->
             <button pButton type="button" icon="pi pi-print" (click)="cn23()" class="p-button-info">Générer CPL6</button>
         </div>
+        <div class="p-toolbar-group-right flex flex-wrap">
+
+            <button pButton type="button" label="Suivi Courrier" icon="pi pi-eye" (click)="openDialog()" class="p-button-warning mr-2"></button>
+        </div>
     </p-toolbar>
 
     <div class="card py-8 px-6 md:px-8 overflow-auto">
@@ -75,3 +79,73 @@
 </div>
 </div>
 
+</div>
+<p-dialog
+    [(visible)]="trakingDialog"
+    header="Suivi Courrier"
+    [modal]="true"
+    [style]="{width: '450px', borderRadius: '10px'}"
+    [closable]="true">
+    <div class="card" style="padding: 1.5rem; text-align: center;">
+        <h5 style="margin-bottom: 1rem; color: #495057;">Rechercher un courrier</h5>
+        <div class="grid" style="gap: 1rem;">
+            <div class="col-12">
+                <p-inputGroup>
+                    <input type="text"
+                           pInputText
+                           [(ngModel)]="codeBarre"
+                           placeholder="Saisir le Code Barre"
+                           style="width: 60%;" />
+
+                    <button type="button"
+                            pButton
+                            label="Recherche"
+                            icon="pi pi-arrow-right"
+                            class="p-button-primary"
+                            (click)="rechercherParCodeBarre()"></button>
+                </p-inputGroup>
+
+            </div>
+        </div>
+    </div>
+</p-dialog>
+<p-dialog
+    header="Détails des suivis"
+    [(visible)]="dialogVisible"
+    [modal]="true"
+    [closable]="true"
+    [draggable]="false"
+    [resizable]="false"
+    [style]="{width: '55%', borderRadius: '12px', boxShadow: '0 8px 16px rgba(0, 0, 0, 0.2)'}"
+    [contentStyle]="{padding: '1.5rem'}"
+    [baseZIndex]="10000">
+
+    <div *ngIf="selectedSuivi && selectedSuivi.length > 0" class="grid">
+        <div *ngFor="let suivi of selectedSuivi; let i = index" class="col-12 md:col-4 lg:col-4 suivi-details">
+            <p style="font-size: 1rem; margin-bottom: 0.5rem;">
+                <strong>Suivi {{ i + 1 }} :</strong>
+            </p>
+            <p style="font-size: 1rem; margin-bottom: 1rem;">
+                <strong>Date :</strong> {{ suivi.createdAt | date: 'dd/MM/yyyy' }}
+            </p>
+            <p style="font-size: 1rem; margin-bottom: 1rem;">
+                <strong>Structure :</strong> {{ suivi.structureLibelle }}
+            </p>
+            <p style="font-size: 1rem; margin-bottom: 1rem;">
+                <strong>Agent :</strong> {{ suivi.userPrenom }}--{{ suivi.userNom }}
+            </p>
+            <p style="font-size: 1rem; margin-bottom: 1rem;">
+                <strong>Status :</strong> {{ suivi.statutCourrierLibelle }}
+            </p>
+            <hr *ngIf="i < selectedSuivi.length - 1" style="margin: 1rem 0;">
+        </div>
+    </div>
+
+    <div *ngIf="!selectedSuivi || selectedSuivi.length === 0" class="p-text-center">
+        <p>Aucun détail de suivi disponible.</p>
+    </div>
+
+    <ng-template pTemplate="footer">
+        <button pButton type="button" label="Fermer" class="p-button-text" (click)="dialogVisible = false"></button>
+    </ng-template>
+</p-dialog>

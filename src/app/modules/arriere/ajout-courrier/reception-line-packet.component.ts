@@ -55,6 +55,7 @@ export class ReceptionLinePacketComponent implements  OnInit {
     courrierss:any[]=[]
      issortant: boolean;
      iduser: any;
+    taxeePresentation:number
 
 
 
@@ -267,6 +268,11 @@ export class ReceptionLinePacketComponent implements  OnInit {
                 this.courrier.typeCourrierId=this.typeCourrierId
                 this.courrier.typeCourrierLibelle=this.categori.typeCourrierLibelle
                 console.log (this.categori.typeCourrierId)
+                if(this.typeCourrierId !==1){
+                    this.taxeePresentation = 1000
+                }else{
+                    this.taxeePresentation= null
+                }
             }
         );
 
@@ -278,14 +284,14 @@ export class ReceptionLinePacketComponent implements  OnInit {
                 poids: this.poids,
                 expediteurId: Number(this.client.id),
                 destinataireId: Number(this.destinataire.id),
+                typeCourrierId: this.typeCourrierId,
                 paysDestinationId: this.paysDestinationId,
-                taxePresentation:1000,
+                taxePresentation: this.typeCourrierId !== 1 ? 1000 : null, // Condition ternaire ici
                 codeBarre: this.codebarre , // Utilisation du code barre correctement
                 valeurDeclare: null,
                 contenu: '',
                 quantite: null,
                 categorieId: this.categorieId,
-                typeCourrierId: this.typeCourrierId,
                 recommande: false,
                 ar: false,
                 express: false,
@@ -335,8 +341,9 @@ export class ReceptionLinePacketComponent implements  OnInit {
                 if (this.courrier?.id) {
                     courrier.statutCourrierId = 10;
                     courrier.taxeDouane = this.taxeDouane;
-                    courrier.taxePresentation = this.taxePresentation;
-                    courrier.typeCourrierId= this.categori.typeCourrierId
+                    courrier.typeCourrierId= this.typeCourrierId
+                    courrier.taxePresentation = this.typeCourrierId !== 1 ? 1000 : null, // Condition ternaire ici
+                    courrier.categorieId=this.categorieId
                     courrier.fraisSuivi = this.fraisSuivi;
                     courrier.expediteurId= this.client.id
                     courrier.destinateurId=this.destinataire.id
@@ -381,6 +388,8 @@ export class ReceptionLinePacketComponent implements  OnInit {
         this.taxeDouane = null;
         this.taxePresentation = null;
         this.fraisSuivi = null;
+        this.categorieId=null;
+        this.typeCourrierId=null;
     }
 
     getPaysLibelle(paysId: number): string {

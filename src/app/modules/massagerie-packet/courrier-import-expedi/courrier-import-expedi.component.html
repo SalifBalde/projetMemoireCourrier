@@ -61,7 +61,9 @@
                         <th style="width: 4rem"><p-tableHeaderCheckbox /></th>
                         <th pSortableColumn="codeBarre">Code<p-sortIcon field="codeBarre" /></th>
                         <th pSortableColumn="quantite">Quantité<p-sortIcon field="quantite" /></th>
+                        <th pSortableColumn="quantite">Catégorie<p-sortIcon field="quantite" /></th>
                         <th pSortableColumn="montant">Montant<p-sortIcon field="montant" /></th>
+                        <th pSortableColumn="taxepresentation">Taxe Présentation<p-sortIcon field="montant" /></th>
                         <th pSortableColumn="taxe" >Taxe Douane<p-sortIcon field="taxe" /> </th>
                         <th pSortableColumn="poids">Poids<p-sortIcon field="poids" /></th>
                         <th pSortableColumn="status">Status<p-sortIcon field="status" /></th>
@@ -75,7 +77,9 @@
                         </td>
                         <td>{{courrier.codeBarre}}</td>
                         <td>{{courrier.quantite}}</td>
+                        <td>{{courrier.categorieLibelle}}</td>
                         <td>{{courrier.montant}}</td>
+                        <td>{{courrier.taxeePresentation}}</td>
                         <td>
 
                             <input
