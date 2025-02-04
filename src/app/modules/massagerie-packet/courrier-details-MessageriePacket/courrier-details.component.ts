@@ -10,11 +10,15 @@ import { PdfService } from 'src/app/proxy/pdf/pdf.service';
 import {StatutCourrierService, Statutdto} from "../../../proxy/statut-courrier";
 import {FermetureService} from "../../../proxy/fermeture";
 import {FermetureCourrierService} from "../../../proxy/fermetureCourrier";
+import {SuiviCourrierdto, SuiviCourrierService} from "../../../proxy/suiviCourrier";
+import {MessageService} from "primeng/api";
 
 
 @Component({
   selector: 'app-courrier-details',
   templateUrl: './courrier-details.component.html',
+    providers: [MessageService, ],
+
 })
 export class CourrierDetailsComponent implements OnInit {
     selectedLettre: CourrierDto  []= null;
@@ -27,19 +31,27 @@ export class CourrierDetailsComponent implements OnInit {
      ladate: Date;
      ladateFormatee: string;
      nombreCourriers: number;
+     trakingDialog: boolean=false;
+    codeBarre: string = '';
+    suivis: SuiviCourrierdto[] = [];
+    loading: boolean = false;
+    dialogVisible: boolean = false; // Indicateur pour afficher ou cacher le dialogue
+    selectedSuivi: any = null; // Données du suivi sélectionné
 
 
   constructor(
     private courrierService: CourrierService,
     private factureService: FactureService,
     private pdfService:PdfService,
-    private cn23Service : Cn23Service,
+    private messageService: MessageService,
     private fb: FormBuilder,
     private router: Router,
     private route : ActivatedRoute,
     private  fermetureService : FermetureService,
     private fermetureCourrierService : FermetureCourrierService,
     private  statutCourrierService: StatutCourrierService,
+    private suiviCourrierService: SuiviCourrierService
+
 
   ) {}
 
@@ -94,6 +106,48 @@ async imprimerFacture(){
     }
 
 }
+    openDialog(){
+        this.trakingDialog=true
+        console.log(this.trakingDialog)
+
+    }
+    openDialog1(suivi: any) {
+        this.selectedSuivi = suivi;
+        console.log(this.selectedSuivi)// Assigner les données du suivi sélectionné
+        this.dialogVisible = true; // Ouvrir le dialogue
+    }
+
+    rechercherParCodeBarre() {
+
+        this.trakingDialog=false
+        this.loading = true;
+        if (this.codeBarre.trim() !== '') {
+            console.log(`Recherche avec code barre: ${this.codeBarre}`);
+            this.suiviCourrierService.getByCodeBarre(this.codeBarre).subscribe(
+                (data: SuiviCourrierdto[]) => {
+                    this.suivis = data;
+                    this.codeBarre=null
+                    this.openDialog1(this.suivis)
+                    console.log(this.suivis)
+                    if (this.suivis.length === 0) {
+                        this.messageService.add({severity:'info', summary: 'Information', detail: 'Aucun suivi trouvé avec ce code barre.'});
+                    }
+                    this.loading = false;
+                },
+                (error) => {
+                    console.error(error);
+                    this.messageService.add({severity:'error', summary: 'Erreur', detail: 'Erreur lors de la récupération des données.'});
+                }
+
+            );
+            this.loading = false;
+
+        } else {
+            this.messageService.add({severity:'warn', summary: 'Attention', detail: 'Veuillez saisir un code barre valide.'});
+        }
+        this.loading = false;
+
+    }
 
 async cn23() {
   if (!this.listeCourriers) {

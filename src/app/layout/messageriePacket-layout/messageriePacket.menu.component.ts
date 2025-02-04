@@ -22,9 +22,9 @@ export class MessageriePacketMenuComponent implements OnInit {
                         routerLink: ['/messageriePacket/packet-exp'],
                     },
                     {
-                        label: 'Mise en Douane',
-                        icon: 'pi pi-arrow-right',
-                        routerLink: ['/messageriePacket/reception-packet-import'],
+                        label: 'Réception',
+                        icon: 'pi pi-fw pi-download',
+                        routerLink: ['/messageriePacket/fermeturepacket'],
                     },
                     {
                         label: 'Sortie Daoune',

@@ -11,6 +11,8 @@ import {FormBuilder} from "@angular/forms";
 import {ActivatedRoute, Router} from "@angular/router";
 import {AcheminementService} from "../../proxy/acheminement";
 import {SuiviCourrierService} from "../../proxy/suivi-courrier";
+import {FermetureCourrierService} from "../../proxy/fermetureCourrier";
+import {StatutCourrierService, Statutdto} from "../../proxy/statut-courrier";
 
 @Component({
   selector: 'app-courrier-import-rcep',
@@ -26,11 +28,21 @@ export class CourrierImportRcepComponent  implements OnInit{
     listAchemin: any[]=[];
     selectedStructure: any;
     openColisDialog: boolean = false;
+    openColisDialog1: boolean = false;
     courries: any ={};
     courrier: any ={};
     selectedCourriers!: any;
     iduser: any;
     suiviCourriers:any={}
+    fermetureId: number;
+    listeColiss: any[]=[];
+    statutCourriers: Statutdto[];
+    idStatutFermetureCourrier: any;
+    structureDestna:number
+     isReceptioned: number;
+    idStatutFermetureCourrier1: Statutdto[];
+
+
 
     constructor(
         private colisService: ColisService,
@@ -45,7 +57,9 @@ export class CourrierImportRcepComponent  implements OnInit{
         private noeuxService: NouexService,
         private achemeniService: AcheminementService,
         private courrierService: CourrierService,
-        private  suiviCourrier:SuiviCourrierService
+        private  statutCourrierService: StatutCourrierService,
+        private fermetureCourrierService : FermetureCourrierService,
+
 
     ) {
 
@@ -61,6 +75,10 @@ export class CourrierImportRcepComponent  implements OnInit{
     }
 
     ngOnInit(): void {
+        this.route.params.subscribe(params => {
+            this.fermetureId = +params['id'];
+            console.log('ID de la fermeture:', this.fermetureId);    });
+
         console.log(this.sessionService.getAgentAttributes().structureId.toString())
         this.noeuxService.findNoeuxByIdstruct(this.sessionService.getAgentAttributes().structureId.toString()).subscribe(
             (result) => {
@@ -75,27 +93,61 @@ export class CourrierImportRcepComponent  implements OnInit{
                 this.structure$ = result;
             }
         );
+        this.structureDestna = Number(this.sessionService.getAgentAttributes().structureId)
 
 
         // this.getCourriers();
 
         this.getAllNoeux()
-        this.getAllColis()
         this.iduser=this.sessionService.getAgentAttributes()?.id
         console.log(this.iduser)
+        this.statutCourrierService.findAll().subscribe((data)=>{
+            this.statutCourriers=data;
+            this.idStatutFermetureCourrier =this.statutCourriers = data.filter(statut => statut.id === 21);
+            this.idStatutFermetureCourrier1 =this.statutCourriers = data.filter(statut => statut.id === 5);
+            console.log(this.idStatutFermetureCourrier);  // Afficher les résultats filtrés
+            this.getCourriersByFermetureIdAndStatut(this.fermetureId,this.idStatutFermetureCourrier[0].id,this.structureDestna)
+            this.getCourriersByFermetureIdAndStatu1(this.fermetureId,this.idStatutFermetureCourrier1[0].id,this.structureDestna)
+        })
 
     }
 
-    getAllColis(){
-
-        const  idstatut="21"
-
-        this.courrierService.findCourrierByStrutureDepotAndStatutId( this.sessionService.getAgentAttributes().structureId.toString(), idstatut).subscribe(
+    // getAllColis(){
+    //
+    //     const  idstatut="21"
+    //
+    //     this.courrierService.findCourrierByStrutureDepotAndStatutId( this.sessionService.getAgentAttributes().structureId.toString(), idstatut).subscribe(
+    //         (result) => {
+    //             this.listcolis = result;
+    //             console.log(this.listcolis)
+    //         }
+    //     );
+    // }
+    getCourriersByFermetureIdAndStatut(fermetureId:number , statutId:number, structureDestna:number){
+        this.fermetureCourrierService.getCourriersByFermetureIdAndStatutAndPaysOrigin(fermetureId, statutId,structureDestna).subscribe(
             (result) => {
-                this.listcolis = result;
-                console.log(this.listcolis)
-            }
-        );
+                this.listeColiss= result
+                for (const colis of this.listeColiss) {
+                    this.isReceptioned= colis.statutCourrierId
+                    console.log(this.isReceptioned)
+
+                }
+
+                console.log(this.listeColiss);
+            });
+    }
+    getCourriersByFermetureIdAndStatu1(fermetureId:number , statutId:number, structureDestna:number){
+        this.fermetureCourrierService.getCourriersByFermetureIdAndStatutAndPaysOrigin(fermetureId, statutId,structureDestna).subscribe(
+            (result) => {
+                this.listeColiss= result
+                for (const colis of this.listeColiss) {
+                    this.isReceptioned= colis.statutCourrierId
+                    console.log(this.isReceptioned)
+
+                }
+
+                console.log(this.listeColiss);
+            });
     }
     openDialog(courrie: CourrierDto) {
         this.openColisDialog = true;
@@ -103,14 +155,23 @@ export class CourrierImportRcepComponent  implements OnInit{
         console.log(courrie)
 
     }
+    openDialog1(courrie: CourrierDto) {
+        this.openColisDialog1 = true;
+        this.courries = { ...courrie };
+        console.log(courrie)
+
+    }
 
 
 
-    getBadgeSeverity(statutCourrier: string ): string {
-        switch (statutCourrier?.toLowerCase()) {
-            // case 'déposé': return 'danger';  // Rouge
-            case 'Expédition intérieure de lettre ou colis': return 'success';  // Vert
-            default: return 'info';         // Bleu
+    getBadgeSeverity(statutCourrier: string): string {
+        if (!statutCourrier) return 'info'; // Valeur par défaut si statutCourrier est null ou undefined
+
+        switch (statutCourrier.trim().toLowerCase()) {
+            case 'recevoir lettres ou colis au bureau d’échange':
+                return 'success';  // Vert
+            default:
+                return 'info';  // Bleu
         }
     }
     getAllNoeux(){
@@ -181,8 +242,8 @@ export class CourrierImportRcepComponent  implements OnInit{
         // Appel au service pour mettre à jour les courriers
         this.courrierService.updateCourriers(this.selectedCourriers).subscribe(
             (result) => {
+                this.getCourriersByFermetureIdAndStatu1(this.fermetureId,this.idStatutFermetureCourrier1[0].id,this.structureDestna)
                 // Recharger la liste des courriers après la mise à jour réussie
-                this.getAllColis();
                 console.log(this.selectedCourriers);
 
                 // Affiche un message de succès
@@ -190,6 +251,59 @@ export class CourrierImportRcepComponent  implements OnInit{
                     severity: 'success',
                     summary: 'Succès',
                     detail: 'Courrier mis à la douane avec succès',
+                    life: 3000,
+                });
+            },
+            (error) => {
+                // Affiche un message d'erreur
+                this.messageService.add({
+                    severity: 'error',
+                    summary: 'Erreur',
+                    detail: 'Erreur lors de la réception des courriers',
+                    life: 3000,
+                });
+            }
+        );
+    }
+    confirmReception1() {
+        if (!this.selectedCourriers || this.selectedCourriers.length === 0) {
+            this.messageService.add({
+                severity: 'warn',
+                summary: 'Avertissement',
+                detail: 'Aucun courrier sélectionné',
+                life: 3000,
+            });
+            return;
+        };
+    this.openColisDialog1  = false;
+
+        // Met à jour le statut des courriers sélectionnés
+        console.log(this.selectedCourriers)
+        this.selectedCourriers.forEach((courrier) => {
+            // Mettre à jour le statut du courrier et l'ID de l'utilisateur
+            courrier.statutCourrierId = 5;  // Assurez-vous que l'ID du statut existe
+            courrier.userId = this.iduser;
+
+            console.log(courrier);
+
+
+
+            // Sauvegarder les informations de suivi pour chaque courrier
+
+        });
+        console.log(this.selectedCourriers);
+        // Appel au service pour mettre à jour les courriers
+        this.courrierService.updateCourriers(this.selectedCourriers).subscribe(
+            (result) => {
+                this.getCourriersByFermetureIdAndStatu1(this.fermetureId,this.idStatutFermetureCourrier1[0].id,this.structureDestna)
+                // Recharger la liste des courriers après la mise à jour réussie
+                console.log(this.selectedCourriers);
+
+                // Affiche un message de succès
+                this.messageService.add({
+                    severity: 'success',
+                    summary: 'Succès',
+                    detail: 'Packets bien réceptionnés avec succès',
                     life: 3000,
                 });
             },

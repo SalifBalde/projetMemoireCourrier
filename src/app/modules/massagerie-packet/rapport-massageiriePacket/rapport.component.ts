@@ -164,7 +164,7 @@ import {ProgressSpinner} from "primeng/progressspinner";
             return;
         }
         const id1 = fermeture.id
-        this.router.navigate(['arriere/courrier-details-rapport/courrierDetailArriere/'+id1]);  // Passe l'ID de la fermeture dans l'URL
+        this.router.navigate(['messageriePacket/courrier-details-packet/courrierDetailMessagPacketArriere/'+id1]);  // Passe l'ID de la fermeture dans l'URL
 
 
 

@@ -3,7 +3,7 @@
     <p-toast></p-toast>
     <div class="col-12">
         <div class="card px-6 py-6">
-            <p-table  #dt [value]="listcolis" [(selection)]="selectedCourriers" dataKey="id" [rows]="10"
+            <p-table  #dt [value]="listeColiss" [(selection)]="selectedCourriers" dataKey="id" [rows]="10"
                      [rowsPerPageOptions]="[10, 25, 50]"
                      [paginator]="true"
                      [showCurrentPageReport]="true"
@@ -12,7 +12,7 @@
                      currentPageReportTemplate="Affichage des {first} aux {last}èmes des {totalRecords} entrées">
                 <ng-template pTemplate="caption">
                     <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
-                        <p-badge value="Liste des packets  réceptionnés" size="large" severity="info"></p-badge>
+                        <p-badge value="Liste des packets  a réceptionné" size="large" severity="info"></p-badge>
 
                         <span class="p-input-icon-right" style="float:right">
                                 <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')" placeholder="Rechercher...." />
@@ -25,7 +25,9 @@
                         <th style="width: 4rem"><p-tableHeaderCheckbox /></th>
                         <th pSortableColumn="codeBarre">Code<p-sortIcon field="codeBarre" /></th>
                         <th pSortableColumn="quantite">Quantité<p-sortIcon field="quantite" /></th>
+                        <th pSortableColumn="quantite">Catégorie<p-sortIcon field="catégorie" /></th>
                         <th pSortableColumn="montant">Montant<p-sortIcon field="montant" /></th>
+                        <th pSortableColumn="montant">Taxe Présentation<p-sortIcon field="montant" /></th>
                         <th pSortableColumn="poids">Poids<p-sortIcon field="poids" /></th>
                         <th pSortableColumn="status">Status<p-sortIcon field="status" /></th>
 
@@ -38,7 +40,9 @@
                         </td>
                         <td>{{courrier.codeBarre}}</td>
                         <td>{{courrier.quantite}}</td>
+                        <td>{{courrier.categorieLibelle}}</td>
                         <td>{{courrier.montant}}</td>
+                        <td>{{courrier.taxeePresentation}}</td>
                         <td>{{courrier.poids}}</td>
                         <td>
                             <p-badge
@@ -55,8 +59,12 @@
                     </tr>
                 </ng-template>
             </p-table>
-            <div class="col-12 flex flex-column lg:flex-row justify-content-end align-items-center">
+            <div class="col-12 flex flex-column lg:flex-row justify-content-end align-items-center" *ngIf="isReceptioned===5">
                 <p-button  label="Mise en Douane" icon="pi pi-arrow-right" (click)="openDialog(courrier)"
+                           [disabled]="isExpeditionDisabled()" severity="warning" rounded />
+            </div>
+            <div class="col-12 flex flex-column lg:flex-row justify-content-end align-items-center" *ngIf="isReceptioned===21">
+                <p-button  label="Reception" icon="pi pi-fw pi-download" (click)="openDialog1(courrier)"
                            [disabled]="isExpeditionDisabled()"  rounded />
             </div>
         </div>
@@ -69,13 +77,28 @@
 <p-dialog [(visible)]="openColisDialog" header="Confirmer" [modal]="true" [style]="{width:'450px'}">
     <div class="flex align-items-center justify-content-center">
         <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
-        <span *ngIf="courrier">Etes-vous sûr de vouloir Mettre en Daoune ce(s) packet(s) <b>{{courrier.codeBarre}}</b>?</span>
+        <span *ngIf="courrier">Etes-vous sûr de vouloir Mettre en Daoune ce(s) packet  (s) <b>{{courrier.codeBarre}}</b>?</span>
     </div>
     <ng-template pTemplate="footer">
         <button pButton pRipple icon="pi pi-check" class="p-button-text " label="Oui"
                 (click)="confirmReception()"></button>
-        <button pButton pRipple icon="pi pi-times" class=" p-button-text p-button-danger" label="Non"
+        <button pButton pRipple icon="pi pi-times" class="p-button-text p-button-danger" label="Non"
                 (click)="openColisDialog = false"></button>
+
+
+    </ng-template>
+</p-dialog>
+<p-dialog [(visible)]="openColisDialog1" header="Confirmer" [modal]="true" [style]="{width:'450px'}">
+    <div class="flex align-items-center justify-content-center">
+        <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+        <span *ngIf="courrier">Etes-vous sûr de vouloir réceptionner  <b>{{courrier.codeBarre}}</b>?</span>
+    </div>
+    <ng-template pTemplate="footer">
+        <button pButton pRipple icon="pi pi-check" class="p-button-text " label="Oui"
+                (click)="confirmReception1()"></button>
+        <button pButton pRipple icon="pi pi-times" class="p-button-text p-button-danger" label="Non"
+                (click)="openColisDialog1 = false"></button>
+
 
     </ng-template>
 </p-dialog>
