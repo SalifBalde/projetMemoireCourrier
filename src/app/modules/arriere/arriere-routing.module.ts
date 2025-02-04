@@ -57,6 +57,10 @@ const routes: Routes = [{ path: '', component: ArriereComponent },
 
     { path: 'courrier-details-rapport/courrierDetailArriere/:id', loadChildren: () => import('./rapport/courrier-details-rapport/courrier-details.module').then(m => m.CourrierDetailsrapportModule) },
 
+     // saisir le courrier pour la reception
+
+    { path: 'ajouter-courrier/courrierDetailArriere', loadChildren: () => import('./ajout-courrier/reception-line-packet.module').then(m => m.ReceptionCourrierArriereModule) },
+
 
 
 ];

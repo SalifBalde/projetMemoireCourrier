@@ -38,11 +38,11 @@ export class ArriereMenuComponent implements OnInit {
         // Mise à jour du menu une fois isNoeudAcheminement mis à jour
         this.model = [
             {
-                label: 'Expédition  Arriere',
+                label: 'Expédition  Interieur',
                 items: [
 
                     {
-                        label: '--- Expédition Arrière ---',
+                        label: '--- Expédition Interieur ---',
                         styleClass: 'menu-separator',
                         items: [
                             {
@@ -66,11 +66,11 @@ export class ArriereMenuComponent implements OnInit {
             },
 
             {
-                label: 'Reception  Arriere',
+                label: 'Reception  Interieur',
                 items: [
 
                             {
-                                label: '--- Réception Arrière ---',
+                                label: '--- Réception Interieur ---',
                                 styleClass: 'menu-separator',
                                 items: [
                                     {
@@ -96,7 +96,7 @@ export class ArriereMenuComponent implements OnInit {
             ...(this.isNoeudAcheminement
                 ? [
                     {
-                        label: 'Expedition Interieur',
+                        label: 'Expedition ',
                         items: [
                             {
                                 label: 'Lettre',
@@ -117,23 +117,34 @@ export class ArriereMenuComponent implements OnInit {
                     },
                 ]
                 : []),
+            {
+                label: 'Reception Par Saisi',
+                items: [
+                    {
+                        label: 'Reception( courrier et colis)',
+                        icon: 'pi pi-fw pi-download',
+                        routerLink: ['/arriere/ajouter-courrier/courrierDetailArriere'],
+                    }
+
+                ]
+            },
 
 
             {
                 label: 'Reception ',
                 items: [
                     {
-                        label: 'Lettre ( import & interieur )',
+                        label: 'Lettre',
                         icon: 'pi pi-fw pi-download',
                         routerLink: ['/arriere/reception/fermetureLettreInterieur'],
                     },
                     {
-                        label: 'Packet ( import & interieur )',
+                        label: 'Packet',
                         icon: 'pi pi-fw pi-download',
                         routerLink: ['/arriere/reception/fermeturePacketInterieur'],
                     },
                     {
-                        label: ' Colis ( import & interieur )',
+                        label: ' Colis ',
                         icon: 'pi pi-fw pi-download',
                         routerLink: ['/arriere/reception/fermetureColisOrdinaire'],
                         styleClass: 'small-parentheses'

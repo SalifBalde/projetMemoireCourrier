@@ -9,6 +9,7 @@ export interface CategorieDto {
   entrant?: boolean;
   typeCourrierLibelle?: string;
 
+
 }
 
 export interface CategorieCreateUpdateDto {

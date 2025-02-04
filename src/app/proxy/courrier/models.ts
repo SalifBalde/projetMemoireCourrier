@@ -6,6 +6,7 @@ export class CourrierCreateUpdateDto {
     poids?: number;
     quantite?: number;
     taxeDouane?: number;
+    fraisSuivi?:number;
     taxePresentation?:number;
     valeurDeclare?: number;
     userId?: number;
@@ -40,7 +41,8 @@ export class CourrierCreateUpdateDto {
     taxeDouane?: number;
     taxePresentation?: number;
     taxeMagasinage?: number;
-    valeurDeclare?: number;
+      fraisSuivi?:number;
+      valeurDeclare?: number;
     userId?: number;
     codeBarre?: string;
     caisseId?: number;
@@ -61,6 +63,7 @@ export class CourrierCreateUpdateDto {
     destinataireTelephone?: string;
     destinataireAdresse?: string;
     destinataireCodePostal?: string;
+    destinataireCni?: string;
     destinataireCity?: string;
     categorieId?: number;
     categorieLibelle?: number;
@@ -70,6 +73,7 @@ export class CourrierCreateUpdateDto {
     expediteurTelephone?: string;
     expediteurAdresse?: string;
     expediteurCodePostal?: string;
+    expediteurCni?: string;
     createdAt?:string;
     updatedAt?:string;
     expediteurCity?: string;
