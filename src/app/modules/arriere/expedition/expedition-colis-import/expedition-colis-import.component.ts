@@ -370,7 +370,6 @@ export class ExpeditionColisImportComponent implements  OnInit{
             this.fermetureService.saveFermetureImport(this.fermetureData).subscribe(
                 (response) => {
                     this.selectedFermeture = response;
-                    this.showDetails()
                     // Mise à jour des courriers et ajout des suivis
                     selectedColisCopy.forEach((colis) => {
                         const courrieId = colis.id;
@@ -383,6 +382,7 @@ export class ExpeditionColisImportComponent implements  OnInit{
                         // Mise à jour du courrier
                         this.courrierService.updateCourrier(colis).subscribe(
                             () => {
+                                this.showDetails()
                                 this.getCourrierByStructureDepotAndStatutIds()
                                 this.selectedStructure=null
                                 this.numeroDepech = null
