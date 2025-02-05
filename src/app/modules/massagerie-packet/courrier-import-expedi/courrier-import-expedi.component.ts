@@ -61,6 +61,7 @@ export class CourrierImportExpediComponent  implements  OnInit{
     iduser: any;
     suiviCourriers:any={}
     selectedFermeture: any ;
+    structureDepotId:any
 
 
 
@@ -295,7 +296,7 @@ export class CourrierImportExpediComponent  implements  OnInit{
     }
     saveFermetureCourrier() {
         try {
-            const structureDepotId = Number(this.sessionService.getAgentAttributes().structureId);
+            this.structureDepotId = Number(this.sessionService.getAgentAttributes().structureId);
             const numeroDepeche = `${this.structure.code}${this.numeroDepech}${this.currentYearLastTwoDigits}`;
             console.log(numeroDepeche);
             console.log(this.selectedStructure);
@@ -313,7 +314,7 @@ export class CourrierImportExpediComponent  implements  OnInit{
 
             // Préparation des données pour l'enregistrement
             this.fermetureData = {
-                structureDepotId: structureDepotId,
+                structureDepotId:this.structureDepotId,
                 structureDestinationId: this.selectedStructure,
                 numeroDepeche: numeroDepeche,
                 date: new Date().toISOString(),
@@ -332,7 +333,6 @@ export class CourrierImportExpediComponent  implements  OnInit{
             this.fermetureService.saveFermeture(this.fermetureData).subscribe(
                 (response) => {
                     this.selectedFermeture = response;
-                    this.showDetails()
                     // Mise à jour des courriers et ajout des suivis
                     selectedColisCopy.forEach((colis) => {
                         const courrieId = colis.id;
@@ -345,6 +345,7 @@ export class CourrierImportExpediComponent  implements  OnInit{
                         // Mise à jour du courrier
                         this.courrierService.updateCourrier(selectedColisCopy).subscribe(
                             () => {
+                                this.showDetails()
                                 this.getAllCourrier();
                                 this.selectedColis=null
 

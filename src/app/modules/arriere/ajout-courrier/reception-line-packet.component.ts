@@ -117,8 +117,8 @@ export class ReceptionLinePacketComponent implements  OnInit {
             nom: [this.client.nom || '', Validators.required],
             prenom: [this.client.prenom || '', Validators.required],
             adresse: [this.client.adresse || '', Validators.required],
-            cni: [this.client.cni || '', Validators.required],
-            telephone: [this.client.telephone || '', Validators.required],
+            cni: [this.client.cni || ''],
+            telephone: [this.client.telephone || ''],
             email: [this.client.email],
         });
     }
@@ -128,8 +128,8 @@ export class ReceptionLinePacketComponent implements  OnInit {
             nom: [this.destinataire.nom || '', Validators.required],
             prenom: [this.destinataire.prenom || '', Validators.required],
             adresse: [this.destinataire.adresse || '', Validators.required],
-            cni: [this.destinataire.cni || '', Validators.required],
-            telephone: [this.destinataire.telephone || '', Validators.required],
+            cni: [this.destinataire.cni || ''],
+            telephone: [this.destinataire.telephone || ''],
             email: [this.destinataire.email],
         });
     }

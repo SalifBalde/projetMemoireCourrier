@@ -13,7 +13,7 @@
                      currentPageReportTemplate="Affichage des {first} aux {last}èmes des {totalRecords} entrées">
                 <ng-template pTemplate="caption">
                     <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
-                        <p-badge value="Liste des packets  réceptionnés" size="large" severity="info"></p-badge>
+                        <p-badge value="Liste des packets  mise en douane" size="large" severity="info"></p-badge>
 
                         <span class="p-input-icon-right" style="float:right">
                                 <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')" placeholder="Rechercher...." />
@@ -26,6 +26,7 @@
                         <th style="width: 4rem"><p-tableHeaderCheckbox /></th>
                         <th pSortableColumn="codeBarre">Code<p-sortIcon field="codeBarre" /></th>
                         <th pSortableColumn="quantite">Quantité<p-sortIcon field="quantite" /></th>
+                        <th pSortableColumn="catégorie">Catégorie<p-sortIcon field="catégorie" /></th>
                         <th pSortableColumn="montant">Montant<p-sortIcon field="montant" /></th>
                         <th pSortableColumn="poids">Poids<p-sortIcon field="poids" /></th>
                         <th pSortableColumn="status">Status<p-sortIcon field="status" /></th>
@@ -39,6 +40,7 @@
                         </td>
                         <td>{{courrier.codeBarre}}</td>
                         <td>{{courrier.quantite}}</td>
+                        <td>{{courrier.categorieLibelle}}</td>
                         <td>{{courrier.montant}}</td>
                         <td>{{courrier.poids}}</td>
                         <td>

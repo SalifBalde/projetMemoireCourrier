@@ -337,7 +337,6 @@ export class ExpeditionArriereComponent  implements  OnInit{
                 (response) => {
                     // Mise à jour des courriers et ajout des suivis
                     this.selectedFermeture = response;
-                    this.showDetails();
                     console.log(    this.selectedFermeture)
                     selectedColisCopy.forEach((colis) => {
                         const courrieId = colis.id;
@@ -350,6 +349,7 @@ export class ExpeditionArriereComponent  implements  OnInit{
                         // Mise à jour du courrier
                         this.courrierService.update(courrieId, colis).subscribe(
                             () => {
+                                this.showDetails();
                                 this.getCourrierByStructureDepotAndStatutIds()
                                 this.selectedStructure=null
                                 this.numeroDepech = null
