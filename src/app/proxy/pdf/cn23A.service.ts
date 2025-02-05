@@ -67,7 +67,7 @@ export class Cn23AService {
         doc.text(`Name : ${data.expediteurPrenom} ${data.expediteurNom}`, pageHeight / 19, 49, { align: 'left' });
         doc.text(`Adresse :  `, pageHeight / 19, 57, { align: 'left' });
         doc.text('Adresse (count)', pageHeight / 19, 63, { align: 'left' });
-        doc.text('PostCode 10500                         City DAKAR', pageHeight / 19, 73, { align: 'left' });
+        doc.text(`PostCode   ${data.expediteurPrenom}    City DAKAR`, pageHeight / 19, 73, { align: 'left' });
         doc.text(`State ${data.paysOrigineLibelle}                        COUNTRY SN (${data.paysOrigineLibelle})`, pageHeight / 2.2, 78, { align: 'right' });
         doc.setFontSize(6)
         doc.text(`             Sender’s Customs reference
@@ -93,7 +93,7 @@ export class Cn23AService {
         doc.text('Adresse (count) ', pageHeight / 19, 94, { align: 'left' });
         doc.text('Impoter reference', pageHeight / 1, 94, { align: 'center' });
         doc.text('Impoter telephone', pageHeight / 1, 103, { align: 'center' });
-        doc.text('PostCode 93117                         City DAKAR ', pageHeight / 19, 99, { align: 'left' });
+        doc.text(`PostCode ${data.destinataireCodePostal}    City  `, pageHeight / 19, 99, { align: 'left' });
         doc.text(`State ${data.paysDestinationLibelle}                                           COUNTRY US(${data.paysDestinationLibelle})`, pageHeight / 19, 103, { align: 'left' });
         doc.setFontSize(10)
         doc.text('To', pageHeight / 290, 83, { align: 'left' });

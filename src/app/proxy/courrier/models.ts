@@ -44,6 +44,7 @@ export class CourrierCreateUpdateDto {
       fraisSuivi?:number;
       valeurDeclare?: number;
     userId?: number;
+    agent?: string;
     codeBarre?: string;
     caisseId?: number;
     journalId?: number;

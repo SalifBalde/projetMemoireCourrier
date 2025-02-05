@@ -122,6 +122,20 @@
              </span>
         </div>
         <div class="field">
+            <label for="total">Frais Suivi: </label>
+            <span   style="font-weight: bold;">
+                {{colis.fraisSuivi | cfa}}
+
+             </span>
+        </div>
+        <div class="field">
+            <label for="total">Taxe Présentation: </label>
+            <span   style="font-weight: bold;">
+                {{colis.taxePresentation | cfa}}
+
+             </span>
+        </div>
+        <div class="field">
             <label for="total">Total à Payer:</label>
             <span id="total" style="font-weight: bold;">
               {{ totalpaye| cfa }}

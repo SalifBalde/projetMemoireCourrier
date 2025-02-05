@@ -124,13 +124,15 @@
                     <span class="p-float-label">
                         <p-inputGroup>
                               <input id="codebarre" placeholder="Code barre" [(ngModel)]="codebarre"
-                                     pInputText pKeyFilter="alphanum" maxlength="13" minlength="13"
+                                     pInputText pKeyFilter="alphanum"
+                                     maxlength="13" minlength="13"
                                      (input)="validateCodeBarre()" class="p-inputtext"
                                      #codebarreInput="ngModel" required />
-                                <small class="p-error" *ngIf="codebarreInput.invalid && codebarreInput.touched">
-                                    Le code-barre doit contenir exactement 13 caractères (chiffres et lettres).
-                                </small>
+
                         </p-inputGroup>
+                        <small class="p-error" *ngIf="codebarreInput.invalid && codebarreInput.touched">
+                            Le code-barre doit contenir exactement 13 caractères (chiffres et lettres).
+                        </small>
                        </span>
 
                     <button pButton type="button" (click)="generateCodeBarre()" class="p-button p-button-secondary mt-2">
