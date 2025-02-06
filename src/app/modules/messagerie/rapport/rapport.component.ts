@@ -160,7 +160,7 @@ export class RapportComponent {
             return;
         }
         const id1 = fermeture.id
-        this.router.navigate(['arriere/courrier-details-rapport/courrierDetailArriere/'+id1]);  // Passe l'ID de la fermeture dans l'URL
+       this.router.navigate(['messagerie/courrier-details-ligneColi/courrierDetailMessagLignColiArriere/'+id1]);  // Passe l'ID de la fermeture dans l'URL
 
 
 

@@ -11,6 +11,7 @@ const routes: Routes = [{ path: '', component: MessagerieComponent },
    { path: 'colis-import-exp', loadChildren: () => import('./colis-import-expedi/colisImportExp.module').then(m => m.ColisImportExpModule) },
    { path: 'sortieDouane', loadChildren: () => import('./sortie-douane/sortieDouane.module').then(m => m.SortieDouaneModule) },
     { path: 'courrier-details-ligneColi/courrierDetailMessagLignColiArriere/:id', loadChildren: () => import('./courrier-details-MessagerieLigneColi/courrier-details.module').then(m => m.CourrierDetailsMessagLigneColiModule) },
+    { path: 'traking', loadChildren: () => import('./traking/traking.module').then(m => m.TrakingModule) },
 
 ];
 
