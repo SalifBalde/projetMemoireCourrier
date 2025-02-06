@@ -338,7 +338,7 @@ export class CourrierImportExpediComponent  implements  OnInit{
                         const courrieId = colis.id;
                         colis.statutCourrierId = this.idStatutFermetureCourrier[0]?.id;
                         colis.structureDestinationId = this.selectedStructure.id;
-                        colis.structureDepotId= this.structureDepotId
+                        colis.structureDepotId = this.structureDepotId
                         // Ajout du montantTaxeDouane dans l'objet colis
                         colis.taxeDouane = colis.montantTaxeDouane;
                         console.log(colis);

@@ -1,29 +1,16 @@
 <div class="card p-fluid">
     <form [formGroup]="form">
         <div class="grid flex justify-content-center align-items-center">
-
             <div class="col-3 md:col-5">
-                <label for="dateDebut">Du</label>
-                <p-calendar formControlName="debut" id="dateDebut" [showIcon]="true" inputId="icon" />
+                <label for="startDate">Du</label>
+                <p-calendar formControlName="startDate" id="startDate" [showIcon]="true" inputId="icon"   />
             </div>
             <div class="col-3 md:col-5">
-                <label for="dateFin">Au</label>
-                <p-calendar formControlName="fin" id="dateFin" [showIcon]="true" inputId="icon" />
+                <label for="endDate">Au</label>
+                <p-calendar formControlName="endDate" id="endDate" [showIcon]="true" inputId="icon"  />
             </div>
+        </div>
 
-            <!-- <div class="col-3 md:col-5">
-                <p-dropdown optionLabel="libelle" [filter]="true" filterBy="libelle"
-                    formControlName="idbureauPartenaire" placeholder="Bureau de dépôt" [options]="structure$"
-                    [showClear]="true" optionValue="id">
-                </p-dropdown>
-            </div>
-
-            <div class="col-3 md:col-5">
-                <p-dropdown optionLabel="libelle" [filter]="true" filterBy="libelle" formControlName="idbureau"
-                    id="idbureau" placeholder="Bureau Destinataire" [options]="structure$" [showClear]="true"
-                    optionValue="id">
-                </p-dropdown>
-            </div> -->
 
             <div class="col-3 md:col-5">
                 <p-dropdown formControlName="partenaire_e_com_id" id="partenaire_e_com_id" [filter]="true"

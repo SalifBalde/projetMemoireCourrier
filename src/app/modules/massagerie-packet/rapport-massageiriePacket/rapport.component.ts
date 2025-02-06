@@ -15,7 +15,7 @@ import {CourrierDto, CourrierSearchDto, CourrierService} from "../../../proxy/co
 import {StatutCourrierService, Statutdto} from "../../../proxy/statut-courrier";
 import {TypeCourrierDto, TypeCourrierService} from "../../../proxy/type-courrier";
 import {Paysdto, PaysService} from "../../../proxy/pays";
-import {Fermeturedto, FermetureService} from "../../../proxy/fermeture";
+import {Fermeturedto, FermetureSearchDto, FermetureService} from "../../../proxy/fermeture";
 import {ProgressSpinner} from "primeng/progressspinner";
 
 @Component({
@@ -33,6 +33,7 @@ import {ProgressSpinner} from "primeng/progressspinner";
     isModalOpen = false;
     montant = 0;
     courrierSearch: CourrierSearchDto={};
+    fermetureSearchDto: FermetureSearchDto={}
     colis$: ColisDto[]=[];
     structure$: StructureDto[];
     status$ : any;
@@ -73,7 +74,6 @@ import {ProgressSpinner} from "primeng/progressspinner";
         this.user = this.sessionService.getAgentAttributes();
         this.userId= Number(this.sessionService.getAgentAttributes().id)
         this.structureId = Number(this.sessionService.getAgentAttributes().structureId)
-
         this.isLoggedIn = await this.keycloak.isLoggedIn();
         this.fullname = this.user.prenom + " " + this.user.nom;
         this.buildForm();
@@ -95,14 +95,10 @@ import {ProgressSpinner} from "primeng/progressspinner";
 
     buildForm() {
         this.form = this.fb.group({
-            debut: [this.courrierSearch.debut ? new Date(this.courrierSearch.debut) : new Date(), Validators.required],
-            fin: [this.courrierSearch.fin ? new Date(this.courrierSearch.fin) : new Date(), Validators.required],
-            structureDestinationId: [null],
-            structureDepotId: [null],
-            typeCourrierId: [null],
-            statutCourrierId: [null],
-            paysOrigineId: [null],
-            paysDestinationId:[null]
+            startDate: [this.fermetureSearchDto.startDate , Validators.required],
+            endDate: [this.fermetureSearchDto.endDate , Validators.required],
+            structureDepotId: [ this.fermetureSearchDto.structureDepotId],
+            userId: [this.fermetureSearchDto.userId],
         });
     }
     setCourrier() {
@@ -136,17 +132,14 @@ import {ProgressSpinner} from "primeng/progressspinner";
     }
     searchfermeture() {
         setTimeout(() => {
-            console.log(this.datedebut , this.datefin ,this.structureId)
-        // Formater les dates au format yyyy-MM-dd
-         const formattedDebut = this.datedebut.toISOString().split('T')[0];
-         const formattedFin = this.datefin.toISOString().split('T')[0];
-
-        console.log (typeof formattedDebut, formattedFin);
-
         // Appeler le service avec les dates formatées
             this.attente=false
-        this.fermetureService.getRapport(formattedDebut, formattedFin , this.structureId,this.userId).subscribe(fermeture => {
+            this.form.value.structureDepotId= this.structureId
+            this.form.value.userId= this.user.id
+            console.log(this.form.value)
+        this.fermetureService.getRapport(this.form.value).subscribe(fermeture => {
             this.fermetures = fermeture;
+            console.log(this.fermetures)
             if(this.fermetures.length > 0){
                 this.attente=true
             }
@@ -175,7 +168,7 @@ import {ProgressSpinner} from "primeng/progressspinner";
   }
 
     isEmpty(){
-        return this.form.value.debut!=null && this.form.value.fin!=null;
+        return this.form.value.startDate!=null && this.form.value.endDate!=null;
     }
 
 }

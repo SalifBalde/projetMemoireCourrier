@@ -1,34 +1,16 @@
 <div class="card p-fluid">
-    <form  (ngSubmit)="searchfermeture()">
-        <div class="grid justify-content-center align-items-center">
-            <!-- Date début -->
+    <form [formGroup]="form"  (ngSubmit)="searchfermeture()">
+        <div class="grid flex justify-content-center align-items-center">
             <div class="col-3 md:col-5">
-                <label for="datedebut" class="block">Du</label>
-                <p-calendar
-                    [(ngModel)]="datedebut"
-                    name="datedebut"
-                    id="datedebut"
-                    [showIcon]="true"
-                    inputId="icon"
-                    dateFormat="dd/mm/yy"
-                    placeholder="Sélectionnez une date">
-                </p-calendar>
+                <label for="startDate">Du</label>
+                <p-calendar formControlName="startDate" id="startDate" [showIcon]="true" inputId="icon"   />
             </div>
-
-            <!-- Date fin -->
             <div class="col-3 md:col-5">
-                <label for="datefin" class="block">Au</label>
-                <p-calendar
-                    [(ngModel)]="datefin"
-                    name="datefin"
-                    id="datefin"
-                    [showIcon]="true"
-                    inputId="icon"
-                    dateFormat="dd/mm/yy"
-                    placeholder="Sélectionnez une date">
-                </p-calendar>
+                <label for="endDate">Au</label>
+                <p-calendar formControlName="endDate" id="endDate" [showIcon]="true" inputId="icon"  />
             </div>
         </div>
+
 
         <!-- Boutons d'action -->
         <div class="p-formgrid grid justify-content-center mt-4">
