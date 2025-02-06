@@ -338,14 +338,14 @@ export class CourrierImportExpediComponent  implements  OnInit{
                         const courrieId = colis.id;
                         colis.statutCourrierId = this.idStatutFermetureCourrier[0]?.id;
                         colis.structureDestinationId = this.selectedStructure.id;
+                        colis.structureDepotId= this.structureDepotId
                         // Ajout du montantTaxeDouane dans l'objet colis
                         colis.taxeDouane = colis.montantTaxeDouane;
                         console.log(colis);
 
                         // Mise à jour du courrier
-                        this.courrierService.updateCourrier(selectedColisCopy).subscribe(
+                        this.courrierService.updateCourriers(selectedColisCopy).subscribe(
                             () => {
-                                this.showDetails()
                                 this.getAllCourrier();
                                 this.selectedColis=null
 
@@ -362,7 +362,7 @@ export class CourrierImportExpediComponent  implements  OnInit{
                         detail: 'Courrier expédié avec succès.',
                         life: 3000,
                     });
-
+                    this.showDetails()
                     // Message de succès
 
                 },

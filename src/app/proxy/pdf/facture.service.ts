@@ -82,7 +82,7 @@ export class FactureService {
         doc.setFont("helvetica", "bold");
         doc.text('Bureau Expéditeur: ', 10, currentY);
         doc.setFont("helvetica", "normal");
-        doc.text(`${courriers[0].structureDepotLibelle || 'N/A'}`, 50, currentY);
+        doc.text(`${fermeture.structureDepotLibelle || 'N/A'}`, 50, currentY);
         currentY += 4;
         doc.line(currentG + 50, currentY, currentG + 50, currentY + 24); // Ligne verticale après la colonne "Code Barre"
         currentY += 0;
@@ -95,7 +95,7 @@ export class FactureService {
         doc.setFont("helvetica", "bold");
         doc.text('Bureau Destinataire: ', 10, currentY);
         doc.setFont("helvetica", "normal");
-        doc.text(`${courriers[0].structureDestinationLibelle || 'N/A'}`, 50, currentY);
+        doc.text(`${fermeture.structureDestinationLibelle || 'N/A'}`, 50, currentY);
         currentY += 6;
 
         // Date Expédition
