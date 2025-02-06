@@ -15,7 +15,7 @@ import {StructureDto, StructureService} from "../../../proxy/structures";
 import {StatutCourrierService, Statutdto} from "../../../proxy/statut-courrier";
 import {TypeCourrierDto, TypeCourrierService} from "../../../proxy/type-courrier";
 import {Paysdto, PaysService} from "../../../proxy/pays";
-import {Fermeturedto, FermetureService} from "../../../proxy/fermeture";
+import {Fermeturedto, FermetureSearchDto, FermetureService} from "../../../proxy/fermeture";
 import {ProgressSpinner} from "primeng/progressspinner";
 
 @Component({
@@ -53,6 +53,7 @@ export class RapportComponent {
     datedebut: any ;
     datefin: any;
     structureId: number
+    fermetureSearchDto: FermetureSearchDto={}
     constructor(
         private courrierService: CourrierService,
         private paysService: PaysService,
@@ -78,7 +79,7 @@ export class RapportComponent {
         this.isLoggedIn = await this.keycloak.isLoggedIn();
         this.fullname = this.user.prenom + " " + this.user.nom;
         this.buildForm();
-        this.setCourrier()
+
 
 
     }
@@ -96,16 +97,13 @@ export class RapportComponent {
 
     buildForm() {
         this.form = this.fb.group({
-            debut: [this.courrierSearch.debut ? new Date(this.courrierSearch.debut) : new Date(), Validators.required],
-            fin: [this.courrierSearch.fin ? new Date(this.courrierSearch.fin) : new Date(), Validators.required],
-            structureDestinationId: [null],
-            structureDepotId: [null],
-            typeCourrierId: [null],
-            statutCourrierId: [null],
-            paysOrigineId: [null],
-            paysDestinationId:[null]
+            startDate: [this.fermetureSearchDto.startDate , Validators.required],
+            endDate: [this.fermetureSearchDto.endDate , Validators.required],
+            structureDepotId: [ this.fermetureSearchDto.structureDepotId],
+            userId: [this.fermetureSearchDto.userId],
         });
     }
+
     setCourrier() {
         this.statutCourrierService.findAll().subscribe(result => {
             this.statutCourrier$ = result;
@@ -137,17 +135,14 @@ export class RapportComponent {
     }
     searchfermeture() {
         setTimeout(() => {
-            console.log(this.datedebut , this.datefin ,this.structureId)
-            // Formater les dates au format yyyy-MM-dd
-            const formattedDebut = this.datedebut.toISOString().split('T')[0];
-            const formattedFin = this.datefin.toISOString().split('T')[0];
-
-            console.log (typeof formattedDebut, formattedFin);
-
             // Appeler le service avec les dates formatées
             this.attente=false
-            this.fermetureService.getRapport(formattedDebut, formattedFin , this.structureId,this.userId).subscribe(fermeture => {
+            this.form.value.structureDepotId= this.structureId
+            this.form.value.userId= this.user.id
+            console.log(this.form.value)
+            this.fermetureService.getRapport(this.form.value).subscribe(fermeture => {
                 this.fermetures = fermeture;
+                console.log(this.fermetures)
                 if(this.fermetures.length > 0){
                     this.attente=true
                 }

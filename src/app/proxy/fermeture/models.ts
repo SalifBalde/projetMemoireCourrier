@@ -27,6 +27,8 @@ export interface Fermeturedto {
 }
 
 export interface FermetureSearchDto {
-    debut?: string;
-    fin?: string;
+    startDate?: string;
+    endDate?: string;
+    structureDepotId?: number;
+    userId?: number;
 }
