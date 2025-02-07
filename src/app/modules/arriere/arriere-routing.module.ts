@@ -60,6 +60,7 @@ const routes: Routes = [{ path: '', component: ArriereComponent },
      // saisir le courrier pour la reception
 
     { path: 'ajouter-courrier/courrierDetailArriere', loadChildren: () => import('./ajout-courrier/reception-line-packet.module').then(m => m.ReceptionCourrierArriereModule) },
+    { path: 'traking', loadChildren: () => import('./traking/traking.module').then(m => m.TrakingModule) },
 
 
 

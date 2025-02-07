@@ -10,6 +10,7 @@ const routes: Routes = [{ path: '', component: CourrierImportRcepComponent },
     { path: 'RapportMassageriePacket', loadChildren: () => import('./rapport-massageiriePacket/rapport.module').then(m => m.RapportArriereMassageriePacketModule) },
     { path: 'courrier-details-packet/courrierDetailMessagPacketArriere/:id', loadChildren: () => import('../massagerie-packet/courrier-details-MessageriePacket/courrier-details.module').then(m => m.CourrierDetailsMessagPacketModule) },
     { path: 'fermeturepacket', loadChildren: () => import('../massagerie-packet/fermeture-packet/fermeturePacket-interieur.module').then(m => m.FermeturePacketModule) },
+    { path: 'traking', loadChildren: () => import('./traking/traking.module').then(m => m.TrakingModule) },
 
 ];
 

@@ -15,26 +15,8 @@ export class MessagerieMenuComponent implements OnInit {
         this.model = [
             {
                 label: 'DK Messagerie',
-                items: [
-                    // {
-                    //     label: 'Expedition',
-                    //     icon: 'pi pi-fw pi-send',
-                    //     routerLink: ['/messagerie/expedition'],
-                    // },
-                    // {
-                    //     label: 'Reception',
-                    //     icon: 'pi pi-fw pi-download',
-                    //     routerLink: ['/messagerie/reception'],
-                    // },
-                    // {
-                    //     label: 'Reception Code',
-                    //     icon: 'pi pi-fw pi-qrcode',
-                    //     routerLink: ['/ct/reception'],
-                    // },
 
-                ],
             },
-
 
             {
                 //label: 'Colis-Imports',
@@ -62,7 +44,7 @@ export class MessagerieMenuComponent implements OnInit {
                     },
                 ],
             },
-           /*  {
+            {
                 label: 'Reporting',
                 items: [
                     {
@@ -72,7 +54,17 @@ export class MessagerieMenuComponent implements OnInit {
                     },
                 ],
             },
- */
+            {
+                label: 'Traking',
+                items: [
+                    {
+                        label: 'Suivi Courrier',
+                        icon: 'pi pi-fw pi-eye',
+                        routerLink: ['/messagerie/traking'],
+                    },
+                ],
+            },
+
 
         ];
     }

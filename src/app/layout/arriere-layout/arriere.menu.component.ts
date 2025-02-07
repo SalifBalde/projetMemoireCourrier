@@ -232,6 +232,16 @@ export class ArriereMenuComponent implements OnInit {
                     },
                 ],
             },
+            {
+                label: 'Traking',
+                items: [
+                    {
+                        label: 'Suivi Courrier ',
+                        icon: 'pi pi-fw pi-eye',
+                        routerLink: ['/arriere/traking'],
+                    },
+                ],
+            },
         ];
     }
 }

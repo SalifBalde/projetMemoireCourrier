@@ -90,24 +90,29 @@ export class FermeturePacketInterieurComponent implements  OnInit{
     }
 
 
-    getFermetureByStructure(){
-        const idstructureDest= this.sessionService.getAgentAttributes().structureId.toString()
-        const idStatutCourrier = this.idStatutFermetureCourrier[0].id
-        const typeCourrierId = 3
-        console.log(idStatutCourrier)
-        this.fermetrureService.getFermeturesByCriteria(idstructureDest,idStatutCourrier,typeCourrierId).subscribe((data)=>{
-            this.Listfermetures=data;
-            console.log(this.Listfermetures)
-            this.Listfermetures.map(fermeture => {
+    getFermetureByStructure() {
+        const idstructureDest = this.sessionService.getAgentAttributes().structureId.toString();
+        const idStatutCourrier = this.idStatutFermetureCourrier[0].id;
+        const typeCourrierId = 3;
 
-                const idStrure = fermeture?.structureDepotId.toString()
-                return this.structureService.getOne(idStrure).subscribe((structure)=>{
-                    this.libelleStructur=structure.libelle
-                })
+        console.log(idStatutCourrier);
+
+        this.fermetrureService.getFermeturesByCriteria(idstructureDest, idStatutCourrier, typeCourrierId)
+            .subscribe((data) => {
+                // Filtrer les fermetures qui ont des fermetureCourriers non vides
+                 this.Listfermetures = data
+                console.log(this.Listfermetures);
+
+                // Mettre à jour les libellés des structures
+                this.Listfermetures.forEach(fermeture => {
+                    const idStrure = fermeture?.structureDepotId.toString();
+                    this.structureService.getOne(idStrure).subscribe((structure) => {
+                        fermeture.libelleStructure = structure.libelle; // Mettre à jour directement dans l'objet fermeture
+                    });
+                });
+
+                console.log(this.Listfermetures);
             });
-            console.log(this.Listfermetures)
-        })
-
     }
 
 
