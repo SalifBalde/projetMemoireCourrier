@@ -11,7 +11,9 @@ export  interface PaysUpdatedto{
 export  interface Paysdto{
     id?: number;
     libelle?: string;
-    zoneId?: string;
+    capital?:string;
+    code?:string
+    zoneId?: number;
     zoneLibelle?:string;
     zonePoidsMax?:number;
     maxKgAutorise?:number;

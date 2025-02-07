@@ -53,6 +53,11 @@ export class BackofficeMenuComponent implements OnInit {
                                 routerLink: ['/backoffice/themes']
                             },
                             {
+                                label: 'Pays',
+                                icon: 'pi pi-fw pi-angle-right',
+                                routerLink: ['/backoffice/pays']
+                            },
+                            {
                                 label: 'Zones',
                                 icon: 'pi pi-fw pi-angle-right',
                                 routerLink: ['/backoffice/zones']

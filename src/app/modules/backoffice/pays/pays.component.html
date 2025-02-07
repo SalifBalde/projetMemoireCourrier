@@ -1,0 +1,127 @@
+<div class="grid">
+    <div class="col-12">
+        <div class="card px-6 py-6">
+            <p-toast></p-toast>
+            <p-toolbar styleClass="mb-4">
+                <ng-template pTemplate="left">
+                    <div class="my-2">
+                        <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNew()"></button>
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="right">
+                    <button pButton pRipple label="Export" icon="pi pi-upload" class="p-button-help" (click)="dt.exportCSV()"></button>
+                </ng-template>
+            </p-toolbar>
+
+            <p-table #dt [value]="payss" [columns]="cols" responsiveLayout="scroll" [rows]="10" [globalFilterFields]="['libelle']" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"  selectionMode="multiple" [rowHover]="true" dataKey="id">
+                <ng-template pTemplate="caption">
+                    <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+                        <h5 class="m-0">Gestion des pays</h5>
+                        <span class="block mt-2 md:mt-0 p-input-icon-left">
+                            <i class="pi pi-search"></i>
+                            <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Search..."  class="w-full sm:w-auto"/>
+                        </span>
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th pSortableColumn="libelle">Libelle <p-sortIcon field="libelle"></p-sortIcon></th>
+                        <th pSortableColumn="capitale">Capitale <p-sortIcon field="capitale"></p-sortIcon></th>
+                        <th pSortableColumn="code">Code <p-sortIcon field="code"></p-sortIcon></th>
+                        <th pSortableColumn="zone">Zone <p-sortIcon field="zone"></p-sortIcon></th>
+                        <th pSortableColumn="zone">Max Kg Autorisé <p-sortIcon field="zone"></p-sortIcon></th>
+                        <th pSortableColumn="zone">Etat <p-sortIcon field="zone"></p-sortIcon></th>
+                        <th pSortableColumn="action">Action <p-sortIcon field="action"></p-sortIcon></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-pays>
+                    <tr>
+
+                        <td style=" min-width:10rem;"><span class="p-column-title">Libelle</span>
+                            {{pays.libelle || pays.id}}
+                        </td>
+                        <td style=" min-width:15rem;">
+                            {{pays.capital}}
+                        </td>
+                        <td style=" min-width:15rem;">
+                            {{pays.code}}
+                        </td>
+                        <td style=" min-width:15rem;">
+                            {{pays.zoneLibelle}}
+                        </td>
+                        <td style=" min-width:15rem;">
+                            {{pays.maxKgAutorise}}
+                        </td>
+
+
+                        <td style="width: 5%; min-width: 10rem;">
+                            <p-tag *ngIf="pays.active" icon="pi pi-check" severity="success" value="Actif"
+                                   class="p-element"></p-tag>
+                            <p-tag *ngIf="!pays.active" icon="pi pi-times" severity="danger" value="Inactif"
+                                   class="p-element"></p-tag>
+                        </td>
+                        <td>
+                            <div class="flex">
+                                <button pbutton pripple  icon="pi pi-pencil" class=" p-button p-component p-button-text p-button-icon-only p-button-info mr-2"  (click)="editpays(pays)"><span class="p-button-icon pi pi-pencil" aria-hidden="true"></span></button>
+                                <button pbutton pripple  icon="pi pi-trash" class=" p-button p-component p-button-text p-button-icon-only p-button-danger"  (click)="deletepays(pays)"><span class="p-button-icon pi pi-trash" aria-hidden="true"></span></button>
+                            </div>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+
+        <p-dialog [(visible)]="zoneDialog" [style]="{width: '550px',height: '600px'}" header="Pays Details" [modal]="true" class="p-fluid">
+            <ng-template pTemplate="content">
+                <form [formGroup]="form" (ngSubmit)="savezone()">
+                    <div class="field">
+                        <label for="libelle">Libelle</label>
+                        <input type="text" pInputText id="libelle" formControlName="libelle"   autofocus />
+                    </div>
+                    <div class="field">
+                        <label for="libelle">Capitale</label>
+                        <input type="text" pInputText id="capital" formControlName="capital"   autofocus />
+                    </div>
+                    <div class="field ">
+                        <label for="libelle">Code</label>
+                        <input type="text" pInputText id="code" formControlName="code"   autofocus />
+                    </div>
+                    <div class="field ">
+                        <label for="libelle">  Max Kg Autorisé</label>
+                        <input type="text" pInputText id="maxKgAutorise" formControlName="maxKgAutorise"   autofocus />
+                    </div>
+                    <div class=" field mt-4">
+                        <p-dropdown [options]="zones" optionLabel="libelle" formControlName="zone"
+                                    optionValue="id" placeholder="Zone" [showClear]="true"
+                                    appendTo="body">
+
+                        </p-dropdown>
+                    </div>
+
+                    <div class="field mt-4">
+                        <label for="status">Activer</label><br>
+                        <p-inputSwitch id="status"   formControlName="active"></p-inputSwitch>
+                    </div>
+
+
+                </form>
+            </ng-template>
+
+            <ng-template pTemplate="footer">
+                <button pButton pRipple label="Annuler" icon="pi pi-times" class="p-button-text p-button-danger" (click)="hideDialog()"></button>
+                <button pButton pRipple label="Sauvegarder" icon="pi pi-check" class="p-button-text p-button-success" (click)="savezone()" [disabled]="form.invalid"></button>
+            </ng-template>
+        </p-dialog>
+
+        <p-dialog [(visible)]="deletezoneDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
+            <div class="flex align-items-center justify-content-center">
+                <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+                <span *ngIf="pays">Etes-vous sûr que vous voulez supprimer <b>{{pays.libelle}}</b>?</span>
+            </div>
+            <ng-template pTemplate="footer">
+                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="Non" (click)="deletezoneDialog = false"></button>
+                <button pButton pRipple icon="pi pi-check" class="p-button-text p-button-danger" label="Oui" (click)="confirmDelete()"></button>
+            </ng-template>
+        </p-dialog>
+    </div>
+</div>

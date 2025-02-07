@@ -84,8 +84,9 @@ export class CourrierOrdinaireComponent implements OnInit {
 
     ngOnInit(): void {
         this.paysService.findAll().subscribe((result) => {
-            this.pays$ = result;
+            this.pays$ = result.filter((pays) => pays.active); // Filtrer uniquement les pays actifs
         });
+
 
         this.regimeService.findAll().subscribe((result) => {
             this.regime$ = result;
@@ -111,6 +112,7 @@ export class CourrierOrdinaireComponent implements OnInit {
         this.buildForm();
         this.buildFormClient();
         this.buildFormDestinataire();
+
 
         this.form.get('typeId')?.valueChanges.subscribe((typeId) => {
             this.updateServiceState(typeId);
@@ -421,6 +423,8 @@ export class CourrierOrdinaireComponent implements OnInit {
     updateServiceState(typeId: string) {
         const formControls = this.form.controls;
 
+
+
         // Désactivation par défaut des champs
         formControls['recommande'].disable();
         formControls['ar'].disable();
@@ -455,7 +459,8 @@ export class CourrierOrdinaireComponent implements OnInit {
                 formControls['codeBarre'].setValidators(Validators.required);
                 this.fraisAr = 0;
                 this.fraisExpress = 0;
-                this.label = 'RR';
+                this.label ='RR';
+
                 break;
 
             case '3':

@@ -85,7 +85,7 @@ export class ColisComponent implements OnInit {
 
     ngOnInit(): void {
         this.paysService.findAll().subscribe((result) => {
-            this.pays$ = result;
+            this.pays$ = result.filter((pays) => pays.active); // Filtrer uniquement les pays actifs
         });
 
         this.regimeService.findAll().subscribe((result) => {
@@ -114,6 +114,15 @@ export class ColisComponent implements OnInit {
         this.buildForm();
         this.buildFormClient();
         this.buildFormDestinataire();
+        this.form.get('paysDestinationId')?.valueChanges.subscribe((paysId) => {
+            if (paysId === 138) {
+                this.updateServiceState(this.form.get('typeId')?.value); // Appliquer la mise à jour
+                this.form.controls['valeurDeclare'].enable();
+            }else if (!paysId) {
+                this.label = 'CP';
+                this.form.controls['valeurDeclare'].disable();
+            }
+        });
 
         this.form.get('typeId')?.valueChanges.subscribe((typeId) => {
             this.updateServiceState(typeId);
@@ -357,6 +366,8 @@ export class ColisComponent implements OnInit {
     }
     updateServiceState(typeId: string) {
         const formControls = this.form.controls;
+        const paysId = this.form.get('paysDestinationId')?.value; // Récupération du pays sélectionné
+        console.log(paysId)
 
         // Désactivation par défaut des champs
         formControls['recommande'].disable();
@@ -375,12 +386,13 @@ export class ColisComponent implements OnInit {
                 /*  formControls['ar'].enable();
             formControls['ar'].setValue(false);
             formControls['express'].enable();
-            formControls['express'].setValue(false); */
+              formControls['express'].setValue(false); */
+
                 formControls['codeBarre'].enable();
                 formControls['codeBarre'].setValidators(Validators.required);
                 this.fraisAr = 0;
                 this.fraisExpress = 0;
-                this.label = 'CP';
+                this.label = paysId === 138 ? 'CV' : 'CP'; // Vérification du pays
                 break;
 
             case '3':
