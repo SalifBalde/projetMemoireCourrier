@@ -31,6 +31,8 @@ import {MessagerieLayoutModule} from "./layout/messagerie-layout/messagerie.layo
 import {MessageriePacketLayoutModule} from "./layout/messageriePacket-layout/messageriePacket.layout.module";
 import {ResponsableannexeModule} from "./modules/responsable-annexe/Responsableannexe.module";
 import {ResponsableannexeLayoutModule} from "./layout/responsable-annexe-layout/responsableannexe.layout.module";
+import {DclLayoutModule} from "./layout/dcp-layout/dcl.layout.module";
+import {DashboardModule} from "./demo/components/dashboard/dashboard.module";
 
 function initializeKeycloak(keycloak: KeycloakService) {
   return () =>
@@ -65,11 +67,13 @@ function initializeKeycloak(keycloak: KeycloakService) {
         MessageriePacketLayoutModule,
         DrpLayoutModule,
         DroLayoutModule,
+        DclLayoutModule,
         RapportModule,
         ResponsableannexeLayoutModule,
         BrowserAnimationsModule,
         MatButtonModule,
         BrowserAnimationsModule,
+        DashboardModule
     ],
     providers: [
         {provide: APP_INITIALIZER, useFactory:initializeKeycloak,multi :true, deps:[KeycloakService]},

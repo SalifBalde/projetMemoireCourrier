@@ -54,6 +54,11 @@ console.log('User roles:', this.keycloak.getUserRoles());
         return userRoles.includes('ROLE_DRP');
       }
 
+      public isDcl(): boolean {
+        const userRoles = this.keycloak.getUserRoles();
+        return userRoles.includes('ROLE_DCL');
+      }
+
 
       public isResponsableAnnexe(): boolean {
           const userRoles = this.keycloak.getUserRoles();
@@ -67,6 +72,7 @@ console.log('User roles:', this.keycloak.getUserRoles());
         const isGuichet = userRoles.includes('ROLE_GUICHET');
         const isGrandCaisse = userRoles.includes('ROLE_GRANDE_CAISSE');
         const isDrp = userRoles.includes('ROLE_DRP');
+        const isDcl = userRoles.includes('ROLE_DCL');
         const isCt= userRoles.includes('ROLE_CT');
         const isMessagerie= userRoles.includes('ROLE_MESSAGERIE');
         const ismessageriePacket= userRoles.includes('ROLE_MESSPAQUET');
@@ -75,6 +81,9 @@ console.log('User roles:', this.keycloak.getUserRoles());
             this.router.navigate(['/backoffice']);
         } else if (isDrp) {
             this.router.navigate(['/drp']);
+        }
+        else if (isDcl) {
+            this.router.navigate(['/dcl']);
         }else if (isCt) {
             this.router.navigate(['/ct']);
         }

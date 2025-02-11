@@ -37,6 +37,7 @@ export class AppTopBarComponent implements OnInit {
     this.items = [
         ...(userRoles.includes('ROLE_DCG') ? [{ label: 'DCG', icon: 'pi pi-unlock', command: () => { this.router.navigate(['/dcg']); } }] : []),
         ...(userRoles.includes('ROLE_DRP') ? [{ label: 'DRP', icon: 'pi pi-unlock', command: () => { this.router.navigate(['/drp']); } }] : []),
+        ...(userRoles.includes('ROLE_DCL') ? [{ label: 'DCL', icon: 'pi pi-unlock', command: () => { this.router.navigate(['/dcl']); } }] : []),
         ...(userRoles.includes('ROLE_RECEVEUR') ? [{ label: 'RECEVEUR', icon: 'pi pi-unlock', command: () => { this.router.navigate(['/receveur']); } }] : []),
         ...(userRoles.includes('ROLE_GUICHET') ? [{ label: 'GHICHET', icon: 'pi pi-unlock', command: () => { this.router.navigate(['/guichet']); } }] : []),
         ...(userRoles.includes('ROLE_ARRIERE') ? [{ label: 'ARRIERE', icon: 'pi pi-unlock', command: () => { this.router.navigate(['/arriere']); } }] : []),

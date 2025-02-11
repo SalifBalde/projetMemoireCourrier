@@ -10,33 +10,35 @@
                 <p-calendar formControlName="fin" id="dateFin" [showIcon]="true" inputId="icon" />
             </div>
             <div class="col-3 md:col-5">
-                <p-dropdown optionLabel="libelle" [filter]="true" filterBy="libelle" formControlName="paysOrigineId"
-                    id="paysOrigineId" placeholder="Pays d'Origine" [options]="pays$" [showClear]="true"
-                    optionValue="id">
+                <p-dropdown optionLabel="libelle" [filter]="true" filterBy="libelle" optionValue="id"
+                    ormControlName="paysOrigineId" optionValue="id" placeholder="Pays d'Origine"
+                    [options]="pays$" [showClear]="true">
                 </p-dropdown>
             </div>
 
             <div class="col-3 md:col-5">
-                <p-dropdown optionLabel="libelle" [filter]="true" filterBy="libelle" formControlName="paysDestinationId"
-                    id="paysDestinationId" placeholder="Pays Destination" [options]="pays$" [showClear]="true"
-                    optionValue="id">
+                <p-dropdown optionLabel="libelle" [filter]="true" filterBy="libelle" optionValue="id"
+                    formControlName="paysDestinationId" optionValue="id" placeholder="Pays Destination"
+                    [options]="pays$" [showClear]="true">
                 </p-dropdown>
             </div>
 
             <div class="col-12 md:col-5">
-                <p-dropdown formControlName="typeCourrierId" id="typeCourrierId" [filter]="true" filterBy="libelle"
-                    [options]="typeCourrier$" placeholder="choisissez un Type" optionLabel="libelle"
-                    optionValue="id"></p-dropdown>
+                <p-dropdown formControlName="typeCourrierId" id="typeCourrierId" [filter]="true" filterBy="libelle" [showClear]="true" [options]="typeCourrier$"
+                    placeholder="choisissez un Type" optionLabel="libelle" optionValue="id"></p-dropdown>
             </div>
             <div class="col-12 md:col-5">
-                <p-dropdown formControlName="statutCourrierId" id="statutCourrierId" [filter]="true" filterBy="libelle"
-                    [options]="statutCourrier$" placeholder="choisissez un status" optionLabel="libelle"
-                    optionValue="id"></p-dropdown>
+                <p-dropdown formControlName="statutCourrierId" id="statutCourrierId" [filter]="true" filterBy="libelle" [showClear]="true" [options]="statutCourrier$"
+                    placeholder="choisissez un status" optionLabel="libelle" optionValue="id"></p-dropdown>
             </div>
-
+            <div class="col-offset-6 md:col-4">
+                <p-dropdown formControlName="poids" id="poids" [filter]="true" filterBy="libelle" [showClear]="true"
+                            [options]="poid$" placeholder="choisissez un poid" optionLabel="libelle"
+                            optionValue="id"></p-dropdown>
+            </div>
         </div>
-        <div class="p-formgrid flex col-6 col-offset-3 justify-content-center">
-            <p-button label="Rechercher" icon="pi pi-search" severity="primary" [loading]="loadingcourrier"
+        <div class="p-formgrid flex col-6 col-offset-2 justify-content-center">
+            <p-button label="Rechercher" icon="pi pi-search" severity="primary" [loading]="loadingcourrier" [disabled]="form.invalid"
                 (onClick)="searchcourrierByCriteres()" />
             <p-button *ngIf="isEmpty()" label="effacer" icon="pi pi-times" severity="danger" [loading]="loadingReset"
                 (onClick)="resetForm()" />
@@ -66,6 +68,7 @@
                                     <span class="text-900 font-medium text-lg font-bold">{{ date | date:'dd/MM/yyyy'
                                         }}</span>
                                 </li>
+
                             </ul>
                         </div>
                     </ng-template>
@@ -86,6 +89,7 @@
                             <th>Pays d'Origine</th>
                             <th>Pays Destination</th>
                             <th>Type Courrier</th>
+                            <th>Poids</th>
                             <th>Statut Courrier</th>
                             <th>Montant</th>
                             <th>Date</th>
@@ -99,14 +103,13 @@
                             <td>{{ courrier. paysOrigineLibelle}}</td>
                             <td>{{ courrier.paysDestinationLibelle}}</td>
                             <td>{{courrier.typeCourrierLibelle}}</td>
+                            <td>{{courrier.poids}}</td>
                             <td>{{courrier.statutCourrierLibelle}}</td>
                             <td>{{ courrier.montant }}</td>
                             <td>{{ courrier.createdAt }}</td>
                             <td>
-                                <a [routerLink]="['/guichet/courrier-details/', courrier.id]" pButton="" type="button"
-                                    icon="pi pi-download"
-                                    class="p-element p-button-text p-button p-component p-button-icon-only"><span
-                                        class="p-button-icon pi pi-download" aria-hidden="true"></span></a>
+                                <a [routerLink]="['/receveur/courrier-details/', courrier.id]" pButton="" type="button"
+                                    icon="pi pi-download" class="p-element p-button-text p-button p-component p-button-icon-only"><span class="p-button-icon pi pi-download" aria-hidden="true"></span></a>
                             </td>
                         </tr>
                     </ng-template>
