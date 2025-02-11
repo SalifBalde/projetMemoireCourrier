@@ -519,7 +519,7 @@ export class CourrierOrdinaireComponent implements OnInit {
         const paysDestinationId = this.form.get('paysDestinationId')?.value;
         const pays = this.pays$.find(p => p.id === paysDestinationId);
         const poidsMax = pays.zonePoidsMax;
-        if (poidsMax !== undefined && value > poidsMax) {
+       /*  if (poidsMax !== undefined && value > poidsMax) {
             this.messageService.add({
                 severity: 'error',
                 summary: 'Poids invalide',
@@ -527,7 +527,7 @@ export class CourrierOrdinaireComponent implements OnInit {
             });
             this.totalMontant = 0;
         return;
-        }
+        } */
 
         // Si le poids et le pays de destination sont valides
         if (value > 0 && paysDestinationId > 0) {

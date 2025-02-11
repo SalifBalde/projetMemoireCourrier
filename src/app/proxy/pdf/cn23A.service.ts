@@ -149,7 +149,7 @@ export class Cn23AService {
         doc.text('Description', startX, startY - 10);
         doc.text('         Net Weight(3) ', pageHeight / 1.4 , 109, { align: 'left' });
         doc.setFontSize(7);
-        doc.text(`            Poids Net(in kg)`, pageHeight / 1.4, 112, { align: 'left' });
+        doc.text(`            Poids Net(in g)`, pageHeight / 1.4, 112, { align: 'left' });
         doc.setFontSize(9);
         doc.text('Quantity(2)', startX + colWidth +22, 109, { align: 'left' });
         doc.setFontSize(7);
@@ -182,7 +182,7 @@ export class Cn23AService {
         doc.setFontSize(7);
         doc.text('Poids total (4)', yPos, 146, { align: 'left' });
         doc.setFontSize(10);
-        doc.text(`${sumCol2} Kg`, pageHeight / 1.1, 149, { align: 'right' });
+        doc.text(`${sumCol2} g`, pageHeight / 1.1, 149, { align: 'right' });
 
         doc.setFontSize(9);
         doc.text(`Total value (5)`, pageHeight / 1.4, 143, { align: 'right' });

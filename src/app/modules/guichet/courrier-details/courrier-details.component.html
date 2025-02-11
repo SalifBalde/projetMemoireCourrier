@@ -27,8 +27,8 @@
             <p><strong>Catégorie:</strong> {{ courrier?.categorieLibelle }}</p>
             <p><strong>Poids:</strong>
                 {{ courrier?.poids }}
-                <span *ngIf="courrier?.typeCourrierId === 1; else kgUnit">g</span>
-                <ng-template #kgUnit>Kg</ng-template>
+                <span >g</span>
+
               </p>
             <p><strong>Date:</strong> {{ courrier?.createdAt| date:'dd/MM/yyyy' }}</p>
           </div>

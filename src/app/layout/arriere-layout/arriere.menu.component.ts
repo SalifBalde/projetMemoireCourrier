@@ -157,6 +157,11 @@ export class ArriereMenuComponent implements OnInit {
                 label: 'E-commerce',
                 items: [
                     {
+                        label: 'Expédition E-com',
+                        icon: 'pi pi-fw pi-download',
+                        routerLink: ['/arriere/expedition/expedition-E-commerce'],
+                    },
+                    {
                         label: 'Réception E-com à livrer ',
                         icon: 'pi pi-fw pi-download',
                         routerLink: ['/arriere/reception/reception-E-commerce-livraison'],
