@@ -1,0 +1,58 @@
+"use strict";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+exports.__esModule = true;
+exports.DcpMenuComponent = void 0;
+var core_1 = require("@angular/core");
+var DcpMenuComponent = /** @class */ (function () {
+    function DcpMenuComponent(layoutService) {
+        this.layoutService = layoutService;
+        this.model = [];
+    }
+    DrpMenuComponent.prototype.ngOnInit = function () {
+        this.model = [
+            {
+                label: 'Drp',
+                items: [
+                    {
+                        label: 'Expedition',
+                        icon: 'pi pi-fw pi-send',
+                        routerLink: ['/drp/expedition']
+                    },
+                    {
+                        label: 'Reception',
+                        icon: 'pi pi-fw pi-download',
+                        routerLink: ['/drp/reception']
+                    },
+                ]
+            },
+            {
+                label: 'Reporting',
+                items: [
+                    {
+                        label: 'Report Jt Courrier',
+                        icon: 'pi pi-fw pi-file-pdf',
+                        routerLink: ['/drp/rapport']
+                    },
+                    {
+                        label: 'Report Jt E-commerce ',
+                        icon: 'pi pi-fw pi-file-pdf',
+                        routerLink: ['/drp/rapport-ecommerce']
+                    }
+                ]
+            },
+        ];
+    };
+    DcpMenuComponent = __decorate([
+        core_1.Component({
+            selector: 'dcp-menu',
+            templateUrl: './dcp.menu.component.html'
+        })
+    ], DcpMenuComponent);
+    return DcpMenuComponent;
+}());
+exports.DcpMenuComponent = DcpMenuComponent;

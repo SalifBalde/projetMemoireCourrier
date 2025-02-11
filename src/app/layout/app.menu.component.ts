@@ -53,6 +53,20 @@ export class AppMenuComponent implements OnInit {
                 ],
             },
 
+
+
+            {
+                label: 'Dcl',
+                items: [
+                    {
+                        label: 'dcl',
+                        icon: 'pi pi-fw pi-book',
+                        routerLink: ['/dcl/index'],
+                    },
+                ],
+            },
+
+
             {
                 label: 'Pages',
                 icon: 'pi pi-fw pi-briefcase',

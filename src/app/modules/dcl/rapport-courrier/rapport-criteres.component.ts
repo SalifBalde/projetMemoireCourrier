@@ -11,8 +11,8 @@ import { StructureDto, StructureService } from 'src/app/proxy/structures';
 import { StatutCourrierService, Statutdto } from 'src/app/proxy/statut-courrier';
 import { TypeCourrierService,TypeCourrierDto } from 'src/app/proxy/type-courriers';
 import { Paysdto, PaysService } from 'src/app/proxy/pays';
-import { SessionService } from 'src/app/proxy/auth/Session.service';
 import {PoidCourrierDto, PoidCourrierService} from "../../../proxy/poidCourrier";
+import {PoidsCourrierService} from "../../../proxy/poids-courrier";
 
 @Component({
     selector: 'app-rapport-criteres',
@@ -38,6 +38,8 @@ export class RapportCriteresComponent {
     courrierByCriteres: string;
     date: Date;
     fullname: string;
+    poid$: PoidCourrierDto[] = [];
+
 
 
     @ViewChild('dt') dt: Table;
@@ -51,8 +53,7 @@ export class RapportCriteresComponent {
         private tyoeCourrierService : TypeCourrierService,
         private structureService: StructureService,
         private paysService : PaysService,
-        private poidService : PoidCourrierService,
-        private route: ActivatedRoute,
+        private poidService: PoidsCourrierService,
         private messageService: MessageService, private readonly keycloak: KeycloakService
     ) { }
 
@@ -76,14 +77,15 @@ export class RapportCriteresComponent {
 
     buildForm() {
         this.form = this.fb.group({
-            debut: [this.courrierSearch.debut ? new Date(this.courrierSearch.debut) : new Date(), Validators.required],
-            fin: [this.courrierSearch.fin ? new Date(this.courrierSearch.fin) : new Date(), Validators.required],
+            debut: [this.courrierSearch.debut , Validators.required],
+            fin: [this.courrierSearch.fin , Validators.required],
             structureDestinationId: [null],
             structureDepotId: [null],
             typeCourrierId: [null],
             statutCourrierId: [null],
             paysOrigineId: [null],
             paysDestinationId:[null],
+            poids:[null]
         });
     }
 
@@ -98,14 +100,15 @@ export class RapportCriteresComponent {
 
         this.structureService.getBureaux().subscribe(result => {
             this.structure$ = result;
-            // this.structure$  = this.structure$ .filter(structure => structure.id !== this.sessionService.getAgentAttributes().structureId);
         });
 
         this.paysService.findAll().subscribe(result =>{
             this.pays$= result;
+        })
+        this.poidService.findAll().subscribe(result =>{
+            this.poid$= result;
             console.log('result',result)
         })
-
     }
 
     searchcourrierByCriteres() {
@@ -114,8 +117,9 @@ export class RapportCriteresComponent {
             this.loadingcourrier = false
         },
             1000);
-        this.courrierService.findCourrierByCriteres(this.form.value).subscribe(courrier => {
+        this.courrierService.findCourrierByCriteresDcl(this.form.value).subscribe(courrier => {
             this.courrier$ = courrier;
+            console.log(this.courrier$)
             this.montant = this.courrier$.reduce((sum, item) => sum + Number(item.montant), 10);
         })
     }

@@ -14,6 +14,7 @@ import {MessagerieLayoutComponent} from "./layout/messagerie-layout/messagerie.l
 import {MessageriePacketLayoutComponent} from "./layout/messageriePacket-layout/messageriePacket.layout.component";
 import {ResponsableAnnexeLayoutComponent} from "./layout/responsable-annexe-layout/responsable-annexe.layout.component";
 import { DroLayoutComponent } from './layout/dro-layout/dro.layout.component';
+import {DclLayoutComponent} from "./layout/dcp-layout/dcl.layout.component";
 
 
 @NgModule({
@@ -69,6 +70,11 @@ import { DroLayoutComponent } from './layout/dro-layout/dro.layout.component';
       {
         path: 'drp', component: DrpLayoutComponent, canActivate: [AuthGuard], data: { roles: ['ROLE_DRP'] },
         loadChildren: () => import('./modules/drp/drp.module').then(m => m.DrpModule),
+
+      },
+        {
+        path: 'dcl', component: DclLayoutComponent, canActivate: [AuthGuard], data: { roles: ['ROLE_DCL'] },
+        loadChildren: () => import('./modules/dcl/dcl.module').then(m => m.DclModule),
 
       },
       {

@@ -96,6 +96,10 @@ getOneById(id:string)
     const new_api_host = this.routerParam(this.api_host, 'search-by-criteria');
     return this.httpClient.post<CourrierDto[]>(new_api_host, search, this.httpOptions);
   }
+  findCourrierByCriteresDcl(search: CourrierSearchDto) {
+    const new_api_host = this.routerParam(this.api_host, 'search-by-criteriaDcl');
+    return this.httpClient.post<CourrierDto[]>(new_api_host, search, this.httpOptions);
+  }
 
   getOne(id: string) {
     let new_api_host = this.routerParam(this.api_host + '/getByreference', id);
