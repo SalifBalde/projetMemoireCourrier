@@ -90,7 +90,10 @@ getOneById(id:string)
     return this.httpClient.put<CourrierDto[]>(url, courriers, this.httpOptions);
   }
 
-
+    annuler(id: string, item: CourrierCreateUpdateDto) {
+      let new_api_host = this.routerParam(this.api_host,"annuler", id);
+      return this.httpClient.put<CourrierDto>(new_api_host, item, this.httpOptions);
+    }
 
   findCourrierByCriteres(search: CourrierSearchDto) {
     const new_api_host = this.routerParam(this.api_host, 'search-by-criteria');
