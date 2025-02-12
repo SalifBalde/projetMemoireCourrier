@@ -107,16 +107,15 @@ export class ReceptionPacketComponent implements OnInit{
         this.structureDestna = Number(this.sessionService.getAgentAttributes().structureId)
         this.statutCourrierService.findAll().subscribe((data)=>{
             this.statutCourriers=data;
-            console.log(this.statutCourrier)
             this.statutCourriersarriere= this.statutCourriers.filter(
                 (statut) => [19, 10, 23].includes(statut.id)
             );
             console.log( this.statutCourriersarriere)
             this.idStatutFermetureCourrier =this.statutCourriers = data.filter(statut => statut.id === 21);
             console.log(this.idStatutFermetureCourrier);  // Afficher les résultats filtrés
-            this.getCourriersByFermetureIdAndStatut(this.fermetureId,this.idStatutFermetureCourrier[0].id,this.structureDestna)
+            this.getCourriersByFermetureIdAndStatut(this.fermetureId,this.idStatutFermetureCourrier[0]?.id,this.structureDestna)
         })
-        this.noeuxService.findNoeuxByIdstruct(this.sessionService.getAgentAttributes().structureId.toString()).subscribe(
+        this.noeuxService.findNoeuxByIdstruct(this.structureDestna.toString()).subscribe(
             (result) => {
                 this.Bestnoeux = result;
                 console.log(this.Bestnoeux)
@@ -125,7 +124,7 @@ export class ReceptionPacketComponent implements OnInit{
         );
         this.iduser= this.sessionService.getAgentAttributes()?.id
         console.log(this.iduser)
-        this.getAllCourriers()
+//this.getAllCourriers()
 
         this.getAllCondition()
 

@@ -102,12 +102,20 @@ export class FermeturePacketInterieurComponent implements  OnInit{
                 // Filtrer les fermetures qui ont des fermetureCourriers non vides
                  this.Listfermetures = data
                 console.log(this.Listfermetures);
+                this.Listfermetures = this.Listfermetures.filter(fermeture =>
+                    fermeture.fermetureCourriers.length > 0 &&  // Vérifie que fermetureCourriers n'est pas vide
+                    !fermeture.fermetureCourriers.some(courrier => courrier.statutCourrierId === 7)
+                  //  fermeture.fermetureCourriers.every(courrier =>courrier.structureDestinationId=== idstructureDest)// Vérifie qu'aucun courrier n'a statutCourrierId === 7
 
+                );
+
+
+                console.log(this.Listfermetures);
                 // Mettre à jour les libellés des structures
                 this.Listfermetures.forEach(fermeture => {
                     const idStrure = fermeture?.structureDepotId.toString();
                     this.structureService.getOne(idStrure).subscribe((structure) => {
-                        fermeture.libelleStructure = structure.libelle; // Mettre à jour directement dans l'objet fermeture
+                        this.libelleStructur = structure.libelle; // Mettre à jour directement dans l'objet fermeture
                     });
                 });
 
