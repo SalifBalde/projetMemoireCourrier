@@ -2,8 +2,7 @@
 <div class="grid">
     <div class="col-12">
         <div class="card px-6 py-6">
-
-            <p-table #dt [value]="Listfermetures" [(selection)]="selectedCourriers" dataKey="id" selectionMode="multiple"  [rows]="10"
+            <p-table #dt [value]="Listfermetures" [(selection)]="selectedCourriers" dataKey="id" selectionMode="multiple" [rows]="10"
                      [rowsPerPageOptions]="[10, 25, 50]"
                      [paginator]="true"
                      [showCurrentPageReport]="true"
@@ -11,7 +10,7 @@
                      [tableStyle]="{'min-width': '50rem'} " currentPageReportTemplate="Affichage des {first} aux {last}èmes des  {totalRecords} entrées">
                 <ng-template pTemplate="caption">
                     <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
-                        <p-badge value="Liste  Fermétures Colis " size="large" severity="info"></p-badge>
+                        <p-badge value="Liste  Fermétures Packets  a réceptionné" size="large" severity="info"></p-badge>
 
                         <span class="p-input-icon-right " style="float:right">
                         <input
