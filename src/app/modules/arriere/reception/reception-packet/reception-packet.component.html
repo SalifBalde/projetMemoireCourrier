@@ -58,7 +58,7 @@
                         <th pSortableColumn="codeBarre">Code<p-sortIcon field="codeBarre" /></th>
                         <th pSortableColumn="quantite">Quantité<p-sortIcon field="quantite" /></th>
                         <th pSortableColumn="quantite">Catégorie<p-sortIcon field="catégorie" /></th>
-                        <th pSortableColumn="montant">Montant<p-sortIcon field="montant" /></th>
+                        <th pSortableColumn="montant">Taxe Douane<p-sortIcon field="montant" /></th>
                         <th>Taxe Representation</th>
                         <th *ngIf="showMontantField && selectedStatut ">Taxe Douane</th>
                         <th>Poids</th>
@@ -85,7 +85,7 @@
                         <td>{{colis.codeBarre}}</td>
                         <td>{{colis.quantite}}</td>
                         <td>{{colis.categorieLibelle}}</td>
-                        <td>{{colis.montant}}</td>
+                        <td>{{colis.taxeDouane}}</td>
                         <td>{{colis.taxePresentation}}</td>
                         <td *ngIf="showMontantField && selectedStatut ">
 
@@ -121,7 +121,7 @@
             </p-table>
             <div class="col-12 flex flex-column lg:flex-row justify-content-between lg:align-items-center">
 
-                <p-button  label="Récepionner" icon="pi pi-fw pi-download" (click)="openDialog(colis)" [severity]="getBadgeSeverity(colis?.statutCourrier?.libelle)"
+                <p-button  label="Récepionner" icon="pi pi-fw pi-download" (click)="openDialog(colis)" [severity]="getBadgeSeverity(colis?.statutCourrierLibelle)"
                            [disabled]="isExpeditionDisabled()"  rounded />
 
             </div>
