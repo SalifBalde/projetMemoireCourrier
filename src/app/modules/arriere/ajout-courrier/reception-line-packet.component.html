@@ -338,7 +338,7 @@
                 <p-button (click)="updateeCourrier()" [disabled]="!paysDestinationId || !poids || !codebarre" label="Valider" severity="success" />
             </div>
             <div class="col-6 lg:col-offset-6 field" style="float:left" *ngIf="!courrier">
-                <p-button (click)="saveColis()" [disabled]="!paysDestinationId || !poids || !codebarre" label="Enregistrer" severity="info" />
+                <p-button (click)="saveColis()" [disabled]="!paysDestinationId || !poids || !codebarre || !client.id || !destinataire.id" label="Enregistrer" severity="info" />
             </div>
         </div>
 

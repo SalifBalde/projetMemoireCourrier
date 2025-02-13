@@ -189,7 +189,7 @@ export class ReceptionPacketComponent implements OnInit{
         console.log(courrie)
     }
     isExpeditionDisabled(): boolean {
-        return !this.selectedColis
+        return !this.selectedCourriers
 
     }
 
