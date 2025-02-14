@@ -166,7 +166,6 @@ export class LivraisonComponent implements OnInit {
     }
     validateTaxeMagasinage() {
         // Vérifie si la taxe magasinage est un nombre valide et supérieur à zéro
-        this.isTaxeValid = this.colis.taxeMagasinage > 0;
         let totalpaye =this.selectedColis.taxeMagasinage+this.selectedColis.taxeDouane
     }
 
