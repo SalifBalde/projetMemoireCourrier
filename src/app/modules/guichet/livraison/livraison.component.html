@@ -1,4 +1,4 @@
-<div class="grid">
+ <div class="grid">
     <div class="col-12">
         <div class="card px-4 py-4">
             <p-toast></p-toast>
@@ -35,6 +35,8 @@
                         <th pSortableColumn=" prenomClient">Nom Complet destinataire<p-sortIcon field="prenomClient"/> </th>
                         <th pSortableColumn="telephone">Téléphone destinataire<p-sortIcon field="telephone" /></th>
                         <th  pSortableColumn="bureauDepot">Bureau de dépôt<p-sortIcon field="bureauDepot"/> </th>
+                        <th  >Taxe Douane</th>
+                        <th  >Taxe Présentation</th>
                         <th  >Taxe Magasinage</th>
                         <th  pSortableColumn="date">Date d'envoi<p-sortIcon field="date"/> </th>
                         <th >Type Courrier</th>
@@ -53,11 +55,25 @@
                         <td>{{ colis.structureDepotLibelle }}</td>
                         <td>
                         <p-badge
-                            [value]="colis.taxeMagasinage | cfa"
+                            [value]="colis.taxeDouane | cfa"
                             severity="info"
                             styleClass="p-mr-2">
                         </p-badge>
                     </td>
+                        <td>
+                            <p-badge
+                                [value]="colis.taxePresentation | cfa"
+                                severity="info"
+                                styleClass="p-mr-2">
+                            </p-badge>
+                        </td>
+                        <td>
+                            <p-badge
+                                [value]="colis.taxeMagasinage | cfa"
+                                severity="info"
+                                styleClass="p-mr-2">
+                            </p-badge>
+                        </td>
                         <td>{{ colis.createdAt }}</td>
                         <td>
                             <p-badge
@@ -112,7 +128,6 @@
                 [(ngModel)]="colis.taxeMagasinage"
                 (ngModelChange)="calculateTotal(colis)"
                 (ngModelChange)="validateTaxeMagasinage()">
-            <small *ngIf="!isTaxeValid" class="p-error">Veuillez saisir une taxe valide.</small>
         </div>
         <div class="field">
             <label for="total">Taxe Douane: </label>
@@ -142,7 +157,6 @@
            </span>
         </div>
         <p-button
-            [disabled]="!isTaxeValid"
             label="Livrer"
             icon="pi pi-fw pi-truck"
             (click)="openDialog1(colis)" />

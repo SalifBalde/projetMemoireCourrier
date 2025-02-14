@@ -25,11 +25,11 @@
 
             <div class="col-12 md:col-5">
                 <p-dropdown formControlName="typeCourrierId" id="typeCourrierId" [filter]="true" filterBy="libelle"
-                    [options]="typeCourrier$" placeholder="choisissez un Type" optionLabel="libelle"
+                    [options]="typeCourrier$" placeholder="choisissez un Type" optionLabel="libelle"  [showClear]="true"
                     optionValue="id"></p-dropdown>
             </div>
             <div class="col-12 md:col-5">
-                <p-dropdown formControlName="statutCourrierId" id="statutCourrierId" [filter]="true" filterBy="libelle"
+                <p-dropdown formControlName="statutCourrierId" id="statutCourrierId" [filter]="true" filterBy="libelle"  [showClear]="true"
                     [options]="statutCourrier$" placeholder="choisissez un status" optionLabel="libelle"
                     optionValue="id"></p-dropdown>
             </div>

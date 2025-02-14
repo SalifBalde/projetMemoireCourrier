@@ -92,7 +92,7 @@ export class RapportCriteresComponent {
         });
 
         this.tyoeCourrierService.findAll().subscribe(result => {
-            this.typeCourrier$ = result;
+            this.typeCourrier$ = result.filter(courrier => courrier?.id == '2');
         });
 
         this.structureService.getBureaux().subscribe(result => {
