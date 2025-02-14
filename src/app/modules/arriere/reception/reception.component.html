@@ -35,7 +35,7 @@
         <div class="card px-6 py-6">
 
 
-            <p-table  #dt [value]="listeColiss" [(selection)]="selectedCourriers" dataKey="id" [rows]="10"
+            <p-table  #dt [value]="listeColiss" [(selection)]="selectedColis" dataKey="id" [rows]="10"
                       [rowsPerPageOptions]="[10, 25, 50]"
                       [paginator]="true"
                       [showCurrentPageReport]="true"
@@ -121,7 +121,7 @@
             </p-table>
             <div class="col-12 flex flex-column lg:flex-row justify-content-between lg:align-items-center">
 
-                <p-button  label="Récepionner" icon="pi pi-fw pi-download" (click)="openDialog(colis)" [severity]="getBadgeSeverity(colis?.statutCourrier?.libelle)"
+                <p-button  label="Récepionner" icon="pi pi-fw pi-download" (click)="openDialog(colis)" [severity]="getBadgeSeverity(colis?.statutCourrierLibelle)"
                            [disabled]="isExpeditionDisabled()"  rounded />
 
             </div>
