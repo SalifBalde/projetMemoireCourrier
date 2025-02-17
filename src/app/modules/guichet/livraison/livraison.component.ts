@@ -219,7 +219,6 @@ export class LivraisonComponent implements OnInit {
 
 
         // Mise à jour du courrier
-        if(this.isTaxeValid){
             this.openCourrierDialog=false
             this.colis.taxeMagasinage= this.colis.taxeMagasinage
           this.colis.statutCourrierId= 11
@@ -272,6 +271,6 @@ export class LivraisonComponent implements OnInit {
             }
 
         );
-        }
+
     }
 }
