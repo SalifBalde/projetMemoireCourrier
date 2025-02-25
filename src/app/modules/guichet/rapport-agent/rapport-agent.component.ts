@@ -68,6 +68,7 @@ import { CourrierDto, CourrierSearchDto, CourrierService } from 'src/app/proxy/c
         this.form = this.fb.group({
             debut: [this.courrierSearch.debut ? new Date(this.courrierSearch.debut) : new Date(), Validators.required],
             fin: [this.courrierSearch.fin ? new Date(this.courrierSearch.fin) : new Date(), Validators.required],
+            structureDepotId: [this.sessionService.getAgentAttributes().structureId],
         });
     }
 

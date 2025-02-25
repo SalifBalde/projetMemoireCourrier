@@ -47,6 +47,7 @@ export class RapportCriteresComponent {
         private pdfService: PdfService,
         private fb: FormBuilder,
         private router: Router,
+        private sessionService: SessionService,
         private statutCourrierService: StatutCourrierService,
         private tyoeCourrierService : TypeCourrierService,
         private structureService: StructureService,
@@ -79,10 +80,11 @@ export class RapportCriteresComponent {
             debut: [this.courrierSearch.debut ? new Date(this.courrierSearch.debut) : new Date(), Validators.required],
             fin: [this.courrierSearch.fin ? new Date(this.courrierSearch.fin) : new Date(), Validators.required],
             structureDestinationId: [null],
-            structureDepotId: [null],
+            structureDepotId: [this.sessionService.getAgentAttributes().structureId],
             typeCourrierId: [null],
             statutCourrierId: [null],
             paysOrigineId: [null],
+            userId:[this.sessionService.getAgentAttributes().id],
             paysDestinationId:[null],
         });
     }

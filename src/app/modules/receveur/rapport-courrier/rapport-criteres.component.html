@@ -23,16 +23,17 @@
                 </p-dropdown>
             </div>
 
-            <div class="col-12 md:col-5">
-                <p-dropdown formControlName="typeCourrierId" id="typeCourrierId" [filter]="true" filterBy="libelle"
-                    [options]="typeCourrier$" placeholder="choisissez un Type" optionLabel="libelle"  [showClear]="true"
-                    optionValue="id"></p-dropdown>
-            </div>
+
             <div class="col-12 md:col-5">
                 <p-dropdown formControlName="statutCourrierId" id="statutCourrierId" [filter]="true" filterBy="libelle"  [showClear]="true"
                     [options]="statutCourrier$" placeholder="choisissez un status" optionLabel="libelle"
                     optionValue="id"></p-dropdown>
             </div>
+            <div class="col-12 md:col-5">
+                <!--   <p-dropdown formControlName="typeCourrierId" id="typeCourrierId" [filter]="true" filterBy="libelle"
+                      [options]="typeCourrier$" placeholder="choisissez un Type" optionLabel="libelle"  [showClear]="true"
+                      optionValue="id"></p-dropdown> -->
+              </div>
         </div>
         <div class="p-formgrid flex col-6 col-offset-3 justify-content-center">
             <p-button label="Rechercher" icon="pi pi-search" severity="primary" [loading]="loadingcourrier"
