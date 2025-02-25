@@ -26,8 +26,9 @@ export class CourrierCreateUpdateDto {
     ar?: boolean;
     express?: boolean;
     details?: CourrierDetailsDto[]=[] ;
+   // createdAt?: Date
 
-  }
+}
 
   export interface CourrierDto {
     id?: number;
@@ -83,6 +84,7 @@ export class CourrierCreateUpdateDto {
     express?: boolean;
     conditionId?: number;
       details?: CourrierDetailsDto[] ;
+     // createdAt?: Date
   }
 
 

@@ -70,10 +70,10 @@
                         </div>
                     </ng-template>
                     <ng-template pTemplate="right">
-                        <button pButton type="button" icon="pi pi-file-pdf" class="p-button-warning mr-2"
-                            (click)="generatePdf()" [disabled]="loadingcourrier"></button>
-                        <button pButton type="button" icon="pi pi-file-excel" (click)="dt.exportCSV()"
-                            [disabled]="loadingcourrier"></button>
+                        <button pButton type="button" icon="pi pi-file-pdf" class="p-button-info mr-2"
+                                (click)="exportPDF(courrier$)" [disabled]="loadingcourrier" label="export PDF"> </button>
+                        <button pButton type="button" icon="pi pi-file-excel" (click)="exportAsXLSX(courrier$)"
+                            [disabled]="loadingcourrier" label="export excel"></button>
                     </ng-template>
                 </p-toolbar>
                 <p-table #dt [value]="courrier$" styleClass="p-datatable-gridlines"
