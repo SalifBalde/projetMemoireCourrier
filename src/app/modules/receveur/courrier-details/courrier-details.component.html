@@ -8,7 +8,7 @@
                       <button pButton type="button" icon="pi pi-print mr-2" (click)="cp71()" class="p-button-warning mr-2">Générer cp71</button>
                       <button pButton type="button" icon="pi pi-print mr-2" (click)="cn22()" class="p-button-info mr-2">Générer cn22</button>
 
-                      <button *ngIf="structureId === courrier.structureDepotId" pButton type="button" icon="pi pi-trash mr-2" (click)="annulerCourrier(courrier)" class="p-button-danger mr-2">Annuler</button>
+                      <button *ngIf="structureId === courrier.structureDepotId && courrier.statutCourrierId !==15" pButton type="button" icon="pi pi-trash mr-2" (click)="annulerCourrier(courrier)" class="p-button-danger mr-2">Annuler</button>
             </div>
         </p-toolbar>
     </div>
@@ -102,3 +102,7 @@
       </div>
 
   </div>
+<p-confirmDialog></p-confirmDialog>
+<div *ngIf="loading" class="loading-message">
+    <p>Chargement, veuillez patienter...</p>
+</div>

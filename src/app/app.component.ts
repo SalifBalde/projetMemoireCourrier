@@ -8,6 +8,7 @@ import { KeycloakProfile } from 'keycloak-js';
 import { TokenService } from './proxy/auth/token.service';
 import { SessionService } from './proxy/auth/Session.service';
 import { JournalResultDto, JournalService } from './proxy/journal';
+import { PrimeNgConfigService } from './configs/prime-ng-config.service';
 
 @Component({
     selector: 'app-root',
@@ -25,6 +26,7 @@ export class AppComponent implements OnInit {
          private journalService: JournalService,
          private sessionService: SessionService,
          private tokenService : TokenService,
+         private primeNgConfigService: PrimeNgConfigService,
          private userService:UserService,
          private router: Router) { }
 
@@ -34,6 +36,7 @@ export class AppComponent implements OnInit {
         sessionStorage.setItem('authToken', token);
 //const token = sessionStorage.getItem('authToken');
 
+           this.primeNgConfigService.initialize();
 
         this.sessionService.setUserAttributes(this.userProfile);
         this.user = await firstValueFrom(

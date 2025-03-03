@@ -55,6 +55,10 @@ async imprimerFacture(){
 }
 
 annulerCourrier(courrier: CourrierDto): void {
+    if (this.loading) {
+        return;
+    }
+
     this.loading = true;
 
     const sessionAttributes = this.sessionService.getAgentAttributes();
