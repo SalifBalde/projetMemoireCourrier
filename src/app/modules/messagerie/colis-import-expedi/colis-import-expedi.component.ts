@@ -332,7 +332,7 @@ export class ColisImportExpediComponent implements  OnInit{
                 numeroDepeche: numeroDepeche,
                 date: new Date().toISOString(),
                 userId: this.iduser, // ID de l'utilisateur connecté
-                idstatutCourrier: this.idStatutFermetureCourrier[0]?.id,
+                statutCourrierId: this.idStatutFermetureCourrier[0]?.id,
                 fermetureCourriers: this.selectedColis.map((colis) => ({
                     courrierId: colis.id,
                 })),

@@ -335,7 +335,7 @@ export class ExpeditionColisComponent implements  OnInit{
                 date: new Date().toISOString(),
                 userId: this.iduser, // ID de l'utilisateur connecté
 
-                idstatutCourrier: this.idStatutFermetureCourrier,
+                statutCourrierId: this.idStatutFermetureCourrier,
                 fermetureCourriers: this.selectedColis.map((colis) => ({
                     courrierId: colis.id,
                 })),

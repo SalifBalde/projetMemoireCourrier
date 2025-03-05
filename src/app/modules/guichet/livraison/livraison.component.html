@@ -83,8 +83,7 @@
                         </td>
 
                         <td>
-                            <span class="p-badge p-component p-badge-{{ colis.statutCourrierLibelle }}">{{ colis.statutCourrierLibelle
-                                }}</span>
+                            <span class="p-badge p-component p-badge-{{ colis.statutCourrierLibelle}}">{{ colis.statutCourrierLibelle}}</span>
                         </td>
                         <td>
                             <p-button
@@ -134,6 +133,20 @@
             <label for="total">Taxe Douane: </label>
             <span   style="font-weight: bold;">
                 {{colis.taxeDouane | cfa}}
+
+             </span>
+        </div>
+        <div class="field">
+            <label for="total">Frais Suivi: </label>
+            <span   style="font-weight: bold;">
+                {{colis.fraisSuivi | cfa}}
+
+             </span>
+        </div>
+        <div class="field">
+            <label for="total">Taxe Présentation: </label>
+            <span   style="font-weight: bold;">
+                {{colis.taxePresentation | cfa}}
 
              </span>
         </div>

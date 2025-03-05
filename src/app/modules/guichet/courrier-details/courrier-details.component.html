@@ -4,7 +4,11 @@
         <p-toolbar>
             <div class="p-toolbar-group-left flex flex-wrap">
                 <button pButton type="button" label="Imprmer" icon="pi pi-print" (click)="imprimerFacture()" class="p-button-info mr-2" ></button>
-                      <button pButton type="button" icon="pi pi-print mr-2" (click)="cn23()" class="p-button-info">Générer cn23</button>
+                      <button pButton type="button" icon="pi pi-print mr-2" (click)="cn23()" class="p-button-success mr-2">Générer cn23</button>
+                      <button pButton type="button" icon="pi pi-print mr-2" (click)="cp71()" class="p-button-warning mr-2">Générer cp71</button>
+                      <button pButton type="button" icon="pi pi-print mr-2" (click)="cn22()" class="p-button-info mr-2">Générer cn22</button>
+
+
 
             </div>
         </p-toolbar>
@@ -21,7 +25,12 @@
             <p><strong>Structure Destination:</strong> {{ courrier?.structureDestinationLibelle }}</p>
             <p><strong>Type Courrier:</strong> {{ courrier?.typeCourrierLibelle }}</p>
             <p><strong>Catégorie:</strong> {{ courrier?.categorieLibelle }}</p>
-            <p><strong>Poids:</strong> {{ courrier?.poids }} Kg</p>
+            <p><strong>Poids:</strong>
+                {{ courrier?.poids }}
+                <span >g</span>
+
+              </p>
+            <p><strong>Date:</strong> {{ courrier?.createdAt| date:'dd/MM/yyyy' }}</p>
           </div>
           <div class="col-6">
             <p><strong>Expéditeur:</strong> {{ courrier?.expediteurNom }} {{ courrier?.expediteurPrenom }} / {{ courrier?.expediteurTelephone }}</p>

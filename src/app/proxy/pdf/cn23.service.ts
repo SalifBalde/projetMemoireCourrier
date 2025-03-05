@@ -105,7 +105,7 @@ export class Cn23Service {
         doc.text(`${data.expediteurPrenom}`, pageWidth / 3, 30, { align: 'center' });
         doc.text(`${data.expediteurAdresse}`, pageWidth / 6, 35, { align: 'right' });
         doc.text(`${data.expediteurTelephone}`, pageWidth / 7, 40, { align: 'right' });
-        doc.text('13000', pageWidth / 11, 45, { align: 'right' });
+        doc.text(`${data.expediteurCodePostal}`, pageWidth / 11, 45, { align: 'right' });
         doc.text('A', pageWidth / 50, 59, { align: 'right', });
 
         doc.text('Nom et Adresse,Colis Postal et le Téléphone du destinataire y compis', pageHeight / 13, 50, { align: 'left', });
@@ -125,7 +125,7 @@ export class Cn23Service {
         doc.text('A', pageWidth / 50, 59, { align: 'right' });
         doc.text(`Bureau: ${data.structureDepotLibelle}`, pageHeight / 10, 8, { align: 'left' });
         doc.text('LA POSTEE SENEGAL', pageHeight / 2, 3, { align: 'right' });
-        doc.text(`Agent: Aliou Balde`, pageWidth / 2, 8, { align: 'center' });
+        doc.text(`Agent: ${data.agent}`, pageWidth / 2, 8, { align: 'center' });
         doc.text("Instruction de l'expéditeur en cas de non-livraison ", pageHeight / 13, 160, { align: 'left' });
         doc.text("Renvoyer à l'expéditeur ", pageHeight / 13, 170, { align: 'left' });
         doc.text('Remarque: Pour tenir compte des besoins de leur service, les Administrations ont l\'habitude d\'utiliser cette formule unique, soit comme partie de la formule-Liasse CP72 ', pageHeight / 29, 209, { align: 'left', });

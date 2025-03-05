@@ -46,6 +46,11 @@ export  class FermetureService {
     }
 
     getRapport(search: FermetureSearchDto ): Observable<Fermeturedto[]> {
-        return this.httpClient.post<Fermeturedto[]>(this.api_host+'/rapport',search);
+        return this.httpClient.post<Fermeturedto[]>(this.api_host+'/rapport',search, this.httpOptions);
     }
+
+    private routerParam(baseUrl: string, ...params: string[]) {
+        return `${baseUrl}/${params.join('/')}`;
+      }
+
 }

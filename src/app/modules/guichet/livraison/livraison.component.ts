@@ -136,6 +136,7 @@ export class LivraisonComponent implements OnInit {
 
             this.colis = { ...colis };
         this.openNumExpDialog = true
+        this.calculateTotal(colis);
         console.log( this.openNumExpDialog)
     }
 
@@ -154,8 +155,10 @@ export class LivraisonComponent implements OnInit {
         console.log(colis)
         const taxeMagasinage = this.colis.taxeMagasinage || 0;
         const taxeDouane = this.colis.taxeDouane || 0;
+        const taxePresentation = this.colis.taxePresentation || 0;
+        const fraisSuivi = this.colis.fraisSuivi || 0;
         console.log(taxeDouane, taxeMagasinage)
-        this.totalpaye = taxeMagasinage + taxeDouane;
+        this.totalpaye = taxeMagasinage + taxeDouane+ fraisSuivi+taxePresentation;
     }
 
     confirmReception() {

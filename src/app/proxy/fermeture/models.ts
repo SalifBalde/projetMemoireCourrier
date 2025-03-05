@@ -22,7 +22,7 @@ export interface Fermeturedto {
     numeroDepeche?: string;
     date?:string;
     userId?:number;
-    idstatutCourrier :number;
+    statutCourrierId :number;
     fermetureCourriers: Fermeturecourrierdto[] ;  // Doit contenir des objets avec courrierId
 }
 

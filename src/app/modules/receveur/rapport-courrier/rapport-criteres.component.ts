@@ -190,8 +190,8 @@ export class RapportCriteresComponent  implements  OnInit{
             debut: [this.courrierSearch.debut ? new Date(this.courrierSearch.debut) : new Date(), Validators.required],
             fin: [this.courrierSearch.fin ? new Date(this.courrierSearch.fin) : new Date(), Validators.required],
             structureDestinationId: [null],
-            structureDepotId: [null],
-            typeCourrierId: [null],
+            structureDepotId: [this.sessionService.getAgentAttributes().structureId],
+            typeCourrierId: [2],
             statutCourrierId: [null],
             paysOrigineId: [null],
             paysDestinationId:[null]

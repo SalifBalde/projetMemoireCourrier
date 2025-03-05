@@ -313,7 +313,7 @@ export class LinePacketDeclarerComponent  implements    OnInit{
                 numeroDepeche: numeroDepeche,
                 date: new Date().toISOString(),
                 userId: this.iduser, // ID de l'utilisateur connecté
-                idstatutCourrier: this.idStatutFermetureCourrier[0]?.id,
+                statutCourrierId: this.idStatutFermetureCourrier[0]?.id,
                 fermetureCourriers: this.selectedColis.map((colis) => ({
                     courrierId: colis.id,
                 })),
@@ -331,9 +331,9 @@ export class LinePacketDeclarerComponent  implements    OnInit{
                     // Mise à jour des courriers et ajout des suivis
                     selectedColisCopy.forEach((colis) => {
                         const courrieId = colis.id;
-                        colis.statutCourrier = this.idStatutFermetureCourrier[0];
+                        colis.statutCourrierId = this.idStatutFermetureCourrier[0]?.id;
                         colis.structureDestinationId = this.selectedStructure;
-                        // Ajout du montantTaxeDouane dans l'objet colis
+
                         colis.taxeDouane = colis.montantTaxeDouane;  // Ici, le montant est récupéré du modèle de données déjà lié
 
                         console.log(courrieId, colis);

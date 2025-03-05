@@ -45,6 +45,7 @@ export class CourrierCreateUpdateDto {
       fraisSuivi?:number;
       valeurDeclare?: number;
     userId?: number;
+    agent?: string;
     codeBarre?: string;
     caisseId?: number;
     journalId?: number;
@@ -75,6 +76,8 @@ export class CourrierCreateUpdateDto {
     expediteurAdresse?: string;
     expediteurCodePostal?: string;
     expediteurCni?: string;
+    createdAt?:string;
+    updatedAt?:string;
     expediteurCity?: string;
     recommande?: boolean;
     ar?: boolean;
@@ -85,6 +88,13 @@ export class CourrierCreateUpdateDto {
   }
 
 
+  export class CourrierContenuDto{
+    id?: string;
+    description?:string;
+    poids?:number;
+    quantite?:number;
+    valeur?:number;
+  }
   export class CourrierDetailsDto {
      id?: string;
      produitId?: string;
