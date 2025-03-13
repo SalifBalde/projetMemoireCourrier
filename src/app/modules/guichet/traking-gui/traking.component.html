@@ -1,0 +1,70 @@
+
+<div class="col-12 lg:col-8 field flex flex-column align-items-center" >
+<p-card header="Rechercher un courrier" class="p-mb-3" style="width: 400px">
+        <div class="grid gap-3">
+            <div class="col-12">
+                <p-inputGroup>
+                    <p-inputGroupAddon>
+                        <i class="pi pi-barcode"></i>
+                    </p-inputGroupAddon>
+
+                    <input type="text"
+                           pInputText
+                           [(ngModel)]="codeBarre"
+                           placeholder="Saisir le Code Barre"
+                           style="width: 60%;" />
+
+                    <button type="button"
+                            pButton
+                            label="Recherche"
+                            icon="pi pi-search"
+                            class="p-button-primary"
+                            (click)="rechercherParCodeBarre()">
+                    </button>
+                </p-inputGroup>
+            </div>
+        </div>
+</p-card>
+</div>
+
+
+<p-dialog
+    header="Détails des suivis"
+    [(visible)]="dialogVisible"
+    [modal]="true"
+    [closable]="true"
+    [draggable]="false"
+    [resizable]="false"
+    [style]="{width: '55%', borderRadius: '12px', boxShadow: '0 8px 16px rgba(0, 0, 0, 0.2)'}"
+    [contentStyle]="{padding: '1.5rem'}"
+    [baseZIndex]="10000">
+
+    <div *ngIf="selectedSuivi && selectedSuivi.length > 0" class="grid">
+        <div *ngFor="let suivi of selectedSuivi; let i = index" class="col-12 md:col-4 lg:col-4 suivi-details">
+            <p style="font-size: 1rem; margin-bottom: 0.5rem;">
+                <strong>Suivi {{ i + 1 }} :</strong>
+            </p>
+            <p style="font-size: 1rem; margin-bottom: 1rem;">
+                <strong>Date :</strong> {{ suivi.createdAt | date: 'dd/MM/yyyy' }}
+            </p>
+            <p style="font-size: 1rem; margin-bottom: 1rem;">
+                <strong>Structure :</strong> {{ suivi.structureLibelle }}
+            </p>
+            <p style="font-size: 1rem; margin-bottom: 1rem;">
+                <strong>Agent :</strong> {{ suivi.userPrenom }}--{{ suivi.userNom }}
+            </p>
+            <p style="font-size: 1rem; margin-bottom: 1rem;">
+                <strong>Status :</strong> {{ suivi.statutCourrierLibelle }}
+            </p>
+            <hr *ngIf="i < selectedSuivi.length - 1" style="margin: 1rem 0;">
+        </div>
+    </div>
+
+    <div *ngIf="!selectedSuivi || selectedSuivi.length === 0" class="p-text-center">
+        <p>Aucun détail de suivi disponible.</p>
+    </div>
+
+    <ng-template pTemplate="footer">
+        <button pButton type="button" label="Fermer" class="p-button-text" (click)="dialogVisible = false"></button>
+    </ng-template>
+</p-dialog>
