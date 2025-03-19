@@ -1,0 +1,126 @@
+
+<p-toast position="top-right"></p-toast>
+    <div class="my-2">
+        <button pButton pRipple label="Nouveux Noeud" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNew()"></button>
+    </div>
+
+<div class="col-12 lg:col-6 md:px-1">
+
+
+    <div class="card">
+        <div class="grid formgrid">
+            <div class="col-12 field">
+
+                <p-badge  value=" Plan d'Acheminement " size="large" severity="primary"></p-badge>
+
+            </div>
+
+            <div class="col-12 lg:col-6 field">
+                <p-dropdown
+                    [options]="noeux$"
+                    optionLabel="libelle"
+                    [filter]="true"
+                    filterBy="libelle"
+                    [(ngModel)]="selectedNoeud"
+                    (click)="findAcheminementsByNoeud()"
+                    [showClear]="true"
+                    placeholder="Choisir un Noeud">
+                    <ng-template pTemplate="selectedItem" let-selectedOption>
+                        <div class="flex align-items-center gap-3">
+                            <div>{{ selectedOption.libelle }}</div>
+                        </div>
+                    </ng-template>
+                    <ng-template let-structure pTemplate="item">
+                        <div class="flex align-items-center gap-2">
+                            <div>{{ structure.libelle }}</div>
+                        </div>
+                    </ng-template>
+                </p-dropdown>
+
+
+            </div>
+
+            <div class="col-12 lg:col-6 field">
+
+                <p-multiSelect
+                    [options]="structure$"
+                    [(ngModel)]="selectedBureaux"
+                    optionLabel="libelle"
+                    placeholder="Sélectionner des bureaux"
+                    [displaySelectedLabel]="3"
+                    class="w-full md:w-80">
+                </p-multiSelect>
+            </div>
+        </div>
+        <button pButton pRipple label="Sauvegarder" icon="pi pi-check" class="p-button-text p-button-success" (click)="save()" [disabled]="selectedBureaux.length==0"></button>
+    </div>
+</div>
+
+<div class="card px-3 py-3">
+    <p-toast></p-toast>
+
+    <p-table #dt [value]="acheminChoisi" [columns]="cols" responsiveLayout="scroll" [(selection)]="selectedBureau"
+             [rows]="10" [globalFilterFields]="['libelle']"
+             [paginator]="true" [rowsPerPageOptions]="[10,20,30]"
+             [showCurrentPageReport]="true"
+             currentPageReportTemplate="Affichage de {first} à {last} sur {totalRecords} entrées"
+             selectionMode="multiple" [rowHover]="true" dataKey="id"
+             [tableStyle]="{'min-width': '50rem'}">
+        <ng-template pTemplate="caption">
+            <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+                <h5 class="m-0">Bureaux</h5>
+                <span class="block mt-2 md:mt-0 p-input-icon-left">
+                            <i class="pi pi-search"></i>
+                            <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Search..."  class="w-full sm:w-auto"/>
+                        </span>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+
+            <tr>
+<!--                <th style="width: 3rem">-->
+<!--                    <p-tableHeaderCheckbox>Choisir</p-tableHeaderCheckbox>-->
+<!--                </th>-->
+                <th pSortableColumn="libelle">Libelle <p-sortIcon field="libelle"></p-sortIcon></th>
+                <th pSortableColumn="Action">Action <p-sortIcon field="Action"></p-sortIcon></th>
+
+
+            </tr>
+
+        </ng-template>
+        <ng-template pTemplate="body" let-noeud>
+            <tr>
+<!--                <td style="width: 3rem">-->
+<!--                    <p-tableCheckbox [value]="noeud"></p-tableCheckbox>-->
+<!--                </td>-->
+
+                <td style=" min-width:10rem;"><span class="p-column-title">Libelle</span>
+                    {{noeud.libelle}}
+                </td>
+
+                 <td style=" min-width:10rem;"><span class="p-column-title">Libelle</span>
+                     <button pbutton pripple  icon="pi pi-trash" class=" p-button p-component p-button-text p-button-icon-only p-button-danger"  (click)="openDialog1(noeud)"><span class="p-button-icon pi pi-trash" aria-hidden="true"></span></button>
+                 </td>
+
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
+
+<p-dialog [(visible)]="openCourrierDialog" header="Confirmer" [modal]="true" [style]="{width:'450px'}">
+    <div class="flex align-items-center justify-content-center">
+        <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+        <span *ngIf="noeudd">Etes-vous sûr de vouloir supprimé ce bureau :<b>{{noeudd.libelle}}</b>?</span>
+    </div>
+    <ng-template pTemplate="footer">
+        <button pButton pRipple icon="pi pi-check" class="p-button-text " label="Oui"
+                (click)="confirmReception()"></button>
+        <button pButton pRipple icon="pi pi-times" class="p-button-text p-button-danger" label="Non"
+                (click)="openCourrierDialog = false"></button>
+
+    </ng-template>
+</p-dialog>
+
+
+
+

@@ -22,6 +22,7 @@ const routes: Routes = [
   { path: 'serviceCourriers', loadChildren: () => import('./service-courrier/service-courrier.module').then(m => m.ServiceCourrierModule) },
   { path: 'categories', loadChildren: () => import('./categories/categories.module').then(m => m.CategoriesModule) },
   { path: 'pays', loadChildren: () => import('./pays/pays.module').then(m => m.PaysModule) },
+  { path: 'acheminement', loadChildren: () => import('./acheminement/acheminement.module').then(m => m.AcheminementModule) },
 
 
 
