@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { generate } from 'rxjs';
+import { generate, Subject, takeUntil } from 'rxjs';
 import { SessionService } from 'src/app/proxy/auth/Session.service';
 import { CourrierCreateUpdateDto, CourrierDto, CourrierService } from 'src/app/proxy/courrier';
 import { Cn22Service } from 'src/app/proxy/pdf/cn22.service';
@@ -20,6 +20,7 @@ export class CourrierDetailsComponent implements OnInit {
   courrier: CourrierDto  = {};
   loading : boolean = false;
   structureId: number;
+  private destroy$ = new Subject<void>(); // Pour gérer la désinscription
 
   constructor(
     private courrierService: CourrierService,
@@ -37,18 +38,37 @@ export class CourrierDetailsComponent implements OnInit {
 ) {}
 
 ngOnInit(): void {
-    this.route.params.subscribe((params: Params) => {
+    this.subscribeToRouteParams(); // Appel de la fonction encapsulée
+    this.structureId = Number(this.sessionService.getAgentAttributes().structureId);
+  }
+
+  ngOnDestroy(): void {
+    // Désabonnement propre
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  private subscribeToRouteParams(): void {
+    this.route.params
+      .pipe(takeUntil(this.destroy$)) // Désabonnement automatique
+      .subscribe((params: Params) => {
         const id = params['id'];
-
-        this.courrierService.getOneById(id).subscribe((courrier) => {
-            this.courrier = { ...courrier };
-
-        });
-
+        this.loadCourrier(id);
       });
+  }
 
-      this.structureId = Number(this.sessionService.getAgentAttributes().structureId);
-}
+  private loadCourrier(id: string): void {
+    this.courrierService.getOneById(id)
+      .pipe(takeUntil(this.destroy$)) // Désabonnement automatique
+      .subscribe({
+        next: (courrier) => {
+          this.courrier = { ...courrier }; // Copie immuable
+        },
+        error: (err) => {
+          console.error('Erreur lors du chargement du courrier', err);
+        }
+      });
+  }
 
 async imprimerFacture(){
     this.pdfService.generatePDF(this.courrier);
@@ -99,6 +119,7 @@ annulerCourrier(courrier: CourrierDto): void {
         accept: () => {
             this.courrierService.annuler(courrier.id.toString(), annulationRequest).subscribe({
                 next: () => {
+                    this.subscribeToRouteParams();
                     this.loading = false;
                     this.messageService.add({
                         severity: 'success',
