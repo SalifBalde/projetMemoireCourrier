@@ -21,8 +21,9 @@ const routes: Routes = [
   { path: 'poidsCourriers', loadChildren: () => import('./poids-courrier/poids-courrier.module').then(m => m.PoidsCourrierModule) },
   { path: 'serviceCourriers', loadChildren: () => import('./service-courrier/service-courrier.module').then(m => m.ServiceCourrierModule) },
   { path: 'categories', loadChildren: () => import('./categories/categories.module').then(m => m.CategoriesModule) },
-
-
+  { path: 'track-ecommerce', loadChildren: () => import('./Track-Ecommerce/Track-Ecommerce.module').then(m => m.TrackEcommerceModule) },
+  { path: 'ecommerce-instance', loadChildren: () => import('./ecommerce-instance/ecommerce-instance.module').then(m => m.EcommerceInstanceModule) },
+  { path: 'ecommerceDetails/:id', loadChildren: () => import('./ecommerce-details/ecommerce-details.module').then(m => m.EcommerceDetailsModule) },
 
 ];
 @NgModule({

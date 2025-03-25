@@ -10,6 +10,7 @@ export interface EcommerceDto {
   idbureauPartenaire: number;
   partenaireBureauLibelle: string;
   partenaireLibelle: string;
+
   taxetransp: number;
   idbureau: number;
   bureauDestinationLibelle: string;
@@ -78,8 +79,10 @@ export interface SuiviEcomDto {
   datemaj: string;
   ecommerceId: number;
   bureauId: number;
+  bureauLibelle:string;
   userId: number;
   etatEcomId: number;
+  etatEcomLibelle: string;
   motif: string;
   version: number;
   motifretourId: number;

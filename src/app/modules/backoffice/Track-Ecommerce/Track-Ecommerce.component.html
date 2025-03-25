@@ -1,0 +1,73 @@
+<div class="card p-fluid">
+    <h4>Suivi de l'envoi</h4>
+    <div class="grid">
+      <div class="col-12 md:col-8">
+        <label for="numenvoi">Numero d'envoi</label>
+        <div class="p-inputgroup">
+          <input
+            id="numenvoi"
+            type="text"
+            pInputText
+            [(ngModel)]="numenvoi"
+            placeholder="Entrez le numero de l'envoi"
+          />
+          <p-button
+            label="Rechercher"
+            icon="pi pi-search"
+            (onClick)="rechercherParCodeBarre()"
+          ></p-button>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Affichage des résultats -->
+    <div *ngIf="ecommerce" class="mt-5">
+      <div class="card">
+        <h5>Détails de l'envoi</h5>
+        <div class="grid">
+          <div class="col-12 md:col-4">
+            <strong>Code d'envoi:</strong> {{ ecommerce.numenvoi }}
+          </div>
+          <div class="col-12 md:col-4">
+            <strong>ID Envoi:</strong> {{ ecommerce.id }}
+          </div>
+          <div class="col-12 md:col-4">
+            <strong>Statut:</strong> {{ ecommerce.etatEcomLibelle }}
+          </div>
+        </div>
+      </div>
+  
+      <p-card header="Historique des Suivis" class="mt-3" *ngIf="ecommerce?.suiviEcoms?.length > 0">
+        <p-timeline [value]="ecommerce.suiviEcoms" align="alternate">
+          <ng-template pTemplate="content" let-suivi>
+            <p-card>
+              <div class="grid">
+                <div class="col-12 md:col-4">
+                  <strong>Structure:</strong> {{ suivi.bureauLibelle || 'Non disponible' }}
+                </div>
+                <div class="col-12 md:col-4">
+                  <strong>Statut:</strong> {{ suivi.etatEcomLibelle || 'Non disponible' }}
+                </div>
+                <div class="col-12 md:col-4">
+                  <strong>Agent:</strong> {{ suivi.userLibelle || 'Non disponible' }}
+                </div>
+              </div>
+            </p-card>
+          </ng-template>
+          <ng-template pTemplate="opposite" let-suivi>
+            <small class="p-text-secondary">
+              {{ suivi.datemaj | date:'dd/MM/yyyy HH:mm' }}
+            </small>
+          </ng-template>
+        </p-timeline>
+      </p-card>
+      
+      <p *ngIf="!ecommerce?.suiviEcoms?.length" class="p-text-secondary">Aucun suivi disponible pour ce Envoi.</p>
+      
+
+  </div>
+  <p-toast></p-toast>
+  
+<div class="loading-message text text-center" *ngIf="loading">
+    <p>Chargement, veuillez patienter...</p>
+</div>

@@ -1,0 +1,63 @@
+<div class="grid">
+    <div class="col-12">
+        <div class="card px-6 py-6">
+            <h4>Liste des envois E-commerce en Instance </h4>
+
+            <p-table [value]="ecommerce" [paginator]="true" [rows]="50" [tableStyle]="{'min-width': '50rem'}">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th>Code</th>
+                        <th>Partenaire</th>
+                        <th>Dépôt</th>
+                        <th>Destination</th>
+                        <th>Statut</th>
+                        <th>Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </ng-template>
+
+                <ng-template pTemplate="body" let-ecom>
+                    <tr>
+                        <td>{{ ecom.numenvoi }}</td>
+                        <td>{{ ecom.partenaireLibelle }}</td>
+                        <td>{{ecom.partenaireBureauLibelle}}</td>
+                        <td>{{ ecom.bureauDestinationLibelle }}</td>
+                        <td>
+                            <p-tag [value]="ecom.etatEcomLibelle" severity="info"></p-tag>
+                        </td>
+                        <td>{{ ecom.dateexp }}</td>
+                        <td>
+                            <button pButton class="p-button p-button-success" type="button"
+                                routerLink="/backoffice/ecommerceDetails/{{ ecom.id }}">
+                                <span class="p-button-label">Détail</span>
+                            </button>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+    </div>
+</div>
+
+<p-dialog [breakpoints]="{ '600px': '75vw', '575px': '90vw' }" [style]="{ width: '30vw' }" [draggable]="false"
+    [resizable]="false" header="Tracking" [modal]="true" class="p-fluid">
+    <div class="col-12 md:col-12">
+        <div class="my-4">
+            <p-timeline>
+                <ng-template pTemplate="content">
+                    <small class="p-text-secondary"></small>
+                </ng-template>
+                <ng-template pTemplate="opposite">
+                    <span></span>
+                </ng-template>
+                <ng-template pTemplate="connector">
+                    <div class="p-timeline-event-connector"></div>
+                </ng-template>
+            </p-timeline>
+        </div>
+    </div>
+</p-dialog>
+
+<div class="loading-message text text-center" *ngIf="loading">
+    <p>Chargement, veuillez patienter...</p>
+</div>
