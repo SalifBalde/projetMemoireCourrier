@@ -25,7 +25,7 @@
                         <td>
                             <p-tag [value]="ecom.etatEcomLibelle" severity="info"></p-tag>
                         </td>
-                        <td>{{ ecom.dateexp }}</td>
+                        <td>{{ ecom.dateexp | date:'dd/MM/yyyy' }}</td>
                         <td>
                             <button pButton class="p-button p-button-success" type="button"
                                 routerLink="/backoffice/ecommerceDetails/{{ ecom.id }}">

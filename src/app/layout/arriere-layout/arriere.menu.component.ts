@@ -246,6 +246,16 @@ export class ArriereMenuComponent implements OnInit {
                     },
                 ],
             },
+            {
+                label: 'Retouner',
+                items: [
+                    {
+                        label: 'Envoi a retourner',
+                        icon: 'pi pi-fw pi-file-pdf',
+                        routerLink: ['/arriere/retourner-envoi'],
+                    },
+                ],
+            },
         ];
     }
 }
