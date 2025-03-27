@@ -56,7 +56,7 @@ const routes: Routes = [{ path: '', component: ArriereComponent },
 { path: 'courrier-details/courrierDetailArriere/:id', loadChildren: () => import('./expedition/expedition-arriere/courrier-details/courrier-details.module').then(m => m.CourrierDetailsArriereModule) },
 
     // { path: 'courrier-details-rapport/courrierDetailArriere/:id', loadChildren: () => import('./rapport/courrier-details-rapport/courrier-details.module').then(m => m.CourrierDetailsrapportModule) },
-    { path: 'retourner-envoi', loadChildren: () => import('./retourner-envoi/retourner-envoi.module').then(m => m.RetournerEnvoiModule) },
+   
 
 
 ];

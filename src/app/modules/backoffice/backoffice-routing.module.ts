@@ -24,7 +24,7 @@ const routes: Routes = [
   { path: 'track-ecommerce', loadChildren: () => import('./Track-Ecommerce/Track-Ecommerce.module').then(m => m.TrackEcommerceModule) },
   { path: 'ecommerce-instance', loadChildren: () => import('./ecommerce-instance/ecommerce-instance.module').then(m => m.EcommerceInstanceModule) },
   { path: 'ecommerceDetails/:id', loadChildren: () => import('./ecommerce-details/ecommerce-details.module').then(m => m.EcommerceDetailsModule) },
-
+  { path: 'retourner-envoi', loadChildren: () => import('./retourner-envoi/retourner-envoi.module').then(m => m.RetournerEnvoiModule) },
 ];
 @NgModule({
   imports: [RouterModule.forChild(routes)],

@@ -43,7 +43,7 @@ export class RetournerEnvoiComponent implements OnInit {
     ngOnInit() {
         this.initializeForm();
         this.loadStructures();
-        this.getAllEcommerceByStatut();
+        this.getAllEcommerceReturn();
     }
 
     private initializeForm() {
@@ -72,36 +72,7 @@ export class RetournerEnvoiComponent implements OnInit {
     }
 
 
-    saveExpedition() {
-        if (this.form.invalid) {
-            return;
-        }
 
-        this.form.value.details = this.mapIdsToEcommerce(this.selectedEcommerce);
-        this.form.value.bureauExpediteur = this.sessionService.getAgentAttributes().structureId.toString();
-        this.expeditionEcomService.save(this.form.value).subscribe(
-            (result) => {
-                //this.getAllEcommerce();
-                this.expedition = result;
-                this.router.navigateByUrl('/arriere/details-expeditionEcom/' + this.expedition.id);
-                this.messageService.add({
-                    severity: 'success',
-                    summary: 'Successful',
-                    detail: 'Envoi e-commerce expédié avec succés',
-                    life: 3000,
-                });
-            },
-            (error) => {
-                this.messageService.add({
-                    severity: 'danger',
-                    summary: 'Error',
-                    detail: 'Erreur enregistrement',
-                    life: 3000,
-                });
-            }
-        );
-
-    }
 
     onSelectEcommerce(ecommerce: EcommerceDto) {
         if (this.selectedEcommerce.includes(ecommerce)) {
@@ -111,19 +82,33 @@ export class RetournerEnvoiComponent implements OnInit {
         }
     }
 
-
-    getAllEcommerceByStatut() {
-        this.loading = true;
-        const id: string = '5';
-        const bureauId: number = Number(this.sessionService.getAgentAttributes().structureId.toString());
-
-
-        if (isNaN(bureauId)) {
-            this.loading = false;
+    retourner() {
+        if (this.selectedEcommerce.length === 0) {
+            this.messageService.add({ severity: 'warn', summary: 'Attention', detail: 'Veuillez sélectionner au moins un envoi.' });
             return;
         }
 
-        this.ecommerceService.findEcommerceByStatus(id, bureauId).subscribe(
+        const ids = this.selectedEcommerce.map(e => e.id); // Récupérer les IDs sélectionnés
+
+        this.ecommerceService.retourner(ids).subscribe(
+            (response) => {
+                this.messageService.add({ severity: 'success', summary: 'Succès', detail: 'Les envois ont été retournés avec succès.' });
+                this.getAllEcommerceReturn(); // Recharger la liste après l’opération
+                this.selectedEcommerce = []; // Réinitialiser la sélection
+            },
+            (error) => {
+                console.error('Erreur lors du retour des envois', error);
+                this.messageService.add({ severity: 'error', summary: 'Erreur', detail: 'Une erreur est survenue.' });
+            }
+        );
+    }
+
+
+
+
+    getAllEcommerceReturn() {
+        this.loading = true;
+        this.ecommerceService.findEcommerceReturn().subscribe(
             (data) => {
                 this.ecommerce$ = data;
                 this.loading = false;
@@ -134,16 +119,4 @@ export class RetournerEnvoiComponent implements OnInit {
             }
         );
     }
-
-    mapIdsToEcommerce(selectedEcommerce: EcommerceDto[]): ExpeditionEcomDetailsDto[] {
-        return selectedEcommerce.map(ecommerce => ({
-            ecommerceId: ecommerce.id,
-            ecommerceNumenvoie: ecommerce.numenvoi,
-            ecommerceNomClient: ecommerce.nomClient,
-            ecommercePrenomClient: ecommerce.prenomClient,
-            ecommerceIdbureau: ecommerce.idbureau,
-            valider: true
-        }));
-    }
-
 }

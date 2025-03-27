@@ -31,6 +31,17 @@ export class EcommerceService {
         return this.httpClient.get<EcommerceDto[]>(new_api_host, this.httpOptions)
     }
 
+    findEcommerceReturn() {
+        const new_api_host = this.routerParam(this.api_host, 'findEcommerceReturn');
+        return this.httpClient.get<EcommerceDto[]>(new_api_host,this.httpOptions)
+    }
+
+    retourner(id:number[]){
+        const new_api_host = this.routerParam(this.api_host, 'retournerEcommerce', id);
+        return this.httpClient.post<EcommerceSearchResultDto[]>(new_api_host, this.httpOptions);
+
+    }
+
     getOne(id: string) {
         const new_api_host = this.routerParam(this.api_host, id);
         return this.httpClient.get<EcommerceDto>(new_api_host, this.httpOptions);
