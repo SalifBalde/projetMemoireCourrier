@@ -19,6 +19,7 @@ const routes: Routes = [
     ],
   },
   {path: 'suiviCourrier',  loadChildren: () => import('./traking-recev/traking.module').then(m => m.TrakingRecModule) },
+{ path: 'rapport', loadChildren: () => import('./rapport-agent/rapport-agent.module').then(m => m.RapportAgentModule) },
   { path: 'rapport-courrier', loadChildren: () => import('./rapport-courrier/rapport-criteres.module').then(m => m.RapportCriteresModule) },
   { path: 'rapport-ecom', loadChildren: () => import('./rapport-ecom/rapport-ecom.module').then(m => m.RapportEcomModule) },
   { path: 'ecom-details/:id', loadChildren: () => import('./ecom-details/ecom-details.module').then(m => m.EcomDetailsModule) },

@@ -36,6 +36,24 @@ $gutter: 1rem; //for primeflex grid system
     z-index: 1000;
 }
 
+/* Ajoutez ce style dans votre fichier CSS global ou dans le fichier CSS du composant */
+.annulation-filigrane {
+    position: relative;
+  }
+
+  .annulation-filigrane::after {
+    content: "Annulée";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-45deg);
+    font-size: 3rem;
+    font-weight: bold;
+    color: rgba(255, 0, 0, 0.3); /* Rouge transparent */
+    pointer-events: none; /* Permet de cliquer à travers le filigrane */
+    z-index: 1000;
+  }
+
 
 // .customer-badge {
 //     padding: 0.5em;

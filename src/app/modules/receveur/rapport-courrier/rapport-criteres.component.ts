@@ -229,8 +229,7 @@ export class RapportCriteresComponent  implements  OnInit{
         },
             1000);
         this.courrierService.findCourrierByCriteres(this.form.value).subscribe(courrier => {
-            this.courrier$ = courrier;
-            console.log(this.courrier$)
+            this.courrier$=courrier.filter(c => c.statutCourrierId !==27);
             this.montant = this.courrier$.reduce((sum, item) => sum + Number(item.montant), 10);
         })
     }

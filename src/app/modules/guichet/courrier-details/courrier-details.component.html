@@ -1,12 +1,12 @@
-<div class="grid">
+<div class="grid" [ngClass]="{'annulation-filigrane': courrier.statutCourrierId ===27}">
     <div class="col-12 md:col-12">
     <div class="card">
         <p-toolbar>
-            <div class="p-toolbar-group-left flex flex-wrap">
-                <button pButton type="button" label="Imprmer" icon="pi pi-print" (click)="imprimerFacture()" class="p-button-info mr-2" ></button>
-                      <button pButton type="button" icon="pi pi-print mr-2" (click)="cn23()" class="p-button-success mr-2">Générer cn23</button>
-                      <button pButton type="button" icon="pi pi-print mr-2" (click)="cp71()" class="p-button-warning mr-2">Générer cp71</button>
-                      <button pButton type="button" icon="pi pi-print mr-2" (click)="cn22()" class="p-button-info mr-2">Générer cn22</button>
+            <div class="p-toolbar-group-left flex flex-wrap" [ngClass]="{'annulation-filigrane': courrier.statutCourrierId ===27}">
+                <button *ngIf="courrier.statutCourrierId !==27" pButton type="button" label="Imprmer" icon="pi pi-print" (click)="imprimerFacture()" class="p-button-info mr-2" ></button>
+                      <button *ngIf="courrier.statutCourrierId !==27" pButton type="button" icon="pi pi-print mr-2" (click)="cn23()" class="p-button-success mr-2">Générer cn23</button>
+                      <button *ngIf="courrier.statutCourrierId !==27" pButton type="button" icon="pi pi-print mr-2" (click)="cp71()" class="p-button-warning mr-2">Générer cp71</button>
+                      <button *ngIf="courrier.statutCourrierId !==27" pButton type="button" icon="pi pi-print mr-2" (click)="cn22()" class="p-button-info mr-2">Générer cn22</button>
 
 
 
@@ -37,6 +37,7 @@
             <p><strong>Destinataire:</strong> {{ courrier?.destinataireNom }} {{ courrier?.destinatairePrenom }} / {{ courrier?.destinataireTelephone }}</p>
             <p><strong>Pays Origine:</strong> {{ courrier?.paysOrigineLibelle }}</p>
             <p><strong>Pays Destination:</strong> {{ courrier?.paysDestinationLibelle }}</p>
+            <p><strong>Statut:</strong> {{ courrier?.statutCourrierLibelle}}</p>
             <p><strong class="mr-2">Recommandé:</strong>
                 <p-tag icon="pi pi-check" *ngIf="courrier.recommande" severity="success" value="oui" class="p-element"></p-tag>
              <p-tag icon="pi pi-times" *ngIf="!courrier.recommande" severity="danger" value="nom" class="p-element"></p-tag>

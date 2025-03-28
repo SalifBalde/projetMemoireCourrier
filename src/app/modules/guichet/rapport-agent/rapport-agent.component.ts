@@ -79,7 +79,8 @@ import { CourrierDto, CourrierSearchDto, CourrierService } from 'src/app/proxy/c
         },
             1000);
        this.form.value.userId = this.user.id;
-        this.courrierService.findCourrierByAgent(this.form.value).subscribe(courrier=>{this.courrier$=courrier;
+        this.courrierService.findCourrierByAgent(this.form.value).subscribe(courrier=>{
+            this.courrier$=courrier.filter(c => c.statutCourrierId !==27);
             this.montant = this.courrier$.reduce((sum, item) => sum + Number(item.montant), 0);
         });
     }
@@ -87,7 +88,8 @@ import { CourrierDto, CourrierSearchDto, CourrierService } from 'src/app/proxy/c
     getAllCourrier(){
 
         this.form.value.userId = this.user.id;
-        this.courrierService.findCourrierByAgent(this.form.value).subscribe(courrier=>{this.courrier$=courrier;
+        this.courrierService.findCourrierByAgent(this.form.value).subscribe(courrier=>{
+            this.courrier$=courrier.filter(c => c.statutCourrierId !==27);
             this.montant = this.courrier$.reduce((sum, item) => sum + Number(item.montant), 0);
         });
     }
