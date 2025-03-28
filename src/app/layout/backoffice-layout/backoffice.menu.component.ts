@@ -92,6 +92,12 @@ export class BackofficeMenuComponent implements OnInit {
                                 icon: 'pi pi-fw pi-angle-right',
                                 routerLink: ['/backoffice/serviceCourriers']
                             },
+                            {
+                                label: 'Acheminement',
+                                icon: 'pi pi-fw pi-angle-right',
+                                routerLink: ['/backoffice/acheminement']
+                            },
+
                         ]
                     },
 

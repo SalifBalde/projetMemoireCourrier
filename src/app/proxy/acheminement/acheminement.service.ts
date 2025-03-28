@@ -9,7 +9,7 @@ import {Acheminementdto} from "./models";
 })
 
 export  class AcheminementService {
-    private api_host = `${environment.api_host}acheminements`;
+    private  api_host = `${environment.api_host}acheminements`;
     myToken = sessionStorage.getItem("token");
     private httpOptions = {
         headers: new HttpHeaders({
@@ -26,10 +26,26 @@ export  class AcheminementService {
         return this.httpClient.get<Acheminementdto[]>(this.api_host, this.httpOptions);
     }
 
-    saveache(noeux : Acheminementdto): Observable<any> {
-        return this.httpClient.post<any>(this.api_host,noeux, this.httpOptions);
+    saveache(noeux : Acheminementdto): Observable<Acheminementdto> {
+        return this.httpClient.post<Acheminementdto>(this.api_host,noeux, this.httpOptions);
     }
+
+    saveMultipleAcheminements(acheminements: any[]): Observable<any> {
+        return this.httpClient.post(`${this.api_host}/saveAcheminement`, acheminements);
+    }
+
+
     findById(idnoeud : number): Observable<Acheminementdto[]> {
         return this.httpClient.get<Acheminementdto[]>(this.api_host+'/noeud/'+idnoeud, this.httpOptions);
     }
+
+    delete(id: string): Observable<void> {
+        const url = `${this.api_host}/${id}`;
+        return this.httpClient.delete<void>(url, this.httpOptions);
+    }
+    deleteByStructureId(idStructure: number): Observable<void> {
+        return this.httpClient.delete<void>(`${this.api_host}/acheminement/${idStructure}`);
+    }
+
+
 }
