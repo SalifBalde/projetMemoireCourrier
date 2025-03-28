@@ -39,8 +39,9 @@ export class AppTopBarComponent implements OnInit {
         ...(userRoles.includes('ROLE_DRP') ? [{ label: 'DRP', icon: 'pi pi-unlock', command: () => { this.router.navigate(['/drp']); } }] : []),
         ...(userRoles.includes('ROLE_DCL') ? [{ label: 'DCL', icon: 'pi pi-unlock', command: () => { this.router.navigate(['/dcl']); } }] : []),
         ...(userRoles.includes('ROLE_RECEVEUR') ? [{ label: 'RECEVEUR', icon: 'pi pi-unlock', command: () => { this.router.navigate(['/receveur']); } }] : []),
-        ...(userRoles.includes('ROLE_GUICHET') ? [{ label: 'GHICHET', icon: 'pi pi-unlock', command: () => { this.router.navigate(['/guichet']); } }] : []),
+        ...(userRoles.includes('ROLE_GUICHET') ? [{ label: 'GUICHET', icon: 'pi pi-unlock', command: () => { this.router.navigate(['/guichet']); } }] : []),
         ...(userRoles.includes('ROLE_ARRIERE') ? [{ label: 'ARRIERE', icon: 'pi pi-unlock', command: () => { this.router.navigate(['/arriere']); } }] : []),
+        ...(userRoles.includes('ROLE_ADMIN') ? [{ label: 'DCL', icon: 'pi pi-unlock', command: () => { this.router.navigate(['/backoffice']); } }] : []),
         ...(userRoles.includes('ROLE_RESPONSABLE_ANNEXE') ? [{ label: 'RESPONSABLE ANNEXE', icon: 'pi pi-unlock', command: () => { this.router.navigate(['/responsableannnexe']); } }] : []),
         { separator: true },
         { label: 'Déconnexion', icon: 'pi pi-sign-out', command: () => { this.keycloak.logout(environment.keycloak.redirectUri);

@@ -26,6 +26,7 @@ import { SharedModule } from 'primeng/api';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import {MultiSelectModule} from "primeng/multiselect";
+import { TimelineModule } from 'primeng/timeline';
 
 // shared module c'est ici qu'on va mettre toutes les composants communs à toutes les parties de l'application
 

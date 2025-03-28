@@ -6,13 +6,13 @@ import {
 } from "./expedition/expedition-packet-import/expeditionCourPacketImport.module";
 
 const routes: Routes = [{ path: '', component: ArriereComponent },
-    //routes courrier ARRIERE
-    { path: 'reception/reception-arriere', loadChildren: () => import('./reception/reception-arriere/reception-arriere.module').then(m => m.ReceptionArriereModule) },
-    { path: 'reception/receptionPacket-arriere', loadChildren: () => import('./reception/reception-arriere/reception-packet/receptionPacket-arriere.module').then(m => m.ReceptionPacketArriereModule) },
-    { path: 'reception/receptioncolis-arriere', loadChildren: () => import('./reception/reception-arriere/reception-colis/receptionColis-arriere.module').then(m => m.ReceptionColisArriereModule) },
-    { path: 'expedition/expedition-arriere', loadChildren: () => import('./expedition/expedition-arriere/expedition-arriere.module').then(m => m.ExpeditionArriereModule) },
-    { path: 'expedition/expeditionPacket-arriere', loadChildren: () => import('./expedition/expedition-arriere/expedition-packet/expeditionPacket-arriere.module').then(m => m.ExpeditionPacketArriereModule) },
-    { path: 'expedition/expeditionColis-arriere', loadChildren: () => import('./expedition/expedition-arriere/expedition-colis/expeditionColis-arriere.module').then(m => m.ExpeditionColisArriereModule) },
+//routes courrier ARRIERE
+{ path: 'reception/reception-arriere', loadChildren: () => import('./reception/reception-arriere/reception-arriere.module').then(m => m.ReceptionArriereModule) },
+{ path: 'reception/receptionPacket-arriere', loadChildren: () => import('./reception/reception-arriere/reception-packet/receptionPacket-arriere.module').then(m => m.ReceptionPacketArriereModule) },
+{ path: 'reception/receptioncolis-arriere', loadChildren: () => import('./reception/reception-arriere/reception-colis/receptionColis-arriere.module').then(m => m.ReceptionColisArriereModule) },
+{ path: 'expedition/expedition-arriere', loadChildren: () => import('./expedition/expedition-arriere/expedition-arriere.module').then(m => m.ExpeditionArriereModule) },
+{ path: 'expedition/expeditionPacket-arriere', loadChildren: () => import('./expedition/expedition-arriere/expedition-packet/expeditionPacket-arriere.module').then(m => m.ExpeditionPacketArriereModule) },
+{ path: 'expedition/expeditionColis-arriere', loadChildren: () => import('./expedition/expedition-arriere/expedition-colis/expeditionColis-arriere.module').then(m => m.ExpeditionColisArriereModule) },
 
     { path: 'reception-import/receptionCourrierImport/:id', loadChildren: () => import('./reception-import/reception-import.module').then(m => m.ReceptionImportModule) },
     { path: 'reception-import/receptionColisImport/:id', loadChildren: () => import('./reception-import/reception-colis-import/receptionColis-import.module').then(m => m.ReceptionColisImportModule) },
@@ -61,9 +61,6 @@ const routes: Routes = [{ path: '', component: ArriereComponent },
 
     { path: 'ajouter-courrier/courrierDetailArriere', loadChildren: () => import('./ajout-courrier/reception-line-packet.module').then(m => m.ReceptionCourrierArriereModule) },
     { path: 'traking', loadChildren: () => import('./traking/traking.module').then(m => m.TrakingModule) },
-
-
-
 ];
 
 @NgModule({

@@ -22,7 +22,24 @@ export class BackofficeMenuComponent implements OnInit {
                     { label: 'Dashboard', icon: 'pi pi-fw pi-home', routerLink: [''] }
                 ]
             },
+            {
+                label: 'Tracking',
+                items: [
+                    { label: 'Tracking E-commerce', icon: 'pi pi-fw pi-search', routerLink: ['/backoffice/track-ecommerce'] },
+                    { label: 'E-commerce en Instance', icon: 'pi pi-fw pi-search', routerLink: ['/backoffice/ecommerce-instance'] },
 
+                ]
+            },
+            {
+                label: 'Retouner',
+                items: [
+                    {
+                        label: 'Envoi a retourner',
+                        icon: 'pi pi-fw pi-file-pdf',
+                        routerLink: ['/backoffice/retourner-envoi'],
+                    },
+                ],
+            },
             {
                 label: 'Paramétres',
                 icon: 'pi pi-fw pi-briefcase',

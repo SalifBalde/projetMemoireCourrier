@@ -172,13 +172,17 @@ async cp71() {
     }
 
     try {
-      // Appel du service pour créer le PDF
-      await this.cn23Service.createPDF(this.courrier);
+      const agent = this.sessionService.getAgentAttributes();
+      const fullname = agent ? `${agent.prenom} ${agent.nom}` : 'Nom non trouvé';
+
+      // Appel du service pour créer le PDF en passant fullname
+      await this.cn23Service.createPDF(this.courrier, fullname);
       console.log('PDF généré avec succès.');
     } catch (error) {
       console.error('Erreur lors de la génération du PDF :', error);
     }
   }
+
 
   async cn22() {
     if (!this.courrier) {
