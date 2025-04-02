@@ -55,14 +55,33 @@ export class ReceptionECommerceComponent implements OnInit {
     });
   }
 
-  getAllEcommerceFromReceptionToExpedition() {
+//   getAllEcommerceFromReceptionToExpedition() {
+//     this.loading = true;
+//     const structureId = Number(this.sessionService.getAgentAttributes().structureId);
+//     this.ecommerceService.findEcommerceFromReceptionToExpedition(structureId).subscribe((result) => {
+//       this.loading = false;
+//       this.ecommerce$ = result;
+//     });
+//   }
+
+getAllEcommerceFromReceptionToExpedition() {
     this.loading = true;
     const structureId = Number(this.sessionService.getAgentAttributes().structureId);
     this.ecommerceService.findEcommerceFromReceptionToExpedition(structureId).subscribe((result) => {
       this.loading = false;
-      this.ecommerce$ = result;
+
+      // Itérer sur chaque ecommerce pour vérifier la condition de 'retourner'
+      this.ecommerce$ = result.map((ecommerce) => {
+        if (ecommerce.retourner) {
+          const temp = ecommerce.partenaireBureauLibelle;
+          ecommerce.partenaireBureauLibelle = ecommerce.bureauDestinationLibelle;
+          ecommerce.bureauDestinationLibelle = temp;
+        }
+        return ecommerce;
+      });
     });
   }
+
 
   openDialog(ecommerce: EcommerceDto) {
     this.openEcommerceDialog = true;

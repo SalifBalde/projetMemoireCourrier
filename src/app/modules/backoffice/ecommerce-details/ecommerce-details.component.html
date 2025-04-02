@@ -15,7 +15,8 @@
         <div class="flex flex-column ">
             <img src="assets/layout/images/poste-removebg-preview.png" width="150" height="100" alt="logo" />
             <div class="my-3 text-2xl font-bold text-900">Groupe La Poste</div>
-            <span class="mb-2">Bureau Destination : {{ ecommerce.bureauDestinationLibelle }}</span>
+            <span class="mb-2"><span class="font-bold">Bureau Expéditeur :</span> {{ ecommerce.partenaireBureauLibelle }}</span>
+            <span class="mb-2"><span class="font-bold">Bureau Destinataire :</span> {{ ecommerce.bureauDestinationLibelle }}</span>
         </div>
         <div class="flex flex-column mt-5 md:mt-0">
             <div class="text-2xl font-semibold text-left md:text-right mb-3">FACTURE</div>
@@ -109,17 +110,28 @@
     [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" [style]="{ width: '40vw' }" [draggable]="false"
     [resizable]="true" [modal]="true" class="p-fluid">
     <form [formGroup]="etatForm" (ngSubmit)="updateEtatEcom()">
-        <div class="col-12 mb-3">
-            <label for="etatId">Statut</label>
-            <p-dropdown id="etatId" optionLabel="libelleetat" formControlName="etatId" [options]="etatEcom"
-                optionValue="id" placeholder="Sélectionner un statut" [filter]="true"
-                [filterPlaceholder]="'Rechercher...'" [showClear]="true" [appendTo]="'body'"
-                [style]="{ width: '100%', 'z-index': '9999' }">
-            </p-dropdown>
+        <div class="flex flex-wrap gap-3">
+            <div class="flex-1">
+                <label for="etatId">Statut</label>
+                <p-dropdown id="etatId" optionLabel="libelleetat" formControlName="etatId" [options]="etatEcom"
+                    optionValue="id" placeholder="Sélectionner un statut" [filter]="true"
+                    [filterPlaceholder]="'Rechercher...'" [showClear]="true" [appendTo]="'body'"
+                    [style]="{ width: '100%' }">
+                </p-dropdown>
+            </div>
+            <div class="flex-1">
+                <label for="structreId">Structure</label>
+                <p-dropdown id="structreId" optionLabel="libelle" formControlName="structreId" [options]="structure"
+                    optionValue="id" placeholder="Sélectionner une structure" [filter]="true"
+                    [filterPlaceholder]="'Rechercher...'" [showClear]="true" [appendTo]="'body'"
+                    [style]="{ width: '100%' }">
+                </p-dropdown>
+            </div>
         </div>
-        <div class="flex justify-content-end gap-2">
+        <div class="flex justify-content-end gap-2 mt-3">
             <p-button label="Annuler" (click)="hideDialog()" severity="danger"></p-button>
             <p-button label="Mettre à jour" type="submit" severity="success"></p-button>
         </div>
     </form>
 </p-dialog>
+

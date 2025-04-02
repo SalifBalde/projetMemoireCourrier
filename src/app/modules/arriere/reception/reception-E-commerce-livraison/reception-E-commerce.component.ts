@@ -23,7 +23,7 @@ export class ReceptionECommerceComponent  implements OnInit {
   id = "";
   structure$: StructureDto[] = [];
   ecommerce$: EcommerceDto[] = [];
-  ecommerce: EcommerceDto | null = null;  
+  ecommerce: EcommerceDto | null = null;
   openEcommerceDialog: boolean = false;
   selectedEcommerce!: EcommerceDto;
   loading: boolean = false;
@@ -58,23 +58,34 @@ export class ReceptionECommerceComponent  implements OnInit {
   getAllEcommerceByDestinationReception() {
     this.loading = true;
     const structureId = Number(this.sessionService.getAgentAttributes().structureId);
+
     this.ecommerceService.findEcommerceByDestinationReception(structureId).subscribe((result) => {
       this.loading = false;
-      this.ecommerce$ = result;
+      this.ecommerce$ = result.map(ecom => {
+        if (ecom.retourner) {
+          return {
+            ...ecom,
+            bureauDestinationLibelle: ecom.partenaireBureauLibelle,
+            partenaireBureauLibelle: ecom.bureauDestinationLibelle
+          };
+        }
+        return ecom;
+      });
     });
   }
-  
+
+
 
   openDialog(ecommerce: EcommerceDto) {
     this.openEcommerceDialog = true;
-    this.ecommerce = { ...ecommerce };  
+    this.ecommerce = { ...ecommerce };
   }
 
   confirmReception() {
     this.openEcommerceDialog = false;
 
     if (this.ecommerce) {
-      
+
       this.ecommerceService
         .reception(this.ecommerce.id.toString(), this.sessionService.getAgentAttributes().structureId.toString())
         .subscribe(() => this.getAllEcommerceByDestinationReception());
@@ -86,7 +97,7 @@ export class ReceptionECommerceComponent  implements OnInit {
         life: 3000,
       });
 
-      this.ecommerce = null;  
+      this.ecommerce = null;
     } else {
       this.messageService.add({
         severity: 'warn',

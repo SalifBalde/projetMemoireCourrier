@@ -23,6 +23,7 @@ const routes: Routes = [{ path: '', component: ArriereComponent },
 
 
 { path: 'expedition', loadChildren: () => import('./expedition/expedition.module').then(m => m.ExpeditionModule) },
+{ path: 'expedition-ecommerce', loadChildren: () => import('./expedition/expedition-E-commerce/expedition-E-commerce.module').then(m => m.ExpeditionECommerceModule) },
 { path: 'expedition/expeditionpacket', loadChildren: () => import('./expedition/expedition-packet/expeditionPacket.module').then(m => m.ExpeditionPacketModule) },
 { path: 'reception', loadChildren: () => import('./reception/reception.module').then(m => m.ReceptionModule) },
 { path: 'reception/receptionColis', loadChildren: () => import('./reception/reception-colis/reception-colis.module').then(m => m.ReceptionColisModule) },
@@ -56,7 +57,7 @@ const routes: Routes = [{ path: '', component: ArriereComponent },
 { path: 'courrier-details/courrierDetailArriere/:id', loadChildren: () => import('./expedition/expedition-arriere/courrier-details/courrier-details.module').then(m => m.CourrierDetailsArriereModule) },
 
     // { path: 'courrier-details-rapport/courrierDetailArriere/:id', loadChildren: () => import('./rapport/courrier-details-rapport/courrier-details.module').then(m => m.CourrierDetailsrapportModule) },
-   
+
 
 
 ];

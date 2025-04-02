@@ -14,7 +14,7 @@ import { EcommerceDto, EcommerceService } from 'src/app/proxy/ecommerce';
 })
 export class LivraisonEcomComponent implements OnInit {
   form: FormGroup;
-  
+
   ecommerce$: EcommerceDto[] = [];
   loadingEcommerce: boolean = false;
   selectedEcommerce: EcommerceDto | null = null;
@@ -64,6 +64,7 @@ export class LivraisonEcomComponent implements OnInit {
   getAllEcommerceALivrer() {
     this.loading = true;
     const structureId = Number(this.sessionService.getAgentAttributes().structureId);
+
     if (isNaN(structureId)) {
       this.loading = false;
       console.error('Invalid structure ID');
@@ -72,11 +73,21 @@ export class LivraisonEcomComponent implements OnInit {
     }
     this.ecommerceService.findEcommerceALivrer(structureId).subscribe(
       (result) => {
-        console.log(result);
         this.loading = false;
+
         if (result && result.length > 0) {
-          this.ecommerce$ = result;
-          this.cdr.detectChanges(); 
+          this.ecommerce$ = result.map(ecom => {
+            if (ecom.retourner) {
+              return {
+                ...ecom,
+                bureauDestinationLibelle: ecom.partenaireBureauLibelle,
+                partenaireBureauLibelle: ecom.bureauDestinationLibelle
+              };
+            }
+            return ecom;
+          });
+
+          this.cdr.detectChanges();
         } else {
           this.messageService.add({ severity: 'info', summary: 'Pas d\'envois', detail: 'Aucun envoi à livrer.' });
         }
@@ -88,7 +99,8 @@ export class LivraisonEcomComponent implements OnInit {
       }
     );
   }
-  
+
+
   voirEcommerce(ecommerce: EcommerceDto) {
     this.selectedEcommerce = ecommerce;
     this.calculerMontantTotal()

@@ -41,7 +41,7 @@ export class ExpeditionECommerceComponent implements OnInit {
     ) { }
 
     ngOnInit() {
-        this.initializeForm(); 
+        this.initializeForm();
         this.loadStructures();
         this.getAllEcommerceExpeditionCt()
         this.form.get('bureauDestination')?.valueChanges.subscribe((value) => {
@@ -59,6 +59,7 @@ export class ExpeditionECommerceComponent implements OnInit {
         this.structureService.findAll().subscribe(
             (result) => {
                 this.structure$ = result
+                // console.log(result);
             },
             (error) => {
                 console.error('Error loading structures', error);
@@ -125,9 +126,16 @@ export class ExpeditionECommerceComponent implements OnInit {
             return;
         }
 
-        const invalidEcommerce = this.selectedEcommerce.find(
-            (ecommerce) => String(ecommerce.idbureau).trim() !== String(this.selectedStructure?.id).trim()
-        );
+        const invalidEcommerce = this.selectedEcommerce.find((ecommerce) => {
+            if (ecommerce.retourner) {
+                return (
+                    String(ecommerce.idbureau).trim() !== String(this.selectedStructure?.id).trim() &&
+                    String(ecommerce.idbureauPartenaire).trim() !== String(this.selectedStructure?.id).trim()
+                );
+            } else {
+                return String(ecommerce.idbureau).trim() !== String(this.selectedStructure?.id).trim();
+            }
+        });
 
         if (invalidEcommerce) {
             this.messageService.add({
@@ -140,7 +148,7 @@ export class ExpeditionECommerceComponent implements OnInit {
         }
 
         this.form.value.details = this.mapIdsToEcommerce(this.selectedEcommerce);
-        this.form.value.bureauExpediteur = this.selectedStructure?.id;
+        this.form.value.bureauExpediteur = this.sessionService.getAgentAttributes().structureId;
 
         this.expeditionEcomService.save(this.form.value).subscribe(
             (result) => {

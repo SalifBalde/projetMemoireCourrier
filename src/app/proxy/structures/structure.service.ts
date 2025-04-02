@@ -43,6 +43,12 @@ export class StructureService {
     return this.httpClient.get<StructureDto>(environment.api_params + 'structure/' + id, this.httpOptions);
   }
 
+  getBureaux()
+{
+  let new_api_host = this.routerParam(this.api_host,'get-bureaux');
+  return this.httpClient.get<StructureDto[]>(new_api_host,this.httpOptions);
+}
+
   routerParam(host: string, param: string) {
     return host + "/" + param;
   }

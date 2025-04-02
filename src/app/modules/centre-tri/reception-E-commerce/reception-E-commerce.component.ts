@@ -23,7 +23,7 @@ export class ReceptionECommerceComponent implements OnInit {
   id = "";
   structure$: StructureDto[] = [];
   ecommerce$: EcommerceDto[] = [];
-  ecommerce: EcommerceDto | null = null;  
+  ecommerce: EcommerceDto | null = null;
   openEcommerceDialog: boolean = false;
   selectedEcommerce!: EcommerceDto;
   loading: boolean = false;
@@ -48,6 +48,13 @@ export class ReceptionECommerceComponent implements OnInit {
     this.loading = true;
     this.ecommerceService.findEcommerceReceptionCt().subscribe(
       (result) => {
+        if (result && result.length > 0 && result[0].retourner === true) {
+            result.forEach(ecommerce => {
+                const temp = ecommerce.partenaireBureauLibelle;
+                ecommerce.partenaireBureauLibelle = ecommerce.bureauDestinationLibelle;
+                ecommerce.bureauDestinationLibelle = temp;
+            });
+        }
         this.ecommerce$ = result;
         this.loading = false;
       },
@@ -57,7 +64,7 @@ export class ReceptionECommerceComponent implements OnInit {
         console.error('Error fetching e-commerce reception data', error);
       }
     );
-  }
+}
 
 
   openDialog(ecommerce: EcommerceDto) {
@@ -80,7 +87,7 @@ export class ReceptionECommerceComponent implements OnInit {
         life: 3000,
       });
 
-      this.ecommerce = null;  
+      this.ecommerce = null;
     } else {
       this.messageService.add({
         severity: 'warn',

@@ -7,21 +7,31 @@ import { EcommerceDto, EcommerceService } from 'src/app/proxy/ecommerce';
 })
 export class EcommerceInstanceComponent implements OnInit {
     ecommerce: EcommerceDto[] = [];
-    loading: boolean =false;
-    constructor(
-        private ecommerceService: EcommerceService
-    ) { }
+    loading: boolean = false;
+
+    constructor(private ecommerceService: EcommerceService) {}
 
     ngOnInit() {
-        this.getAllEcommerceInstance()
+        this.loadEcommerceData();
+    }
+    
+    loadEcommerceData() {
+        this.loading = true;
+
+        Promise.allSettled([
+            this.ecommerceService.findEcommerceEnInstance().toPromise(),
+            this.ecommerceService.findEcommerceReturn().toPromise()
+        ]).then(results => {
+            const instances = results[0].status === 'fulfilled' ? results[0].value || [] : [];
+            const returns = results[1].status === 'fulfilled' ? results[1].value || [] : [];
+
+            this.ecommerce = [...instances, ...returns];
+            this.loading = false;
+
+        }).catch(error => {
+            this.loading = false;
+            console.error('Erreur de chargement des données', error);
+        });
     }
 
-    getAllEcommerceInstance() {
-        this.loading=true
-        this.ecommerceService.findEcommerceEnInstance().subscribe((result) => {
-            this.ecommerce = result;
-            this.loading=false
-            console.log(result);
-        })
-    }
 }
