@@ -87,20 +87,21 @@ export class ExpeditionECommerceComponent implements OnInit {
     getAllEcommerceExpeditionCt() {
         this.loading = true;
         this.ecommerceService.findEcommerceExpeditionCt().subscribe(
-            (data) => {
-                console.log('Données d\'expédition récupérées : ', data);
-                this.ecommerce$ = data;
+            (result) => {
+                if (result && result.length > 0 && result[0].retourner === true) {
+                    result.forEach(ecommerce => {
+                        const temp = ecommerce.partenaireBureauLibelle;
+                        ecommerce.partenaireBureauLibelle = ecommerce.bureauDestinationLibelle;
+                        ecommerce.bureauDestinationLibelle = temp;
+                    });
+                }
+                this.ecommerce$ = result;
                 this.loading = false;
             },
             (error) => {
-                console.error('Erreur lors du chargement des données d\'expédition', error);
                 this.loading = false;
-                this.messageService.add({
-                    severity: 'error',
-                    summary: 'Erreur',
-                    detail: 'Échec du chargement des données d\'expédition',
-                    life: 3000,
-                });
+                this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to load e-commerce reception data.' });
+                console.error('Error fetching e-commerce reception data', error);
             }
         );
     }

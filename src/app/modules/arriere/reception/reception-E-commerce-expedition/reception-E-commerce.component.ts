@@ -10,131 +10,133 @@ import { EcommerceDto, EcommerceService } from 'src/app/proxy/ecommerce';
 import { ExpeditionEcomService } from 'src/app/proxy/expeditionEcommerce';
 
 @Component({
-  selector: 'app-reception-e-commerce',
-  templateUrl: './reception-e-commerce.component.html',
-  providers: [MessageService],
+    selector: 'app-reception-e-commerce',
+    templateUrl: './reception-e-commerce.component.html',
+    providers: [MessageService],
 })
 export class ReceptionECommerceComponent implements OnInit {
-  form: FormGroup;
-  isModalOpen = false;
-  montant = 0;
-  cols: any[] = [];
-  rowsPerPageOptions = [5, 10, 20];
-  id = "";
-  structure$: StructureDto[] = [];
-  ecommerce$: EcommerceDto[] = [];
-  ecommerce: EcommerceDto | null = null;
-  openEcommerceDialog: boolean = false;
-  selectedEcommerce!: EcommerceDto;
-  loading: boolean = false;
+    form: FormGroup;
+    isModalOpen = false;
+    montant = 0;
+    cols: any[] = [];
+    rowsPerPageOptions = [5, 10, 20];
+    id = "";
+    structure$: StructureDto[] = [];
+    ecommerce$: EcommerceDto[] = [];
+    ecommerce: EcommerceDto | null = null;
+    openEcommerceDialog: boolean = false;
+    selectedEcommerce!: EcommerceDto;
+    loading: boolean = false;
 
-  @ViewChild('dt') dt: Table;
+    @ViewChild('dt') dt: Table;
 
-  constructor(
-    private sessionService: SessionService,
-    private fb: FormBuilder,
-    private router: Router,
-    private structureService: StructureService,
-    private messageService: MessageService,
-    private ecommerceService: EcommerceService,
-    private expeditionEcomService: ExpeditionEcomService
-  ) { }
+    constructor(
+        private sessionService: SessionService,
+        private fb: FormBuilder,
+        private router: Router,
+        private structureService: StructureService,
+        private messageService: MessageService,
+        private ecommerceService: EcommerceService,
+        private expeditionEcomService: ExpeditionEcomService
+    ) { }
 
-  ngOnInit(): void {
-    this.structureService.findAll().subscribe((result) => {
-      this.structure$ = result;
-    });
+    ngOnInit(): void {
+        this.structureService.findAll().subscribe((result) => {
+            this.structure$ = result;
+            console.log(result);
 
-    this.getAllEcommerceFromReceptionToExpedition();
-    this.buildForm();
-  }
+        });
 
-  buildForm() {
-    this.form = this.fb.group({
-      bureauDestinataireId: [undefined, Validators.required],
-    });
-  }
+        this.getAllEcommerceFromReceptionToExpedition();
+        this.buildForm();
+    }
 
-//   getAllEcommerceFromReceptionToExpedition() {
-//     this.loading = true;
-//     const structureId = Number(this.sessionService.getAgentAttributes().structureId);
-//     this.ecommerceService.findEcommerceFromReceptionToExpedition(structureId).subscribe((result) => {
-//       this.loading = false;
-//       this.ecommerce$ = result;
-//     });
-//   }
+    buildForm() {
+        this.form = this.fb.group({
+            bureauDestinataireId: [undefined, Validators.required],
+        });
+    }
 
-getAllEcommerceFromReceptionToExpedition() {
-    this.loading = true;
-    const structureId = Number(this.sessionService.getAgentAttributes().structureId);
-    this.ecommerceService.findEcommerceFromReceptionToExpedition(structureId).subscribe((result) => {
-      this.loading = false;
+    //   getAllEcommerceFromReceptionToExpedition() {
+    //     this.loading = true;
+    //     const structureId = Number(this.sessionService.getAgentAttributes().structureId);
+    //     this.ecommerceService.findEcommerceFromReceptionToExpedition(structureId).subscribe((result) => {
+    //       this.loading = false;
+    //       this.ecommerce$ = result;
+    //     });
+    //   }
 
-      // Itérer sur chaque ecommerce pour vérifier la condition de 'retourner'
-      this.ecommerce$ = result.map((ecommerce) => {
-        if (ecommerce.retourner) {
-          const temp = ecommerce.partenaireBureauLibelle;
-          ecommerce.partenaireBureauLibelle = ecommerce.bureauDestinationLibelle;
-          ecommerce.bureauDestinationLibelle = temp;
+    getAllEcommerceFromReceptionToExpedition() {
+        this.loading = true;
+        const structureId = Number(this.sessionService.getAgentAttributes().structureId);
+        this.ecommerceService.findEcommerceFromReceptionToExpedition(structureId).subscribe((result) => {
+            this.loading = false;
+
+            // Itérer sur chaque ecommerce pour vérifier la condition de 'retourner'
+            this.ecommerce$ = result.map((ecommerce) => {
+                if (ecommerce.retourner) {
+                    const temp = ecommerce.partenaireBureauLibelle;
+                    ecommerce.partenaireBureauLibelle = ecommerce.bureauDestinationLibelle;
+                    ecommerce.bureauDestinationLibelle = temp;
+                }
+                return ecommerce;
+            });
+        });
+    }
+
+
+    openDialog(ecommerce: EcommerceDto) {
+        this.openEcommerceDialog = true;
+        this.ecommerce = { ...ecommerce };
+    }
+
+    confirmReception() {
+        this.openEcommerceDialog = false;
+        if (this.ecommerce) {
+            this.ecommerceService
+                .reception(this.ecommerce.id.toString(), this.sessionService.getAgentAttributes().structureId.toString())
+                .subscribe(() => this.getAllEcommerceFromReceptionToExpedition());
+            this.messageService.add({
+                severity: 'success',
+                summary: 'Successful',
+                detail: 'Réception effectuée avec succès',
+                life: 3000,
+            });
+
+            this.ecommerce = null;
+        } else {
+            this.messageService.add({
+                severity: 'warn',
+                summary: 'Données manquantes',
+                detail: 'Aucun envoi sélectionné.',
+                life: 3000,
+            });
         }
-        return ecommerce;
-      });
-    });
-  }
-
-
-  openDialog(ecommerce: EcommerceDto) {
-    this.openEcommerceDialog = true;
-    this.ecommerce = { ...ecommerce };
-  }
-
-  confirmReception() {
-    this.openEcommerceDialog = false;
-    if (this.ecommerce) {
-      this.ecommerceService
-        .reception(this.ecommerce.id.toString(), this.sessionService.getAgentAttributes().structureId.toString())
-        .subscribe(() => this.getAllEcommerceFromReceptionToExpedition());
-      this.messageService.add({
-        severity: 'success',
-        summary: 'Successful',
-        detail: 'Réception effectuée avec succès',
-        life: 3000,
-      });
-
-      this.ecommerce = null;
-    } else {
-      this.messageService.add({
-        severity: 'warn',
-        summary: 'Données manquantes',
-        detail: 'Aucun envoi sélectionné.',
-        life: 3000,
-      });
-    }
-  }
-
-  saveReception() {
-    if (this.form.invalid) {
-      return;
     }
 
-    this.ecommerceService.save(this.form.value).subscribe(
-      (result) => {
-        this.getAllEcommerceFromReceptionToExpedition;
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Succès',
-          detail: 'Envoi expédié avec succès',
-          life: 3000,
-        });
-      },
-      (error) => {
-        this.messageService.add({
-          severity: 'danger',
-          summary: 'Erreur',
-          detail: 'Erreur d\'enregistrement',
-          life: 3000,
-        });
-      }
-    );
-  }
+    saveReception() {
+        if (this.form.invalid) {
+            return;
+        }
+
+        this.ecommerceService.save(this.form.value).subscribe(
+            (result) => {
+                this.getAllEcommerceFromReceptionToExpedition;
+                this.messageService.add({
+                    severity: 'success',
+                    summary: 'Succès',
+                    detail: 'Envoi expédié avec succès',
+                    life: 3000,
+                });
+            },
+            (error) => {
+                this.messageService.add({
+                    severity: 'danger',
+                    summary: 'Erreur',
+                    detail: 'Erreur d\'enregistrement',
+                    life: 3000,
+                });
+            }
+        );
+    }
 }
