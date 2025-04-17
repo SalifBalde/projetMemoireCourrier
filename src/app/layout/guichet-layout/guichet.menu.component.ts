@@ -58,7 +58,7 @@ export class GuichetMenuComponent implements OnInit {
                     },
 
                     {
-                        label: 'Livraison E-commerce ',
+                        label: 'Livraison E-commerce  ',
                         icon: 'pi pi-fw pi-truck',
                         routerLink: ['/guichet/livraison-ecom'],
                     },
