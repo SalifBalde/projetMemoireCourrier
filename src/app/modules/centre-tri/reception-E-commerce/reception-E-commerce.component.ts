@@ -48,11 +48,13 @@ export class ReceptionECommerceComponent implements OnInit {
         this.loading = true;
         this.ecommerceService.findEcommerceReceptionCt().subscribe(
             (result) => {
-                if (result && result.length > 0 && result[0].retourner === true) {
+                if (result && result.length > 0) {
                     result.forEach(ecommerce => {
-                        const temp = ecommerce.partenaireBureauLibelle;
-                        ecommerce.partenaireBureauLibelle = ecommerce.bureauDestinationLibelle;
-                        ecommerce.bureauDestinationLibelle = temp;
+                        if (ecommerce.retourner === true) {
+                            const temp = ecommerce.partenaireBureauLibelle;
+                            ecommerce.partenaireBureauLibelle = ecommerce.bureauDestinationLibelle;
+                            ecommerce.bureauDestinationLibelle = temp;
+                        }
                     });
                 }
                 this.ecommerce$ = result;
@@ -65,6 +67,7 @@ export class ReceptionECommerceComponent implements OnInit {
             }
         );
     }
+
 
 
     // openDialog(ecommerce: EcommerceDto) {

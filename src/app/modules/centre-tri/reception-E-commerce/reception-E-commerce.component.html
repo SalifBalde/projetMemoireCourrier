@@ -15,7 +15,8 @@
                             <th>Téléphone</th>
                             <th>Bureau Expedition</th>
                             <th>Bureau Destination</th>
-                            <!-- <th>Date</th> -->
+                            <th>Retourner</th>
+                            <th>Date</th>
                         </tr>
                     </ng-template>
                     <ng-template pTemplate="body" let-ecommerce>
@@ -27,6 +28,14 @@
                             <td>{{ ecommerce.telephoneClient }}</td>
                             <td>{{ecommerce.partenaireBureauLibelle}}</td>
                             <td>{{ecommerce.bureauDestinationLibelle}}</td>
+                            <td>
+                                <p-tag
+                                  [value]="ecommerce.retourner ? 'Oui' : 'Non'"
+                                  [severity]="ecommerce.retourner ? 'danger' : 'success'">
+                                </p-tag>
+                              </td>
+
+                              <td>{{ ecommerce.dateexp | date: 'dd/MM/yyyy' }}</td>
                         </tr>
                     </ng-template>
                 </p-table>

@@ -27,7 +27,8 @@
             <th>Téléphone</th>
             <th>Destination</th>
             <th>Payer</th>
-            <th>Date</th>
+            <th>Retourner</th>
+            <!-- <th>Date</th> -->
             <th></th>
           </tr>
         </ng-template>
@@ -45,6 +46,14 @@
               <p-tag *ngIf="ecommerce.payer" icon="pi pi-check" severity="success" value="Oui" class="p-element"></p-tag>
               <p-tag *ngIf="!ecommerce.payer" icon="pi pi-times" severity="danger" value="Non" class="p-element"></p-tag>
             </td>
+            <td>
+                <p-tag
+                  [value]="ecommerce.retourner ? 'Oui' : 'Non'"
+                  [severity]="ecommerce.retourner ? 'danger' : 'success'">
+                </p-tag>
+              </td>
+
+              <!-- <td>{{ ecommerce.dateexp | date: 'dd/MM/yyyy' }}</td> -->
             <td>
               <button pButton pRipple label="Livrer" (click)="voirEcommerce(ecommerce)"></button>
             </td>
