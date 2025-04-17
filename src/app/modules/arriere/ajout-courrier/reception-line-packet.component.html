@@ -3,12 +3,11 @@
                 <h3 for="codebarre">Rechercher par code-barre</h3>
                 <span class="p-float-label">
         <div class="p-inputgroup">
-            <input id="codebarre" placeholder="Code barre" [(ngModel)]="codebarre"
-                   pInputText pKeyFilter="alphanum" maxlength="13" minlength="13"
-                   (click)="validateCodeBarre()" class="p-inputtext"
-                   #codebarreInput="ngModel" required />
 
-            <button pButton type="button" (click)="validateCodeBarre()"  icon="pi pi-search" class="p-button-secondary"></button>
+            <input id="codebarre" placeholder="Code barre" [(ngModel)]="codebarre"
+                   pInputText pKeyFilter="alphanum" maxlength="13" minlength="13" class="p-inputtext"
+                   #codebarreInput="ngModel" required />
+            <button pButton type="button" (click)="validateCodeBarre()"   class="p-button-secondary" icon="pi pi-search">Rechercher</button>
         </div>
         <small class="p-error" *ngIf="codebarreInput.invalid && codebarreInput.touched">
             Le code-barre doit contenir exactement 13 caractères (chiffres et lettres).
@@ -20,7 +19,7 @@
     </div>
 <hr>
 
-<div class="p-fluid grid">
+<div class="p-fluid grid" *ngIf="search">
     <p-toast></p-toast>
 
     <br>
@@ -307,7 +306,7 @@
 </p-dialog>
 
 <!-- Section Prévisualisation -->
-<div class="col-8">
+<div class="col-8" *ngIf="search">
     <div class="card">
         <h3>Résumé des Données Saisies</h3>
         <div class="grid">

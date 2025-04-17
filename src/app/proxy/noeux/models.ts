@@ -1,9 +1,10 @@
-import {Fermeturecourrierdto} from "../fermetureCourrier";
-import {Statutdto} from "../statut-courrier";
+
 
 export  interface NoeuxUpdatedto{
    id?: number;
     libelle?: string;
+    structureId?:string
+
 }
 
 
@@ -11,4 +12,5 @@ export  interface NoeuxUpdatedto{
 export interface Noeuxdto {
     id?: number;
     libelle?: string;
+    structureId?:string
 }

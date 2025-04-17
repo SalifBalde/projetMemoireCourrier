@@ -1,8 +1,8 @@
 
 <p-toast position="top-right"></p-toast>
-    <div class="my-2">
-        <button pButton pRipple label="Nouveux Noeud" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNew()"></button>
-    </div>
+<!--    <div class="my-2">-->
+<!--        <button pButton pRipple label="Nouveux Noeud" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNew()"></button>-->
+<!--    </div>-->
 
 <div class="col-12 lg:col-6 md:px-1">
 
@@ -118,6 +118,27 @@
         <button pButton pRipple icon="pi pi-times" class="p-button-text p-button-danger" label="Non"
                 (click)="openCourrierDialog = false"></button>
 
+    </ng-template>
+</p-dialog>
+
+<p-dialog [(visible)]="noeudDialog" [style]="{width: '450px'}" header="regime Details" [modal]="true" class="p-fluid">
+    <ng-template pTemplate="content">
+        <form [formGroup]="form" (ngSubmit)="saveregime()">
+            <div class="field">
+                <label for="libelle">Libelle</label>
+                <input type="text" pInputText id="libelle" formControlName="libelle"   autofocus />
+            </div>
+
+            <div class="field">
+                <label for="status">Activer</label><br>
+                <p-inputSwitch id="status"   formControlName="active"></p-inputSwitch>
+            </div>
+        </form>
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Annuler" icon="pi pi-times" class="p-button-text p-button-danger" (click)="hideDialog()"></button>
+        <button pButton pRipple label="Sauvegarder" icon="pi pi-check" class="p-button-text p-button-success" (click)="saveregime()" [disabled]="form.invalid"></button>
     </ng-template>
 </p-dialog>
 

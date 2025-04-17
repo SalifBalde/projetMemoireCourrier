@@ -66,6 +66,8 @@ export class ExpeditionColisComponent implements  OnInit{
     showMontantField: boolean = false;
     montants: number | null = null;
     selectedFermeture: any ;
+    Listnoeux:Noeuxdto[]
+
 
     constructor(
         private colisService: ColisService,
@@ -102,7 +104,7 @@ export class ExpeditionColisComponent implements  OnInit{
 
     ngOnInit(): void {
         console.log(this.sessionService.getAgentAttributes().structureId.toString())
-        this.noeuxService.findNoeuxByIdstruct(this.sessionService.getAgentAttributes().structureId.toString()).subscribe(
+        this.noeuxService.findNoeuxByIdstr(this.sessionService.getAgentAttributes().structureId.toString()).subscribe(
             (result) => {
                 this.Bestnoeux = result;
                 console.log(this.Bestnoeux)
@@ -115,7 +117,15 @@ export class ExpeditionColisComponent implements  OnInit{
                 this.structure$ = result;
             }
         );
-
+        this.noeuxService.getNoeuxByStructureId(this.sessionService.getAgentAttributes().structureId).subscribe(
+            (noeud: any[]) => {
+                this.Listnoeux = noeud
+                console.log(this.Listnoeux)
+            },
+            (error) => {
+                console.error('Erreur lors de la récupération de la structure:', error);
+            }
+        );
 
 
         this.buildForm();

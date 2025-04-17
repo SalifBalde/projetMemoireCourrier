@@ -33,7 +33,14 @@ export  class NouexService {
         return this.httpClient.get<Noeuxdto>(this.api_host+'/'+idnoeud, this.httpOptions);
     }
 
-    findNoeuxByIdstruct(idstruct : string): Observable<Noeuxdto> {
+    findNoeuxByIdstr(idstruct : string): Observable<Noeuxdto> {
         return this.httpClient.get<Noeuxdto>(this.api_host+'/structure/'+idstruct, this.httpOptions);
+    }
+
+    findNoeuxByIdstruct(idstruct : string): Observable<any> {
+        return this.httpClient.get<any>(this.api_host+'/is-noeud/'+idstruct, this.httpOptions);
+    }
+    getNoeuxByStructureId(idstruct : string): Observable<any> {
+        return this.httpClient.get<any>(this.api_host+'/noeuds-by-structure/'+idstruct, this.httpOptions);
     }
 }

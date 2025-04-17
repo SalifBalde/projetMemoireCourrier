@@ -10,7 +10,7 @@ import { SessionService } from "../../proxy/auth/Session.service";
 })
 export class ArriereMenuComponent implements OnInit {
     model: any[] = [];
-    Bestnoeux: Noeuxdto;
+    Bestnoeux: boolean;
     isNoeudAcheminement: boolean;
     isNotNoeudAcheminement: boolean;
 
@@ -23,11 +23,13 @@ export class ArriereMenuComponent implements OnInit {
         this.noeuxService.findNoeuxByIdstruct(this.sessionService.getAgentAttributes().structureId.toString()).subscribe(
             (result) => {
                 this.Bestnoeux = result;
+                console.log(result )
                 console.log(this.Bestnoeux); // Vérification de la valeur récupérée
                 this.isNoeudAcheminement = !!this.Bestnoeux; // Si Bestnoeux existe, isNoeudAcheminement sera true
                 this.isNotNoeudAcheminement = !this.Bestnoeux;
                 console.log(this.isNoeudAcheminement); // Vérification de la condition
-                this.setupMenu(); // Mettre à jour le menu après la définition de isNoeudAcheminement
+                // Mettre à jour le menu après la définition de isNoeudAcheminement
+                this.setupMenu();
             }
         );
 

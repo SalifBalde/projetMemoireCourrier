@@ -38,6 +38,7 @@ export class AcheminementComponent implements  OnInit{
      selectedBureau:StructureDto[]=[]
      noeudchoisi: Noeuxdto;
     openCourrierDialog: boolean=false;
+    noeudDialog: boolean =false;
 
 
 
@@ -185,6 +186,7 @@ export class AcheminementComponent implements  OnInit{
 
 
     openNew() {
+        this.noeudDialog=true
 
     }
 }
