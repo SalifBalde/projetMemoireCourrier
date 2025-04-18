@@ -58,9 +58,19 @@ export class ReceptionECommerceComponent  implements OnInit {
   getAllEcommerceByDestinationReception() {
     this.loading = true;
     const structureId = Number(this.sessionService.getAgentAttributes().structureId);
+
     this.ecommerceService.findEcommerceByDestinationReception(structureId).subscribe((result) => {
       this.loading = false;
-      this.ecommerce$ = result;
+      this.ecommerce$ = result.map(ecom => {
+        if (ecom.retourner) {
+          return {
+            ...ecom,
+            bureauDestinationLibelle: ecom.partenaireBureauLibelle,
+            partenaireBureauLibelle: ecom.bureauDestinationLibelle
+          };
+        }
+        return ecom;
+      });
     });
   }
 

@@ -30,16 +30,16 @@ export class BackofficeMenuComponent implements OnInit {
 
                 ]
             },
-            {
-                label: 'Retouner',
-                items: [
-                    {
-                        label: 'Envoi a retourner',
-                        icon: 'pi pi-fw pi-file-pdf',
-                        routerLink: ['/backoffice/retourner-envoi'],
-                    },
-                ],
-            },
+            // {
+            //     label: 'Retouner',
+            //     items: [
+            //         {
+            //             label: 'Envoi a retourner',
+            //             icon: 'pi pi-fw pi-file-pdf',
+            //             routerLink: ['/backoffice/retourner-envoi'],
+            //         },
+            //     ],
+            // },
             {
                 label: 'Paramétres',
                 icon: 'pi pi-fw pi-briefcase',

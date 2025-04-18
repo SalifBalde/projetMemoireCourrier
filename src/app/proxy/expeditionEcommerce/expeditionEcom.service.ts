@@ -9,7 +9,7 @@ import { ExpeditionEcomCreateDto, ExpeditionEcomDto } from './models';  // Défi
 })
 export class ExpeditionEcomService {
     private apiName = 'expedition_ecom';
-    private api_host: string = environment + this.apiName;
+    private api_host: string = environment.api_ecom + this.apiName;
     private myToken = sessionStorage.getItem('token');
 
     private httpOptions = {

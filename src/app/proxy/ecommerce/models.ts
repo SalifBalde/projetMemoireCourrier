@@ -10,7 +10,7 @@ export interface EcommerceDto {
   idbureauPartenaire: number;
   partenaireBureauLibelle: string;
   partenaireLibelle: string;
-retourner?:boolean;
+    retourner?:boolean;
   taxetransp: number;
   idbureau: number;
   bureauDestinationLibelle: string;

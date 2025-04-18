@@ -44,7 +44,7 @@ import {DclLayoutComponent} from "./layout/dcp-layout/dcl.layout.component";
 
       },
       {
-        path: 'backoffice', component: BackofficeLayoutComponent,  canActivate: [AuthGuard], data: { roles: ['ROLE_ADMIN'] },
+        path: 'backoffice', component: BackofficeLayoutComponent,  canActivate: [AuthGuard], data: { roles: ['ROLE_DCL'] },
         loadChildren: () => import('./modules/backoffice/backoffice.module').then(m => m.BackofficeModule),
 
       },

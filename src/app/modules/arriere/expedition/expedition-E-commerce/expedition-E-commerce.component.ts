@@ -9,12 +9,6 @@ import { StructureDto, StructureService } from 'src/app/proxy/structures';
 import { ExpeditionEcomService, ExpeditionEcomDto, ExpeditionEcomDetailsDto } from 'src/app/proxy/expeditionEcommerce';
 
 
-// interface Structure {
-//     id: number;
-//     nom: string;
-//     adresse?: string;
-// }
-
 @Component({
     selector: 'app-expedition-e-commerce',
     templateUrl: './expedition-e-commerce.component.html',
@@ -118,12 +112,10 @@ export class ExpeditionECommerceComponent implements OnInit {
         }
     }
 
-
     getAllEcommerceByStatut() {
         this.loading = true;
         const id: string = '5';
         const bureauId: number = Number(this.sessionService.getAgentAttributes().structureId.toString());
-
 
         if (isNaN(bureauId)) {
             this.loading = false;
@@ -132,8 +124,13 @@ export class ExpeditionECommerceComponent implements OnInit {
 
         this.ecommerceService.findEcommerceByStatus(id, bureauId).subscribe(
             (data) => {
-                this.ecommerce$ = data;
+                this.ecommerce$ = data.map(e => ({
+                    ...e,
+                    partenaireBureauLibelle: e.retourner ? e.bureauDestinationLibelle : e.partenaireBureauLibelle
+                }));
+
                 this.loading = false;
+                console.log(data);
             },
             (error) => {
                 this.loading = false;
