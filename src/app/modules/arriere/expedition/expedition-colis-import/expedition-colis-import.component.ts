@@ -99,7 +99,7 @@ export class ExpeditionColisImportComponent implements  OnInit{
 
     ngOnInit(): void {
         console.log(this.sessionService.getAgentAttributes().structureId.toString())
-        this.noeuxService.findNoeuxByIdstruct(this.sessionService.getAgentAttributes().structureId.toString()).subscribe(
+        this.noeuxService.findNoeuxByIdstr(this.sessionService.getAgentAttributes().structureId.toString()).subscribe(
             (result) => {
                 this.Bestnoeux = result;
                 console.log(this.Bestnoeux)

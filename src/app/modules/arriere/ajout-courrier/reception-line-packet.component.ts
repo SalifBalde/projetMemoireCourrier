@@ -56,7 +56,7 @@ export class ReceptionLinePacketComponent implements  OnInit {
      issortant: boolean;
      iduser: any;
     taxeePresentation:number
-
+     search: boolean=false
 
 
     constructor(
@@ -148,6 +148,7 @@ export class ReceptionLinePacketComponent implements  OnInit {
     //     }
     // }
     validateCodeBarre() {
+        this.search=true
        if (this.codebarre){
             this.codebarre = this.codebarre.toUpperCase();
             console.error("Le code-barre doit contenir exactement 13 caractères.");

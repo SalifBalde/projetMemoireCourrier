@@ -413,6 +413,7 @@ export class CourrierOrdinaireComponent implements OnInit {
 
     getCatgories(regimeId: number) {
         const serviceId = this.form.get("typeId").value
+        console.log(serviceId)
         this.categorieService
             .getAllByRegimeAndType(regimeId, 1, serviceId)
             .subscribe((result) => {

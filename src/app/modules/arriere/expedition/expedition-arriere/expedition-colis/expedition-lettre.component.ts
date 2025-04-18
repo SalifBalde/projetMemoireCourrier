@@ -63,6 +63,8 @@ export class ExpeditionLettreComponent  implements  OnInit{
     showMontantField: boolean = false;
     montants: number | null = null;
     selectedFermeture: any ;
+    Listnoeux:Noeuxdto[]
+
 
     constructor(
         private colisService: ColisService,
@@ -112,15 +114,26 @@ export class ExpeditionLettreComponent  implements  OnInit{
                 this.structure$ = result;
             }
         );
-        this.structureService.getOne('18').subscribe(
-            (structure: StructureDto) => {
-                this.structures.push(structure);
-                console.log(this.structures)
+        // this.structureService.getOne('18').subscribe(
+        //     (structure: StructureDto) => {
+        //         this.structures.push(structure);
+        //         console.log(this.structures)
+        //     },
+        //     (error) => {
+        //         console.error('Erreur lors de la récupération de la structure:', error);
+        //     }
+        // );
+
+        this.noeuxService.getNoeuxByStructureId(this.sessionService.getAgentAttributes().structureId).subscribe(
+            (noeud: any[]) => {
+                this.Listnoeux = noeud.filter(n => n.structureId !== 16);
+                console.log(this.Listnoeux)
             },
             (error) => {
                 console.error('Erreur lors de la récupération de la structure:', error);
             }
         );
+
 
 
 

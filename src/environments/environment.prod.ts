@@ -9,8 +9,8 @@ export const environment = {
     locale_id: 'fr-FR',
     keycloak: {
         authority: 'https://auth.sn.post:8443/',
-        redirectUri: 'https://digitalpostv2.sn.post',
-        postLogoutRedirectUri: 'https://digitalpostv2.sn.post/logout',
+        redirectUri: 'https://auth.sn.post:8443/courrier-front',
+        postLogoutRedirectUri: 'https://auth.sn.post:8443/courrier-front/logout',
         realm: 'digital_post_dev',
         clientId: 'digital_front_prod',
     },
