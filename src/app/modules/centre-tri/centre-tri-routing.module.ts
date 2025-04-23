@@ -18,8 +18,10 @@ const routes: Routes = [{ path: '', component: CentreTriComponent },
     {path: 'suiviCourrier',  loadChildren: () => import('./suiviCourrier/suiviCourrier.module').then(m => m.SuiviCourrierModule) },
     { path: 'courrier-details-packet/courrierDetailPacketArriere/:id', loadChildren: () => import('./reception/courrier-details-packet/courrier-details.module').then(m => m.CourrierDetailsLingePacketModule) },
     { path: 'traking', loadChildren: () => import('./traking/traking.module').then(m => m.TrakingModule) },
+    { path: 'details-packet/:id', loadChildren: () => import('./reception/detail-packet/details-packet.module').then(m => m.DetailsPacketModule) },
 
-    ];
+
+];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
