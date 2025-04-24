@@ -89,13 +89,15 @@ var Cn23Service = /** @class */ (function () {
         var pageWidth = doc.internal.pageSize.width;
         var marginRight = pageWidth / 1.14;
         var lineHeight = 6;
-        doc.text('Reçu de dépot dun colis postal', pageWidth / 1.01, 18, { align: 'right' });
+        doc.text('Reçu de dépot d\'un colis postal', pageWidth / 1.01, 18, { align: 'right' });
         doc.text("" + data.typeCourrierLibelle, pageWidth / 1.03, 7, { align: 'right' });
         doc.text('Numéro  ', pageWidth / 1.01, 3, { align: 'right' });
         doc.text("     Partie à remplir par l'expediteur", pageWidth / 1.01, 30, { align: 'right' });
         doc.text('DESTINATAIRE', pageWidth / 1.05, 40, { align: 'right' });
-        doc.text("Prenom: " + data.destinatairePrenom, pageWidth / 1.09, 47, { align: 'right' });
-        doc.text("Nom: " + data.destinataireNom, pageWidth / 1.11, 55, { align: 'right' });
+        doc.text("Prenom: ", pageWidth / 1.16, 47, { align: 'right' });
+        doc.text("" + data.destinatairePrenom, pageWidth / 1.09, 47, { align: 'right' });
+        doc.text("Nom: ", pageWidth / 1.18, 55, { align: 'right' });
+        doc.text("" + data.destinataireNom, pageWidth / 1.11, 55, { align: 'right' });
         var adresse = "Adresse: " + data.destinataireAdresse;
         var splitBy20Chars = function (text, maxLength) {
             var result = [];

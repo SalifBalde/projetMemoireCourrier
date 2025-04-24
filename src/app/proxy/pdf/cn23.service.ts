@@ -50,14 +50,19 @@ export class Cn23Service {
         const pageWidth = doc.internal.pageSize.width;
         const marginRight = pageWidth / 1.14;
         const lineHeight = 6;
-        doc.text('Reçu de dépot dun colis postal', pageWidth / 1.01, 18, { align: 'right' });
+        doc.text('Reçu de dépot d\'un colis postal', pageWidth / 1.01, 18, { align: 'right' });
         doc.text(`${data.typeCourrierLibelle}`, pageWidth / 1.03, 7, { align: 'right' });
         doc.text('Numéro  ', pageWidth / 1.01, 3, { align: 'right' });
         doc.text("     Partie à remplir par l'expediteur", pageWidth / 1.01, 30, { align: 'right' });
         doc.text('DESTINATAIRE', pageWidth / 1.05, 40, { align: 'right' });
-        doc.text(`Prenom: ${data.destinatairePrenom}`, pageWidth / 1.09, 47, { align: 'right' });
-        doc.text(`Nom: ${data.destinataireNom}`, pageWidth / 1.11, 55, { align: 'right' });
+        doc.text(`Prenom : `, pageWidth / 1.16, 47, { align: 'right' });
+        doc.text(`${data.destinatairePrenom}`, pageWidth / 1.12, 47, { align: 'right' });
+
+        doc.text(`Nom : `, pageWidth / 1.18, 55, { align: 'right' });
+        doc.text(`${data.destinataireNom}`, pageWidth / 1.14, 55, { align: 'right' });
+
         const adresse = `Adresse: ${data.destinataireAdresse}`;
+
         const splitBy20Chars = (text, maxLength) => {
           let result = [];
           for (let i = 0; i < text.length; i += maxLength) {
@@ -72,10 +77,18 @@ export class Cn23Service {
           doc.text(line, leftMargin, currentYPosition);
           currentYPosition += 4;
         });
-        doc.text(`Poids: ${data.poids} g`, pageWidth / 1.15, 85, { align: 'right' });
-        doc.text(`Taxe de port: ${data.taxeDouane}`, pageWidth / 1.11, 89, { align: 'right' });
-        doc.text(`Taxe VD: ${data.taxePresentation}`, pageWidth / 1.14, 94, { align: 'right' });
-        doc.text(`Net A payer: ${data.montant}`, pageWidth / 1.10, 99, { align: 'right' });
+        doc.text(`Poids :`, pageWidth / 1.18, 85, { align: 'right' });
+        doc.text(`${data.poids} g`, pageWidth / 1.15, 85, { align: 'right' });
+
+        doc.text(`Taxe de port   :`, pageWidth / 1.14, 89, { align: 'right' });
+        doc.text(`${data.taxeDouane}`, pageWidth / 1.11, 89, { align: 'right' });
+
+        doc.text(`Taxe VD :       `, pageWidth / 1.14, 94, { align: 'right' });
+        doc.text(`${data.taxePresentation}`, pageWidth / 1.12, 94, { align: 'right' });
+
+        doc.text(`Net A payer :`, pageWidth / 1.14, 99, { align: 'right' });
+        doc.text(`${data.montant}`, pageWidth / 1.10, 99, { align: 'right' });
+
     }
 
 
