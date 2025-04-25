@@ -34,15 +34,15 @@ export class Cn23Service {
         doc.text('BULLETIN EXPEDITION', pageWidth / 2, 14, { align: 'left' });
         doc.text(' CP71', pageHeight / 1, 14, { align: 'center' });
         doc.text('(ancien CP2)', pageWidth / 1.5, 28, { align: 'left' });
-        doc.text(`${data.codeBarre}`, pageWidth / 2, 39, { align: 'left' });
+        doc.text(`${data.codeBarre }`, pageWidth / 2, 26, { align: 'left' });
         doc.text(' ', pageWidth / 2, 40, { align: 'left' });
-        doc.text('Valeur déclarée', pageWidth / 2, 50, { align: 'left' });
-        doc.text(`${data.valeurDeclare}`, pageHeight / 1, 50, { align: 'center' });
+        doc.text('Valeur déclarée', pageWidth / 2, 55, { align: 'left' });
+        doc.text(`${data.valeurDeclare ?? 'Nan'}`, pageHeight / 1, 55, { align: 'center' });
         doc.text('(Apposer les étiquettes officielles le cas échéant)', pageWidth / 2.3, 75, { align: 'left' });
-        doc.text(`Poids:                 ${data.poids}              g`, pageWidth / 2.3, 90, { align: 'left' });
-        doc.text(`Taxe de port:     ${data.taxeDouane}`, pageWidth / 2.3, 95, { align: 'left' });
-        doc.text(`Taxe VD:            ${data.taxePresentation}`, pageWidth / 2.3, 100, { align: 'left' });
-        doc.text(`Net A payer:      ${data.montant}`, pageWidth / 2.3, 105, { align: 'left' });
+        doc.text(`Poids:                 ${data.poids ?? 'Nan'}              g`, pageWidth / 2.3, 90, { align: 'left' });
+        doc.text(`Taxe de port:     ${data.taxeDouane ?? 'Nan'}`, pageWidth / 2.3, 95, { align: 'left' });
+        doc.text(`Taxe VD:            ${data.taxePresentation ?? 'Nan'}`, pageWidth / 2.3, 100, { align: 'left' });
+        doc.text(`Net A payer:      ${data.montant ?? 'Nan'}`, pageWidth / 2.3, 105, { align: 'left' });
     }
 
 
@@ -51,44 +51,50 @@ export class Cn23Service {
         const marginRight = pageWidth / 1.14;
         const lineHeight = 6;
         doc.text('Reçu de dépot d\'un colis postal', pageWidth / 1.01, 18, { align: 'right' });
-        doc.text(`${data.typeCourrierLibelle}`, pageWidth / 1.03, 7, { align: 'right' });
+        doc.text(`${data.typeCourrierLibelle ?? 'Nan'}`, pageWidth / 1.03, 7, { align: 'right' });
         doc.text('Numéro  ', pageWidth / 1.01, 3, { align: 'right' });
         doc.text("     Partie à remplir par l'expediteur", pageWidth / 1.01, 30, { align: 'right' });
         doc.text('DESTINATAIRE', pageWidth / 1.05, 40, { align: 'right' });
-        doc.text(`Prenom : `, pageWidth / 1.16, 47, { align: 'right' });
-        doc.text(`${data.destinatairePrenom}`, pageWidth / 1.12, 47, { align: 'right' });
 
-        doc.text(`Nom : `, pageWidth / 1.18, 55, { align: 'right' });
-        doc.text(`${data.destinataireNom}`, pageWidth / 1.14, 55, { align: 'right' });
+        const labelX = 241;
+        const valueX = 264;
 
-        const adresse = `Adresse: ${data.destinataireAdresse}`;
 
-        const splitBy20Chars = (text, maxLength) => {
-          let result = [];
-          for (let i = 0; i < text.length; i += maxLength) {
-            result.push(text.slice(i, i + maxLength));
-          }
-          return result;
+        doc.text(`Prénom :`, labelX, 47);
+        doc.text(`${data.destinatairePrenom ?? 'Nan'}`, valueX, 47, { align: 'right' });
+
+        doc.text(`Nom :`, labelX, 55);
+        doc.text(`${data.destinataireNom ?? 'Nan'}`, valueX, 55, { align: 'right' });
+
+        const adresse = data.destinataireAdresse ?? 'Nan';
+        const splitByChars = (text, maxLength) => {
+            const result = [];
+            for (let i = 0; i < text.length; i += maxLength) {
+                result.push(text.slice(i, i + maxLength));
+            }
+            return result;
         };
-        const adresseLines = splitBy20Chars(adresse, 27);
-        const leftMargin = marginRight - 19;
-        let currentYPosition = 62;
+
+        const adresseLines = splitByChars(`Adresse : ${adresse}`, 27);
+        const adresseX = labelX;
+        let adresseY = 62;
+
         adresseLines.forEach(line => {
-          doc.text(line, leftMargin, currentYPosition);
-          currentYPosition += 4;
+            doc.text(line, adresseX, adresseY);
+            adresseY += 4;
         });
-        doc.text(`Poids :`, pageWidth / 1.18, 85, { align: 'right' });
-        doc.text(`${data.poids} g`, pageWidth / 1.15, 85, { align: 'right' });
 
-        doc.text(`Taxe de port   :`, pageWidth / 1.14, 89, { align: 'right' });
-        doc.text(`${data.taxeDouane}`, pageWidth / 1.11, 89, { align: 'right' });
+        doc.text(`Poids :`, labelX, 85);
+        doc.text(`${data.poids ?? 'Nan'} g`, valueX, 85);
 
-        doc.text(`Taxe VD :       `, pageWidth / 1.14, 94, { align: 'right' });
-        doc.text(`${data.taxePresentation}`, pageWidth / 1.12, 94, { align: 'right' });
+        doc.text(`Taxe de port :`, labelX, 89);
+        doc.text(`${data.taxeDouane ?? 'Nan'}`, valueX, 89);
 
-        doc.text(`Net A payer :`, pageWidth / 1.14, 99, { align: 'right' });
-        doc.text(`${data.montant}`, pageWidth / 1.10, 99, { align: 'right' });
+        doc.text(`Taxe VD :`, labelX, 94);
+        doc.text(`${data.taxePresentation ?? 'Nan'}`, valueX, 94);
 
+        doc.text(`Net à payer :`, labelX, 99);
+        doc.text(`${data.montant ?? 'Nan' }`, valueX, 99);
     }
 
 
@@ -98,12 +104,12 @@ export class Cn23Service {
 
         doc.text('01  ', pageWidth / 2, 120, { align: 'center' });
         doc.text('Bureau ', pageHeight / 1, 120, { align: 'left' });
-        doc.text(`${data.structureDepotLibelle}`, pageHeight / 1, 135, { align: 'center' });
+        doc.text(`${data.structureDepotLibelle ?? 'Nan'}`, pageHeight / 1, 135, { align: 'center' });
         doc.text('Valeur déclarée en  ', pageWidth / 2, 130, { align: 'center' });
         doc.text('Poids brute ', pageWidth / 2, 145, { align: 'center' });
-        doc.text(`${data.poids}`, pageWidth / 2, 149, { align: 'center' });
+        doc.text(`${data.poids ?? 'Nan'} g`, pageWidth / 2, 149, { align: 'center' });
         doc.text(`Taxe`, pageWidth / 1.8, 145, { align: 'left' });
-        doc.text(`${data.taxeDouane}`, pageWidth / 1.8, 149, { align: 'left' });
+        doc.text(`${data.taxeDouane ?? 'Nan'}`, pageWidth / 1.8, 149, { align: 'left' });
         doc.text("J'ai perçu le colis sur ce ", pageHeight / 1, 160, { align: 'center' });
         doc.text('Déclaration ', pageWidth / 2.040, 158, { align: 'center' });
         doc.text('Date et signature ', pageWidth / 2.05, 163, { align: 'center' });
@@ -129,39 +135,68 @@ export class Cn23Service {
         const imagePath = 'assets/layout/images/poste-removebg-preview.png';
         doc.addImage(imagePath, 'PNG', pageWidth / 15, -1, 12, 7);
 
-        doc.text("Nom et Adresse, Colis Postal et Téléphone de l'expediteur", pageWidth / 3, 15, { align: 'right' });
         doc.setFontSize(9);
-        doc.text(`${data.expediteurNom}`, pageWidth / 8, 28, { align: 'right' });
-        doc.text(`${data.expediteurPrenom}`, pageWidth / 3, 28, { align: 'center' });
+        const labelX = 20;
+        const valueX = 44;
 
-        const text = `${data.expediteurAdresse}`;
-        let yPosition = 34;
-        this.addTextInLines(doc, text, pageWidth / 18, yPosition, 10);
+        doc.text(`Nom :`, labelX, 22);
+        doc.text(`${data.expediteurNom ?? 'Nan'}`, valueX, 22);
 
-        doc.text(`${data.expediteurTelephone}`, pageWidth / 7, 40, { align: 'right' });
-        doc.text(`${data.expediteurCodePostal}`, pageWidth / 11, 45, { align: 'right' });
+        doc.text(`Prénom :`, labelX, 27);
+        doc.text(`${data.expediteurPrenom ?? 'Nan'}`, valueX, 27);
+
+        doc.text(`Adresse :`, labelX, 32);
+        doc.text(`${data.expediteurAdresse ?? 'Nan'}`, valueX, 32);
+
+        doc.text(`Pays d'origine :`, labelX, 37);
+        doc.text(`${data.paysOrigineLibelle ?? 'Nan'}`, valueX, 37);
+
+        doc.text(`Téléphone :`, labelX, 42);
+        doc.text(`${data.expediteurTelephone ?? 'Nan'}`, valueX, 42);
+
+        doc.text(`Code postal :`, labelX, 47);
+        doc.text(`${data.expediteurCodePostal ?? 'Nan'}`, valueX, 47);
+
+
         doc.text('A', pageWidth / 50, 59, { align: 'right' });
-        doc.text('Nom et Adresse, Colis Postal et le Téléphone du destinataire y compris', pageHeight / 13, 50, { align: 'left' });
-        doc.text(`${data.destinataireNom}`, pageHeight / 13, 60, { align: 'left' });
-        doc.text(`${data.destinatairePrenom}`, pageHeight / 3, 60, { align: 'left' });
 
-        doc.setFontSize(8);
-        const destinataireAdresse = `${data.destinataireAdresse}`;
-        yPosition = 68;
-        this.addTextInLines(doc, destinataireAdresse, pageHeight / 13, yPosition, 9);
 
-        doc.text(`${data.paysDestinationLibelle}`, pageHeight / 13, 75, { align: 'left' });
-        doc.text(`${data.destinataireTelephone}`, pageHeight / 13, 80, { align: 'left' });
-        doc.text(`${data.destinataireCodePostal}`, pageHeight / 13, 89, { align: 'left' });
+        const labeX = 20;
+        const valuX = 49;
+
+        // Nom
+        doc.text(`Nom : `, labeX, 59, { align: 'left' });
+        doc.text(`${data.destinataireNom ?? 'Nan' }`, valuX, 59, { align: 'left' });
+
+        // Prenom
+        doc.text(`Prenom : `, labeX, 64, { align: 'left' });
+        doc.text(`${data.destinatairePrenom ?? 'Nan'}`, valuX, 64, { align: 'left' });
+
+        let yPosition = 37;
+        doc.text(`Adresse : `, labeX, 69, { align: 'left' });
+        const destinataireAdresse = `${data.destinataireAdresse ?? 'Nan'}`;
+        yPosition = 69;
+        this.addTextInLines(doc, destinataireAdresse, valuX, yPosition, 9);
+
+        doc.text(`Pays de destination : `, labeX, 74, { align: 'left' });
+        doc.text(`     ${data.paysDestinationLibelle ?? 'Nan'}`, valuX, 74, { align: 'left' });
+
+        doc.text(`Téléphone : `, labeX, 79, { align: 'left' });
+        doc.text(`${data.destinataireTelephone ?? 'Nan'}`, valuX, 79, { align: 'left' });
+
+        doc.text(`Code Postal :`, labeX, 84, { align: 'left' });
+        doc.text(`${data.destinataireCodePostal ?? 'Nan'}`, valuX, 84, { align: 'left' });
+
+
         doc.text('Timbre de la ', pageHeight / 13, 95, { align: 'left' });
         doc.text('Bureau ', pageHeight / 3, 95, { align: 'left' });
-        doc.text(`${data.structureDestinationLibelle}`, pageWidth / 4, 99, { align: 'left' });
+        doc.text(`${data.structureDestinationLibelle ?? 'Nan'}`, pageWidth / 4, 99, { align: 'left' });
         doc.text('Droit de douane ', pageHeight / 13, 105, { align: 'left' });
         doc.text('Catégorie de colis ', pageHeight / 13, 115, { align: 'left' });
         doc.text('aerien ', pageHeight / 10, 150, { align: 'left' });
         doc.text('surface ', pageWidth / 4, 150, { align: 'left' });
         doc.text('A', pageWidth / 50, 59, { align: 'right' });
-        doc.text(`Bureau: ${data.structureDepotLibelle}`, pageHeight / 10, 8, { align: 'left' });
+        doc.text(`Bureau: ${data.structureDepotLibelle ?? 'Nan'}`, pageHeight / 10, 8, { align: 'left' });
         doc.text('LA POSTE SENEGAL', pageHeight / 2, 3, { align: 'right' });
         doc.text(`Agent: ${fullname}`, pageWidth / 2, 8, { align: 'center' });
         doc.text("Instruction de l'expéditeur en cas de non-livraison ", pageHeight / 13, 160, { align: 'left' });
@@ -183,7 +218,7 @@ export class Cn23Service {
                 line = '';
             }
         }
-                if (line.trim().length > 0) {
+        if (line.trim().length > 0) {
             doc.text(line.trim(), x, yPosition, { align: 'left' });
         }
     }
@@ -212,8 +247,8 @@ export class Cn23Service {
         doc.line(127, 125, pageWidth - 102, 125);
         doc.line(127, 140, pageWidth - 102, 140);
         doc.line(195, 110, 195, 153);
-        doc.line(0, 46, pageWidth - 60, 46);
-        doc.line(pageWidth - 60, 46, pageWidth - 60, 202);
+        doc.line(0, 50, pageWidth - 60, 50);
+        doc.line(pageWidth - 60, 50, pageWidth - 60, 202);
         doc.line(10, 90, pageWidth - 170, 90);
         doc.line(127, 175, pageWidth - 60, 175);
         doc.line(160, 140, 160, 175);
