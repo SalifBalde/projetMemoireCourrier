@@ -3,13 +3,14 @@ import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import JsBarcode from 'jsbarcode';
 import { CourrierDto } from '../courrier';
+import { SessionService } from '../auth/Session.service';
 
 @Injectable({
     providedIn: 'root',
 })
 export class PdfService {
 
-
+    constructor(private sessionService: SessionService) { }
     async generatePDF(data: any): Promise<void> {
         const doc = new jsPDF();
 
@@ -31,14 +32,13 @@ export class PdfService {
         }
 
         this.addFooter1(doc);
-        const fileName = "Facture_colis_" + data.code + ".pdf";
+        const fileName = "Reçu_517" + data.code + ".pdf";
         doc.save(fileName);
     }
 
 
     private async addHeader(doc: jsPDF): Promise<void> {
         const logoLeft = await this.loadImage("assets/layout/images/poste-removebg-preview.png");
-
 
         const logoWidth = 13;
         const logoHeight = 13;
@@ -47,21 +47,32 @@ export class PdfService {
             doc.addImage(logoLeft, "PNG", 14, 8, logoWidth, logoHeight);
         }
 
+        const date: Date = new Date();
+        const printedBy = `Imprimé le ${date.toLocaleString()} par ${this.sessionService.getAgentAttributes().prenom} ${this.sessionService.getAgentAttributes().nom}`;
+
+        const pageWidth = doc.internal.pageSize.width;
+        const printedByWidth = doc.getTextWidth(printedBy);
+
+        const printedByX = pageWidth - printedByWidth - 0.02;
+        const printedByY = 14;
+
+        doc.setFontSize(10);
+        doc.setFont("helvetica", "normal");
+        doc.setTextColor(0, 0, 0);
+        doc.text(printedBy, printedByX, printedByY);
 
         doc.setFontSize(11);
         doc.setFont("helvetica", "bold");
-        const title = "Reçu";
+        const title = "Reçu 517";
         const titleWidth = doc.getTextWidth(title);
-        const pageWidth = doc.internal.pageSize.width;
         const centerX = (pageWidth - titleWidth) / 2;
         const titleY = 182;
         doc.text(title, centerX, titleY);
-
     }
+
 
     private async addHeader1(doc: jsPDF): Promise<void> {
         const logoLeft = await this.loadImage("assets/layout/images/poste-removebg-preview.png");
-
 
         const logoWidth = 13;
         const logoHeight = 13;
@@ -70,19 +81,31 @@ export class PdfService {
             doc.addImage(logoLeft, "PNG", 14, 160, logoWidth, logoHeight);
         }
 
+        const date: Date = new Date();
+        const printedBy = `Imprimé le ${date.toLocaleString()} par ${this.sessionService.getAgentAttributes().prenom} ${this.sessionService.getAgentAttributes().nom}`;
+
+        const pageWidth = doc.internal.pageSize.width;
+
+        const printedByWidth = doc.getTextWidth(printedBy);
+
+        const printedByX = pageWidth - printedByWidth - 35;
+
+        const printedByY = 160;
+
+        doc.setFontSize(10);
+        doc.setFont("helvetica", "normal");
+        doc.setTextColor(0, 0, 0);
+        doc.text(printedBy, printedByX, printedByY);
 
         doc.setFontSize(11);
         doc.setFont("helvetica", "bold");
-        doc.setTextColor(0, 0, 0)
-        const title = "Reçu";
+        const title = "Reçu 517";
         const titleWidth = doc.getTextWidth(title);
-        const pageWidth = doc.internal.pageSize.width;
         const centerX = (pageWidth - titleWidth) / 2;
         const titleY = 30;
         doc.text(title, centerX, titleY);
-
-
     }
+
 
     private addRecipientAndSenderInfo(doc: jsPDF, data: CourrierDto): void {
         const pageWidth = doc.internal.pageSize.width;
@@ -90,24 +113,35 @@ export class PdfService {
         const rightMargin = margin;
         const rightTextStartX = pageWidth - rightMargin;
 
-        const lineHeight = 8;
+        const lineHeight = 6;
         const fontSize = 9;
         doc.setFont("helvetica", "normal");
         doc.setFontSize(fontSize);
 
-        let yOffset = 25;
+        let yOffset = 28;
 
-        doc.text(data.codeBarre || "", margin, yOffset);
-        yOffset += lineHeight;
+        // doc.text(data.codeBarre || "", margin, yOffset);
+        // yOffset += lineHeight;
+
+        // doc.text(`Agent : ${this.sessionService.getAgentAttributes().prenom || "" + ' ' +this.sessionService.getAgentAttributes().nom || ""}`, margin, yOffset);
+        // yOffset += lineHeight;
 
         doc.text(`Structure Depot: ${data.structureDepotLibelle || ""}`, margin, yOffset);
         yOffset += lineHeight;
+
+        doc.text(`Pays Origine: ${data.paysOrigineLibelle || ""}`, margin, yOffset);
+        yOffset += lineHeight;
+
 
         doc.text(`Type Courrier: ${data.typeCourrierLibelle || ""}`, margin, yOffset);
         yOffset += lineHeight;
 
         doc.text(`Expediteur: ${data.expediteurPrenom || ""} ${data.expediteurNom || ""}`, margin, yOffset);
         yOffset += lineHeight;
+
+        doc.text(`Adresse: ${data.expediteurAdresse || ""} ${data.expediteurNom || ""}`, margin, yOffset);
+        yOffset += lineHeight;
+
 
         const rightSectionYOffset = yOffset -25;
 
@@ -116,7 +150,7 @@ export class PdfService {
         doc.text(`Destinataire: ${data.destinatairePrenom || ""} ${data.destinataireNom || ""}`, rightTextStartX, rightYPosition, { align: "right" });
         rightYPosition += lineHeight;
 
-        doc.text(`Pays Origine: ${data.paysOrigineLibelle || ""}`, rightTextStartX, rightYPosition, { align: "right" });
+        doc.text(`Adresse: ${data.destinataireAdresse || 'N/A'}`, rightTextStartX, rightYPosition, { align: "right" });
         rightYPosition += lineHeight;
 
         doc.text(`Pays Destination: ${data.paysDestinationLibelle || ""}`, rightTextStartX, rightYPosition, { align: "right" });
@@ -124,19 +158,16 @@ export class PdfService {
 
         const formatBoolean = (value) => (value ? "oui" : "non");
 
-        // Recommandé
         doc.text(`Recommandé: ${formatBoolean(data.recommande)}`, rightTextStartX, rightYPosition, { align: "right" });
         rightYPosition += lineHeight;
 
-        // AR
         doc.text(`AR: ${formatBoolean(data.ar)}`, rightTextStartX, rightYPosition, { align: "right" });
         rightYPosition += lineHeight;
 
-        // Express
         doc.text(`Express: ${formatBoolean(data.express)}`, rightTextStartX, rightYPosition, { align: "right" });
         rightYPosition += lineHeight;
 
-        this.addBarcode(doc, data.codeBarre, (pageWidth - 50) / 2, rightYPosition - 25, 50, 20);
+        this.addBarcode(doc, data.codeBarre, (pageWidth - 50) / 2, rightYPosition - 30, 50, 20);
     }
 
     private addRecipientAndSenderInfo1(doc: jsPDF, data: CourrierDto): void {
@@ -152,10 +183,17 @@ export class PdfService {
         doc.setFontSize(fontSize);
         doc.setTextColor(0, 0, 0);
 
-        doc.text(data.codeBarre || "", margin, yOffset);
-        yOffset += lineSpacing;
+        // doc.text(data.codeBarre || "", margin, yOffset);
+        // yOffset += lineSpacing;
+
+        // doc.text(`Agent : ${this.sessionService.getAgentAttributes().prenom || "" + ' ' +this.sessionService.getAgentAttributes().nom || ""}`, margin, yOffset);
+        // yOffset += lineSpacing;
+
 
         doc.text(`Structure Depot: ${data.structureDepotLibelle || ""}`, margin, yOffset);
+        yOffset += lineSpacing;
+
+        doc.text(`Pays d'origine: ${data.paysOrigineLibelle || ""}`, margin, yOffset);
         yOffset += lineSpacing;
 
         doc.text(`Type de Courrier: ${data.typeCourrierLibelle || ""}`, margin, yOffset);
@@ -170,7 +208,11 @@ export class PdfService {
         doc.text(`Expediteur: ${data.expediteurPrenom || ""} ${data.expediteurNom || ""}`, margin, yOffset, );
         yOffset += lineSpacing;
 
-        const rightSectionYOffset = yOffset - 20;
+
+        doc.text(`Adresse : ${data.expediteurAdresse || "N/A"}`, margin, yOffset, );
+        yOffset += lineSpacing;
+
+        const rightSectionYOffset = yOffset - 32;
 
         let rightYPosition = rightSectionYOffset;
 
@@ -179,7 +221,7 @@ export class PdfService {
         doc.text(`Destinataire: ${data.destinatairePrenom || ""} ${data.destinataireNom || ""}`, rightTextStartX, rightYPosition, { align: "right" });
         rightYPosition += lineSpacing;
 
-        doc.text(`Pays Origine: ${data.paysOrigineLibelle || ""}`, rightTextStartX, rightYPosition, { align: "right" });
+        doc.text(`Adresse : ${data.destinataireAdresse || "N/A"}`, rightTextStartX, rightYPosition, { align: "right" });
         rightYPosition += lineSpacing;
 
         doc.text(`Pays Destination: ${data.paysDestinationLibelle || ""}`, rightTextStartX, rightYPosition, { align: "right" });
@@ -187,15 +229,12 @@ export class PdfService {
 
         const formatBoolean = (value) => (value ? "oui" : "non");
 
-        // Recommandé
         doc.text(`Recommandé: ${formatBoolean(data.recommande)}`, rightTextStartX, rightYPosition, { align: "right" });
         rightYPosition += lineSpacing;
 
-        // AR
         doc.text(`AR: ${formatBoolean(data.ar)}`, rightTextStartX, rightYPosition, { align: "right" });
         rightYPosition += lineSpacing;
 
-        // Express
         doc.text(`Express: ${formatBoolean(data.express)}`, rightTextStartX, rightYPosition, { align: "right" });
         rightYPosition += lineSpacing;
         this.addBarcode(doc, data.codeBarre, (pageWidth - 50) / 2, rightYPosition - 15, 50, 20);
@@ -264,7 +303,8 @@ export class PdfService {
             const finalY = (doc as any).autoTable.previous.finalY + 5;
             doc.setFontSize(9);
             doc.setFont("helvetica", "normal");
-            doc.text(`Montant: ${data.montant} CFA`, 195, finalY + 10, { align: "right" });
+            doc.text(`Poids : ${data.poids} g`, 190, finalY + 5, { align: "right" });
+            doc.text(`Montant : ${data.montant} CFA`, 195, finalY + 10, { align: "right" });
          //   doc.text(`Taxe douane: ${data.taxeDouane} CFA`, 195, finalY + 15, { align: "right" });
            // doc.text(`Taxe presentation: ${data.taxePresentation} CFA`, 195, finalY + 20, { align: "right" });
 
@@ -325,6 +365,7 @@ export class PdfService {
 
             doc.setFontSize(9);
             doc.setFont("helvetica", "normal");
+            doc.text(`Poids : ${data.poids} g`, 190, finalY + 5, { align: "right" });
             doc.text(`Montant: ${data.montant} CFA`, 195, finalY + 10, { align: "right" });
 
 

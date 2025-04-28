@@ -75,7 +75,32 @@ export class Cn23Service {
             return result;
         };
 
-        const adresseLines = splitByChars(`Adresse : ${adresse}`, 27);
+        function splitTextByWordsSmart(text: string, maxChars: number): string[] {
+            const words = text.split(' ');
+            const lines: string[] = [];
+            let currentLine = '';
+
+            for (const word of words) {
+                const testLine = currentLine ? currentLine + ' ' + word : word;
+
+                // Correction spéciale pour 3ᵉ, 1er, etc.
+                if (testLine.length <= maxChars || word.match(/^\d+[ᵉer]{1,2}$/)) {
+                    currentLine = testLine;
+                } else {
+                    lines.push(currentLine.trim());
+                    currentLine = word;
+                }
+            }
+            if (currentLine) {
+                lines.push(currentLine.trim());
+            }
+            return lines;
+        }
+
+        // Utilisation
+        const adresseTexte = `Adresse : ${data.destinataireAdresse || 'Nan'}`;
+
+        const adresseLines = splitTextByWordsSmart(adresseTexte, 35);
         const adresseX = labelX;
         let adresseY = 62;
 
