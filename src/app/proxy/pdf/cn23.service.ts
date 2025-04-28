@@ -20,7 +20,7 @@ export class Cn23Service {
         this.addFooter(doc, data, fullname);
         this.drawLines(doc, data);
 
-        const fileName = "Facture_CN23.pdf";
+        const fileName = "CP71.pdf";
         doc.save(fileName);
     }
 
