@@ -124,19 +124,22 @@ export class ExpeditionECommerceComponent implements OnInit {
 
         this.ecommerceService.findEcommerceByStatus(id, bureauId).subscribe(
             (data) => {
-                this.ecommerce$ = data.map(e => ({
-                    ...e,
-                    partenaireBureauLibelle: e.retourner ? e.bureauDestinationLibelle : e.partenaireBureauLibelle
-                }));
-
+                this.ecommerce$ = data.map(e =>
+                    e.retourner
+                        ? {
+                            ...e,
+                            partenaireBureauLibelle: e.bureauDestinationLibelle,
+                            bureauDestinationLibelle: e.partenaireBureauLibelle
+                        }
+                        : e
+                );
                 this.loading = false;
-                console.log(data);
             },
             (error) => {
                 this.loading = false;
-                console.error('Erreur de chargement des données', error);
             }
         );
+
     }
 
     mapIdsToEcommerce(selectedEcommerce: EcommerceDto[]): ExpeditionEcomDetailsDto[] {
