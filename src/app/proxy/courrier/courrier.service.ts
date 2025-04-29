@@ -35,6 +35,10 @@ getAllDestinataires(clientId:string, destinationId:string) {
 {
   return this.httpClient.post(this.api_host,item,this.httpOptions);
 }
+savePacketOrdi(item: CourrierCreateUpdateDto)
+{
+  return this.httpClient.post(this.api_host+'/savepacketOrdinaire',item,this.httpOptions);
+}
 saveReceptionCourrier(item: CourrierCreateUpdateDto)
 {
   return this.httpClient.post(this.api_host+'/saverReception',item,this.httpOptions);

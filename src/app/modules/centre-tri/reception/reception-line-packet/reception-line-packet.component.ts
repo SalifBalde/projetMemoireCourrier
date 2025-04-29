@@ -247,12 +247,14 @@ export class ReceptionLinePacketComponent implements  OnInit {
 
                 // Envoi des données au backend via le service
                 this.loading = true;
-                this.courrierService.save(courrierData).subscribe(
+                this.courrierService.savePacketOrdi(courrierData).subscribe(
                     (result) => {
                         this.courrier = result;
                         console.log(this.courrier);
+                        this.showDetails(this.courrier)
                         this.loading = false;
-                        this.resetCourrierData(); // Réinitialiser les données du colis
+                        this.resetCourrierData();
+                       // Réinitialiser les données du colis
                         this.messageService.add({
                             severity: 'success',
                             summary: 'Successful',
@@ -510,7 +512,12 @@ export class ReceptionLinePacketComponent implements  OnInit {
     }
 
 
-    onSubmit() {
+    showDetails(courrier: any): void {
+        const id1 = courrier.id
+        console.log(id1)
+        // pour naviger il faut aller sur app.routing pour recuperer le chemin
+        this.router.navigate(['ct/details-packet/'+id1]);  // Passe l'ID de la fermeture dans l'URL
+
 
     }
 }

@@ -38,7 +38,7 @@ export class ReceptionLinePacketComponent implements  OnInit {
     form: FormGroup;
     courrier: CourrierDto;
     label: string
-    paysDestinationId: any;
+    paysOrigineId: any;
     categorieId: any;
     poids: number;
     taxeDouane: number=0;
@@ -163,7 +163,7 @@ export class ReceptionLinePacketComponent implements  OnInit {
                     this.poids = result.poids;
                     this.client = { id: result.expediteurId, nom: result.expediteurNom, prenom: result.expediteurPrenom, cni: result.expediteurCni };
                     this.destinataire = { id: result.destinataireId, nom: result.destinataireNom, prenom: result.destinatairePrenom, cni: result.destinataireCni };
-                    this.paysDestinationId = result.paysDestinationId;
+                    this.paysOrigineId = result.paysOrigineId;
                     this.categorieId = result.categorieId;
                     this.taxeDouane=result.taxeDouane
                     this.taxePresentation=result.taxePresentation
@@ -286,7 +286,7 @@ export class ReceptionLinePacketComponent implements  OnInit {
                 expediteurId: Number(this.client.id),
                 destinataireId: Number(this.destinataire.id),
                 typeCourrierId: this.typeCourrierId,
-                paysDestinationId: this.paysDestinationId,
+                paysDestinationId: 210,
                 taxePresentation: this.typeCourrierId !== 1 ? 1000 : null, // Condition ternaire ici
                 codeBarre: this.codebarre , // Utilisation du code barre correctement
                 valeurDeclare: null,
@@ -297,9 +297,9 @@ export class ReceptionLinePacketComponent implements  OnInit {
                 ar: false,
                 express: false,
                 statutCourrierId: 10,
-                paysOrigineId: this.paysDestinationId,
+                paysOrigineId: this.paysOrigineId,
                 caisseId: Number(this.sessionService.getAgentAttributes().caisseId),
-                structureDepotId: this.paysDestinationId,
+                structureDepotId: null,
                 structureDestinationId: Number(this.sessionService.getAgentAttributes().structureId),
                 taxeDouane:this.taxeDouane,
                 fraisSuivi:this.fraisSuivi,
@@ -309,6 +309,7 @@ export class ReceptionLinePacketComponent implements  OnInit {
             console.log(courrierData)
             this.courrierService.saveReceptionCourrier(courrierData).subscribe(
                 (result) => {
+                    this.showDetails(result)
                     this.messageService.add({
                         severity: 'success',
                         summary: 'Successful',
@@ -348,15 +349,18 @@ export class ReceptionLinePacketComponent implements  OnInit {
                     courrier.fraisSuivi = this.fraisSuivi;
                     courrier.expediteurId= this.client.id
                     courrier.destinateurId=this.destinataire.id
+                    courrier.paysDestinationId=210
+                    courrier.paysOrigineId=this.paysOrigineId
+                    courrier.structureDestinationId=Number(this.sessionService.getAgentAttributes().structureId)
+                    courrier.structureDepotId=courrier.structureDepotId
                     courrier.userId= this.iduser
                 }
             })
-            console.log(this.courrierss)
             this.courrierService
                 .updateCourriers(this.courrierss)
                 .subscribe(
                     (result) => {
-
+                        this.showDetails(result)
                         this.messageService.add({
                             severity: 'success',
                             summary: 'Successful',
@@ -382,7 +386,7 @@ export class ReceptionLinePacketComponent implements  OnInit {
     resetForm() {
         this.client = { nom: '', prenom: '', cni: '' };
         this.destinataire = { nom: '', prenom: '', cni: '' };
-        this.paysDestinationId = null;
+        this.paysOrigineId = null;
         this.codebarre = '';
         this.poids = null;
         this.montant = null;
@@ -403,17 +407,7 @@ export class ReceptionLinePacketComponent implements  OnInit {
         return categorie ? categorie.libelle : '';
     }
 
-    resetCourrierData(): void {
-        this.poids = null;
-        this.expediteurId = null;
-        this.destinateurId = null;
-        this.codebarre = '';
-        this.paysDestinationId=null
-        this.categorieId=null
-        this.label
 
-
-    }
 
 
     choisirDestinataire(client:ClientDto){
@@ -644,7 +638,7 @@ export class ReceptionLinePacketComponent implements  OnInit {
                     this.poids = result.poids;
                     this.client = { id: result.expediteurId, nom: result.expediteurNom, prenom: result.expediteurPrenom, cni: result.expediteurCni };
                     this.destinataire = { id: result.destinataireId, nom: result.destinataireNom, prenom: result.destinatairePrenom, cni: result.destinataireCni };
-                    this.paysDestinationId = result.paysDestinationId;
+                    this.paysOrigineId = result.paysOrigineId;
                     this.categorieId = result.categorieId;
                     console.log( this.client, this.destinataire, this.poids)
                     this.messageService.add({
@@ -674,6 +668,16 @@ export class ReceptionLinePacketComponent implements  OnInit {
                 this.loading = false;
             }
         );
+    }
+
+
+    showDetails(courrier: any): void {
+        const id1 = courrier.id
+        console.log(id1)
+        // pour naviger il faut aller sur app.routing pour recuperer le chemin
+        this.router.navigate(['arriere/detailReceptionPacket/'+id1]);  // Passe l'ID de la fermeture dans l'URL
+
+
     }
 
 }

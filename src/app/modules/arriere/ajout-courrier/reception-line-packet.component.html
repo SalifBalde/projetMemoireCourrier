@@ -97,7 +97,7 @@
                         optionValue="id"
                         [filter]="true"
                         filterBy="libelle"
-                        [(ngModel)]="paysDestinationId"
+                        [(ngModel)]="paysOrigineId"
 
                         [showClear]="true"
                         placeholder="Choisir Pays">
@@ -307,42 +307,16 @@
 
 <!-- Section Prévisualisation -->
 <div class="col-8" *ngIf="search">
-    <div class="card">
-        <h3>Résumé des Données Saisies</h3>
-        <div class="grid">
-            <div class="col-8 lg:col-6">
-                <p><strong>Expéditeur:</strong> {{ client.nom }} {{ client.prenom }}</p>
-                <p><strong>CNI Expéditeur:</strong> {{ client.cni }}</p>
-            </div>
-            <div class="col-12 lg:col-6">
-                <p><strong>Destinataire:</strong> {{ destinataire.nom }} {{ destinataire.prenom }}</p>
-                <p><strong>CNI Destinataire:</strong> {{ destinataire.cni }}</p>
-            </div>
-            <div class="col-12 lg:col-6">
-                <p><strong>Pays d'origine :</strong> {{ getPaysLibelle(paysDestinationId) }}</p>
-                <p><strong>Catégorie:</strong> {{ getCategorieLibelle(categorieId) }}</p>
-                <p><strong>Montant:</strong> {{ montant }} g</p>
-                <p><strong>Frais Suivi:</strong> {{ fraisSuivi }} CFA</p>
-
-            </div>
-            <div class="col-12 lg:col-6">
-                <p><strong>Poids:</strong> {{ poids }} g</p>
-                <p><strong>Code barre:</strong> {{ codebarre }}</p>
-                <p><strong>Taxe Douane:</strong> {{ taxeDouane }} CFA</p>
-            </div>
 
             <!-- Bouton Enregistrer -->
             <div class="col-6 lg:col-offset-6 field" style="float:left" *ngIf="courrier">
-                <p-button (click)="updateeCourrier()" [disabled]="!paysDestinationId || !poids || !codebarre" label="Valider" severity="success" />
+                <p-button (click)="updateeCourrier()" [disabled]="!paysOrigineId || !poids || !codebarre" label="Valider" severity="success" />
             </div>
             <div class="col-6 lg:col-offset-6 field" style="float:left" *ngIf="!courrier">
-                <p-button (click)="saveColis()" [disabled]="!paysDestinationId || !poids || !codebarre || !client.id || !destinataire.id" label="Enregistrer" severity="info" />
+                <p-button (click)="saveColis()" [disabled]="!paysOrigineId || !poids || !codebarre || !client.id || !destinataire.id" label="Enregistrer" severity="info" />
             </div>
-        </div>
-
-    </div>
-
 </div>
+
 
 
 

@@ -63,6 +63,10 @@ const routes: Routes = [{ path: '', component: ArriereComponent },
 
     { path: 'ajouter-courrier/courrierDetailArriere', loadChildren: () => import('./ajout-courrier/reception-line-packet.module').then(m => m.ReceptionCourrierArriereModule) },
     { path: 'traking', loadChildren: () => import('./traking/traking.module').then(m => m.TrakingModule) },
+    { path: 'detailReceptionPacket/:id', loadChildren: () => import('./ajout-courrier/detail-receptionPacket/details-packet.module').then(m => m.DetailsRecPacketModule) },
+
+
+
 ];
 
 @NgModule({
