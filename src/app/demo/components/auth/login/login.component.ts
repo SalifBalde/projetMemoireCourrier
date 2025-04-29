@@ -20,6 +20,9 @@ export class LoginComponent implements OnInit{
 
     form!: FormGroup;
   error: boolean =false
+    password!: string;
+
+    rememberme1: boolean = false;
 
     constructor(
         public layoutService: LayoutService,
@@ -40,7 +43,6 @@ export class LoginComponent implements OnInit{
 
     valCheck: string[] = ['remember'];
 
-    password!: string;
 
     login(){
          this.authService.login(this.form.value.username,this.form.value.password)
