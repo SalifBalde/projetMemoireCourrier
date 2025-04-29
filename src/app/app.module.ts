@@ -33,6 +33,8 @@ import {ResponsableannexeModule} from "./modules/responsable-annexe/Responsablea
 import {ResponsableannexeLayoutModule} from "./layout/responsable-annexe-layout/responsableannexe.layout.module";
 import {DclLayoutModule} from "./layout/dcp-layout/dcl.layout.module";
 import {DashboardModule} from "./demo/components/dashboard/dashboard.module";
+import {CheckboxModule} from "primeng/checkbox";
+import {LoginModule} from "./demo/components/auth/login/login.module";
 
 function initializeKeycloak(keycloak: KeycloakService) {
   return () =>
@@ -73,7 +75,8 @@ function initializeKeycloak(keycloak: KeycloakService) {
         BrowserAnimationsModule,
         MatButtonModule,
         BrowserAnimationsModule,
-        DashboardModule
+        DashboardModule,
+        LoginModule
     ],
     providers: [
         {provide: APP_INITIALIZER, useFactory:initializeKeycloak,multi :true, deps:[KeycloakService]},

@@ -15,6 +15,7 @@ import {SessionService} from "../../../proxy/auth/Session.service";
 import {TarifServiceService} from "../../../proxy/TarifService";
 import {TarifCourrierService} from "../../../proxy/tarif-courrier";
 import {StockService} from "../../../proxy/stock";
+import {LoginComponent} from "../../../demo/components/auth/login/login.component";
 
 @Component({
   selector: 'app-reception-line-packet',
@@ -281,6 +282,7 @@ export class ReceptionLinePacketComponent implements  OnInit {
     saveColis() {
             console.log('entrer ici')
         this.geCategorieById(this.categorieId)
+        const monustructId= Number( this.sessionService.getAgentAttributes().structureId)
             const courrierData: CourrierCreateUpdateDto = {
                 poids: this.poids,
                 expediteurId: Number(this.client.id),
@@ -300,7 +302,7 @@ export class ReceptionLinePacketComponent implements  OnInit {
                 paysOrigineId: this.paysOrigineId,
                 caisseId: Number(this.sessionService.getAgentAttributes().caisseId),
                 structureDepotId: null,
-                structureDestinationId: Number(this.sessionService.getAgentAttributes().structureId),
+                structureDestinationId:monustructId,
                 taxeDouane:this.taxeDouane,
                 fraisSuivi:this.fraisSuivi,
                 userId: this.iduser,
@@ -351,10 +353,12 @@ export class ReceptionLinePacketComponent implements  OnInit {
                     courrier.destinateurId=this.destinataire.id
                     courrier.paysDestinationId=210
                     courrier.paysOrigineId=this.paysOrigineId
-                    courrier.structureDestinationId=Number(this.sessionService.getAgentAttributes().structureId)
+                    courrier.structureDestinationId=this.sessionService.getAgentAttributes().structureId
                     courrier.structureDepotId=courrier.structureDepotId
                     courrier.userId= this.iduser
                 }
+
+                console.log(courrier)
             })
             this.courrierService
                 .updateCourriers(this.courrierss)
