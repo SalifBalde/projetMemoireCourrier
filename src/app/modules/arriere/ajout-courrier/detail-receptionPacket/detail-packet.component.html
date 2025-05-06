@@ -6,28 +6,26 @@
         <h3>Résumé des Données Saisies</h3>
         <div class="grid">
             <div class="col-8 lg:col-6">
-                <p><strong>Expéditeur:</strong> {{ Courrier.expediteurNom }} {{ Courrier.expediteurPrenom }}</p>
-                <p><strong>CNI Expéditeur:</strong> {{ Courrier.expediteurCni }}</p>
+                <p><strong>Expéditeur:</strong> {{ Courrier.expediteurNom || 'Non renseigné' }} {{ Courrier.expediteurPrenom || '' }}</p>
+                <p><strong>CNI Expéditeur:</strong> {{ Courrier.expediteurCni || 'Non renseigné' }}</p>
             </div>
             <div class="col-12 lg:col-6">
-                <p><strong>Destinataire:</strong> {{ Courrier.destinataireNom }} {{ Courrier.destinatairePrenom }}</p>
-                <p><strong>CNI Destinataire:</strong> {{ Courrier.destinataireCni }}</p>
+                <p><strong>Destinataire:</strong> {{ Courrier.destinataireNom || 'Non renseigné' }} {{ Courrier.destinatairePrenom || '' }}</p>
+                <p><strong>CNI Destinataire:</strong> {{ Courrier.destinataireCni || 'Non renseigné' }}</p>
             </div>
             <div class="col-12 lg:col-6">
-                <p><strong>Pays d'origine :</strong> {{ Courrier.paysOrigineLibelle }}</p>
-                <p><strong>Catégorie:</strong> {{ Courrier.categorieLibelle}}</p>
-                <p><strong>Montant:</strong> {{ Courrier.montant }} g</p>
-                <p><strong>Frais Suivi:</strong> {{ Courrier.fraisSuivi }} CFA</p>
-
+                <p><strong>Pays d'origine :</strong> {{ Courrier.paysOrigineLibelle || 'Non renseigné' }}</p>
+                <p><strong>Catégorie:</strong> {{ Courrier.categorieLibelle || 'Non renseigné' }}</p>
+                <p><strong>Montant:</strong> {{ Courrier.montant != null ? Courrier.montant + ' CFA' : '0 F CFA' }}</p>
+                <p><strong>Frais Suivi:</strong> {{ Courrier.fraisSuivi != null ? Courrier.fraisSuivi + ' CFA' : '0 F CFA' }}</p>
             </div>
             <div class="col-12 lg:col-6">
-                <p><strong>Poids:</strong> {{ Courrier.poids }} g</p>
-                <p><strong>Code barre:</strong> {{ Courrier.codeBarre }}</p>
-                <p><strong>Taxe Douane:</strong> {{ Courrier.taxeDouane }} CFA</p>
+                <p><strong>Poids:</strong> {{ Courrier.poids != null ? Courrier.poids + ' g' : 'Non renseigné' }}</p>
+                <p><strong>Code barre:</strong> {{ Courrier.codeBarre || 'Non renseigné' }}</p>
+                <p><strong>Taxe Douane:</strong> {{ Courrier.taxeDouane != null ? Courrier.taxeDouane + ' CFA' : '0 F CFA' }}</p>
             </div>
-
         </div>
-
     </div>
+
 
 </div>

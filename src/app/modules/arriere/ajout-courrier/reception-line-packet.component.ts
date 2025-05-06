@@ -58,6 +58,7 @@ export class ReceptionLinePacketComponent implements  OnInit {
      iduser: any;
     taxeePresentation:number
      search: boolean=false
+    monresult:CourrierCreateUpdateDto;
 
 
     constructor(
@@ -311,8 +312,9 @@ export class ReceptionLinePacketComponent implements  OnInit {
             console.log(courrierData)
             this.courrierService.saveReceptionCourrier(courrierData).subscribe(
                 (result) => {
-                    this.showDetails(result)
-                    this.messageService.add({
+                    console.log(result)
+                        this.showDetails(result);
+                          this.messageService.add({
                         severity: 'success',
                         summary: 'Successful',
                         detail: 'Courrier Created',
@@ -359,11 +361,13 @@ export class ReceptionLinePacketComponent implements  OnInit {
                 }
 
             })
-            this.courrierService
-                .updateCourriers(this.courrierss)
+            this.courrierService.updateCourriers(this.courrierss)
                 .subscribe(
                     (result) => {
-                        this.showDetails(result)
+                        console.log(result)
+                        if (result.length > 0) {
+                            this.showDetails(result[0])
+                        }
                         this.messageService.add({
                             severity: 'success',
                             summary: 'Successful',
@@ -674,8 +678,9 @@ export class ReceptionLinePacketComponent implements  OnInit {
     }
 
 
-    showDetails(courrier: any): void {
-        const id1 = courrier.id
+    showDetails(courrierss: CourrierCreateUpdateDto): void {
+        console.log(courrierss)
+        const id1 = courrierss.id
         console.log(id1)
         // pour naviger il faut aller sur app.routing pour recuperer le chemin
         this.router.navigate(['arriere/detailReceptionPacket/'+id1]);  // Passe l'ID de la fermeture dans l'URL
