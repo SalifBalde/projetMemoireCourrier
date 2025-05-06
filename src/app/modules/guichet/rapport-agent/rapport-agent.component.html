@@ -53,8 +53,10 @@
                     <tr>
                         <th>Code</th>
                         <th>Expéditeur</th>
-                        <th>Destinataire</th>
-                        <th>Destination</th>
+                        <th>Pays d'Origine</th>
+                        <th>Pays Destination</th>
+                        <th>Type Courrier</th>
+                        <th>Statut Courrier</th>
                         <th>Montant</th>
                         <th>Date</th>
                         <th></th>
@@ -64,8 +66,10 @@
                     <tr>
                         <td>{{ courrier.codeBarre }}</td>
                         <td>{{ courrier. expediteurPrenom }} {{courrier.expediteurNom}}</td>
-                        <td>{{ courrier.destinatairePrenom }} {{ courrier.destinataireNom }}</td>
-                        <td>{{ courrier.structureDestinationLibelle }}</td>
+                        <td>{{ courrier. paysOrigineLibelle}}</td>
+                        <td>{{ courrier.paysDestinationLibelle}}</td>
+                        <td>{{courrier.typeCourrierLibelle}}</td>
+                        <td>{{courrier.statutCourrierLibelle}}</td>
                         <td>{{ courrier.montant }}</td>
                         <td>{{ courrier.createdAt }}</td>
                         <td>

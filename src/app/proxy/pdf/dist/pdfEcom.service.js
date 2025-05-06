@@ -467,7 +467,7 @@ var PdfEcomService = /** @class */ (function () {
         doc.setFontSize(7);
         doc.setFont("helvetica", "italic");
         doc.setTextColor(77, 77, 255);
-        var footerText = "Groupe La Poste | Adresse: Avenue Peytavin Dakar, Senegal | Tel: +221 33 839 34 34 | Email: serviceclient@laposte.sn | Site Web: www.laposte.com";
+        var footerText = "Groupe La Poste | Adresse: Avenue Peytavin Dakar, Senegal | Tel: +221 33 839 34 34 | Email: serviceclient@laposte.sn | Site Web: www.laposte.sn";
         var pageWidth = doc.internal.pageSize.width;
         var textWidth = doc.getTextWidth(footerText);
         var centerX = (pageWidth - textWidth) / 2;
@@ -477,7 +477,7 @@ var PdfEcomService = /** @class */ (function () {
         doc.setFontSize(7);
         doc.setFont("helvetica", "italic");
         doc.setTextColor(77, 77, 255);
-        var footerText = "Groupe La Poste | Adresse: Avenue Peytavin Dakar, Senegal | Tel: +221 33 839 34 34 | Email: serviceclient@laposte.sn | Site Web: www.laposte.com";
+        var footerText = "Groupe La Poste | Adresse: Avenue Peytavin Dakar, Senegal | Tel: +221 33 839 34 34 | Email: serviceclient@laposte.sn | Site Web: www.laposte.sn";
         var pageWidth = doc.internal.pageSize.width;
         var textWidth = doc.getTextWidth(footerText);
         var centerX = (pageWidth - textWidth) / 2;

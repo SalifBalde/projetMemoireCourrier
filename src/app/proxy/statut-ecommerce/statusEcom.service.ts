@@ -8,7 +8,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 })
 export class StatusEcomService {
   apiName = 'etat_ecom';
-  private api_host: string = environment + this.apiName;
+  private api_host: string = environment.api_ecom + this.apiName;
   myToken = sessionStorage.getItem("token");
   private httpOptions = {
     headers: new HttpHeaders({

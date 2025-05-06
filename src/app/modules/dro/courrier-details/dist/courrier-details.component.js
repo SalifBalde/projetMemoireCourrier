@@ -56,13 +56,14 @@ exports.__esModule = true;
 exports.CourrierDetailsComponent = void 0;
 var core_1 = require("@angular/core");
 var CourrierDetailsComponent = /** @class */ (function () {
-    function CourrierDetailsComponent(courrierService, factureService, pdfService, cn23Service, fb, router, route) {
+    function CourrierDetailsComponent(courrierService, factureService, pdfService, cn23Service, fb, router, sessionService, route) {
         this.courrierService = courrierService;
         this.factureService = factureService;
         this.pdfService = pdfService;
         this.cn23Service = cn23Service;
         this.fb = fb;
         this.router = router;
+        this.sessionService = sessionService;
         this.route = route;
         this.courrier = null;
     }
@@ -83,9 +84,9 @@ var CourrierDetailsComponent = /** @class */ (function () {
             });
         });
     };
-    CourrierDetailsComponent.prototype.cn23 = function () {
+    CourrierDetailsComponent.prototype.cp71 = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var error_1;
+            var agent, fullname, error_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -96,10 +97,12 @@ var CourrierDetailsComponent = /** @class */ (function () {
                         _a.label = 1;
                     case 1:
                         _a.trys.push([1, 3, , 4]);
-                        // Appel du service pour créer le PDF
-                        return [4 /*yield*/, this.cn23Service.createPDF(this.courrier)];
+                        agent = this.sessionService.getAgentAttributes();
+                        fullname = agent ? agent.prenom + " " + agent.nom : 'Nom non trouvé';
+                        // Appel du service pour créer le PDF en passant fullname
+                        return [4 /*yield*/, this.cn23Service.createPDF(this.courrier, fullname)];
                     case 2:
-                        // Appel du service pour créer le PDF
+                        // Appel du service pour créer le PDF en passant fullname
                         _a.sent();
                         console.log('PDF généré avec succès.');
                         return [3 /*break*/, 4];

@@ -6,13 +6,13 @@ import {
 } from "./expedition/expedition-packet-import/expeditionCourPacketImport.module";
 
 const routes: Routes = [{ path: '', component: ArriereComponent },
-    //routes courrier ARRIERE
-    { path: 'reception/reception-arriere', loadChildren: () => import('./reception/reception-arriere/reception-arriere.module').then(m => m.ReceptionArriereModule) },
-    { path: 'reception/receptionPacket-arriere', loadChildren: () => import('./reception/reception-arriere/reception-packet/receptionPacket-arriere.module').then(m => m.ReceptionPacketArriereModule) },
-    { path: 'reception/receptioncolis-arriere', loadChildren: () => import('./reception/reception-arriere/reception-colis/receptionColis-arriere.module').then(m => m.ReceptionColisArriereModule) },
-    { path: 'expedition/expedition-arriere', loadChildren: () => import('./expedition/expedition-arriere/expedition-arriere.module').then(m => m.ExpeditionArriereModule) },
-    { path: 'expedition/expeditionPacket-arriere', loadChildren: () => import('./expedition/expedition-arriere/expedition-packet/expeditionPacket-arriere.module').then(m => m.ExpeditionPacketArriereModule) },
-    { path: 'expedition/expeditionColis-arriere', loadChildren: () => import('./expedition/expedition-arriere/expedition-colis/expeditionColis-arriere.module').then(m => m.ExpeditionColisArriereModule) },
+//routes courrier ARRIERE
+{ path: 'reception/reception-arriere', loadChildren: () => import('./reception/reception-arriere/reception-arriere.module').then(m => m.ReceptionArriereModule) },
+{ path: 'reception/receptionPacket-arriere', loadChildren: () => import('./reception/reception-arriere/reception-packet/receptionPacket-arriere.module').then(m => m.ReceptionPacketArriereModule) },
+{ path: 'reception/receptioncolis-arriere', loadChildren: () => import('./reception/reception-arriere/reception-colis/receptionColis-arriere.module').then(m => m.ReceptionColisArriereModule) },
+{ path: 'expedition/expedition-arriere', loadChildren: () => import('./expedition/expedition-arriere/expedition-arriere.module').then(m => m.ExpeditionArriereModule) },
+{ path: 'expedition/expeditionPacket-arriere', loadChildren: () => import('./expedition/expedition-arriere/expedition-packet/expeditionPacket-arriere.module').then(m => m.ExpeditionPacketArriereModule) },
+{ path: 'expedition/expeditionColis-arriere', loadChildren: () => import('./expedition/expedition-arriere/expedition-colis/expeditionColis-arriere.module').then(m => m.ExpeditionColisArriereModule) },
 
     { path: 'reception-import/receptionCourrierImport/:id', loadChildren: () => import('./reception-import/reception-import.module').then(m => m.ReceptionImportModule) },
     { path: 'reception-import/receptionColisImport/:id', loadChildren: () => import('./reception-import/reception-colis-import/receptionColis-import.module').then(m => m.ReceptionColisImportModule) },
@@ -22,12 +22,13 @@ const routes: Routes = [{ path: '', component: ArriereComponent },
     { path: 'reception-import/receptionPacketImport/:id', loadChildren: () => import('./reception-import/reception-packet-import/reception-packet-import.module').then(m => m.ReceptionPacketImportModule) },
 
 
-    { path: 'expedition', loadChildren: () => import('./expedition/expedition.module').then(m => m.ExpeditionModule) },
-    { path: 'expedition/expeditionpacket', loadChildren: () => import('./expedition/expedition-packet/expeditionPacket.module').then(m => m.ExpeditionPacketModule) },
-    { path: 'reception', loadChildren: () => import('./reception/reception.module').then(m => m.ReceptionModule) },
-    { path: 'reception/receptionColis', loadChildren: () => import('./reception/reception-colis/reception-colis.module').then(m => m.ReceptionColisModule) },
-    { path: 'reception/reception-E-commerce-livraison', loadChildren: () => import('./reception/reception-E-commerce-livraison/reception-E-commerce.module').then(m => m.ReceptionECommerceModule) },
-    { path: 'reception/reception-E-commerce-expedition', loadChildren: () => import('./reception/reception-E-commerce-expedition/reception-E-commerce.module').then(m => m.ReceptionECommerceModule) },
+{ path: 'expedition', loadChildren: () => import('./expedition/expedition.module').then(m => m.ExpeditionModule) },
+{ path: 'expedition-ecommerce', loadChildren: () => import('./expedition/expedition-E-commerce/expedition-E-commerce.module').then(m => m.ExpeditionECommerceModule) },
+{ path: 'expedition/expeditionpacket', loadChildren: () => import('./expedition/expedition-packet/expeditionPacket.module').then(m => m.ExpeditionPacketModule) },
+{ path: 'reception', loadChildren: () => import('./reception/reception.module').then(m => m.ReceptionModule) },
+{ path: 'reception/receptionColis', loadChildren: () => import('./reception/reception-colis/reception-colis.module').then(m => m.ReceptionColisModule) },
+{ path: 'reception/reception-E-commerce-livraison', loadChildren: () => import('./reception/reception-E-commerce-livraison/reception-E-commerce.module').then(m => m.ReceptionECommerceModule) },
+{ path: 'reception/reception-E-commerce-expedition', loadChildren: () => import('./reception/reception-E-commerce-expedition/reception-E-commerce.module').then(m => m.ReceptionECommerceModule) },
 
 //    { path: 'expedition', loadChildren: () => import('./expedition/expedition.module').then(m => m.ExpeditionModule) },
     { path: 'expedition/expeditionColis', loadChildren: () => import('./expedition/expedition-colis/expeditionColis.module').then(m => m.ExpeditionColisModule) },
@@ -55,7 +56,8 @@ const routes: Routes = [{ path: '', component: ArriereComponent },
     { path: 'RapportEcommerce', loadChildren: () => import('./rapportEcommerce/rapportEcommerce.module').then(m => m.RapportEcommerceModule) },
     { path: 'courrier-details/courrierDetailArriere/:id', loadChildren: () => import('./expedition/expedition-arriere/courrier-details/courrier-details.module').then(m => m.CourrierDetailsArriereModule) },
 
-    { path: 'courrier-details-rapport/courrierDetailArriere/:id', loadChildren: () => import('./rapport/courrier-details-rapport/courrier-details.module').then(m => m.CourrierDetailsrapportModule) },
+    // { path: 'courrier-details-rapport/courrierDetailArriere/:id', loadChildren: () => import('./rapport/courrier-details-rapport/courrier-details.module').then(m => m.CourrierDetailsrapportModule) },
+
 
      // saisir le courrier pour la reception
 

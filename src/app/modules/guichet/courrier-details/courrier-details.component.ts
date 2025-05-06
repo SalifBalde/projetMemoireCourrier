@@ -8,6 +8,9 @@ import { Cn23Service } from 'src/app/proxy/pdf/cn23.service';
 import { Cn23AService } from 'src/app/proxy/pdf/cn23A.service';
 import { FactureService } from 'src/app/proxy/pdf/facture.service';
 import { PdfService } from 'src/app/proxy/pdf/pdf.service';
+import {KeycloakProfile} from "keycloak-js";
+import {KeycloakService} from "keycloak-angular";
+import { SessionService } from 'src/app/proxy/auth/Session.service';
 
 @Component({
   selector: 'app-courrier-details',
@@ -15,6 +18,7 @@ import { PdfService } from 'src/app/proxy/pdf/pdf.service';
 })
 export class CourrierDetailsComponent implements OnInit {
   courrier: CourrierDto  = {};
+  fullname: string;
 
   constructor(
     private courrierService: CourrierService,
@@ -23,6 +27,7 @@ export class CourrierDetailsComponent implements OnInit {
     private cn23AService : Cn23AService,
     private cn23Service : Cn23Service,
     private cn22Service : Cn22Service,
+     private sessionService : SessionService,
     private fb: FormBuilder,
     private router: Router,
     private route : ActivatedRoute,
@@ -35,7 +40,9 @@ ngOnInit(): void {
         this.courrierService.getOneById(id).subscribe((courrier) => {
             this.courrier = { ...courrier };
         });
-
+        const agent = this.sessionService.getAgentAttributes();
+        if (agent) {
+          this.fullname = `${agent.prenom} ${agent.nom}`.normalize();}
       });
 
 }
@@ -66,8 +73,11 @@ async cp71() {
     }
 
     try {
-      // Appel du service pour créer le PDF
-      await this.cn23Service.createPDF(this.courrier);
+      const agent = this.sessionService.getAgentAttributes();
+      const fullname = agent ? `${agent.prenom} ${agent.nom}` : 'Nom non trouvé';
+
+      // Appel du service pour créer le PDF en passant fullname
+      await this.cn23Service.createPDF(this.courrier, fullname);
       console.log('PDF généré avec succès.');
     } catch (error) {
       console.error('Erreur lors de la génération du PDF :', error);
