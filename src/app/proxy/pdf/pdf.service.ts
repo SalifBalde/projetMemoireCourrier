@@ -446,6 +446,7 @@ export class PdfService {
             const finalY = (doc as any).autoTable.previous.finalY + 5;
             doc.setFontSize(9);
             doc.setFont("helvetica", "normal");
+            doc.text(`Poids : ${data.poids} g`, 190, finalY + 5, { align: "right" });
             doc.text(`Montant: ${data.montant} CFA`, 195, finalY + 10, { align: "right" });
          //   doc.text(`Taxe douane: ${data.taxeDouane} CFA`, 195, finalY + 15, { align: "right" });
          //   doc.text(`Taxe presentation: ${data.taxePresentation} CFA`, 195, finalY + 20, { align: "right" });
@@ -508,6 +509,7 @@ export class PdfService {
 
             doc.setFontSize(9);
             doc.setFont("helvetica", "normal");
+            doc.text(`Poids : ${data.poids} g`, 190, finalY + 5, { align: "right" });
             doc.text(`Montant: ${data.montant} CFA`, 195, finalY + 10, { align: "right" });
           /*   doc.text(`Taxe douane: ${data.taxeDouane} CFA`, 195, finalY + 15, {
                 align: "right",
