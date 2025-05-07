@@ -139,7 +139,7 @@ export class PdfService {
         doc.text(`Expediteur: ${data.expediteurPrenom || ""} ${data.expediteurNom || ""}`, margin, yOffset);
         yOffset += lineHeight;
 
-        doc.text(`Adresse: ${data.expediteurAdresse || ""} ${data.expediteurNom || ""}`, margin, yOffset);
+        doc.text(`Adresse: ${data.expediteurAdresse || ""}`, margin, yOffset);
         yOffset += lineHeight;
 
 
