@@ -488,43 +488,76 @@ export class ColisComponent implements OnInit {
 
     saveColis() {
         if (this.form.invalid) {
-            return;
+          return;
         }
 
         this.form.get('paysDestinationId')?.enable();
-        this.form.value.userId = this.sessionService.getAgentAttributes().id;
-        this.form.value.montant = this.totalMontant;
-        this.form.value.recommande = true;
-        this.form.value.details = this.courrier.details;
 
-        if (this.form.get('codeBarre')?.value)
-            this.form.value.codeBarre = this.label + this.form.get('codeBarre')?.value + 'SN';
+        // Mise à jour des valeurs dans le formulaire
+        this.form.patchValue({
+            userId: this.sessionService.getAgentAttributes().id,
+            montant: this.totalMontant,
+            recommande: true,
+            details: this.courrier.details,
+            codeBarre: this.form.get('codeBarre')?.value
+                ? this.label + this.form.get('codeBarre')?.value + 'SN'
+                : null,
+        });
 
+        // Concaténer les contenus
+        let contenuConcat = '';
         this.contenu.forEach((p) => {
-            this.form.value.contenu += `${p.contenu}:${p.quantite}:${p.poidsNet}:${p.valeur};`; // Concaténer chaque produit
-          });
+            contenuConcat += `${p.contenu}:${p.quantite}:${p.poidsNet}:${p.valeur};`;
+        });
+        this.form.patchValue({ contenu: contenuConcat });
 
         this.loading = true;
+        console.log(this.form.value);
+
         this.courrierService.save(this.form.value).subscribe(
             (result) => {
                 this.courrier = result;
                 this.loading = false;
-                this.router.navigateByUrl(
-                    '/guichet/courrier-details/' + this.courrier.id
-                );
+                this.router.navigateByUrl('/guichet/courrier-details/' + this.courrier.id);
             },
             (error) => {
-                this.messageService.add({
-                    severity: 'danger',
-                    summary: 'Error',
-                    detail: 'Erreur enregistrement',
-                    life: 3000,
-                });
                 this.loading = false;
+                if (error.status === 409) {
+                    this.messageService.add({
+                        severity: 'error',
+                        summary: 'Conflit',
+                        detail: 'Le code-barres est déjà utilisé par un autre colis.',
+                        life: 8000,
+                    });
+                } else if (error.status === 500) {
+                    this.messageService.add({
+                        severity: 'error',
+                        summary: 'Erreur serveur',
+                        detail: 'Erreur lors de l’enregistrement.',
+                        life: 3000,
+                    });
+                } else {
+                    this.messageService.add({
+                        severity: 'error',
+                        summary: 'Erreur',
+                        detail: 'Une erreur inconnue est survenue.',
+                        life: 3000,
+                    });
+                }
             }
         );
     }
 
+    handleValidationErrors(violations: any[]) {
+        for (const violation of violations) {
+            const field = violation.propertyPath;
+            const message = violation.message;
+            const control = this.form.get(field);
+            if (control) {
+                control.setErrors({backend: message});
+            }
+        }
+    }
     hideDialog() {
         this.clientDialog = false;
         this.destinataireDialog = false;

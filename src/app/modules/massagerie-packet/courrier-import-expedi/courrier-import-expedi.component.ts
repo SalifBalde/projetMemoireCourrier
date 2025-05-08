@@ -337,7 +337,7 @@ export class CourrierImportExpediComponent  implements  OnInit{
                     selectedColisCopy.forEach((colis) => {
                         const courrieId = colis.id;
                         colis.statutCourrierId = this.idStatutFermetureCourrier[0]?.id;
-                        colis.structureDestinationId = this.selectedStructure.id;
+                        colis.structureDestinationId = this.selectedStructure;
                         colis.structureDepotId = this.structureDepotId
                         // Ajout du montantTaxeDouane dans l'objet colis
                         colis.taxeDouane = colis.montantTaxeDouane;
@@ -367,14 +367,23 @@ export class CourrierImportExpediComponent  implements  OnInit{
 
                 },
                 (error) => {
-                    console.error('Erreur lors de l\'enregistrement de la fermeture:', error);
-                    this.messageService.add({
-                        severity: 'error',
-                        summary: 'Erreur',
-                        detail: 'Une erreur s\'est produite lors de l\'enregistrement de la fermeture.',
-                        life: 3000,
-                    });
+                    if (error.status === 409) {
+                        this.messageService.add({
+                            severity: 'error',
+                            summary: 'Numéro Dépeche !!',
+                            detail: 'Le  numéro de dépêche saisi existe déjà.',
+                            life: 8000,
+                        });
+                    } else if (error.status === 400) {
+                        this.messageService.add({
+                            severity: 'error',
+                            summary: 'Erreur',
+                            detail: 'Une erreur s\'est produite lors de l\'enregistrement de la fermeture.',
+                            life: 3000,
+                        });                    }
+
                 }
+
             );
         } catch (error) {
             console.error('Erreur inattendue:', error);

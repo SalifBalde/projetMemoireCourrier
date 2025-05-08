@@ -35,7 +35,7 @@ export  class FermetureService {
         return this.httpClient.post<any>(environment.api_host+'fermeture',fermeture, this.httpOptions);
     }
     saveFermetureImport(fermeture : Fermeturedto): Observable<any> {
-        return this.httpClient.post<any>(environment.api_host+'fermeture/saveFermetureImport',fermeture, this.httpOptions);
+        return this.httpClient.post<any>(environment.api_host+'fermeture/',fermeture, this.httpOptions);
     }
 
     getFermeturesByStructureDestination(structureId: string, idstatutCourrier:number, typeCourrierId:number): Observable<any[]> {
