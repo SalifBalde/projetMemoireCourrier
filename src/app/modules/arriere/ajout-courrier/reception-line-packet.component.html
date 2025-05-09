@@ -19,7 +19,7 @@
     </div>
 <hr>
 
-<div class="p-fluid grid" *ngIf="search">
+<div class="p-fluid grid" *ngIf="search " >
     <p-toast></p-toast>
 
     <br>
@@ -309,7 +309,7 @@
 <div class="col-8" *ngIf="search">
 
             <!-- Bouton Enregistrer -->
-            <div class="col-6 lg:col-offset-6 field" style="float:left" *ngIf="courrier">
+            <div class="col-6 lg:col-offset-6 field" style="float:left" *ngIf="courrier && courrier.statutCourrierId !== 10">
                 <p-button (click)="updateeCourrier()" [disabled]="!paysOrigineId || !poids || !codebarre" label="Valider" severity="success" />
             </div>
             <div class="col-6 lg:col-offset-6 field" style="float:left" *ngIf="!courrier">

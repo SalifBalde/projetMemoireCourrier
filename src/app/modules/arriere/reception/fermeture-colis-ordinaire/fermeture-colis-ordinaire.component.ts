@@ -114,6 +114,12 @@ export class FermetureColisOrdinaireComponent implements OnInit{
         this.fermetrureService.getFermeturesByCriteria(idstructureDest,idStatutCourrier,typeCourrierId).subscribe((data)=>{
             this.Listfermetures=data;
             console.log(this.Listfermetures)
+            this.Listfermetures = this.Listfermetures
+                .filter(fermeture =>
+                    fermeture.fermetureCourriers?.some(courrier => courrier.statutCourrierId === 21)
+                )
+                .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()); // tri décroissant (récent → ancien)
+
             this.Listfermetures.map(fermeture => {
 
                 const idStrure = fermeture?.structureDepotId.toString()

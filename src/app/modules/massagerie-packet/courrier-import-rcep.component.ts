@@ -112,17 +112,7 @@ export class CourrierImportRcepComponent  implements OnInit{
 
     }
 
-    // getAllColis(){
-    //
-    //     const  idstatut="21"
-    //
-    //     this.courrierService.findCourrierByStrutureDepotAndStatutId( this.sessionService.getAgentAttributes().structureId.toString(), idstatut).subscribe(
-    //         (result) => {
-    //             this.listcolis = result;
-    //             console.log(this.listcolis)
-    //         }
-    //     );
-    // }
+
     getCourriersByFermetureIdAndStatut(fermetureId:number , statutId:number, structureDestna:number){
         this.fermetureCourrierService.getCourriersByFermetureIdAndStatutAndPaysOrigin(fermetureId, statutId,structureDestna).subscribe(
             (result) => {

@@ -13,6 +13,7 @@ import {FormBuilder} from "@angular/forms";
 import {ActivatedRoute, Router} from "@angular/router";
 import {SuiviCourrierService} from "../../../proxy/suiviCourrier";
 import {FermetureService} from "../../../proxy/fermeture";
+import {FermetureCourrierService} from "../../../proxy/fermetureCourrier";
 
 
 @Component({
@@ -41,9 +42,11 @@ export class FermeturePacketInterieurComponent implements  OnInit{
     selectedCourriers!: any;
     suiviCourriers:any={}
     Listfermetures: any;
+    ListfermeturessansCourrier: any[]=[];
     paysOrigine: Paysdto={};
     libelleStructur: string
     selectedFermeture: any = null;
+     listeCourriers: CourrierDto[];
 
 
 
@@ -59,7 +62,7 @@ export class FermeturePacketInterieurComponent implements  OnInit{
                  private messageService: MessageService,
                  private  statutCourrierService: StatutCourrierService,
                  private  typeCourrierService:TypeCourrierService,
-                 private  suiviCourrier:SuiviCourrierService,
+                 private  fermetureCourrierService:FermetureCourrierService,
                  private fermetrureService : FermetureService
 
     ) {
@@ -86,6 +89,7 @@ export class FermeturePacketInterieurComponent implements  OnInit{
         })
         this.paysOrigine.id = 210
         console.log(this.iduser)
+        this.getCourrierByIdFermeture()
 
     }
 
@@ -101,29 +105,47 @@ export class FermeturePacketInterieurComponent implements  OnInit{
             .subscribe((data) => {
                 // Filtrer les fermetures qui ont des fermetureCourriers non vides
                  this.Listfermetures = data
+                this.ListfermeturessansCourrier= this.listeCourrier
                 console.log(this.Listfermetures);
                 this.Listfermetures = this.Listfermetures.filter(fermeture =>
                     fermeture.fermetureCourriers.length > 0 &&  // Vérifie que fermetureCourriers n'est pas vide
+
                     !fermeture.fermetureCourriers.some(courrier => courrier.statutCourrierId === 7)
                   //  fermeture.fermetureCourriers.every(courrier =>courrier.structureDestinationId=== idstructureDest)// Vérifie qu'aucun courrier n'a statutCourrierId === 7
 
-                );
-
-
+                )
                 console.log(this.Listfermetures);
+
+                this.Listfermetures = this.Listfermetures
+                    .filter(fermeture =>
+                        fermeture.fermetureCourriers?.some(courrier => courrier.statutCourrierId === 21)
+                    )
+                    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()); // tri décroissant (récent → ancien)
+
+
+
                 // Mettre à jour les libellés des structures
                 this.Listfermetures.forEach(fermeture => {
+                    this.ListfermeturessansCourrier=fermeture.fermetureCourriers
                     const idStrure = fermeture?.structureDepotId.toString();
                     this.structureService.getOne(idStrure).subscribe((structure) => {
                         this.libelleStructur = structure.libelle; // Mettre à jour directement dans l'objet fermeture
                     });
                 });
 
-                console.log(this.Listfermetures);
+                console.log(this.ListfermeturessansCourrier);
             });
     }
 
-
+    getCourrierByIdFermeture(){
+        console.log(this.selectedFermeture?.id)
+        this.fermetureCourrierService.getFermetureCourriersByFermetureId( this.selectedFermeture?.id).subscribe(
+            (result) => {
+                this.listeCourriers = result;
+                console.log(this.listeCourriers)
+            }
+        );
+    }
 
 
 

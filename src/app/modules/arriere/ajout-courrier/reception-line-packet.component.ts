@@ -174,12 +174,22 @@ export class ReceptionLinePacketComponent implements  OnInit {
                     console.log( this.client, this.destinataire, this.poids)// Stocke les données du colis
                     this.displayDialog = true;  // Affiche le dialog avec les informations
                     console.log(this.courrier)
-                    this.messageService.add({
-                        severity: 'success',
-                        summary: 'Colis trouvé',
-                        detail: 'Le colis  existe déjà veuillez saisir les taxes et  valider en bas .',
-                        life: 10000
-                    });
+                    if(this.courrier.statutCourrierId ===10){
+                        this.messageService.add({
+                            severity: 'info',
+                            summary: ' Colis déjà livré ',
+                            detail: ' Ce colis est déjà livré.',
+                            life: 8000
+                        });
+                    }else {
+                        this.messageService.add({
+                            severity: 'success',
+                            summary: 'Colis trouvé',
+                            detail: 'Le colis  existe déjà veuillez saisir les taxes et  valider en bas .',
+                            life: 10000
+                        });
+                    }
+
                 } else {
                     this.messageService.add({
                         severity: 'info',
