@@ -76,6 +76,9 @@ var CourrierDetailsComponent = /** @class */ (function () {
             _this.courrierService.getOneById(id).subscribe(function (courrier) {
                 _this.courrier = __assign({}, courrier);
             });
+            _this.courrierService.getOneById(id).subscribe(function (courrier) {
+                _this.courrier = __assign({}, courrier);
+            });
             var agent = _this.sessionService.getAgentAttributes();
             if (agent) {
                 _this.fullname = (agent.prenom + " " + agent.nom).normalize();

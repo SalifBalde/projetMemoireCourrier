@@ -756,6 +756,7 @@ export class CourrierOrdinaireComponent implements OnInit {
         const quantite = this.form.value.quantite;
         const timbreId = this.form.value.timbreId;
         this.selectedTimbre = this.stocksTimbre$.find((p) => p.id === timbreId);
+        // this.selectedTimbre = this.stocksTimbre$.find((p) => p.produitId === timbreId);
 
         if (quantite > this.selectedTimbre.quantite) {
             console.error('Quantité saisie supérieure au stock disponible.');
@@ -772,6 +773,7 @@ export class CourrierOrdinaireComponent implements OnInit {
             this.resetSelection();
         }
     }
+
     removeDetail(index: number) {
         this.courrier.details.splice(index, 1);
         this.updateMetrics();
