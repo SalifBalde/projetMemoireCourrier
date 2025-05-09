@@ -572,6 +572,7 @@ export class CourrierOrdinaireComponent implements OnInit {
                 this.label + this.form.get('codeBarre')?.value + 'SN';
 
         this.loading = true;
+        console.log(this.form.value)
         this.courrierService.save(this.form.value).subscribe(
             (result) => {
                 this.courrier = result;
@@ -581,13 +582,30 @@ export class CourrierOrdinaireComponent implements OnInit {
                 );
             },
             (error) => {
-                this.messageService.add({
-                    severity: 'danger',
-                    summary: 'Error',
-                    detail: 'Erreur enregistrement',
-                    life: 3000,
-                });
                 this.loading = false;
+                if (error.status === 409) {
+                    this.messageService.add({
+                        severity: 'error',
+                        summary: 'Code Barre',
+                        detail: 'Le code-barres est déjà utilisé par un autre courrier.',
+                        life: 8000,
+                    });
+                } else if (error.status === 500) {
+                    this.messageService.add({
+                        severity: 'error',
+                        summary: 'Erreur serveur',
+                        detail: 'Erreur lors de l’enregistrement.',
+                        life: 3000,
+                    });
+                } else {
+                    this.messageService.add({
+                        severity: 'error',
+                        summary: 'Erreur',
+                        detail: 'Une erreur inconnue est survenue.',
+                        life: 3000,
+                    });
+                }
+
             }
         );
     }

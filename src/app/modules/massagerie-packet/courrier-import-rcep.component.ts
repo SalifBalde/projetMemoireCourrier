@@ -228,7 +228,7 @@ export class CourrierImportRcepComponent  implements OnInit{
         console.log(this.selectedCourriers)
         this.selectedCourriers.forEach((courrier) => {
             // Mettre à jour le statut du courrier et l'ID de l'utilisateur
-            courrier.statutCourrierId = 6 ;  // Assurez-vous que l'ID du statut existe
+            courrier.statutCourrierId =6 ;  // Assurez-vous que l'ID du statut existe
             courrier.userId = this.iduser;
 
             console.log(courrier);

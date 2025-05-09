@@ -352,6 +352,7 @@ export class ExpeditionLettreComponent  implements  OnInit{
             console.log(selectedColisCopy);
 
             // Appel au service pour enregistrer la fermeture
+            console.log(this.fermetureData);
             this.fermetureService.saveFermeture(this.fermetureData).subscribe(
                 (response) => {
                     this.selectedFermeture = response;
@@ -394,13 +395,21 @@ export class ExpeditionLettreComponent  implements  OnInit{
 
                 },
                 (error) => {
-                    console.error('Erreur lors de l\'enregistrement de la fermeture:', error);
-                    this.messageService.add({
-                        severity: 'error',
-                        summary: 'Erreur',
-                        detail: 'Une erreur s\'est produite lors de l\'enregistrement de la fermeture.',
-                        life: 3000,
-                    });
+                    if (error.status === 409) {
+                        this.messageService.add({
+                            severity: 'error',
+                            summary: 'Numéro Dépeche !!',
+                            detail: 'Le  numéro de dépêche saisi existe déjà.',
+                            life: 8000,
+                        });
+                    } else if (error.status === 400) {
+                        this.messageService.add({
+                            severity: 'error',
+                            summary: 'Erreur',
+                            detail: 'Une erreur s\'est produite lors de l\'enregistrement de la fermeture.',
+                            life: 3000,
+                        });                    }
+
                 }
             );
         } catch (error) {
