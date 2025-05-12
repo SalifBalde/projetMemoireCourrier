@@ -34,15 +34,31 @@ export class Cn23Service {
         doc.text('BULLETIN EXPEDITION', pageWidth / 2, 14, { align: 'left' });
         doc.text(' CP71', pageHeight / 1, 14, { align: 'center' });
         doc.text('(ancien CP2)', pageWidth / 1.5, 28, { align: 'left' });
-        doc.text(`${data.codeBarre }`, pageWidth / 2, 26, { align: 'left' });
+        doc.text(`${data.codeBarre}`, pageWidth / 2, 26, { align: 'left' });
         doc.text(' ', pageWidth / 2, 40, { align: 'left' });
         doc.text('Valeur déclarée', pageWidth / 2, 55, { align: 'left' });
         doc.text(`${data.valeurDeclare ?? ''}`, pageHeight / 1, 55, { align: 'center' });
         doc.text('(Apposer les étiquettes officielles le cas échéant)', pageWidth / 2.3, 75, { align: 'left' });
-        doc.text(`Poids:                 ${data.poids ?? ''}              g`, pageWidth / 2.3, 90, { align: 'left' });
-        doc.text(`Taxe de port:     ${data.taxePresentation ?? ''}`, pageWidth / 2.3, 95, { align: 'left' });
-        doc.text(`Taxe VD:            ${data.valeurDeclare ?? '0'}`, pageWidth / 2.3, 100, { align: 'left' });
-        doc.text(`Net A payer:      ${data.montant ?? ''}`, pageWidth / 2.3, 105, { align: 'left' });
+        const valeurDeclaree = data.valeurDeclare ?? 0;
+        let taxeVD = 0;
+
+        if (valeurDeclaree === 0) {
+            taxeVD = 0;
+        } else if (valeurDeclaree <= 10000) {
+            taxeVD = 1500;
+        } else {
+            taxeVD = Math.ceil(valeurDeclaree / 10000) * 250;
+        }
+
+        const montantTotal = data.montant ?? 0;
+        const taxePort = montantTotal - taxeVD;
+
+
+        // Affichage
+        doc.text(`Poids:                 ${data.poids ?? '0'}              g`, pageWidth / 2.3, 90, { align: 'left' });
+        doc.text(`Taxe de port:     ${taxePort ?? '0'} CFA`, pageWidth / 2.3, 95, { align: 'left' });
+        doc.text(`Taxe VD:            ${taxeVD ?? '0'} CFA`, pageWidth / 2.3, 100, { align: 'left' });
+        doc.text(`Net à payer:      ${montantTotal ?? '0'} CFA`, pageWidth / 2.3, 105, { align: 'left' });
     }
 
 
@@ -83,7 +99,6 @@ export class Cn23Service {
             for (const word of words) {
                 const testLine = currentLine ? currentLine + ' ' + word : word;
 
-                // Correction spéciale pour 3ᵉ, 1er, etc.
                 if (testLine.length <= maxChars || word.match(/^\d+[ᵉer]{1,2}$/)) {
                     currentLine = testLine;
                 } else {
@@ -97,7 +112,6 @@ export class Cn23Service {
             return lines;
         }
 
-        // Utilisation
         const adresseTexte = `Adresse : ${data.destinataireAdresse || ''}`;
 
         const adresseLines = splitTextByWordsSmart(adresseTexte, 35);
@@ -108,18 +122,32 @@ export class Cn23Service {
             doc.text(line, adresseX, adresseY);
             adresseY += 4;
         });
+        const valeurDeclaree = data.valeurDeclare ?? 0;
+        let taxeVD = 0;
 
-        doc.text(`Poids :`, labelX, 85);
-        doc.text(`${data.poids ?? ''} g`, valueX, 85);
+        if (valeurDeclaree === 0) {
+            taxeVD = 0;
+        } else if (valeurDeclaree <= 10000) {
+            taxeVD = 1500;
+        } else {
+            taxeVD = Math.ceil(valeurDeclaree / 10000) * 250;
+        }
 
-        doc.text(`Taxe de port :`, labelX, 89);
-        doc.text(`${data.taxeDouane ?? ''}`, valueX, 89);
 
-        doc.text(`Taxe VD :`, labelX, 94);
-        doc.text(`${data.valeurDeclare ?? ''}`, valueX, 94);
+       const montantTotal = data.montant ?? 0;
+       const taxePort = montantTotal - taxeVD;
 
-        doc.text(`Net à payer :`, labelX, 99);
-        doc.text(`${data.montant ?? '' }`, valueX, 99);
+       doc.text(`Poids :`, labelX, 85);
+       doc.text(`${data.poids ?? '0'} g`, valueX, 85);
+
+       doc.text(`Taxe de port :`, labelX, 89);
+       doc.text(`${taxePort} CFA`, valueX, 89);
+
+       doc.text(`Taxe VD :`, labelX, 94);
+       doc.text(`${taxeVD} CFA`, valueX, 94);
+
+       doc.text(`Net à payer :`, labelX, 99);
+       doc.text(`${montantTotal} CFA`, valueX, 99);
     }
 
 
@@ -150,7 +178,7 @@ export class Cn23Service {
         doc.text(`${data.codeBarre}`, pageWidth / 1.10, 130, { align: 'right' });
         doc.text('NOTA -Aucune réclamation ne peut   ', pageWidth / 1, 170, { align: 'right' });
         doc.text('etre examinée sans la production du', pageWidth / 1.0085, 178, { align: 'right' });
-        doc.text(`Taxe reçue : ${data.montant}`, pageWidth / 1.09, 195, { align: 'right' });
+        doc.text(`Taxe reçue : ${data.montant} CFA`, pageWidth / 1.09, 195, { align: 'right' });
     }
 
     private async addFooter(doc: jsPDF, data: CourrierDto, fullname: string) {
@@ -191,7 +219,7 @@ export class Cn23Service {
 
         // Nom
         doc.text(`Nom : `, labeX, 59, { align: 'left' });
-        doc.text(`${data.destinataireNom ?? '' }`, valuX, 59, { align: 'left' });
+        doc.text(`${data.destinataireNom ?? ''}`, valuX, 59, { align: 'left' });
 
         // Prenom
         doc.text(`Prenom : `, labeX, 64, { align: 'left' });

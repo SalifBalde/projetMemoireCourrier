@@ -11,8 +11,8 @@ export const environment = {
     // api_stock: "http://10.6.4.202:8089/gestionstock-service/api/",
     locale_id: 'fr-FR',
     keycloak: {
-        // authority: 'https://auth.sn.post:8443/',
-        authority: 'https://localhost:9090/',
+        authority: 'https://auth.sn.post:8443/',
+        // authority: 'https://localhost:9090/',
         //authority: 'http://10.6.4.202',
         redirectUri: 'http://localhost:4200',
         postLogoutRedirectUri: 'http://localhost:4200/logout',

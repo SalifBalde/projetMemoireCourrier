@@ -29,19 +29,6 @@ export class BackofficeMenuComponent implements OnInit {
                     { label: 'E-commerce en Instance', icon: 'pi pi-fw pi-search', routerLink: ['/backoffice/ecommerce-instance'] },
                 ]
             },
-<<<<<<< HEAD
-=======
-            // {
-            //     label: 'Retouner',
-            //     items: [
-            //         {
-            //             label: 'Envoi a retourner',
-            //             icon: 'pi pi-fw pi-file-pdf',
-            //             routerLink: ['/backoffice/retourner-envoi'],
-            //         },
-            //     ],
-            // },
->>>>>>> 8aa7875452795dbecd0db07a78ae8424b56fbab5
             {
                 label: 'Paramétres',
                 icon: 'pi pi-fw pi-briefcase',
