@@ -48,7 +48,8 @@ var jspdf_1 = require("jspdf");
 require("jspdf-autotable");
 var jsbarcode_1 = require("jsbarcode");
 var PdfService = /** @class */ (function () {
-    function PdfService() {
+    function PdfService(sessionService) {
+        this.sessionService = sessionService;
     }
     PdfService.prototype.generatePDF = function (data) {
         return __awaiter(this, void 0, Promise, function () {
@@ -79,7 +80,7 @@ var PdfService = /** @class */ (function () {
                             this.addInvoiceDetailsPoids1(doc, data);
                         }
                         this.addFooter1(doc);
-                        fileName = "Facture_colis_" + data.code + ".pdf";
+                        fileName = "Reçu_517" + data.code + ".pdf";
                         doc.save(fileName);
                         return [2 /*return*/];
                 }
@@ -88,7 +89,7 @@ var PdfService = /** @class */ (function () {
     };
     PdfService.prototype.addHeader = function (doc) {
         return __awaiter(this, void 0, Promise, function () {
-            var logoLeft, logoWidth, logoHeight, title, titleWidth, pageWidth, centerX, titleY;
+            var logoLeft, logoWidth, logoHeight, date, printedBy, pageWidth, printedByWidth, printedByX, printedByY, title, titleWidth, centerX, titleY;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.loadImage("assets/layout/images/poste-removebg-preview.png")];
@@ -99,11 +100,20 @@ var PdfService = /** @class */ (function () {
                         if (logoLeft) {
                             doc.addImage(logoLeft, "PNG", 14, 8, logoWidth, logoHeight);
                         }
+                        date = new Date();
+                        printedBy = "Imprim\u00E9 le " + date.toLocaleString() + " par " + this.sessionService.getAgentAttributes().prenom + " " + this.sessionService.getAgentAttributes().nom;
+                        pageWidth = doc.internal.pageSize.width;
+                        printedByWidth = doc.getTextWidth(printedBy);
+                        printedByX = pageWidth - printedByWidth - 0.02;
+                        printedByY = 14;
+                        doc.setFontSize(10);
+                        doc.setFont("helvetica", "normal");
+                        doc.setTextColor(0, 0, 0);
+                        doc.text(printedBy, printedByX, printedByY);
                         doc.setFontSize(11);
                         doc.setFont("helvetica", "bold");
-                        title = "Reçu";
+                        title = "Reçu 517";
                         titleWidth = doc.getTextWidth(title);
-                        pageWidth = doc.internal.pageSize.width;
                         centerX = (pageWidth - titleWidth) / 2;
                         titleY = 182;
                         doc.text(title, centerX, titleY);
@@ -114,7 +124,7 @@ var PdfService = /** @class */ (function () {
     };
     PdfService.prototype.addHeader1 = function (doc) {
         return __awaiter(this, void 0, Promise, function () {
-            var logoLeft, logoWidth, logoHeight, title, titleWidth, pageWidth, centerX, titleY;
+            var logoLeft, logoWidth, logoHeight, date, printedBy, pageWidth, printedByWidth, printedByX, printedByY, title, titleWidth, centerX, titleY;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.loadImage("assets/layout/images/poste-removebg-preview.png")];
@@ -125,12 +135,20 @@ var PdfService = /** @class */ (function () {
                         if (logoLeft) {
                             doc.addImage(logoLeft, "PNG", 14, 160, logoWidth, logoHeight);
                         }
+                        date = new Date();
+                        printedBy = "Imprim\u00E9 le " + date.toLocaleString() + " par " + this.sessionService.getAgentAttributes().prenom + " " + this.sessionService.getAgentAttributes().nom;
+                        pageWidth = doc.internal.pageSize.width;
+                        printedByWidth = doc.getTextWidth(printedBy);
+                        printedByX = pageWidth - printedByWidth - 35;
+                        printedByY = 160;
+                        doc.setFontSize(10);
+                        doc.setFont("helvetica", "normal");
+                        doc.setTextColor(0, 0, 0);
+                        doc.text(printedBy, printedByX, printedByY);
                         doc.setFontSize(11);
                         doc.setFont("helvetica", "bold");
-                        doc.setTextColor(0, 0, 0);
-                        title = "Reçu";
+                        title = "Reçu 517";
                         titleWidth = doc.getTextWidth(title);
-                        pageWidth = doc.internal.pageSize.width;
                         centerX = (pageWidth - titleWidth) / 2;
                         titleY = 30;
                         doc.text(title, centerX, titleY);
@@ -144,38 +162,41 @@ var PdfService = /** @class */ (function () {
         var margin = 14;
         var rightMargin = margin;
         var rightTextStartX = pageWidth - rightMargin;
-        var lineHeight = 8;
+        var lineHeight = 6;
         var fontSize = 9;
         doc.setFont("helvetica", "normal");
         doc.setFontSize(fontSize);
-        var yOffset = 25;
-        doc.text(data.codeBarre || "", margin, yOffset);
-        yOffset += lineHeight;
+        var yOffset = 28;
+        // doc.text(data.codeBarre || "", margin, yOffset);
+        // yOffset += lineHeight;
+        // doc.text(`Agent : ${this.sessionService.getAgentAttributes().prenom || "" + ' ' +this.sessionService.getAgentAttributes().nom || ""}`, margin, yOffset);
+        // yOffset += lineHeight;
         doc.text("Structure Depot: " + (data.structureDepotLibelle || ""), margin, yOffset);
+        yOffset += lineHeight;
+        doc.text("Pays Origine: " + (data.paysOrigineLibelle || ""), margin, yOffset);
         yOffset += lineHeight;
         doc.text("Type Courrier: " + (data.typeCourrierLibelle || ""), margin, yOffset);
         yOffset += lineHeight;
         doc.text("Expediteur: " + (data.expediteurPrenom || "") + " " + (data.expediteurNom || ""), margin, yOffset);
         yOffset += lineHeight;
+        doc.text("Adresse: " + (data.expediteurAdresse || " N/A"), margin, yOffset);
+        yOffset += lineHeight;
         var rightSectionYOffset = yOffset - 25;
         var rightYPosition = rightSectionYOffset;
         doc.text("Destinataire: " + (data.destinatairePrenom || "") + " " + (data.destinataireNom || ""), rightTextStartX, rightYPosition, { align: "right" });
         rightYPosition += lineHeight;
-        doc.text("Pays Origine: " + (data.paysOrigineLibelle || ""), rightTextStartX, rightYPosition, { align: "right" });
+        doc.text("Adresse: " + (data.destinataireAdresse || 'N/A'), rightTextStartX, rightYPosition, { align: "right" });
         rightYPosition += lineHeight;
         doc.text("Pays Destination: " + (data.paysDestinationLibelle || ""), rightTextStartX, rightYPosition, { align: "right" });
         rightYPosition += lineHeight;
         var formatBoolean = function (value) { return (value ? "oui" : "non"); };
-        // Recommandé
         doc.text("Recommand\u00E9: " + formatBoolean(data.recommande), rightTextStartX, rightYPosition, { align: "right" });
         rightYPosition += lineHeight;
-        // AR
         doc.text("AR: " + formatBoolean(data.ar), rightTextStartX, rightYPosition, { align: "right" });
         rightYPosition += lineHeight;
-        // Express
         doc.text("Express: " + formatBoolean(data.express), rightTextStartX, rightYPosition, { align: "right" });
         rightYPosition += lineHeight;
-        this.addBarcode(doc, data.codeBarre, (pageWidth - 50) / 2, rightYPosition - 25, 50, 20);
+        this.addBarcode(doc, data.codeBarre, (pageWidth - 50) / 2, rightYPosition - 30, 50, 20);
     };
     PdfService.prototype.addRecipientAndSenderInfo1 = function (doc, data) {
         var pageWidth = doc.internal.pageSize.width;
@@ -188,9 +209,13 @@ var PdfService = /** @class */ (function () {
         var fontSize = 9;
         doc.setFontSize(fontSize);
         doc.setTextColor(0, 0, 0);
-        doc.text(data.codeBarre || "", margin, yOffset);
-        yOffset += lineSpacing;
+        // doc.text(data.codeBarre || "", margin, yOffset);
+        // yOffset += lineSpacing;
+        // doc.text(`Agent : ${this.sessionService.getAgentAttributes().prenom || "" + ' ' +this.sessionService.getAgentAttributes().nom || ""}`, margin, yOffset);
+        // yOffset += lineSpacing;
         doc.text("Structure Depot: " + (data.structureDepotLibelle || ""), margin, yOffset);
+        yOffset += lineSpacing;
+        doc.text("Pays d'origine: " + (data.paysOrigineLibelle || ""), margin, yOffset);
         yOffset += lineSpacing;
         doc.text("Type de Courrier: " + (data.typeCourrierLibelle || ""), margin, yOffset);
         yOffset += lineSpacing;
@@ -200,22 +225,21 @@ var PdfService = /** @class */ (function () {
         // yOffset += lineSpacing;
         doc.text("Expediteur: " + (data.expediteurPrenom || "") + " " + (data.expediteurNom || ""), margin, yOffset);
         yOffset += lineSpacing;
-        var rightSectionYOffset = yOffset - 20;
+        doc.text("Adresse : " + (data.expediteurAdresse || "N/A"), margin, yOffset);
+        yOffset += lineSpacing;
+        var rightSectionYOffset = yOffset - 32;
         var rightYPosition = rightSectionYOffset;
         doc.text("Destinataire: " + (data.destinatairePrenom || "") + " " + (data.destinataireNom || ""), rightTextStartX, rightYPosition, { align: "right" });
         rightYPosition += lineSpacing;
-        doc.text("Pays Origine: " + (data.paysOrigineLibelle || ""), rightTextStartX, rightYPosition, { align: "right" });
+        doc.text("Adresse : " + (data.destinataireAdresse || "N/A"), rightTextStartX, rightYPosition, { align: "right" });
         rightYPosition += lineSpacing;
         doc.text("Pays Destination: " + (data.paysDestinationLibelle || ""), rightTextStartX, rightYPosition, { align: "right" });
         rightYPosition += lineSpacing;
         var formatBoolean = function (value) { return (value ? "oui" : "non"); };
-        // Recommandé
         doc.text("Recommand\u00E9: " + formatBoolean(data.recommande), rightTextStartX, rightYPosition, { align: "right" });
         rightYPosition += lineSpacing;
-        // AR
         doc.text("AR: " + formatBoolean(data.ar), rightTextStartX, rightYPosition, { align: "right" });
         rightYPosition += lineSpacing;
-        // Express
         doc.text("Express: " + formatBoolean(data.express), rightTextStartX, rightYPosition, { align: "right" });
         rightYPosition += lineSpacing;
         this.addBarcode(doc, data.codeBarre, (pageWidth - 50) / 2, rightYPosition - 15, 50, 20);
@@ -266,7 +290,8 @@ var PdfService = /** @class */ (function () {
                     finalY = doc.autoTable.previous.finalY + 5;
                     doc.setFontSize(9);
                     doc.setFont("helvetica", "normal");
-                    doc.text("Montant: " + data.montant + " CFA", 195, finalY + 10, { align: "right" });
+                    doc.text("Poids : " + data.poids + " g", 190, finalY + 5, { align: "right" });
+                    doc.text("Montant : " + data.montant + " CFA", 195, finalY + 10, { align: "right" });
                     totalBoxWidth = 30;
                     totalBoxHeight = 9;
                     totalBoxX = 195 - totalBoxWidth;
@@ -308,6 +333,7 @@ var PdfService = /** @class */ (function () {
             var finalY = doc.autoTable.previous.finalY + 5;
             doc.setFontSize(9);
             doc.setFont("helvetica", "normal");
+            doc.text("Poids : " + data.poids + " g", 190, finalY + 5, { align: "right" });
             doc.text("Montant: " + data.montant + " CFA", 195, finalY + 10, { align: "right" });
             var totalBoxWidth = 30;
             var totalBoxHeight = 9;
@@ -366,6 +392,7 @@ var PdfService = /** @class */ (function () {
             var finalY = doc.autoTable.previous.finalY + 5;
             doc.setFontSize(9);
             doc.setFont("helvetica", "normal");
+            doc.text("Poids : " + data.poids + " g", 190, finalY + 5, { align: "right" });
             doc.text("Montant: " + data.montant + " CFA", 195, finalY + 10, { align: "right" });
             //   doc.text(`Taxe douane: ${data.taxeDouane} CFA`, 195, finalY + 15, { align: "right" });
             //   doc.text(`Taxe presentation: ${data.taxePresentation} CFA`, 195, finalY + 20, { align: "right" });
@@ -410,6 +437,7 @@ var PdfService = /** @class */ (function () {
             var finalY = doc.autoTable.previous.finalY + 5;
             doc.setFontSize(9);
             doc.setFont("helvetica", "normal");
+            doc.text("Poids : " + data.poids + " g", 190, finalY + 5, { align: "right" });
             doc.text("Montant: " + data.montant + " CFA", 195, finalY + 10, { align: "right" });
             /*   doc.text(`Taxe douane: ${data.taxeDouane} CFA`, 195, finalY + 15, {
                   align: "right",

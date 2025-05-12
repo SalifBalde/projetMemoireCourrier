@@ -9,12 +9,6 @@ import { StructureDto, StructureService } from 'src/app/proxy/structures';
 import { ExpeditionEcomService, ExpeditionEcomDto, ExpeditionEcomDetailsDto } from 'src/app/proxy/expeditionEcommerce';
 
 
-// interface Structure {
-//     id: number;
-//     nom: string;
-//     adresse?: string;
-// }
-
 @Component({
     selector: 'app-expedition-e-commerce',
     templateUrl: './expedition-e-commerce.component.html',
@@ -71,7 +65,7 @@ export class ExpeditionECommerceComponent implements OnInit {
       );
     }
 
-   
+
     buildForm() {
         this.form = this.fb.group({
             bureauDestination: [undefined, Validators.required],
@@ -118,12 +112,10 @@ export class ExpeditionECommerceComponent implements OnInit {
         }
     }
 
-
     getAllEcommerceByStatut() {
         this.loading = true;
         const id: string = '5';
         const bureauId: number = Number(this.sessionService.getAgentAttributes().structureId.toString());
-
 
         if (isNaN(bureauId)) {
             this.loading = false;
@@ -132,24 +124,32 @@ export class ExpeditionECommerceComponent implements OnInit {
 
         this.ecommerceService.findEcommerceByStatus(id, bureauId).subscribe(
             (data) => {
-                this.ecommerce$ = data;
+                this.ecommerce$ = data.map(e =>
+                    e.retourner
+                        ? {
+                            ...e,
+                            partenaireBureauLibelle: e.bureauDestinationLibelle,
+                            bureauDestinationLibelle: e.partenaireBureauLibelle
+                        }
+                        : e
+                );
                 this.loading = false;
             },
             (error) => {
                 this.loading = false;
-                console.error('Erreur de chargement des données', error);
             }
         );
+
     }
 
     mapIdsToEcommerce(selectedEcommerce: EcommerceDto[]): ExpeditionEcomDetailsDto[] {
         return selectedEcommerce.map(ecommerce => ({
-            ecommerceId: ecommerce.id, 
+            ecommerceId: ecommerce.id,
             ecommerceNumenvoie: ecommerce.numenvoi,
-            ecommerceNomClient: ecommerce.nomClient, 
-            ecommercePrenomClient: ecommerce.prenomClient, 
-            ecommerceIdbureau: ecommerce.idbureau, 
-            valider: true 
+            ecommerceNomClient: ecommerce.nomClient,
+            ecommercePrenomClient: ecommerce.prenomClient,
+            ecommerceIdbureau: ecommerce.idbureau,
+            valider: true
         }));
     }
 

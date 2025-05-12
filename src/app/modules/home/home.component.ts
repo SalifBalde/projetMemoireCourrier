@@ -19,7 +19,7 @@ console.log('User roles:', this.keycloak.getUserRoles());
 
     public isAdmin(): boolean {
         const userRoles = this.keycloak.getUserRoles();
-        return userRoles.includes('ROLE_ADMIN');
+        return userRoles.includes('ROLE_DCL');
       }
 
       public isGuichet(): boolean {
@@ -62,7 +62,7 @@ console.log('User roles:', this.keycloak.getUserRoles());
       async redirectBasedOnRole(): Promise<void>{
         const userRoles = this.keycloak.getUserRoles();
 
-        const isAdmin = userRoles.includes('ROLE_ADMIN');
+        const isAdmin = userRoles.includes('ROLE_DCL');
         const isReceveur = userRoles.includes('ROLE_RECEVEUR');
         const isGuichet = userRoles.includes('ROLE_GUICHET');
         const isGrandCaisse = userRoles.includes('ROLE_GRANDE_CAISSE');

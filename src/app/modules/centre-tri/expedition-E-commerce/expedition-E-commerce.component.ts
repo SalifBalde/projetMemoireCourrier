@@ -41,7 +41,7 @@ export class ExpeditionECommerceComponent implements OnInit {
     ) { }
 
     ngOnInit() {
-        this.initializeForm(); 
+        this.initializeForm();
         this.loadStructures();
         this.getAllEcommerceExpeditionCt()
         this.form.get('bureauDestination')?.valueChanges.subscribe((value) => {
@@ -59,6 +59,7 @@ export class ExpeditionECommerceComponent implements OnInit {
         this.structureService.findAll().subscribe(
             (result) => {
                 this.structure$ = result
+                // console.log(result);
             },
             (error) => {
                 console.error('Error loading structures', error);
@@ -86,20 +87,21 @@ export class ExpeditionECommerceComponent implements OnInit {
     getAllEcommerceExpeditionCt() {
         this.loading = true;
         this.ecommerceService.findEcommerceExpeditionCt().subscribe(
-            (data) => {
-                console.log('Données d\'expédition récupérées : ', data);
-                this.ecommerce$ = data;
+            (result) => {
+                if (result && result.length > 0 && result[0].retourner === true) {
+                    result.forEach(ecommerce => {
+                        const temp = ecommerce.partenaireBureauLibelle;
+                        ecommerce.partenaireBureauLibelle = ecommerce.bureauDestinationLibelle;
+                        ecommerce.bureauDestinationLibelle = temp;
+                    });
+                }
+                this.ecommerce$ = result;
                 this.loading = false;
             },
             (error) => {
-                console.error('Erreur lors du chargement des données d\'expédition', error);
                 this.loading = false;
-                this.messageService.add({
-                    severity: 'error',
-                    summary: 'Erreur',
-                    detail: 'Échec du chargement des données d\'expédition',
-                    life: 3000,
-                });
+                this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to load e-commerce reception data.' });
+                console.error('Error fetching e-commerce reception data', error);
             }
         );
     }
@@ -125,9 +127,16 @@ export class ExpeditionECommerceComponent implements OnInit {
             return;
         }
 
-        const invalidEcommerce = this.selectedEcommerce.find(
-            (ecommerce) => String(ecommerce.idbureau).trim() !== String(this.selectedStructure?.id).trim()
-        );
+        const invalidEcommerce = this.selectedEcommerce.find((ecommerce) => {
+            if (ecommerce.retourner) {
+                return (
+                    String(ecommerce.idbureau).trim() !== String(this.selectedStructure?.id).trim() &&
+                    String(ecommerce.idbureauPartenaire).trim() !== String(this.selectedStructure?.id).trim()
+                );
+            } else {
+                return String(ecommerce.idbureau).trim() !== String(this.selectedStructure?.id).trim();
+            }
+        });
 
         if (invalidEcommerce) {
             this.messageService.add({
@@ -140,7 +149,7 @@ export class ExpeditionECommerceComponent implements OnInit {
         }
 
         this.form.value.details = this.mapIdsToEcommerce(this.selectedEcommerce);
-        this.form.value.bureauExpediteur = this.selectedStructure?.id;
+        this.form.value.bureauExpediteur = this.sessionService.getAgentAttributes().structureId;
 
         this.expeditionEcomService.save(this.form.value).subscribe(
             (result) => {

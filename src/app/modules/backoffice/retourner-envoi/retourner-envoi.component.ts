@@ -71,9 +71,6 @@ export class RetournerEnvoiComponent implements OnInit {
         });
     }
 
-
-
-
     onSelectEcommerce(ecommerce: EcommerceDto) {
         if (this.selectedEcommerce.includes(ecommerce)) {
             this.selectedEcommerce = this.selectedEcommerce.filter(item => item !== ecommerce);
@@ -88,13 +85,13 @@ export class RetournerEnvoiComponent implements OnInit {
             return;
         }
 
-        const ids = this.selectedEcommerce.map(e => e.id); // Récupérer les IDs sélectionnés
+        const ids = this.selectedEcommerce.map(e => e.id);
 
         this.ecommerceService.retourner(ids).subscribe(
             (response) => {
                 this.messageService.add({ severity: 'success', summary: 'Succès', detail: 'Les envois ont été retournés avec succès.' });
-                this.getAllEcommerceReturn(); // Recharger la liste après l’opération
-                this.selectedEcommerce = []; // Réinitialiser la sélection
+                this.getAllEcommerceReturn();
+                this.selectedEcommerce = [];
             },
             (error) => {
                 console.error('Erreur lors du retour des envois', error);
@@ -102,9 +99,6 @@ export class RetournerEnvoiComponent implements OnInit {
             }
         );
     }
-
-
-
 
     getAllEcommerceReturn() {
         this.loading = true;

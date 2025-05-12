@@ -9,7 +9,7 @@ import { ExpeditionEcomCreateDto, ExpeditionEcomDto } from './models';  // Défi
 })
 export class ExpeditionEcomService {
     private apiName = 'expedition_ecom';
-    private api_host: string = environment + this.apiName;
+    private api_host: string = environment.api_ecom + this.apiName;
     private myToken = sessionStorage.getItem('token');
 
     private httpOptions = {
@@ -42,7 +42,7 @@ export class ExpeditionEcomService {
     save(item: ExpeditionEcomCreateDto): Observable<ExpeditionEcomDto> {
         return this.httpClient.post<ExpeditionEcomDto>(this.api_host, item, this.httpOptions);
     }
-    
+
     retourner(id: string) {
         let new_api_host = this.routerParam(this.api_host, '/retournerExpedition', id);
         return this.httpClient.post<ExpeditionEcomDto>(new_api_host, this.httpOptions);

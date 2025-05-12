@@ -40,12 +40,19 @@ ngOnInit(): void {
         this.courrierService.getOneById(id).subscribe((courrier) => {
             this.courrier = { ...courrier };
         });
+        this.courrierService.getOneById(id).subscribe((courrier) => {
+            this.courrier = { ...courrier };
+          });
+
         const agent = this.sessionService.getAgentAttributes();
         if (agent) {
           this.fullname = `${agent.prenom} ${agent.nom}`.normalize();}
       });
 
 }
+
+
+
 
 async imprimerFacture(){
     this.pdfService.generatePDF(this.courrier);

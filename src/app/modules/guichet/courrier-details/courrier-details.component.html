@@ -1,100 +1,122 @@
 <div class="grid">
     <div class="col-12 md:col-12">
-    <div class="card">
-        <p-toolbar>
-            <div class="p-toolbar-group-left flex flex-wrap">
-                <button pButton type="button" label="Imprmer" icon="pi pi-print" (click)="imprimerFacture()" class="p-button-info mr-2" ></button>
-                      <button pButton type="button" icon="pi pi-print mr-2" (click)="cn23()" class="p-button-success mr-2">Générer cn23</button>
-                      <button pButton type="button" icon="pi pi-print mr-2" (click)="cp71()" class="p-button-warning mr-2">Générer cp71</button>
-                      <button pButton type="button" icon="pi pi-print mr-2" (click)="cn22()" class="p-button-info mr-2">Générer cn22</button>
+        <div class="card">
+            <p-toolbar>
+                <div class="p-toolbar-group-left flex flex-wrap">
+                    <button pButton type="button" icon="pi pi-print mr-2" (click)="imprimerFacture()"
+                        class="p-button-info mr-2">
+                        Générer 517
+                    </button>
 
+                    <ng-container *ngIf="courrier?.typeCourrierId === 2">
+                        <button pButton type="button" icon="pi pi-print mr-2" (click)="cn23()"
+                            class="p-button-success mr-2">
+                            Générer cn23
+                        </button>
+                        <button pButton type="button" icon="pi pi-print mr-2" (click)="cp71()"
+                            class="p-button-warning mr-2">
+                            Générer cp71
+                        </button>
+                        <button pButton type="button" icon="pi pi-print mr-2" (click)="cn22()"
+                            class="p-button-info mr-2">
+                            Générer cn22
+                        </button>
+                    </ng-container>
+                </div>
+            </p-toolbar>
+        </div>
 
-
-            </div>
-        </p-toolbar>
-    </div>
     </div>
     <!-- Informations générales -->
     <div class="col-12 md:col-12">
-      <div class="card">
-        <h3>Informations Générales</h3>
-        <div class="grid">
-          <div class="col-6">
-            <p><strong>Code Barre:</strong> {{ courrier?.codeBarre }}</p>
-            <p><strong>Structure Dépôt:</strong> {{ courrier?.structureDepotLibelle }}</p>
-            <p><strong>Structure Destination:</strong> {{ courrier?.structureDestinationLibelle }}</p>
-            <p><strong>Type Courrier:</strong> {{ courrier?.typeCourrierLibelle }}</p>
-            <p><strong>Catégorie:</strong> {{ courrier?.categorieLibelle }}</p>
-            <p><strong>Poids:</strong> {{ courrier?.poids }} Kg</p>
-          </div>
-          <div class="col-6">
-            <p><strong>Expéditeur:</strong> {{ courrier?.expediteurNom }} {{ courrier?.expediteurPrenom }} / {{ courrier?.expediteurTelephone }}</p>
-            <p><strong>Destinataire:</strong> {{ courrier?.destinataireNom }} {{ courrier?.destinatairePrenom }} / {{ courrier?.destinataireTelephone }}</p>
-            <p><strong>Pays Origine:</strong> {{ courrier?.paysOrigineLibelle }}</p>
-            <p><strong>Pays Destination:</strong> {{ courrier?.paysDestinationLibelle }}</p>
-            <p><strong class="mr-2">Recommandé:</strong>
-                <p-tag icon="pi pi-check" *ngIf="courrier.recommande" severity="success" value="oui" class="p-element"></p-tag>
-             <p-tag icon="pi pi-times" *ngIf="!courrier.recommande" severity="danger" value="nom" class="p-element"></p-tag>
-            </p>
-            <p><strong class="mr-2">AR:</strong>
-                <p-tag icon="pi pi-check" *ngIf="courrier.ar" severity="success" value="oui" class="p-element"></p-tag>
-             <p-tag icon="pi pi-times" *ngIf="!courrier.ar" severity="danger" value="non" class="p-element"></p-tag>
-            </p>
-            <p><strong class="mr-2">Express:</strong>
-                <p-tag icon="pi pi-check" *ngIf="courrier.express" severity="success" value="oui" class="p-element"></p-tag>
-             <p-tag icon="pi pi-times" *ngIf="!courrier.express" severity="danger" value="non" class="p-element"></p-tag>
-            </p>
-          </div>
+        <div class="card">
+            <h3>Informations Générales</h3>
+            <div class="grid">
+                <div class="col-6">
+                    <p><strong>Code Barre:</strong> {{ courrier?.codeBarre }}</p>
+                    <p><strong>Structure Dépôt:</strong> {{ courrier?.structureDepotLibelle }}</p>
+                    <p><strong>Structure Destination:</strong> {{ courrier?.structureDestinationLibelle }}</p>
+                    <p><strong>Type Courrier:</strong> {{ courrier?.typeCourrierLibelle }}</p>
+                    <p><strong>Catégorie:</strong> {{ courrier?.categorieLibelle }}</p>
+                    <p><strong>Poids:</strong> {{ courrier?.poids }} Kg</p>
+                </div>
+                <div class="col-6">
+                    <p><strong>Expéditeur:</strong> {{ courrier?.expediteurNom }} {{ courrier?.expediteurPrenom }} / {{
+                        courrier?.expediteurTelephone }}</p>
+                    <p><strong>Destinataire:</strong> {{ courrier?.destinataireNom }} {{ courrier?.destinatairePrenom }}
+                        / {{ courrier?.destinataireTelephone }}</p>
+                    <p><strong>Pays Origine:</strong> {{ courrier?.paysOrigineLibelle }}</p>
+                    <p><strong>Pays Destination:</strong> {{ courrier?.paysDestinationLibelle }}</p>
+                    <p><strong class="mr-2">Recommandé:</strong>
+                        <p-tag icon="pi pi-check" *ngIf="courrier.recommande" severity="success" value="oui"
+                            class="p-element"></p-tag>
+                        <p-tag icon="pi pi-times" *ngIf="!courrier.recommande" severity="danger" value="nom"
+                            class="p-element"></p-tag>
+                    </p>
+                    <p><strong class="mr-2">AR:</strong>
+                        <p-tag icon="pi pi-check" *ngIf="courrier.ar" severity="success" value="oui"
+                            class="p-element"></p-tag>
+                        <p-tag icon="pi pi-times" *ngIf="!courrier.ar" severity="danger" value="non"
+                            class="p-element"></p-tag>
+                    </p>
+                    <p><strong class="mr-2">Express:</strong>
+                        <p-tag icon="pi pi-check" *ngIf="courrier.express" severity="success" value="oui"
+                            class="p-element"></p-tag>
+                        <p-tag icon="pi pi-times" *ngIf="!courrier.express" severity="danger" value="non"
+                            class="p-element"></p-tag>
+                    </p>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
 
 
 
     <!-- Détails des produits -->
     <div class="col-12 md:col-6">
-      <div class="card">
-        <h3>Détails des Produits</h3>
-        <p-table [value]="courrier?.details" [paginator]="true" [rows]="5">
-          <ng-template pTemplate="header">
-            <tr>
-              <th>Produit</th>
-              <th>Quantité</th>
-              <th>Prix Unitaire</th>
-              <th>Montant</th>
-            </tr>
-          </ng-template>
-          <ng-template pTemplate="body" let-detail>
-            <tr>
-              <td>{{ detail.produitLibelle }}</td>
-              <td>{{ detail.quantite }}</td>
-              <td>{{ detail.prix | customCurrency }}</td>
-              <td>{{ detail.quantite *  detail.prix | customCurrency }}</td>
-            </tr>
-          </ng-template>
-        </p-table>
-      </div>
+        <div class="card">
+            <h3>Détails des Produits</h3>
+            <p-table [value]="courrier?.details" [paginator]="true" [rows]="5">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th>Produit</th>
+                        <th>Quantité</th>
+                        <th>Prix Unitaire</th>
+                        <th>Montant</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-detail>
+                    <tr>
+                        <td>{{ detail.produitLibelle }}</td>
+                        <td>{{ detail.quantite }}</td>
+                        <td>{{ detail.prix | customCurrency }}</td>
+                        <td>{{ detail.quantite * detail.prix | customCurrency }}</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
     </div>
 
-     <!-- Résumé des taxes -->
-     <div class="col-12 md:col-6">
+    <!-- Résumé des taxes -->
+    <div class="col-12 md:col-6">
         <div class="card">
-          <h3>Résumé des Taxes</h3>
-          <div class="grid">
-            <div class="col-7" *ngIf="courrier?.taxeDouane">
-              <p><strong>Taxe Douane:</strong> {{ courrier?.taxeDouane | customCurrency }}</p>
+            <h3>Résumé des Taxes</h3>
+            <div class="grid">
+                <div class="col-7" *ngIf="courrier?.taxeDouane">
+                    <p><strong>Taxe Douane:</strong> {{ courrier?.taxeDouane | customCurrency }}</p>
+                </div>
+                <div class="col-7" *ngIf=" courrier?.taxePresentation">
+                    <p><strong>Taxe Présentation:</strong> {{ courrier?.taxePresentation | customCurrency }}</p>
+                </div>
+                <div class="col-7" *ngIf="courrier?.valeurDeclare">
+                    <p><strong>Taxe Valeur Déclaré:</strong> {{ courrier?.valeurDeclare | customCurrency }}</p>
+                </div>
+                <div class="col-7">
+                    <p><strong>Montant Total:</strong> {{ (courrier?.montant || 0) + (courrier?.taxeDouane || 0) +
+                        (courrier?.taxePresentation || 0) | customCurrency }}</p>
+                </div>
             </div>
-            <div class="col-7" *ngIf=" courrier?.taxePresentation">
-              <p><strong>Taxe Présentation:</strong> {{ courrier?.taxePresentation | customCurrency }}</p>
-            </div>
-           <div class="col-7" *ngIf="courrier?.valeurDeclare">
-              <p><strong>Taxe Valeur Déclaré:</strong> {{ courrier?.valeurDeclare | customCurrency }}</p>
-            </div>
-            <div class="col-7">
-              <p><strong>Montant Total:</strong> {{ (courrier?.montant || 0) + (courrier?.taxeDouane || 0) + (courrier?.taxePresentation || 0) | customCurrency }}</p>
-            </div>
-          </div>
         </div>
-      </div>
+    </div>
 
-  </div>
+</div>
