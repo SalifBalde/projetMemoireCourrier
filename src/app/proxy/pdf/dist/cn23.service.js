@@ -82,8 +82,8 @@ var Cn23Service = /** @class */ (function () {
         doc.text("" + ((_a = data.valeurDeclare) !== null && _a !== void 0 ? _a : ''), pageHeight / 1, 55, { align: 'center' });
         doc.text('(Apposer les étiquettes officielles le cas échéant)', pageWidth / 2.3, 75, { align: 'left' });
         doc.text("Poids:                 " + ((_b = data.poids) !== null && _b !== void 0 ? _b : '') + "              g", pageWidth / 2.3, 90, { align: 'left' });
-        doc.text("Taxe de port:     " + ((_c = data.taxeDouane) !== null && _c !== void 0 ? _c : ''), pageWidth / 2.3, 95, { align: 'left' });
-        doc.text("Taxe VD:            " + ((_d = data.taxePresentation) !== null && _d !== void 0 ? _d : ''), pageWidth / 2.3, 100, { align: 'left' });
+        doc.text("Taxe de port:     " + ((_c = data.taxePresentation) !== null && _c !== void 0 ? _c : ''), pageWidth / 2.3, 95, { align: 'left' });
+        doc.text("Taxe VD:            " + ((_d = data.valeurDeclare) !== null && _d !== void 0 ? _d : '0'), pageWidth / 2.3, 100, { align: 'left' });
         doc.text("Net A payer:      " + ((_e = data.montant) !== null && _e !== void 0 ? _e : ''), pageWidth / 2.3, 105, { align: 'left' });
     };
     Cn23Service.prototype.addRecipientInfo = function (doc, data) {
@@ -145,7 +145,7 @@ var Cn23Service = /** @class */ (function () {
         doc.text("Taxe de port :", labelX, 89);
         doc.text("" + ((_f = data.taxeDouane) !== null && _f !== void 0 ? _f : ''), valueX, 89);
         doc.text("Taxe VD :", labelX, 94);
-        doc.text("" + ((_g = data.taxePresentation) !== null && _g !== void 0 ? _g : ''), valueX, 94);
+        doc.text("" + ((_g = data.valeurDeclare) !== null && _g !== void 0 ? _g : ''), valueX, 94);
         doc.text("Net \u00E0 payer :", labelX, 99);
         doc.text("" + ((_h = data.montant) !== null && _h !== void 0 ? _h : ''), valueX, 99);
     };

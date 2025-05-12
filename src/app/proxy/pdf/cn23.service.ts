@@ -40,8 +40,8 @@ export class Cn23Service {
         doc.text(`${data.valeurDeclare ?? ''}`, pageHeight / 1, 55, { align: 'center' });
         doc.text('(Apposer les étiquettes officielles le cas échéant)', pageWidth / 2.3, 75, { align: 'left' });
         doc.text(`Poids:                 ${data.poids ?? ''}              g`, pageWidth / 2.3, 90, { align: 'left' });
-        doc.text(`Taxe de port:     ${data.taxeDouane ?? ''}`, pageWidth / 2.3, 95, { align: 'left' });
-        doc.text(`Taxe VD:            ${data.taxePresentation ?? ''}`, pageWidth / 2.3, 100, { align: 'left' });
+        doc.text(`Taxe de port:     ${data.taxePresentation ?? ''}`, pageWidth / 2.3, 95, { align: 'left' });
+        doc.text(`Taxe VD:            ${data.valeurDeclare ?? '0'}`, pageWidth / 2.3, 100, { align: 'left' });
         doc.text(`Net A payer:      ${data.montant ?? ''}`, pageWidth / 2.3, 105, { align: 'left' });
     }
 
@@ -116,7 +116,7 @@ export class Cn23Service {
         doc.text(`${data.taxeDouane ?? ''}`, valueX, 89);
 
         doc.text(`Taxe VD :`, labelX, 94);
-        doc.text(`${data.taxePresentation ?? ''}`, valueX, 94);
+        doc.text(`${data.valeurDeclare ?? ''}`, valueX, 94);
 
         doc.text(`Net à payer :`, labelX, 99);
         doc.text(`${data.montant ?? '' }`, valueX, 99);
