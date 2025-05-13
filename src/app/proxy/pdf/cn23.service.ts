@@ -178,7 +178,8 @@ export class Cn23Service {
         doc.text(`${data.codeBarre}`, pageWidth / 1.10, 130, { align: 'right' });
         doc.text('NOTA -Aucune réclamation ne peut   ', pageWidth / 1, 170, { align: 'right' });
         doc.text('etre examinée sans la production du', pageWidth / 1.0085, 178, { align: 'right' });
-        doc.text(`Taxe reçue : ${data.montant} CFA`, pageWidth / 1.09, 195, { align: 'right' });
+        doc.text(`Taxe reçue : `, pageWidth / 1.1, 195, { align: 'right' });
+        doc.text(`${data.montant ?? '0'} CFA`, pageWidth / 1.1, 195, { align: 'left' });
     }
 
     private async addFooter(doc: jsPDF, data: CourrierDto, fullname: string) {

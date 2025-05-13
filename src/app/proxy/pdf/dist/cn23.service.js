@@ -67,7 +67,7 @@ var Cn23Service = /** @class */ (function () {
         });
     };
     Cn23Service.prototype.addHeader = function (doc, data) {
-        var _a, _b, _c, _d, _e;
+        var _a, _b, _c, _d;
         var pageHeight = doc.internal.pageSize.height;
         var pageWidth = doc.internal.pageSize.width;
         doc.setFont('helvetica', 'bold');
@@ -81,13 +81,27 @@ var Cn23Service = /** @class */ (function () {
         doc.text('Valeur déclarée', pageWidth / 2, 55, { align: 'left' });
         doc.text("" + ((_a = data.valeurDeclare) !== null && _a !== void 0 ? _a : ''), pageHeight / 1, 55, { align: 'center' });
         doc.text('(Apposer les étiquettes officielles le cas échéant)', pageWidth / 2.3, 75, { align: 'left' });
-        doc.text("Poids:                 " + ((_b = data.poids) !== null && _b !== void 0 ? _b : '') + "              g", pageWidth / 2.3, 90, { align: 'left' });
-        doc.text("Taxe de port:     " + ((_c = data.taxePresentation) !== null && _c !== void 0 ? _c : ''), pageWidth / 2.3, 95, { align: 'left' });
-        doc.text("Taxe VD:            " + ((_d = data.valeurDeclare) !== null && _d !== void 0 ? _d : '0'), pageWidth / 2.3, 100, { align: 'left' });
-        doc.text("Net A payer:      " + ((_e = data.montant) !== null && _e !== void 0 ? _e : ''), pageWidth / 2.3, 105, { align: 'left' });
+        var valeurDeclaree = (_b = data.valeurDeclare) !== null && _b !== void 0 ? _b : 0;
+        var taxeVD = 0;
+        if (valeurDeclaree === 0) {
+            taxeVD = 0;
+        }
+        else if (valeurDeclaree <= 10000) {
+            taxeVD = 1500;
+        }
+        else {
+            taxeVD = Math.ceil(valeurDeclaree / 10000) * 250;
+        }
+        var montantTotal = (_c = data.montant) !== null && _c !== void 0 ? _c : 0;
+        var taxePort = montantTotal - taxeVD;
+        // Affichage
+        doc.text("Poids:                 " + ((_d = data.poids) !== null && _d !== void 0 ? _d : '0') + "              g", pageWidth / 2.3, 90, { align: 'left' });
+        doc.text("Taxe de port:     " + (taxePort !== null && taxePort !== void 0 ? taxePort : '0') + " CFA", pageWidth / 2.3, 95, { align: 'left' });
+        doc.text("Taxe VD:            " + (taxeVD !== null && taxeVD !== void 0 ? taxeVD : '0') + " CFA", pageWidth / 2.3, 100, { align: 'left' });
+        doc.text("Net \u00E0 payer:      " + (montantTotal !== null && montantTotal !== void 0 ? montantTotal : '0') + " CFA", pageWidth / 2.3, 105, { align: 'left' });
     };
     Cn23Service.prototype.addRecipientInfo = function (doc, data) {
-        var _a, _b, _c, _d, _e, _f, _g, _h;
+        var _a, _b, _c, _d, _e, _f, _g;
         var pageWidth = doc.internal.pageSize.width;
         var marginRight = pageWidth / 1.14;
         var lineHeight = 6;
@@ -117,7 +131,6 @@ var Cn23Service = /** @class */ (function () {
             for (var _i = 0, words_1 = words; _i < words_1.length; _i++) {
                 var word = words_1[_i];
                 var testLine = currentLine ? currentLine + ' ' + word : word;
-                // Correction spéciale pour 3ᵉ, 1er, etc.
                 if (testLine.length <= maxChars || word.match(/^\d+[ᵉer]{1,2}$/)) {
                     currentLine = testLine;
                 }
@@ -131,7 +144,6 @@ var Cn23Service = /** @class */ (function () {
             }
             return lines;
         }
-        // Utilisation
         var adresseTexte = "Adresse : " + (data.destinataireAdresse || '');
         var adresseLines = splitTextByWordsSmart(adresseTexte, 35);
         var adresseX = labelX;
@@ -140,14 +152,27 @@ var Cn23Service = /** @class */ (function () {
             doc.text(line, adresseX, adresseY);
             adresseY += 4;
         });
+        var valeurDeclaree = (_e = data.valeurDeclare) !== null && _e !== void 0 ? _e : 0;
+        var taxeVD = 0;
+        if (valeurDeclaree === 0) {
+            taxeVD = 0;
+        }
+        else if (valeurDeclaree <= 10000) {
+            taxeVD = 1500;
+        }
+        else {
+            taxeVD = Math.ceil(valeurDeclaree / 10000) * 250;
+        }
+        var montantTotal = (_f = data.montant) !== null && _f !== void 0 ? _f : 0;
+        var taxePort = montantTotal - taxeVD;
         doc.text("Poids :", labelX, 85);
-        doc.text(((_e = data.poids) !== null && _e !== void 0 ? _e : '') + " g", valueX, 85);
+        doc.text(((_g = data.poids) !== null && _g !== void 0 ? _g : '0') + " g", valueX, 85);
         doc.text("Taxe de port :", labelX, 89);
-        doc.text("" + ((_f = data.taxeDouane) !== null && _f !== void 0 ? _f : ''), valueX, 89);
+        doc.text(taxePort + " CFA", valueX, 89);
         doc.text("Taxe VD :", labelX, 94);
-        doc.text("" + ((_g = data.valeurDeclare) !== null && _g !== void 0 ? _g : ''), valueX, 94);
+        doc.text(taxeVD + " CFA", valueX, 94);
         doc.text("Net \u00E0 payer :", labelX, 99);
-        doc.text("" + ((_h = data.montant) !== null && _h !== void 0 ? _h : ''), valueX, 99);
+        doc.text(montantTotal + " CFA", valueX, 99);
     };
     Cn23Service.prototype.addSenderInfo = function (doc, data) {
         var _a, _b, _c;
@@ -168,13 +193,15 @@ var Cn23Service = /** @class */ (function () {
         doc.text('aucun objet dangereux interdit par la   ', pageWidth / 2, 189, { align: 'left' });
     };
     Cn23Service.prototype.addDetails = function (doc, data) {
+        var _a;
         var pageWidth = doc.internal.pageSize.width;
         doc.text('A remplir par le bureau de  ', pageWidth / 1.05, 110, { align: 'right' });
         doc.text('Numéro colis: ', pageWidth / 1.11, 120, { align: 'right' });
         doc.text("" + data.codeBarre, pageWidth / 1.10, 130, { align: 'right' });
         doc.text('NOTA -Aucune réclamation ne peut   ', pageWidth / 1, 170, { align: 'right' });
         doc.text('etre examinée sans la production du', pageWidth / 1.0085, 178, { align: 'right' });
-        doc.text("Taxe re\u00E7ue : " + data.montant, pageWidth / 1.09, 195, { align: 'right' });
+        doc.text("Taxe re\u00E7ue : ", pageWidth / 1.1, 195, { align: 'right' });
+        doc.text(((_a = data.montant) !== null && _a !== void 0 ? _a : '0') + " CFA", pageWidth / 1.1, 195, { align: 'left' });
     };
     Cn23Service.prototype.addFooter = function (doc, data, fullname) {
         var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p;
