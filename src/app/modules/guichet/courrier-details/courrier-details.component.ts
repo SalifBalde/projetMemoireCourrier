@@ -38,10 +38,13 @@ ngOnInit(): void {
         const id = params['id'];
 
         this.courrierService.getOneById(id).subscribe((courrier) => {
-            this.courrier = { ...courrier };
+            this.courrier = { ...courrier }
+            console.log(courrier);
+            ;
         });
         this.courrierService.getOneById(id).subscribe((courrier) => {
-            this.courrier = { ...courrier };
+            this.courrier = { ...courrier }
+            console.log(courrier);
           });
 
         const agent = this.sessionService.getAgentAttributes();

@@ -46,23 +46,48 @@ exports.Cn23Service = void 0;
 var core_1 = require("@angular/core");
 var jspdf_1 = require("jspdf");
 require("jspdf-autotable");
+var rxjs_1 = require("rxjs");
 var Cn23Service = /** @class */ (function () {
-    function Cn23Service() {
+    function Cn23Service(sessionService, clientService) {
+        this.sessionService = sessionService;
+        this.clientService = clientService;
     }
     Cn23Service.prototype.createPDF = function (data, fullname) {
         return __awaiter(this, void 0, Promise, function () {
-            var doc, fileName;
+            var doc, keyword, client, error_1, fileName;
             return __generator(this, function (_a) {
-                doc = new jspdf_1["default"]({ format: 'A4', orientation: 'landscape' });
-                this.addHeader(doc, data);
-                this.addRecipientInfo(doc, data);
-                this.addSenderInfo(doc, data);
-                this.addDetails(doc, data);
-                this.addFooter(doc, data, fullname);
-                this.drawLines(doc, data);
-                fileName = "CP71.pdf";
-                doc.save(fileName);
-                return [2 /*return*/];
+                switch (_a.label) {
+                    case 0:
+                        doc = new jspdf_1["default"]({ format: 'A4', orientation: 'landscape' });
+                        keyword = data.destinataireTelephone;
+                        if (!keyword) return [3 /*break*/, 4];
+                        _a.label = 1;
+                    case 1:
+                        _a.trys.push([1, 3, , 4]);
+                        return [4 /*yield*/, rxjs_1.firstValueFrom(this.clientService.searchClient(keyword))];
+                    case 2:
+                        client = _a.sent();
+                        if (client === null || client === void 0 ? void 0 : client.adresse) {
+                            data.destinataireAdresse = client.adresse;
+                            data.destinataireNom = data.destinataireNom || client.nom;
+                            data.destinatairePrenom = data.destinatairePrenom || client.prenom;
+                        }
+                        return [3 /*break*/, 4];
+                    case 3:
+                        error_1 = _a.sent();
+                        console.error('Erreur lors de la récupération du client :', error_1);
+                        return [3 /*break*/, 4];
+                    case 4:
+                        this.addHeader(doc, data);
+                        this.addRecipientInfo(doc, data);
+                        this.addSenderInfo(doc, data);
+                        this.addDetails(doc, data);
+                        this.addFooter(doc, data, fullname);
+                        this.drawLines(doc, data);
+                        fileName = 'CP71.pdf';
+                        doc.save(fileName);
+                        return [2 /*return*/];
+                }
             });
         });
     };
@@ -181,11 +206,12 @@ var Cn23Service = /** @class */ (function () {
         doc.text('01  ', pageWidth / 2, 120, { align: 'center' });
         doc.text('Bureau ', pageHeight / 1, 120, { align: 'left' });
         doc.text("" + ((_a = data.structureDepotLibelle) !== null && _a !== void 0 ? _a : ''), pageHeight / 1, 135, { align: 'center' });
-        doc.text('Valeur déclarée en  ', pageWidth / 2, 130, { align: 'center' });
+        doc.text('Valeur déclarée en CFA ', pageWidth / 2, 130, { align: 'center' });
+        doc.text("" + data.valeurDeclare, pageWidth / 2, 136, { align: 'center' });
         doc.text('Poids brute ', pageWidth / 2, 145, { align: 'center' });
         doc.text(((_b = data.poids) !== null && _b !== void 0 ? _b : '') + " g", pageWidth / 2, 149, { align: 'center' });
-        doc.text("Taxe", pageWidth / 1.8, 145, { align: 'left' });
-        doc.text("" + ((_c = data.taxeDouane) !== null && _c !== void 0 ? _c : ''), pageWidth / 1.8, 149, { align: 'left' });
+        doc.text("Taxes", pageWidth / 1.8, 145, { align: 'left' });
+        doc.text(((_c = data.montant) !== null && _c !== void 0 ? _c : '') + " CFA", pageWidth / 1.8, 149, { align: 'left' });
         doc.text("J'ai perçu le colis sur ce ", pageHeight / 1, 160, { align: 'center' });
         doc.text('Déclaration ', pageWidth / 2.040, 158, { align: 'center' });
         doc.text('Date et signature ', pageWidth / 2.05, 163, { align: 'center' });
@@ -204,10 +230,10 @@ var Cn23Service = /** @class */ (function () {
         doc.text(((_a = data.montant) !== null && _a !== void 0 ? _a : '0') + " CFA", pageWidth / 1.1, 195, { align: 'left' });
     };
     Cn23Service.prototype.addFooter = function (doc, data, fullname) {
-        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p;
+        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o;
         return __awaiter(this, void 0, void 0, function () {
-            var pageWidth, pageHeight, imagePath, labelX, valueX, labeX, valuX, yPosition, destinataireAdresse;
-            return __generator(this, function (_q) {
+            var pageWidth, pageHeight, imagePath, labelX, valueX, labeX, valuX, yPosition, destinataireAdresse, date;
+            return __generator(this, function (_p) {
                 pageWidth = doc.internal.pageSize.width;
                 pageHeight = doc.internal.pageSize.height;
                 imagePath = 'assets/layout/images/poste-removebg-preview.png';
@@ -249,15 +275,17 @@ var Cn23Service = /** @class */ (function () {
                 doc.text("" + ((_m = data.destinataireCodePostal) !== null && _m !== void 0 ? _m : ''), valuX, 84, { align: 'left' });
                 doc.text('Timbre de la ', pageHeight / 13, 95, { align: 'left' });
                 doc.text('Bureau ', pageHeight / 3, 95, { align: 'left' });
-                doc.text("" + ((_o = data.structureDestinationLibelle) !== null && _o !== void 0 ? _o : ''), pageWidth / 4, 99, { align: 'left' });
+                doc.text("" + 'DAKAR MESSAGERIE', pageWidth / 4, 104, { align: 'left' });
                 doc.text('Droit de douane ', pageHeight / 13, 105, { align: 'left' });
                 doc.text('Catégorie de colis ', pageHeight / 13, 115, { align: 'left' });
                 doc.text('aerien ', pageHeight / 10, 150, { align: 'left' });
                 doc.text('surface ', pageWidth / 4, 150, { align: 'left' });
                 doc.text('A', pageWidth / 50, 59, { align: 'right' });
-                doc.text("Bureau: " + ((_p = data.structureDepotLibelle) !== null && _p !== void 0 ? _p : ''), pageHeight / 10, 8, { align: 'left' });
+                doc.text("Bureau: " + ((_o = data.structureDepotLibelle) !== null && _o !== void 0 ? _o : ''), pageHeight / 10, 8, { align: 'left' });
                 doc.text('LA POSTE SENEGAL', pageHeight / 2, 3, { align: 'right' });
                 doc.text("Agent: " + fullname, pageWidth / 2, 8, { align: 'center' });
+                date = new Date();
+                doc.text("Date d'op\u00E9ration: " + date.toLocaleString(), pageWidth / 1.4, 8, { align: 'center' });
                 doc.text("Instruction de l'expéditeur en cas de non-livraison ", pageHeight / 13, 160, { align: 'left' });
                 doc.text("Renvoyer à l'expéditeur ", pageHeight / 13, 170, { align: 'left' });
                 doc.text('Remarque: Pour tenir compte des besoins de leur service, les Administrations ont l\'habitude d\'utiliser cette formule unique , soit comme partie de la formule-Liasse CP72 ', pageHeight / 29, 209, { align: 'left' });

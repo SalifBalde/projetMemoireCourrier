@@ -75,9 +75,12 @@ var CourrierDetailsComponent = /** @class */ (function () {
             var id = params['id'];
             _this.courrierService.getOneById(id).subscribe(function (courrier) {
                 _this.courrier = __assign({}, courrier);
+                console.log(courrier);
+                ;
             });
             _this.courrierService.getOneById(id).subscribe(function (courrier) {
                 _this.courrier = __assign({}, courrier);
+                console.log(courrier);
             });
             var agent = _this.sessionService.getAgentAttributes();
             if (agent) {

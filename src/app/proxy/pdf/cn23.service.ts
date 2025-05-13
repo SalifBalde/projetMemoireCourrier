@@ -2,16 +2,37 @@ import { Injectable } from '@angular/core';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import { CourrierDto } from '../courrier';
+import { SessionService } from '../auth/Session.service';
+import { firstValueFrom } from 'rxjs';
+import { ClientDto, ClientService } from '../client';
 
 @Injectable({
     providedIn: 'root',
 })
 export class Cn23Service {
 
+    constructor(
+        private sessionService: SessionService,
+        private clientService: ClientService
+      ) {}
 
 
-    async createPDF(data: any, fullname: string): Promise<void> {
+    async createPDF(data: CourrierDto, fullname: string): Promise<void> {
         const doc = new jsPDF({ format: 'A4', orientation: 'landscape' });
+        const keyword = data.destinataireTelephone;
+
+        if (keyword) {
+          try {
+            const client: ClientDto = await firstValueFrom(this.clientService.searchClient(keyword));
+            if (client?.adresse) {
+              data.destinataireAdresse = client.adresse;
+              data.destinataireNom = data.destinataireNom || client.nom;
+              data.destinatairePrenom = data.destinatairePrenom || client.prenom;
+            }
+          } catch (error) {
+            console.error('Erreur lors de la récupération du client :', error);
+          }
+        }
 
         this.addHeader(doc, data);
         this.addRecipientInfo(doc, data);
@@ -20,9 +41,9 @@ export class Cn23Service {
         this.addFooter(doc, data, fullname);
         this.drawLines(doc, data);
 
-        const fileName = "CP71.pdf";
+        const fileName = 'CP71.pdf';
         doc.save(fileName);
-    }
+      }
 
     private addHeader(doc: jsPDF, data: CourrierDto) {
         const pageHeight = doc.internal.pageSize.height;
@@ -158,11 +179,13 @@ export class Cn23Service {
         doc.text('01  ', pageWidth / 2, 120, { align: 'center' });
         doc.text('Bureau ', pageHeight / 1, 120, { align: 'left' });
         doc.text(`${data.structureDepotLibelle ?? ''}`, pageHeight / 1, 135, { align: 'center' });
-        doc.text('Valeur déclarée en  ', pageWidth / 2, 130, { align: 'center' });
+        doc.text('Valeur déclarée en CFA ', pageWidth / 2, 130, { align: 'center' });
+        doc.text(`${data.valeurDeclare}`, pageWidth / 2, 136, { align: 'center' });
+
         doc.text('Poids brute ', pageWidth / 2, 145, { align: 'center' });
         doc.text(`${data.poids ?? ''} g`, pageWidth / 2, 149, { align: 'center' });
-        doc.text(`Taxe`, pageWidth / 1.8, 145, { align: 'left' });
-        doc.text(`${data.taxeDouane ?? ''}`, pageWidth / 1.8, 149, { align: 'left' });
+        doc.text(`Taxes`, pageWidth / 1.8, 145, { align: 'left' });
+        doc.text(`${data.montant ?? ''} CFA`, pageWidth / 1.8, 149, { align: 'left' });
         doc.text("J'ai perçu le colis sur ce ", pageHeight / 1, 160, { align: 'center' });
         doc.text('Déclaration ', pageWidth / 2.040, 158, { align: 'center' });
         doc.text('Date et signature ', pageWidth / 2.05, 163, { align: 'center' });
@@ -244,7 +267,7 @@ export class Cn23Service {
 
         doc.text('Timbre de la ', pageHeight / 13, 95, { align: 'left' });
         doc.text('Bureau ', pageHeight / 3, 95, { align: 'left' });
-        doc.text(`${data.structureDestinationLibelle ?? ''}`, pageWidth / 4, 99, { align: 'left' });
+        doc.text(`${'DAKAR MESSAGERIE'}`, pageWidth / 4, 104, { align: 'left' });
         doc.text('Droit de douane ', pageHeight / 13, 105, { align: 'left' });
         doc.text('Catégorie de colis ', pageHeight / 13, 115, { align: 'left' });
         doc.text('aerien ', pageHeight / 10, 150, { align: 'left' });
@@ -253,6 +276,9 @@ export class Cn23Service {
         doc.text(`Bureau: ${data.structureDepotLibelle ?? ''}`, pageHeight / 10, 8, { align: 'left' });
         doc.text('LA POSTE SENEGAL', pageHeight / 2, 3, { align: 'right' });
         doc.text(`Agent: ${fullname}`, pageWidth / 2, 8, { align: 'center' });
+        const date: Date = new Date();
+        doc.text(`Date d'opération: ${date.toLocaleString() }`, pageWidth / 1.4, 8, { align: 'center' });
+
         doc.text("Instruction de l'expéditeur en cas de non-livraison ", pageHeight / 13, 160, { align: 'left' });
         doc.text("Renvoyer à l'expéditeur ", pageHeight / 13, 170, { align: 'left' });
         doc.text('Remarque: Pour tenir compte des besoins de leur service, les Administrations ont l\'habitude d\'utiliser cette formule unique , soit comme partie de la formule-Liasse CP72 ', pageHeight / 29, 209, { align: 'left' });
