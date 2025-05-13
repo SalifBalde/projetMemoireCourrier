@@ -3,20 +3,20 @@
     <div class="card">
         <p-toolbar>
             <div class="p-toolbar-group-left flex flex-wrap" [ngClass]="{'annulation-filigrane': courrier.statutCourrierId ===27}">
-                <button pButton type="button" icon="pi pi-print mr-2" (click)="imprimerFacture()"
+                <button *ngIf="courrier.statutCourrierId !==27" pButton type="button" icon="pi pi-print mr-2" (click)="imprimerFacture()"
                         class="p-button-info mr-2">
                         Générer 517
                     </button>
 
-                        <button pButton type="button" icon="pi pi-print mr-2" (click)="cn23()"
+                        <button *ngIf="courrier?.typeCourrierId === 2 && courrier.statutCourrierId !==27" pButton type="button" icon="pi pi-print mr-2" (click)="cn23()"
                             class="p-button-success mr-2">
                             Générer cn23
                         </button>
-                        <button *ngIf="courrier?.typeCourrierId === 2 || courrier.statutCourrierId !==27" pButton type="button" icon="pi pi-print mr-2" (click)="cp71()"
+                        <button *ngIf="courrier?.typeCourrierId === 2 && courrier.statutCourrierId !==27" pButton type="button" icon="pi pi-print mr-2" (click)="cp71()"
                             class="p-button-warning mr-2">
                             Générer cp71
                         </button>
-                        <button *ngIf="courrier?.typeCourrierId === 2 || courrier.statutCourrierId !==27" pButton type="button" icon="pi pi-print mr-2" (click)="cn22()"
+                        <button *ngIf="courrier?.typeCourrierId === 2 && courrier.statutCourrierId !==27" pButton type="button" icon="pi pi-print mr-2" (click)="cn22()"
                             class="p-button-info mr-2">
                             Générer cn22
                         </button>

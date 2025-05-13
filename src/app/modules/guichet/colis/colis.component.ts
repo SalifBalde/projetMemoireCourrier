@@ -493,23 +493,19 @@ export class ColisComponent implements OnInit {
 
         this.form.get('paysDestinationId')?.enable();
 
-        // Mise à jour des valeurs dans le formulaire
-        this.form.patchValue({
-            userId: this.sessionService.getAgentAttributes().id,
-            montant: this.totalMontant,
-            recommande: true,
-            details: this.courrier.details,
-            codeBarre: this.form.get('codeBarre')?.value
-                ? this.label + this.form.get('codeBarre')?.value + 'SN'
-                : null,
-        });
+        this.form.get('paysDestinationId')?.enable();
+        this.form.value.userId = this.sessionService.getAgentAttributes().id;
+        this.form.value.montant = this.totalMontant;
+        this.form.value.recommande = true;
+        this.form.value.details = this.courrier.details;
 
-        // Concaténer les contenus
-        let contenuConcat = '';
+        if (this.form.get('codeBarre')?.value)
+            this.form.value.codeBarre = this.label + this.form.get('codeBarre')?.value + 'SN';
+
         this.contenu.forEach((p) => {
-            contenuConcat += `${p.contenu}:${p.quantite}:${p.poidsNet}:${p.valeur};`;
-        });
-        this.form.patchValue({ contenu: contenuConcat });
+            this.form.value.contenu += `${p.contenu}:${p.quantite}:${p.poidsNet}:${p.valeur};`; // Concaténer chaque produit
+          });
+
 
         this.loading = true;
         console.log(this.form.value);

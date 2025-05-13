@@ -3,21 +3,21 @@
         <div class="card">
             <p-toolbar>
                 <div class="p-toolbar-group-left flex flex-wrap" [ngClass]="{'annulation-filigrane': courrier.statutCourrierId ===27}">
-                    <button pButton type="button" icon="pi pi-print mr-2" (click)="imprimerFacture()"
+                    <button pButton type="button" *ngIf="courrier.statutCourrierId !==27" icon="pi pi-print mr-2" (click)="imprimerFacture()"
                         class="p-button-info mr-2">
                         Générer 517
                     </button>
 
-                    <ng-container *ngIf="courrier?.typeCourrierId === 2 || courrier.statutCourrierId !==27" >
+                    <ng-container *ngIf="courrier?.typeCourrierId === 2 && courrier.statutCourrierId !==27" >
                         <button pButton type="button" icon="pi pi-print mr-2" (click)="cn23()"
                             class="p-button-success mr-2">
                             Générer cn23
                         </button>
-                        <button *ngIf="courrier?.typeCourrierId === 2 || courrier.statutCourrierId !==27" pButton type="button" icon="pi pi-print mr-2" (click)="cp71()"
+                        <button *ngIf="courrier?.typeCourrierId === 2 && courrier.statutCourrierId !==27" pButton type="button" icon="pi pi-print mr-2" (click)="cp71()"
                             class="p-button-warning mr-2">
                             Générer cp71
                         </button>
-                        <button *ngIf="courrier?.typeCourrierId === 2 || courrier.statutCourrierId !==27" pButton type="button" icon="pi pi-print mr-2" (click)="cn22()"
+                        <button *ngIf="courrier?.typeCourrierId === 2 && courrier.statutCourrierId !==27" pButton type="button" icon="pi pi-print mr-2" (click)="cn22()"
                             class="p-button-info mr-2">
                             Générer cn22
                         </button>
@@ -40,7 +40,7 @@
                     <p><strong>Structure Destination:</strong> {{ courrier?.structureDestinationLibelle }}</p>
                     <p><strong>Type Courrier:</strong> {{ courrier?.typeCourrierLibelle }}</p>
                     <p><strong>Catégorie:</strong> {{ courrier?.categorieLibelle }}</p>
-                    <p><strong>Poids:</strong> {{ courrier?.poids }} Kg</p>
+                    <p><strong>Poids:</strong> {{ courrier?.poids }} g</p>
                 </div>
                 <div class="col-6">
                     <p><strong>Expéditeur:</strong> {{ courrier?.expediteurNom }} {{ courrier?.expediteurPrenom }} / {{
