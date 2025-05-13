@@ -27,19 +27,8 @@ export class BackofficeMenuComponent implements OnInit {
                 items: [
                     { label: 'Tracking E-commerce', icon: 'pi pi-fw pi-search', routerLink: ['/backoffice/track-ecommerce'] },
                     { label: 'E-commerce en Instance', icon: 'pi pi-fw pi-search', routerLink: ['/backoffice/ecommerce-instance'] },
-
                 ]
             },
-            // {
-            //     label: 'Retouner',
-            //     items: [
-            //         {
-            //             label: 'Envoi a retourner',
-            //             icon: 'pi pi-fw pi-file-pdf',
-            //             routerLink: ['/backoffice/retourner-envoi'],
-            //         },
-            //     ],
-            // },
             {
                 label: 'Paramétres',
                 icon: 'pi pi-fw pi-briefcase',
@@ -87,7 +76,7 @@ export class BackofficeMenuComponent implements OnInit {
                             {
                                 label: 'CategorieCourrier',
                                 icon: 'pi pi-fw pi-angle-right',
-                                routerLink:['/backoffice/categories']
+                                routerLink: ['/backoffice/categories']
                             },
                             {
                                 label: 'TypeCategories',
