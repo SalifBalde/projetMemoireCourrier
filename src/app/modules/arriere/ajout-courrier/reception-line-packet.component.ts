@@ -385,7 +385,6 @@ export class ReceptionLinePacketComponent implements  OnInit {
                     courrier.userId= this.iduser
                 }
 
-                console.log(courrier)
             })
             this.courrierService.updateCourriers(this.courrierss)
                 .subscribe(

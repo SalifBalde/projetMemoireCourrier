@@ -96,7 +96,7 @@ export class FermeturePacketInterieurComponent implements  OnInit{
 
         console.log(idStatutCourrier)
         this.fermetrureService.getFermeturesByCriteria(idstructureDest,idStatutCourrier,typeCourrierId).subscribe((data)=>{
-            this.Listfermetures=data;
+            this.Listfermetures=data.filter(f => f.fermetureCourriers.length >0);
             console.log(this.Listfermetures)
             this.Listfermetures = this.Listfermetures
                 .filter(fermeture =>
