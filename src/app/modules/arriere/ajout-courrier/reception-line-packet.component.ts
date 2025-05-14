@@ -15,7 +15,6 @@ import {SessionService} from "../../../proxy/auth/Session.service";
 import {TarifServiceService} from "../../../proxy/TarifService";
 import {TarifCourrierService} from "../../../proxy/tarif-courrier";
 import {StockService} from "../../../proxy/stock";
-import {LoginComponent} from "../../../demo/components/auth/login/login.component";
 
 @Component({
   selector: 'app-reception-line-packet',
@@ -70,9 +69,6 @@ export class ReceptionLinePacketComponent implements  OnInit {
         private categorieService: CategorieService,
         private sessionService: SessionService,
         private courrierService: CourrierService,
-        private tarifService: TarifServiceService,
-        private taxeCourrierService: TarifCourrierService,
-        private stocksService: StockService,
         private fb: FormBuilder,
         private typecourrierService: TypeCourrierService,
         private messageService: MessageService
@@ -377,7 +373,7 @@ export class ReceptionLinePacketComponent implements  OnInit {
                     courrier.statutCourrierId = 10;
                     courrier.taxeDouane = this.taxeDouane;
                     courrier.typeCourrierId= this.typeCourrierId
-                    courrier.taxePresentation = this.typeCourrierId !== 1 ? 1000 : null, // Condition ternaire ici
+                    courrier.taxePresentation = this.typeCourrierId !== 1 ? 1000 : null  // Condition ternaire ici
                     courrier.categorieId=this.categorieId
                     courrier.fraisSuivi = this.fraisSuivi;
                     courrier.expediteurId= this.client.id
@@ -385,7 +381,7 @@ export class ReceptionLinePacketComponent implements  OnInit {
                     courrier.paysDestinationId=210
                     courrier.paysOrigineId=this.paysOrigineId
                     courrier.structureDestinationId=this.sessionService.getAgentAttributes().structureId
-                    courrier.structureDepotId=courrier.structureDepotId
+                    courrier.structureDepotId = courrier.structureDepotId
                     courrier.userId= this.iduser
                 }
 
