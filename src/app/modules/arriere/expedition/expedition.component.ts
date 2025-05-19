@@ -54,6 +54,7 @@ import {forkJoin} from "rxjs";
     openNumExpDialog: boolean=false;
     openCourrierDialog: boolean=false;
     structure: StructureDto;
+    structures: StructureDto;
     numeroDepech: any
     currentYearLastTwoDigits: string;
     courrier: any={};
@@ -290,6 +291,10 @@ import {forkJoin} from "rxjs";
         this.courrier = { ...courrier };
         console.log(courrier)
         console.log(this.selectedColis)
+        this.structureService.getOne(this.selectedStructure).subscribe((data)=>{
+            this.structures=data;
+            console.log(this.structures.code)
+        })
 
     }
 
@@ -311,7 +316,10 @@ import {forkJoin} from "rxjs";
 
     }
     saveFermetureCourrier() {
-
+        this.structureService.getOne(this.selectedStructure).subscribe((data)=>{
+            this.structures=data;
+            console.log(this.structures.code)
+        })
 
         try {
             for (let courri of this.selectedColis) {
@@ -324,7 +332,7 @@ import {forkJoin} from "rxjs";
                 }
             }
             const structureDepotId = Number(this.sessionService.getAgentAttributes().structureId);
-            let numeroDepeche = `${this.structure.code}${this.numeroDepech}${this.currentYearLastTwoDigits}`;
+            let numeroDepeche = `${this.structures?.code}${this.numeroDepech}${this.currentYearLastTwoDigits}`;
             console.log(numeroDepeche);
             console.log(this.selectedStructure);
 

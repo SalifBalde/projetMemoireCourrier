@@ -52,7 +52,7 @@ export class ExpeditionArriereComponent  implements  OnInit{
     openNumExpDialog: boolean=false;
     openCourrierDialog: boolean=false;
     structure: StructureDto;
-    structures: StructureDto[]=[];
+    structures: StructureDto;
     numeroDepech: any
     currentYearLastTwoDigits: string;
     courrier: any={};
@@ -117,15 +117,7 @@ export class ExpeditionArriereComponent  implements  OnInit{
                 this.structure$ = result;
             }
         );
-        // this.structureService.getOne('16').subscribe(
-        //     (structure: StructureDto) => {
-        //         this.structures.push(structure);
-        //        console.log(this.structures)
-        //     },
-        //     (error) => {
-        //         console.error('Erreur lors de la récupération de la structure:', error);
-        //     }
-        // );
+
 
         console.log(this.sessionService.getAgentAttributes().structureId )
 
@@ -258,7 +250,8 @@ export class ExpeditionArriereComponent  implements  OnInit{
     }
 
     openDialog1(courrier: CourrierDto) {
-        console.log(this.structure.code+this.numeroDepech+this.currentYearLastTwoDigits)
+
+        console.log(this.selectedStructure.code+this.numeroDepech+this.currentYearLastTwoDigits)
 
         this.openCourrierDialog=true
 
@@ -275,7 +268,10 @@ export class ExpeditionArriereComponent  implements  OnInit{
         this.courrier = { ...courrier };
         console.log(courrier)
         console.log(this.selectedLettre)
-
+        this.structureService.getOne(this.selectedStructure).subscribe((data)=>{
+            this.structures=data;
+            console.log(this.structures.code)
+        })
     }
 
 
@@ -297,6 +293,10 @@ export class ExpeditionArriereComponent  implements  OnInit{
 
     }
     saveFermetureCourrier() {
+        this.structureService.getOne(this.selectedStructure).subscribe((data)=>{
+            this.structures=data;
+            console.log(this.structures.code)
+        })
 
         try {
             for (let courri of this.selectedLettre) {
@@ -306,7 +306,7 @@ export class ExpeditionArriereComponent  implements  OnInit{
                 }
             }
             const structureDepotId = Number(this.sessionService.getAgentAttributes().structureId);
-            let numeroDepeche = `${this.structure.code}${this.numeroDepech}${this.currentYearLastTwoDigits}`;
+            let numeroDepeche = `${this.structures?.code}${this.numeroDepech}${this.currentYearLastTwoDigits}`;
             console.log(numeroDepeche);
             console.log(this.selectedStructure);
 

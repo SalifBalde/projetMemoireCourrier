@@ -51,6 +51,7 @@ export class ExpeditionPacketComponent implements OnInit{
     openNumExpDialog: boolean=false;
     openCourrierDialog: boolean=false;
     structure: StructureDto;
+    structures: StructureDto;
     numeroDepech: any
     currentYearLastTwoDigits: string;
     courrier: any={};
@@ -287,7 +288,10 @@ export class ExpeditionPacketComponent implements OnInit{
         this.courrier = { ...courrier };
         console.log(courrier)
         console.log(this.selectedColis)
-
+        this.structureService.getOne(this.selectedStructure).subscribe((data)=>{
+            this.structures=data;
+            console.log(this.structures.code)
+        })
     }
 
 
@@ -309,7 +313,10 @@ export class ExpeditionPacketComponent implements OnInit{
     }
     saveFermetureCourrier() {
 
-
+        this.structureService.getOne(this.selectedStructure).subscribe((data)=>{
+            this.structures=data;
+            console.log(this.structures.code)
+        })
         try {
             for (let courri of this.selectedColis) {
                 console.log(typeof (courri.statutCourrier.id ));
@@ -321,7 +328,7 @@ export class ExpeditionPacketComponent implements OnInit{
                 }
             }
             const structureDepotId = Number(this.sessionService.getAgentAttributes().structureId);
-            let numeroDepeche = `${this.structure.code}${this.numeroDepech}${this.currentYearLastTwoDigits}`;
+            let numeroDepeche = `${this.structures?.code}${this.numeroDepech}${this.currentYearLastTwoDigits}`;
             console.log(numeroDepeche);
             console.log(this.selectedStructure);
 
