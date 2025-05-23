@@ -70,7 +70,11 @@ export class ArriereMenuComponent implements OnInit {
             {
                 label: 'Reception  Interieur',
                 items: [
-
+                    {
+                        label: 'Courriers à Retourner',
+                        icon:"pi pi-fw pi-truck",
+                        routerLink: ['/arriere/Courrierlivraison'],
+                    },
                             {
                                 label: '--- Réception Interieur ---',
                                 styleClass: 'menu-separator',
@@ -122,11 +126,6 @@ export class ArriereMenuComponent implements OnInit {
             {
                 label: 'Reception Par Saisi',
                 items: [
-                    {
-                        label: 'Courriers à Livrer',
-                        icon:"pi pi-fw pi-truck",
-                        routerLink: ['/arriere/Courrierlivraison'],
-                    },
                     {
                         label: 'Reception( courrier et colis)',
                         icon: 'pi pi-fw pi-download',
