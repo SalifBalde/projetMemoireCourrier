@@ -6,7 +6,7 @@
 
 
 
-            <p-table #dt [value]="colis$"  dataKey="id" selectionMode="multiple"   [rows]="10"
+            <p-table #dt [value]="colis$"   [(selection)]="selectedObjet"    dataKey="id" [rows]="10"
                      [rowsPerPageOptions]="[10, 25, 50]"
                      [paginator]="true"
                      [showCurrentPageReport]="true"
@@ -30,6 +30,9 @@
                 <ng-template pTemplate="header">
 
                     <tr>
+                        <th  *ngIf="!voir">
+                            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                        </th>
                         <th  pSortableColumn="codeBarre" >Code<p-sortIcon field="codeBarre" /></th>
                         <th pSortableColumn="expediteurPrenom">Nom du client<p-sortIcon field="expediteurPrenom" /></th>
                         <th pSortableColumn=" prenomClient">Nom Complet destinataire<p-sortIcon field="prenomClient"/> </th>
@@ -48,6 +51,9 @@
                 </ng-template>
                 <ng-template pTemplate="body" let-colis>
                     <tr [pSelectableRow]="colis" >
+                        <td  *ngIf="!voir">
+                            <p-tableCheckbox [value]="colis"></p-tableCheckbox>
+                        </td>
                         <td>{{ colis.codeBarre }}</td>
                         <td>{{ colis.expediteurNom }}{{ colis.expediteurPrenom }}</td>
                         <td>{{ colis.destinataireNom }} {{ colis.destinatairePrenom }}</td>
@@ -83,19 +89,32 @@
                         </td>
 
                         <td>
-                            <span class="p-badge p-component p-badge-{{ colis.statutCourrierLibelle}}">{{ colis.statutCourrierLibelle}}</span>
+                        <span class=" "
+                              [ngClass]="getBadgeClass(colis.statutCourrierLibelle)">
+                          {{ colis.statutCourrierLibelle }}
+                        </span>
                         </td>
-                        <td>
+                        <td *ngIf=" voir">
                             <p-button
                             label="Livrer"
                             severity="warning"
                             icon="pi pi-fw pi-truck"
                             (click)="openDialog(colis)"/>
                         </td>
+
+
                     </tr>
+
                 </ng-template>
 
             </p-table>
+            <td *ngIf=" !voir">
+                <p-button
+                    label="Reexpédier"
+                    severity="danger"
+                    icon="pi pi-times" style="font-size: 1.5rem"
+                    (click)="openDialog11(selectedObjet)"/>
+            </td>
         </div>
     </div>
 </div>
@@ -107,6 +126,19 @@
     <ng-template pTemplate="footer">
         <button pButton pRipple icon="pi pi-check" class="p-button-text " label="Oui"
                 (click)="confirmReception()"></button>
+        <button pButton pRipple icon="pi pi-times" class="p-button-text p-button-danger" label="Non"
+                (click)="openCourrierDialog = false"></button>
+
+    </ng-template>
+</p-dialog>
+<p-dialog [(visible)]="openCourrierReexpedierDialog" header="Confirmer" [modal]="true" [style]="{width:'450px'}">
+    <div class="flex align-items-center justify-content-center">
+        <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+        <span *ngIf="colis">Etes-vous sûr que vous voulez Reexpédier <b>{{colis.code}}</b>?</span>
+    </div>
+    <ng-template pTemplate="footer">
+        <button pButton pRipple icon="pi pi-check" class="p-button-text " label="Oui"
+                (click)="confirmmReception()"></button>
         <button pButton pRipple icon="pi pi-times" class="p-button-text p-button-danger" label="Non"
                 (click)="openCourrierDialog = false"></button>
 

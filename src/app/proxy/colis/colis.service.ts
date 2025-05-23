@@ -21,7 +21,7 @@ export class ColisService {
       .then(data => data);
   }
 
-  apiName = 'colis';
+  apiName = 'courrier';
   private api_host: string = environment.api_host + this.apiName;
   myToken = sessionStorage.getItem("token");
   private httpOptions = {
@@ -62,7 +62,7 @@ export class ColisService {
     let new_api_host = this.routerParam(this.api_host, id);
     return this.httpClient.put<ColisDto>(new_api_host, item, this.httpOptions);
   }
-  
+
   livrer(id: string, selectedColis: ColisDto): Observable<ColisDto> {
     const url = `${this.api_host}/livrerColis/${id}`;
     return this.httpClient.put<ColisDto>(url, this.httpOptions);
@@ -92,7 +92,7 @@ findByCode(code:string)
   }
 
   findColisByCriteres(search: ColisSearchDto) {
-    let new_api_host = this.routerParam(this.api_host, 'searchByCriteria');
+    let new_api_host = this.routerParam(this.api_host, 'search-byCriteriaDcll');
     return this.httpClient.post<ColisDto[]>(new_api_host, search, this.httpOptions);
   }
 

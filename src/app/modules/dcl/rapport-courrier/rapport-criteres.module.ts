@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {CommonModule, DatePipe} from '@angular/common';
 
 import { RapportCriteresRoutingModule } from './rapport-criteres-routing.module';
 import {SharedComponentModule} from "../../../layout/shared/shared-component.module";
@@ -12,6 +12,8 @@ import {SharedModule} from "../../../layout/shared/shared.module";
   imports: [
    SharedComponentModule,
     RapportCriteresRoutingModule
-  ]
+  ],
+    providers: [ DatePipe ] // ✅ ajoute ceci
+
 })
 export class RapportCriteresModule { }

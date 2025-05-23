@@ -84,4 +84,16 @@ $gutter: 1rem; //for primeflex grid system
 .status-bleu_ciel {background-color: #03A9F4;}
 
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif;
+    .text-white {
+        color: #ffffff !important;
+    }
+
+    .text-black {
+        color: #000000 !important;
+    }
+
+    .text-dark {
+        color: #333333 !important;
+    }
+}

@@ -64,6 +64,7 @@ export class ExpeditionLettreComponent  implements  OnInit{
     montants: number | null = null;
     selectedFermeture: any ;
     Listnoeux:Noeuxdto[]
+    listcourrierss: CourrierDto[];
 
 
     constructor(
@@ -141,6 +142,7 @@ export class ExpeditionLettreComponent  implements  OnInit{
         this.getAllNoeux()
         this.getStructureById()
         this.getCourrierByStructureDepotAndStatutIds()
+        this.getCourrierByStructureDepotAndStatutIdss()
         this.iduser=this.sessionService.getAgentAttributes()?.id
         console.log(this.iduser)
 
@@ -181,7 +183,26 @@ export class ExpeditionLettreComponent  implements  OnInit{
             }
         );
     }
+    getCourrierByStructureDepotAndStatutIdss() {
 
+        const statutIds = [14,25];
+        const structureDestination= this.sessionService.getAgentAttributes().structureId.toString()
+        const typecourrier=2
+        this.listcourriers = [];
+        this.courrierService.findCourrierByStructureDepotAndStatutIds(
+            structureDestination,
+            typecourrier,
+            statutIds,
+        ).subscribe(
+            (result) => {
+                this.listcourrierss=result
+                console.log(this.listcourrierss);
+            },
+            (error) => {
+                console.error('Erreur lors de la récupération des courriers:', error);
+            }
+        );
+    }
 
 
 
@@ -380,6 +401,7 @@ export class ExpeditionLettreComponent  implements  OnInit{
                             () => {
                                 this.showDetails()
                                 this.getCourrierByStructureDepotAndStatutIds()
+                                this.getCourrierByStructureDepotAndStatutIdss()
                                 this.selectedStructure=null
                                 this.numeroDepech = null
                                 // Ajout du suivi pour chaque courrier après mise à jour

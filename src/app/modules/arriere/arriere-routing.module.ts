@@ -56,7 +56,7 @@ const routes: Routes = [{ path: '', component: ArriereComponent },
     { path: 'RapportEcommerce', loadChildren: () => import('./rapportEcommerce/rapportEcommerce.module').then(m => m.RapportEcommerceModule) },
     { path: 'courrier-details/courrierDetailArriere/:id', loadChildren: () => import('./expedition/expedition-arriere/courrier-details/courrier-details.module').then(m => m.CourrierDetailsArriereModule) },
 
-    // { path: 'courrier-details-rapport/courrierDetailArriere/:id', loadChildren: () => import('./rapport/courrier-details-rapport/courrier-details.module').then(m => m.CourrierDetailsrapportModule) },
+     { path: 'courrier-details-rapport/courrierDetailArriere/:id', loadChildren: () => import('./rapport/courrier-details-rapport/courrier-details.module').then(m => m.CourrierDetailsrapportModule) },
 
 
      // saisir le courrier pour la reception
@@ -65,6 +65,7 @@ const routes: Routes = [{ path: '', component: ArriereComponent },
     { path: 'traking', loadChildren: () => import('./traking/traking.module').then(m => m.TrakingModule) },
     { path: 'detailReceptionPacket/:id', loadChildren: () => import('./ajout-courrier/detail-receptionPacket/details-packet.module').then(m => m.DetailsRecPacketModule) },
 
+    { path: 'Courrierlivraison', loadChildren: () => import('../guichet/livraison/livraison.module').then(m => m.LivraisonModule) },
 
 
 ];

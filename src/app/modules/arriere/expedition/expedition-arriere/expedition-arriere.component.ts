@@ -48,6 +48,7 @@ export class ExpeditionArriereComponent  implements  OnInit{
     Bestnoeux: Noeuxdto;
     listeCourriers: [CourrierDto];
     listcourriers: CourrierDto[];
+    listcourrierss: CourrierDto[];
     selectedStructure: any;
     openNumExpDialog: boolean=false;
     openCourrierDialog: boolean=false;
@@ -137,6 +138,7 @@ export class ExpeditionArriereComponent  implements  OnInit{
         this.getAllNoeux()
         this.getStructureById()
         this.getCourrierByStructureDepotAndStatutIds()
+        this.getCourrierByStructureDepotAndStatutIdss()
         this.iduser=this.sessionService.getAgentAttributes()?.id
         console.log(this.iduser)
 
@@ -171,6 +173,26 @@ export class ExpeditionArriereComponent  implements  OnInit{
             (result) => {
                 this.listcourriers = result;
                 console.log(this.listcourriers);
+            },
+            (error) => {
+                console.error('Erreur lors de la récupération des courriers:', error);
+            }
+        );
+    }
+    getCourrierByStructureDepotAndStatutIdss() {
+
+        const statutIds = [14,25];
+        const structureDestination= this.sessionService.getAgentAttributes().structureId.toString()
+        const typecourrier=1
+        this.listcourriers = [];
+        this.courrierService.findCourrierByStructureDepotAndStatutIds(
+            structureDestination,
+            typecourrier,
+            statutIds,
+            ).subscribe(
+            (result) => {
+                this.listcourrierss=result
+                console.log(this.listcourrierss);
             },
             (error) => {
                 console.error('Erreur lors de la récupération des courriers:', error);
@@ -297,11 +319,11 @@ export class ExpeditionArriereComponent  implements  OnInit{
             this.structures=data;
             console.log(this.structures.code)
         })
-
+        console.log(this.selectedLettre)
         try {
             for (let courri of this.selectedLettre) {
 
-                if (courri.statutCourrierId=== 14) { // Utilisez '===' pour une comparaison stricte
+                if (courri.statutCourrierId=== 14  || courri.statutCourrierId=== 25) { // Utilisez '===' pour une comparaison stricte
                     this.idStatutFermetureCourrier =2
                 }
             }
@@ -339,8 +361,8 @@ export class ExpeditionArriereComponent  implements  OnInit{
             const selectedColisCopy = [...this.selectedLettre];
             for (let courri of selectedColisCopy) {
 
-                if (courri.statutCourrierId === 14) { // Utilisez '===' pour une comparaison stricte
-                    this.idStatutFermetureCourrier =2
+                if (courri.statutCourrierId === 14 || courri.statutCourrierId === 25 ){ // Utilisez '===' pour une comparaison stricte
+                    this.idStatutFermetureCourrier = 2
                 }
             }// Copie défensive
             console.log(selectedColisCopy);
@@ -364,6 +386,7 @@ export class ExpeditionArriereComponent  implements  OnInit{
                             () => {
                                 this.showDetails();
                                 this.getCourrierByStructureDepotAndStatutIds()
+                                this.getCourrierByStructureDepotAndStatutIdss()
                                 this.selectedStructure=null
                                 this.numeroDepech = null
                                 // Ajout du suivi pour chaque courrier après mise à jour

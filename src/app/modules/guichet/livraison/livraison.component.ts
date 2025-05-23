@@ -14,6 +14,7 @@ import {StatutCourrierService} from "../../../proxy/statut-courrier";
 import {NouexService} from "../../../proxy/noeux";
 import {BureauxDouanierService} from "../../../proxy/burauex_douaniers";
 import {Table} from "primeng/table";
+import {KeycloakService} from "keycloak-angular";
 @Component({
   selector: 'app-livraison',
   templateUrl: './livraison.component.html',
@@ -24,19 +25,24 @@ export class LivraisonComponent implements OnInit {
   colis$: CourrierDto[] = [];
   loadingColis: boolean = false;
   selectedColis: any  = {};
-  displayDialog: boolean = false;
+    selectedObjet: any[] = [];
+    displayDialog: boolean = false;
   montantTotal: number = 0;
   payer: boolean = false;
+    userRoles: any
 
   selectedColisForDeletion: Set<ColisDto> = new Set();
   allSelected: boolean = false;
     openCourrierDialog: boolean = false;
     openNumExpDialog: boolean = false;
+    openCourrierReexpedierDialog: boolean = false;
     colis: any={}
      iduser: any;
     isTaxeValid: boolean = false;
     fraisFixes = 0;
     totalpaye:number
+    openColisDialog: boolean;
+    voir:boolean=false
     @ViewChild('dt') dt: Table;
 
   constructor(
@@ -54,11 +60,18 @@ export class LivraisonComponent implements OnInit {
       private  statutCourrierService: StatutCourrierService,
       private noeuxService: NouexService,
       private bureauxDouanier: BureauxDouanierService,
-  ) {}
+      private readonly keycloak: KeycloakService,
+  ) {
+       this.userRoles = this.keycloak.getUserRoles();
+         if (this.userRoles.includes('ROLE_GUICHET')){
+             this.voir=true
+         }
+  }
 
   ngOnInit(): void {
     this.buildForm();
       this.iduser=this.sessionService.getAgentAttributes()?.id
+      console.log(this.userRoles)
       this.getCourrierByStructureDepotAndStatutIds()
   }
 
@@ -139,6 +152,12 @@ export class LivraisonComponent implements OnInit {
         this.calculateTotal(colis);
         console.log( this.openNumExpDialog)
     }
+    openDialog11(colis: CourrierDto[]) {
+        console.log( colis)
+            this.colis = { ...colis };
+        this.openCourrierReexpedierDialog = true
+
+    }
 
     closeModal() {
         this.openCourrierDialog = false;
@@ -171,7 +190,6 @@ export class LivraisonComponent implements OnInit {
         // Vérifie si la taxe magasinage est un nombre valide et supérieur à zéro
         let totalpaye =this.selectedColis.taxeMagasinage+this.selectedColis.taxeDouane
     }
-
 
 
   supprimerSelection() {
@@ -276,4 +294,57 @@ export class LivraisonComponent implements OnInit {
         );
 
     }
+
+    confirmmReception() {
+        console.log(this.selectedObjet);
+        this.openCourrierReexpedierDialog  = false;
+        this.selectedObjet.forEach((courrier) => {
+                courrier.statutCourrierId =25 ;
+                courrier.userId = this.iduser;
+
+
+        });
+        console.log(this.selectedObjet)
+        // Appel au service pour mettre à jour les courriers
+        this.courrierService.updateCourriers(this.selectedObjet).subscribe(
+            (result) => {
+                this.getCourrierByStructureDepotAndStatutIds()
+                this.messageService.add({
+                    severity: 'success',
+                    summary: 'Succès',
+                    detail: 'Courrier réexpédié avec succès',
+                    life: 3000,
+                });
+                // Message de succès
+            },
+            (error) => {
+                // En cas d'erreur lors de la mise à jour des courriers
+                console.error("Erreur lors de la mise à jour des courriers : ", error);
+
+                // Message d'erreur
+                this.messageService.add({
+                    severity: 'danger',
+                    summary: 'Erreur',
+                    detail: 'Erreur de réception',
+                    life: 3000,
+                });
+            }
+        );
+    }
+
+    getBadgeClass(status: string): string {
+        switch (status?.toLowerCase()) {
+            case 'réception envois import au bureau de livraison local':
+                return 'text-black';
+            case 'en attente':
+                return 'text-black';
+            case 'rejeté':
+                return 'text-white';
+            default:
+                return 'text-white';
+        }
+    }
+
+
+
 }

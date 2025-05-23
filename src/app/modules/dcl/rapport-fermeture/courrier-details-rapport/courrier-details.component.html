@@ -1,0 +1,75 @@
+
+<div class="col-12 md:col-12">
+    <h3></h3>
+    <p-badge  value="Informations Générales Du Ferméture" size="large" severity="primary"></p-badge>
+    <div class="grid justify-content-center align-items-center">
+        <div class="col-12 md:col-6">
+            <!-- Première colonne -->
+            <div class="grid mb-3">
+                <div class="col-12">
+                    <p><strong>Date:</strong> {{ ladateFormatee }}</p>
+                </div>
+                <div class="col-12">
+                    <p><strong>Structure Dépôt:</strong> {{ fermeture?.structureDepotLibelle }}</p>
+                </div>
+            </div>
+
+            <!-- Deuxième colonne -->
+            <div class="grid">
+                <div class="col-12">
+                    <p><strong>Structure Destination:</strong> {{ fermeture?.structureDestinationLibelle }}</p>
+                </div>
+                <div class="col-12">
+                    <p><strong>Numero Dépeche:</strong> {{ fermeture?.numeroDepeche }}</p>
+                </div>
+                <div class="col-12">
+                    <p><strong>Nombre de Courrier:</strong> {{ nombreCourriers }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="card">
+    <p-toolbar>
+        <div class="p-toolbar-group-left flex flex-wrap">
+            <button pButton type="button" icon="pi pi-print" (click)="cn23()" class="p-button-info">Générer CPL6</button>
+        </div>
+
+    </p-toolbar>
+
+    <div class="card py-8 px-6 md:px-8 overflow-auto">
+    <div class="overflow-x-auto">
+        <h3>Liste des Courriers</h3>
+        <p-table [value]="listeCourriers" [paginator]="true" [rows]="5">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>Code Barre</th>
+                    <th>Structure Dépôt</th>
+                    <th>Structure Destination</th>
+                    <th>Type Courrier</th>
+                    <th>Poids (g)</th>
+                    <th>Expéditeur</th>
+                    <th>Destinataire</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-courrier>
+                <tr>
+                    <td>{{ courrier.codeBarre }}</td>
+                    <td>{{ courrier.structureDepotLibelle }}</td>
+                    <td>{{ courrier.structureDestinationLibelle }}</td>
+                    <td>{{ courrier.typeCourrierLibelle }}</td>
+                    <td>{{ courrier.poids }}</td>
+                    <td>{{ courrier.expediteurNom }}--{{ courrier.expediteurPrenom }}</td>
+                    <td>{{ courrier.destinataireNom }}--{{ courrier.destinatairePrenom }}</td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+
+</div>
+</div>
+
+
+

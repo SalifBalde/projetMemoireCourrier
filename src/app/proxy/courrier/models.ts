@@ -115,5 +115,8 @@ export class CourrierCreateUpdateDto {
     typeCourrierId?: number;
     paysOrigineId?:number;
     paysDestinationId?:number;
+    poidsMin?: number;
+    poidsMax?: number;
+    categorieId?: number;
   }
 

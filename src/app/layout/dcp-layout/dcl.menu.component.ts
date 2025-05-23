@@ -25,9 +25,27 @@ export class DclMenuComponent implements OnInit {
                         label: 'Report  Courrier',
                         icon: 'pi pi-fw pi-file-pdf',
                         routerLink: ['/dcl/rapport-courrier'],
-                    }
+                    },
+                    {
+                        label: 'Report Ferméture',
+                        icon: 'pi pi-fw pi-file-pdf',
+                        routerLink: ['/dcl/rapports'],
+                    },
+
                 ],
-            },
+            }, {
+                label: 'Traking',
+
+
+                        items: [
+                            {
+                                label: 'Suivi Courrier ',
+                                icon: 'pi pi-fw pi-eye',
+                                routerLink: ['/dcl/traking'],
+                            },
+                        ],
+                    },
+
 
         ];
     }

@@ -92,6 +92,7 @@ import { StructureDto, StructureService } from 'src/app/proxy/structures';
        this.form.value.userId = this.user.id;
        this.colisSearch.debut =new Date( this.form.value.debut).toISOString().substring(0, 10);
        this.colisSearch.fin = new Date( this.form.value.fin).toISOString().substring(0, 10);
+        console.log(this.form.value)
         this.colisService.findColisByCriteres(this.form.value).subscribe(coli=>{this.colis$=coli;
             this.montant = this.colis$.reduce((sum, item) => sum + parseInt(item.montant), 0);
         });
