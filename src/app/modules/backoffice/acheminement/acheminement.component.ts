@@ -40,7 +40,7 @@ export class AcheminementComponent implements  OnInit{
     openCourrierDialog: boolean=false;
     noeudDialog: boolean =false;
 
-
+    rowsPerPageOptions = [10, 20, 30];
 
     constructor(
         private sessionService: SessionService,
@@ -69,17 +69,20 @@ export class AcheminementComponent implements  OnInit{
         this.structureService.getBureaux().subscribe(
             (result) => {
                 this.structure$ = result;
-                console.log(this.structure$)
+
             }
         );
 
         this.noeuxService.findAll().subscribe(
             (result) => {
                 this.noeux$ = result;
-                console.log(this.noeux$)
             }
         );
+        this.cols = [
+            { field: 'libelle', header: 'libelle' },
 
+        ];
+        this.findAcheminementsByNoeud()
     }
 
 
@@ -115,6 +118,7 @@ export class AcheminementComponent implements  OnInit{
             },
             error: (error) => console.error("Erreur lors de l'enregistrement :", error)
         });
+        this.acheminChoisi=null
     }
 
     findAcheminementsByNoeud() {

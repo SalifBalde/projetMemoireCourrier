@@ -118,5 +118,9 @@ export class CourrierCreateUpdateDto {
     poidsMin?: number;
     poidsMax?: number;
     categorieId?: number;
-  }
+    entrant?: boolean | null;  // true = import, false = export, null = aucun filtre
+    regimeId?: number;
+
+
+   }
 

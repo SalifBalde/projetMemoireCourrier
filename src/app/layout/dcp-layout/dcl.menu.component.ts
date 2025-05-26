@@ -46,7 +46,68 @@ export class DclMenuComponent implements OnInit {
                         ],
                     },
 
+            {
+                label: 'Paramétres',
+                icon: 'pi pi-fw pi-briefcase',
+                items: [
 
+                    {
+                        label: 'Paramétres',
+                        icon: 'pi pi-fw pi-cog',
+                        items: [
+                            {
+
+
+                                label: 'Pays',
+                                icon: 'pi pi-fw pi-angle-right',
+                                routerLink: ['/dcl/payss']
+
+                            },
+                            {
+                                label: 'Zones',
+                                icon: 'pi pi-fw pi-angle-right',
+                                routerLink: ['/dcl/zones']
+                            },
+                            {
+                                label: 'PoidsCourriers',
+                                icon: 'pi pi-fw pi-angle-right',
+                                routerLink: ['/dcl/poidsCourriers']
+                            },
+                            {
+                                label: 'CategorieCourrier',
+                                icon: 'pi pi-fw pi-angle-right',
+                                routerLink: ['/dcl/categories']
+                            },
+                            {
+                                label: 'Acheminement',
+                                icon: 'pi pi-fw pi-angle-right',
+                                routerLink: ['/dcl/acheminement']
+                            },
+                            {
+                                label: 'ServiceCourriers',
+                                icon: 'pi pi-fw pi-angle-right',
+                                routerLink: ['/dcl/serviceCourriers']
+                            },
+                            {
+                                label: 'TypeCategories',
+                                icon: 'pi pi-fw pi-angle-right',
+                                routerLink: ['/dcl/typeCategories']
+                            },
+                            {
+                                label: 'TypeCourriers',
+                                icon: 'pi pi-fw pi-angle-right',
+                                routerLink: ['/dcl/typeCourriers']
+                            },
+                            {
+                                label: 'Regimes',
+                                icon: 'pi pi-fw pi-angle-right',
+                                routerLink: ['/dcl/regimes']
+                            },
+                            ]
+                    }
+                    ]
+            }
         ];
+
     }
 }

@@ -47,6 +47,8 @@ export class RapportCriteresComponent {
     date: Date = new Date();
     fullname: StructureDto;
     poid$: PoidCourrierDto[] = [];
+    isDisabled = false;
+    selectedRegime: number | null = null;
 
 
 
@@ -176,6 +178,19 @@ export class RapportCriteresComponent {
         doc.save(`rapport-courriers-${date}.pdf`);
     }
 
+    setChecked(type: 'import' | 'export', checked: boolean) {
+        if (type === 'import' && checked) {
+            this.form.patchValue({ isImport: true, isExport: false });
+        } else if (type === 'export' && checked) {
+            this.form.patchValue({ isImport: false, isExport: true });
+        } else if (!checked) {
+            if (type === 'import') {
+                this.form.patchValue({ isImport: false });
+            } else if (type === 'export') {
+                this.form.patchValue({ isExport: false });
+            }
+        }
+    }
 
     generateExcel() {
         const headers = [
@@ -262,7 +277,10 @@ export class RapportCriteresComponent {
             poidsMin: [null],
             poidsMax: [null],
             bureauDepotId:[null],
-            categorieId:[null]
+            categorieId:[null],
+            entrant: [null] , // null = aucun filtre, true = import, false = export
+            regimeId: [null],
+
         });
     }
 
@@ -299,7 +317,6 @@ export class RapportCriteresComponent {
             this.fullname = result;
             console.log(this.fullname)
         });
-
         this.form.value.structureDepotId = this.form.value.bureauDepotId
         console.log(this.form.value)
         this.loadingcourrier = true;
@@ -315,6 +332,18 @@ export class RapportCriteresComponent {
         this.courrier$=null
         this.montant=null
 
+    }
+
+
+    toggleSelection(value: number) {
+        if (this.selectedRegime === value) {
+            // Si on reclique sur le même, on déselectionne
+            this.selectedRegime = null;
+        } else {
+            this.selectedRegime = value;
+        }
+        // Met à jour la valeur dans le formulaire si besoin
+        this.form.get('regimeId')?.setValue(this.selectedRegime);
     }
 
     isEmpty() {

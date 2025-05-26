@@ -1,4 +1,5 @@
-
+<div class="grid">
+    <div class="col-12">
 <p-toast position="top-right"></p-toast>
 <!--    <div class="my-2">-->
 <!--        <button pButton pRipple label="Nouveux Noeud" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNew()"></button>-->
@@ -59,12 +60,7 @@
 <div class="card px-3 py-3">
     <p-toast></p-toast>
 
-    <p-table #dt [value]="acheminChoisi" [columns]="cols" responsiveLayout="scroll" [(selection)]="selectedBureau"
-             [rows]="10" [globalFilterFields]="['libelle']"
-             [paginator]="true" [rowsPerPageOptions]="[10,20,30]"
-             [showCurrentPageReport]="true"
-             currentPageReportTemplate="Affichage de {first} à {last} sur {totalRecords} entrées"
-             selectionMode="multiple" [rowHover]="true" dataKey="id"
+    <p-table #dt [value]="acheminChoisi" [columns]="cols" responsiveLayout="scroll" [(selection)]="selectedBureau"  [rowHover]="true" dataKey="id"   [globalFilterFields]="['libelle']"
              [tableStyle]="{'min-width': '50rem'}">
         <ng-template pTemplate="caption">
             <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
@@ -141,7 +137,8 @@
         <button pButton pRipple label="Sauvegarder" icon="pi pi-check" class="p-button-text p-button-success" (click)="saveregime()" [disabled]="form.invalid"></button>
     </ng-template>
 </p-dialog>
-
+</div>
+</div>
 
 
 
