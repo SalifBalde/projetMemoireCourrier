@@ -16,11 +16,11 @@ export class DclMenuComponent implements OnInit {
             {
                 label: 'Reporting',
                 items: [
-                    {
-                        label: 'Report Jt Courrier',
-                        icon: 'pi pi-fw pi-file-pdf',
-                        routerLink: ['/dcl/rapport'],
-                    },
+                    // {
+                    //     label: 'Report Jt Courrier',
+                    //     icon: 'pi pi-fw pi-file-pdf',
+                    //     routerLink: ['/dcl/rapport'],
+                    // },
                     {
                         label: 'Report  Courrier',
                         icon: 'pi pi-fw pi-file-pdf',

@@ -76,7 +76,7 @@
                 </ng-template>
             </p-table>
 
-            <hr style="margin: 20px 0; border: 1px dashed #ccc;" />
+            <hr *ngIf="listcourrierss " style="margin: 20px 0; border: 1px dashed #ccc;" />
 
             <p-table [value]="listcourrierss" [(selection)]="selectedLettre" dataKey="id"
                      [tableStyle]="{'min-width': '50rem'}">

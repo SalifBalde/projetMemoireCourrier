@@ -33,11 +33,11 @@
                 <p-dropdown formControlName="typeCourrierId" id="typeCourrierId" [filter]="true" filterBy="libelle" [showClear]="true" [options]="typeCourrier$"
                     placeholder="choisissez un Type" optionLabel="libelle" optionValue="id"></p-dropdown>
             </div>
-            <div class="col-12 md:col-3">
+            <div class="col-12 md:col-5">
                 <p-dropdown formControlName="categorieId" id="categorieId" [filter]="true" filterBy="libelle" [showClear]="true" [options]="categorie$"
                     placeholder="choisissez un categorie" optionLabel="libelle" optionValue="id"></p-dropdown>
             </div>
-            <div class="col-12 md:col-3">
+            <div class="col-12 md:col-5">
                 <p-dropdown formControlName="statutCourrierId" id="statutCourrierId" [filter]="true" filterBy="libelle" [showClear]="true" [options]="statutCourrier$"
                     placeholder="choisissez un status" optionLabel="libelle" optionValue="id"></p-dropdown>
             </div>
@@ -46,17 +46,25 @@
 <!--                            [options]="poid$" placeholder="choisissez un poid" optionLabel="libelle"-->
 <!--                            optionValue="id"></p-dropdown>-->
 <!--            </div>-->
-            <div class="col-3">
+            <div class="col-12 md:col-5">
                 <label for="poidsMin">Poids Min :</label>
                 <input pInputText type="number" formControlName="poidsMin" placeholder="Poids min en kg" />
             </div>
 
-            <div class="col-3">
+            <div class="col-12 md:col-5">
                 <label for="poidsMax">Poids Max :</label>
                 <input pInputText type="number" formControlName="poidsMax" placeholder="Poids max en kg" />
             </div>
+
+
         </div>
+
         <div class="col-6" style="display: flex; justify-content: center; gap: 40px; align-items: center;">
+
+            <div style="display: flex; align-items: center;margin-left: 15%;">
+                <p-dropdown formControlName="serviceId" id="serviceId" [filter]="true" filterBy="libelle" [showClear]="true" [options]="services$"
+                            placeholder="choisissez un service" optionLabel="libelle" optionValue="id"></p-dropdown>
+            </div>
             <div style="display: flex; align-items: center;">
                 <label>
                     <input type="checkbox" [checked]="form.get('entrant')?.value === true" (change)="form.patchValue({ entrant: $event.target.checked ? true : null })" />
@@ -87,11 +95,26 @@
 
 
         <div class="p-formgrid flex col-6 col-offset-2 justify-content-center">
-            <p-button label="Rechercher" icon="pi pi-search" severity="primary" [loading]="loadingcourrier" [disabled]="form.invalid"
-                (onClick)="searchcourrierByCriteres()" />
-            <p-button *ngIf="isEmpty()" label="effacer" icon="pi pi-times" severity="danger" [loading]="loadingReset"
-                (onClick)="resetForm()" />
+            <p-button
+                class="mr-8"
+                label="Rechercher"
+                icon="pi pi-search"
+                severity="primary"
+                [loading]="loadingcourrier"
+                [disabled]="form.invalid"
+                (onClick)="searchcourrierByCriteres()"
+            ></p-button>
+
+            <p-button
+                *ngIf="isEmpty()"
+                label="effacer"
+                icon="pi pi-times"
+                severity="danger"
+                [loading]="loadingReset"
+                (onClick)="resetForm()"
+            ></p-button>
         </div>
+
     </form>
 </div>
 <div class="grid">

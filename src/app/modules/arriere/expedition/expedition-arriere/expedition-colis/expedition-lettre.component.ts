@@ -338,8 +338,8 @@ export class ExpeditionLettreComponent  implements  OnInit{
         try {
             for (let courri of this.selectedLettre) {
 
-                if (courri.statutCourrierId === 14) { // Utilisez '===' pour une comparaison stricte
-                    this.idStatutFermetureCourrier =2
+                if (courri.statutCourrierId === 14 || courri.statutCourrierId === 25) { // Utilisez '===' pour une comparaison stricte
+                    this.idStatutFermetureCourrier = 2
                 }
             }
             const structureDepotId = Number(this.sessionService.getAgentAttributes().structureId);
@@ -376,8 +376,8 @@ export class ExpeditionLettreComponent  implements  OnInit{
             const selectedColisCopy = [...this.selectedLettre];
             for (let courri of selectedColisCopy) {
 
-                if (courri.statutCourrierId=== 14) { // Utilisez '===' pour une comparaison stricte
-                    this.idStatutFermetureCourrier =2
+                if (courri.statutCourrierId === 14  || courri.statutCourrierId === 25 ) { // Utilisez '===' pour une comparaison stricte
+                    this.idStatutFermetureCourrier = 2 ;
                 }
             }// Copie défensive
             console.log(selectedColisCopy);

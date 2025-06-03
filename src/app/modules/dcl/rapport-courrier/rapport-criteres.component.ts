@@ -19,6 +19,7 @@ import autoTable from "jspdf-autotable";
 import {DatePipe} from "@angular/common";
 import * as XLSX from 'xlsx';
 import {saveAs} from "file-saver";
+import {ServicesDto, ServicesService} from "../../../proxy/services";
 
 
 @Component({
@@ -47,6 +48,7 @@ export class RapportCriteresComponent {
     date: Date = new Date();
     fullname: StructureDto;
     poid$: PoidCourrierDto[] = [];
+    services$: ServicesDto[] = [];
     isDisabled = false;
     selectedRegime: number | null = null;
 
@@ -65,6 +67,7 @@ export class RapportCriteresComponent {
         private structureService: StructureService,
         private paysService : PaysService,
         private poidService: PoidsCourrierService,
+        private serviceCourrier: ServicesService,
         private messageService: MessageService,
         private readonly keycloak: KeycloakService,
         private datePipe: DatePipe
@@ -280,6 +283,7 @@ export class RapportCriteresComponent {
             categorieId:[null],
             entrant: [null] , // null = aucun filtre, true = import, false = export
             regimeId: [null],
+            serviceId: [null],
 
         });
     }
@@ -307,6 +311,10 @@ export class RapportCriteresComponent {
         })
         this.poidService.findAll().subscribe(result =>{
             this.poid$= result;
+            console.log('result',result)
+        })
+        this.serviceCourrier.getAllService().subscribe(result =>{
+            this.services$= result;
             console.log('result',result)
         })
     }

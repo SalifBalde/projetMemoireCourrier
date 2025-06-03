@@ -1,10 +1,11 @@
-import {Regimedto} from "../regime";
-import {TypeCatgorieDto} from "../type-categorie/models";
+import {RegimeDto} from "../regime";
+import {TypeCategorieDto} from "../type-categorie/models";
 
 export interface ServicesDto {
   id?: string;
   libelle?: string;
-  regimeId?: Regimedto;
-  typeCategorieId?:TypeCatgorieDto ;
+  regimeId?: RegimeDto;
+  serviceId?: ServicesDto;
+  typeCategorieId?:TypeCategorieDto ;
 
 }
